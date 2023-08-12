@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export HOME=/userdata/system
+cd $HOME
+
+#mupen64plus --corelib /usr/lib/libmupen64plus.so.2.0.0 "$1"
+mupen64plus --corelib /usr/lib/libmupen64plus.so.2.0.0 --gfx /usr/lib/mupen64plus/mupen64plus-video-rice.so --configdir /userdata/system/configs/mupen64/ --datadir /userdata/system/configs/mupen64/ "$1"

@@ -1,0 +1,41 @@
+ 
+{
+    "name": "Settings",
+    "items": [
+	{ "name": "Session", "type": "Options", "options": ["Quit", "Reboot", "Shutdown"], "action": "Action - Quit", "hint": "Quit"},
+	{ "name": "Theme", "type": "Options", "options": ["Theme1", "Theme2", "Theme3"], "action": "Theme", "hint": "Launcher Theme" }
+    ],
+    "submenus": [
+      {
+        "name": "Appareance",
+        "items": [
+            { "name": "Color", "type": "Value", "action": "Confirm", "hint": "Sub-hint 1" },
+            { "name": "Brightness", "type": "Value", "action": "Back/Function key", "hint": "Sub-hint 2" },
+            { "name": "Overclock", "type": "Value", "action": "Mark Favorite", "hint": "Sub-hint 3" }
+        ],
+        "submenus": []
+    },
+      {
+        "name": "System",
+        "items": [
+            { "name": "Volume", "type": "Value", "action": "Confirm", "hint": "Sub-hint 1" },
+            { "name": "Brightness", "type": "Value", "action": "Back/Function key", "hint": "Sub-hint 2" },
+            { "name": "Overclock", "type": "Value", "action": "Mark Favorite", "hint": "Sub-hint 3" }
+        ],
+        "submenus": []
+    },
+	{
+	    "name": "Help",
+	    "items": [
+		{ "name": "A", "type": "Value", "action": "Confirm", "hint": "Sub-hint 1" },
+		{ "name": "B", "type": "Value", "action": "Back/Function key", "hint": "Sub-hint 2" },
+		{ "name": "X", "type": "Value", "action": "Mark Favorite", "hint": "Sub-hint 3" },
+		{ "name": "Y", "type": "Value", "action": "Show/Hide Favorites", "hint": "Sub-hint 4" },
+		{ "name": "R1", "type": "Value", "action": "Fullscreen mode", "hint": "Sub-hint 5" },
+		{ "name": "SELECT", "type": "Value", "action": "Game Options", "hint": "Sub-hint 6" },
+		{ "name": "Up/Down/Left/Right", "type": "Value", "action": "Scroll", "hint": "Sub-hint 7" }
+	    ],
+	    "submenus": []
+	}
+    ]
+}

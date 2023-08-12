@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export HOME=/userdata/system/
+cd $HOME
+
+amiberry -G -0 "$1"
+

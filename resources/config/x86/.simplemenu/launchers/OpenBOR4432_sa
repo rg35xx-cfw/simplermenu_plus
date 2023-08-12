@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export HOME=/userdata/system
+cd $HOME
+
+OpenBOR4432 "$1"

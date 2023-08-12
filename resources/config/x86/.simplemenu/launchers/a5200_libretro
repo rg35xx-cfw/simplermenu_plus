@@ -1,0 +1,3 @@
+#!/bin/sh
+
+retroarch -L /usr/lib/libretro/$(basename $0).so "$1"

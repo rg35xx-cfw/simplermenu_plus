@@ -1,0 +1,72 @@
+# Software Name
+TARGET = simplemenu
+#PLATFORM = PC
+
+
+#Flags
+MM_NOQUIT = 0  # Controls if we show Quit option in Session menu on Miyoo Mini. In that device there is no optional startup script. The closest is /mnt/SDCARD/.tmp_update/updater but we can't count on it because it is used by most distributions, so we control the quit menu manually by mean of this flag.
+NOLOADING = 0  # Controls whether the 'LOADING...' message is displayed at the bottom right of the screen during some slow processes.
+
+# Compiler
+CC = gcc
+LINKER   = gcc
+CFLAGS = -DTARGET_RG35XX -DUSE_GZIP -Ofast -fdata-sections -ffunction-sections -fPIC -flto -Wall -Wextra -std=gnu99
+LIBS += -lSDL -lSDL_image -lSDL_ttf -lpthread -lz -L../libini/ #-lasound
+
+
+ifeq ($(MM_NOQUIT), 1)
+	CFLAGS += -DMM_NOQUIT
+endif
+
+ifeq ($(NOLOADING), 1)
+	CFLAGS += -DNOLOADING
+endif
+
+# You can use Ofast too but it can be more prone to bugs, careful.
+CFLAGS += -g -I.
+LDFLAGS = -Wl,--start-group $(LIBS) -Wl,--end-group -Wl,--as-needed -Wl,--gc-sections -flto
+
+DEBUG=NO
+
+ifeq ($(DEBUG), NO)
+	CFLAGS +=  -DDEBUG -g3
+else
+	LDFLAGS	+=  -s -lm
+endif
+
+SRCDIR   = src/logic
+OBJDIR   = src/obj
+BINDIR   = output
+SOURCES  := $(wildcard $(SRCDIR)/*.c)
+
+SOURCES := $(filter-out src/logic/control_rfw.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/control_bittboy.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/control_od.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/system_logic_rfw.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/system_logic_bittboy.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/system_logic_od.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/system_logic_mmiyoo.c, $(SOURCES))
+SOURCES := $(filter-out src/logic/cJSON.c, $(SOURCES))
+ 
+
+OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+
+rm       = rm -f
+	
+$(BINDIR)/$(TARGET): $(OBJECTS)
+	@$(LINKER) $(OBJECTS) $(LDFLAGS) -o $@
+	@echo "Linking complete!"
+
+$(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+.PHONY: clean
+clean:
+	@$(rm) $(OBJECTS)
+	@echo "Cleanup complete!"
+
+.PHONY: remove
+remove: clean
+	@$(rm) $(BINDIR)/$(TARGET)
+	@echo "Executable removed!"

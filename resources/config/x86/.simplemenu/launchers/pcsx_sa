@@ -1,0 +1,11 @@
+#!/bin/sh
+
+export HOME=/userdata/system
+cd $HOME
+
+if [ ! -f /userdata/system/.pcsx/pcsx.cfg ];then
+	mkdir -p $HOME/.pcsx
+	cp /usr/share/pcsx/pcsx.cfg $HOME/.pcsx/
+fi
+
+pcsx -cdfile "$1"

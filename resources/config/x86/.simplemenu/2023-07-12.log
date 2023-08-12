@@ -1,0 +1,928 @@
+Wed Jul 12 02:11:47 2023 | INFO  | loadConfig                               | Config loaded
+Wed Jul 12 02:11:47 2023 | INFO  | initializeDisplay                        | well...
+Wed Jul 12 02:11:47 2023 | INFO  | initializeDisplay                        | maybe...
+Wed Jul 12 02:11:47 2023 | INFO  | initializeDisplay                        | 640x480
+Wed Jul 12 02:11:47 2023 | INFO  | initializeDisplay                        | Initialized Display
+Wed Jul 12 02:11:47 2023 | INFO  | initializeFonts                          | Fonts initialized
+Wed Jul 12 02:11:47 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Wed Jul 12 02:11:47 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Wed Jul 12 02:11:47 2023 | INFO  | checkThemes                              | Themes checked
+Wed Jul 12 02:11:47 2023 | INFO  | loadLastState                            | Last state loaded
+Wed Jul 12 02:11:47 2023 | INFO  | HW_Init                                  | HW Initialized
+Wed Jul 12 02:11:47 2023 | INFO  | initialSetup                             | Setting CPU to base
+Wed Jul 12 02:11:47 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Wed Jul 12 02:11:47 2023 | INFO  | setupKeys                                | Input successfully configured
+Wed Jul 12 02:11:47 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Wed Jul 12 02:11:47 2023 | INFO  | checkIfDefault                           | Default state checked
+Wed Jul 12 02:11:47 2023 | INFO  | main                                     | Setup 2
+Wed Jul 12 02:11:47 2023 | INFO  | initialSetup2                            | Loading theme
+Wed Jul 12 02:11:47 2023 | INFO  | initialSetup2                            | Loading section groups
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.png
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.png
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.png
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.ini
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:47 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.ini
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.ini
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.ini
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.ini
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.png
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.png
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:11:48 2023 | INFO  | recursivelyScanDirectory                 | No entry
+Wed Jul 12 02:11:48 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:11:48 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:11:48 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:11:48 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:11:48 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:11:48 2023 | INFO  | loadSectionGroups                        | Loaded section groups
+Wed Jul 12 02:11:48 2023 | INFO  | initialSetup2                            | Loading sections
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | NINTENDO 64
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Loading system logo
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Loading system background
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Loading system picture
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | DREAMCAST
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | ODYSSEY2
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | NES
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | FDS
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:48 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | SNES
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | MSU-1
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | SGB
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | VIRTUAL BOY
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | SEGA SG-1000
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | MASTER SYSTEM
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | SEGA GENESIS
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | SEGA CD
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | SEGA 32X
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | ATARI 2600
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | ATARI 5200
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | ATARI 7800
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | INTELLIVISION
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | NEO GEO CD
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | PC ENGINE
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:49 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | PC ENGINE CD
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | PLAYSTATION
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out 1
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out2
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out 3
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out 4
+Wed Jul 12 02:11:50 2023 | INFO  | initializeFonts                          | Fonts initialized
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out 5
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out 6
+Wed Jul 12 02:11:50 2023 | INFO  | loadSections                             | Out 7
+Wed Jul 12 02:11:50 2023 | INFO  | initialSetup2                            | Loading favorites
+Wed Jul 12 02:11:50 2023 | INFO  | loadFavorites                            | Loaded favorites
+Wed Jul 12 02:11:50 2023 | INFO  | initSuspendTimer                         | Suspend timer initialized
+Wed Jul 12 02:11:50 2023 | INFO  | determineStartingScreen                  | Loading game list
+Wed Jul 12 02:11:50 2023 | INFO  | loadGameList                             | NINTENDO 64
+Wed Jul 12 02:11:50 2023 | INFO  | loadGameList                             | Should we skip this?
+Wed Jul 12 02:11:50 2023 | INFO  | loadGameList                             | No, loading game list
+Wed Jul 12 02:11:50 2023 | INFO  | loadGameList                             | Scanning directory
+Wed Jul 12 02:11:50 2023Wed Jul 12 02:13:41 2023 | INFO  | loadConfig                               | Config loaded
+Wed Jul 12 02:13:41 2023 | INFO  | initializeDisplay                        | well...
+Wed Jul 12 02:13:41 2023 | INFO  | initializeDisplay                        | maybe...
+Wed Jul 12 02:13:41 2023 | INFO  | initializeDisplay                        | 640x480
+Wed Jul 12 02:13:43 2023 | INFO  | initializeDisplay                        | Initialized Display
+Wed Jul 12 02:13:43 2023 | INFO  | initializeFonts                          | Fonts initialized
+Wed Jul 12 02:13:43 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Wed Jul 12 02:13:43 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Wed Jul 12 02:13:43 2023 | INFO  | checkThemes                              | Themes checked
+Wed Jul 12 02:13:43 2023 | INFO  | loadLastState                            | Last state loaded
+Wed Jul 12 02:13:43 2023 | INFO  | HW_Init                                  | HW Initialized
+Wed Jul 12 02:13:43 2023 | INFO  | initialSetup                             | Setting CPU to base
+Wed Jul 12 02:13:43 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Wed Jul 12 02:13:43 2023 | INFO  | setupKeys                                | Input successfully configured
+Wed Jul 12 02:13:43 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Wed Jul 12 02:13:43 2023 | INFO  | checkIfDefault                           | Default state checked
+Wed Jul 12 02:13:43 2023 | INFO  | main                                     | Setup 2
+Wed Jul 12 02:13:43 2023 | INFO  | initialSetup2                            | Loading theme
+Wed Jul 12 02:13:43 2023 | INFO  | initialSetup2                            | Loading section groups
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/consoles.png
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/home computers.png
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/arcades.png
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/handhelds.ini
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/home computers.ini
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/apps and games.ini
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/arcades.ini
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/consoles.ini
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/handhelds.png
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system//.simplemenu/section_groups/apps and games.png
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:13:43 2023 | INFO  | recursivelyScanDirectory                 | No entry
+Wed Jul 12 02:13:43 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:13:43 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:13:43 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:13:43 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:13:43 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:13:43 2023 | INFO  | loadSectionGroups                        | Loaded section groups
+Wed Jul 12 02:13:43 2023 | INFO  | initialSetup2                            | Loading sections
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | NINTENDO 64
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Loading system logo
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Loading system background
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Loading system picture
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | DREAMCAST
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | ODYSSEY2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | NES
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | FDS
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | SNES
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | MSU-1
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | SGB
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | VIRTUAL BOY
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | SEGA SG-1000
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | MASTER SYSTEM
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | SEGA GENESIS
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | SEGA CD
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | SEGA 32X
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | ATARI 2600
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | ATARI 5200
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | ATARI 7800
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | INTELLIVISION
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | NEO GEO CD
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | PC ENGINE
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | PC ENGINE CD
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | PLAYSTATION
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out 1
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out2
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out 3
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out 4
+Wed Jul 12 02:13:43 2023 | INFO  | initializeFonts                          | Fonts initialized
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out 5
+Wed Jul 12 02:13:43 2023 | INFO  | loadSections                             | Out 6
+Wed Jul 12 02:13:44 2023 | INFO  | loadSections                             | Out 7
+Wed Jul 12 02:13:44 2023 | INFO  | initialSetup2                            | Loading favorites
+Wed Jul 12 02:13:44 2023 | INFO  | loadFavorites                            | Loaded favorites
+Wed Jul 12 02:13:44 2023 | INFO  | initSuspendTimer                         | Suspend timer initialized
+Wed Jul 12 02:13:44 2023 | INFO  | determineStartingScreen                  | Loading game list
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | NINTENDO 64
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | Should we skip this?
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | No, loading game list
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | Scanning directory
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | Processing files
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | All files loaded
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | The list needs to be sorted
+Wed Jul 12 02:13:44 2023 | INFO  | loadGameList                             | Finished
+Wed Jul 12 02:13:44 2023 | ERROR | loadFavoritesSectionGameList             | Setting total pages
+Wed Jul 12 02:13:44 2023 | INFO  | determineStartingScreen                  | Found starting screen
+Wed Jul 12 02:13:44 2023 | INFO  | Battery                                  | getBatteryLevel
+Wed Jul 12 02:13:44 2023 | INFO  | Battery                                  | Battery charge: 100
+Wed Jul 12 02:13:44 2023 | INFO  | Battery                                  | Battery charging: 0
+Wed Jul 12 02:13:44 2023 | INFO  | main                                     | Checking launch at boot
+Wed Jul 12 02:13:44 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:13:44 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:13:44 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:13:44 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:13:44 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:13:44 2023 | INFO  | Battery                                  | getBatteryLevel
+Wed Jul 12 02:13:44 2023 | INFO  | Battery                                  | Battery charge: 100
+Wed Jul 12 02:13:44 2023 | INFO  | Battery                                  | Battery charging: 1
+Wed Jul 12 02:13:44 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:13:44 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:13:44 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:13:44 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:13:44 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:13:45 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:13:45 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:13:45 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:13:45 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:13:45 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:13:45 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:13:46 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:13:46 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:13:46 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:13:46 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 638 - 152 - 1 - 164 - {37,50,56}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 630 - 144 - 5 - 168 - {250,250,250}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 168 - {37,50,56}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 204 - {219,219,219}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:13:46 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:46 2023 | INFO  | showRomPreferences                       | Preferences shown
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 638 - 152 - 1 - 164 - {37,50,56}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 144 - 5 - 168 - {250,250,250}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 168 - {37,50,56}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | showRomPreferences                       | Preferences shown
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 638 - 152 - 1 - 164 - {37,50,56}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 144 - 5 - 168 - {250,250,250}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 168 - {37,50,56}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | showRomPreferences                       | Preferences shown
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 638 - 152 - 1 - 164 - {37,50,56}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 144 - 5 - 168 - {250,250,250}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 168 - {37,50,56}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:13:47 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:13:47 2023 | INFO  | showRomPreferences                       | Preferences shown
+Wed Jul 12 02:13:48 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:13:48 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:13:48 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:13:48 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:13:48 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:13:49 2023 | INFO  | executeCommand                           | Launching Game
+Wed Jul 12 02:13:49 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Wed Jul 12 02:13:49 2023 | INFO  | executeCommand                           | /userdata/system/.simplemenu/launchers/
+Wed Jul 12 02:13:49 2023 | INFO  | executeCommand                           | mupen64plus_glide64mk2_sa
+Wed Jul 12 02:13:49 2023 | INFO  | executeCommand                           | /userdata/roms/n64/Ridge Racer 64 (USA).z64
+Wed Jul 12 02:14:39 2023 | INFO  | loadConfig                               | Config loaded
+Wed Jul 12 02:14:39 2023 | INFO  | initializeDisplay                        | well...
+Wed Jul 12 02:14:39 2023 | INFO  | initializeDisplay                        | maybe...
+Wed Jul 12 02:14:39 2023 | INFO  | initializeDisplay                        | 640x480
+Wed Jul 12 02:14:39 2023 | INFO  | initializeDisplay                        | Initialized Display
+Wed Jul 12 02:14:39 2023 | INFO  | initializeFonts                          | Fonts initialized
+Wed Jul 12 02:14:39 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Wed Jul 12 02:14:39 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Wed Jul 12 02:14:39 2023 | INFO  | checkThemes                              | Themes checked
+Wed Jul 12 02:14:39 2023 | INFO  | loadLastState                            | Last state loaded
+Wed Jul 12 02:14:39 2023 | INFO  | HW_Init                                  | HW Initialized
+Wed Jul 12 02:14:39 2023 | INFO  | initialSetup                             | Setting CPU to base
+Wed Jul 12 02:14:39 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Wed Jul 12 02:14:39 2023 | INFO  | setupKeys                                | Input successfully configured
+Wed Jul 12 02:14:39 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Wed Jul 12 02:14:39 2023 | INFO  | checkIfDefault                           | Default state checked
+Wed Jul 12 02:14:39 2023 | INFO  | main                                     | Setup 2
+Wed Jul 12 02:14:39 2023 | INFO  | initialSetup2                            | Loading theme
+Wed Jul 12 02:14:39 2023 | INFO  | initialSetup2                            | Loading section groups
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.png
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.png
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.png
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.ini
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.ini
+Wed Jul 12 02:14:39 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.ini
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.ini
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.ini
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.png
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.png
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Wed Jul 12 02:14:40 2023 | INFO  | recursivelyScanDirectory                 | No entry
+Wed Jul 12 02:14:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:14:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:14:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:14:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:14:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Wed Jul 12 02:14:40 2023 | INFO  | loadSectionGroups                        | Loaded section groups
+Wed Jul 12 02:14:40 2023 | INFO  | initialSetup2                            | Loading sections
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | NINTENDO 64
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Loading system logo
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Loading system background
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Loading system picture
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | DREAMCAST
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | ODYSSEY2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | NES
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | FDS
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | SNES
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | MSU-1
+Wed Jul 12 02:14:40 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | SGB
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | VIRTUAL BOY
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | SEGA SG-1000
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | MASTER SYSTEM
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | SEGA GENESIS
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | SEGA CD
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | SEGA 32X
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | ATARI 2600
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | ATARI 5200
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | ATARI 7800
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | INTELLIVISION
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | NEO GEO CD
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | PC ENGINE
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | PC ENGINE CD
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | PLAYSTATION
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Current exec ready
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | free as a bird 2
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Executable set
+Wed Jul 12 02:14:41 2023 | INFO  | loadSections                             | Setting logo, background and system
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Set
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out 1
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out2
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out 3
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out 4
+Wed Jul 12 02:14:42 2023 | INFO  | initializeFonts                          | Fonts initialized
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out 5
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out 6
+Wed Jul 12 02:14:42 2023 | INFO  | loadSections                             | Out 7
+Wed Jul 12 02:14:42 2023 | INFO  | initialSetup2                            | Loading favorites
+Wed Jul 12 02:14:42 2023 | INFO  | loadFavorites                            | Loaded favorites
+Wed Jul 12 02:14:42 2023 | INFO  | initSuspendTimer                         | Suspend timer initialized
+Wed Jul 12 02:14:42 2023 | INFO  | determineStartingScreen                  | Loading game list
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | NINTENDO 64
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | Should we skip this?
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | No, loading game list
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | Scanning directory
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | Processing files
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | All files loaded
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | The list needs to be sorted
+Wed Jul 12 02:14:42 2023 | INFO  | loadGameList                             | Finished
+Wed Jul 12 02:14:42 2023 | ERROR | loadFavoritesSectionGameList             | Setting total pages
+Wed Jul 12 02:14:42 2023 | INFO  | determineStartingScreen                  | Found starting screen
+Wed Jul 12 02:14:42 2023 | INFO  | Battery                                  | getBatteryLevel
+Wed Jul 12 02:14:42 2023 | INFO  | Battery                                  | Battery charge: 100
+Wed Jul 12 02:14:42 2023 | INFO  | Battery                                  | Battery charging: 1
+Wed Jul 12 02:14:42 2023 | INFO  | main                                     | Checking launch at boot
+Wed Jul 12 02:14:42 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:14:42 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:14:42 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:14:42 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:14:42 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:14:42 2023 | INFO  | Battery                                  | getBatteryLevel
+Wed Jul 12 02:14:42 2023 | INFO  | Battery                                  | Battery charge: 100
+Wed Jul 12 02:14:42 2023 | INFO  | Battery                                  | Battery charging: 1
+Wed Jul 12 02:14:42 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:14:42 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:14:42 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:14:42 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:14:42 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 638 - 152 - 1 - 164 - {37,50,56}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 630 - 144 - 5 - 168 - {250,250,250}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 168 - {37,50,56}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 630 - 36 - 5 - 204 - {219,219,219}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 240 - {219,219,219}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | 630 - 2 - 5 - 276 - {219,219,219}
+Wed Jul 12 02:14:43 2023 | INFO  | drawRectangleToScreen                    | Filling
+Wed Jul 12 02:14:43 2023 | INFO  | showRomPreferences                       | Preferences shown
+Wed Jul 12 02:14:44 2023 | INFO  | updateScreen                             | Menu mode
+Wed Jul 12 02:14:44 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Wed Jul 12 02:14:44 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Wed Jul 12 02:14:44 2023 | INFO  | drawGameList                             | Game list - Done
+Wed Jul 12 02:14:44 2023 | INFO  | setupDecorations                         | Decorations set
+Wed Jul 12 02:14:45 2023 | INFO  | executeCommand                           | Launching Game
+Wed Jul 12 02:14:45 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Wed Jul 12 02:14:45 2023 | INFO  | executeCommand                           | /userdata/system/.simplemenu/launchers/
+Wed Jul 12 02:14:45 2023 | INFO  | executeCommand                           | mupen64plus_glide64mk2_sa
+Wed Jul 12 02:14:45 2023 | INFO  | executeCommand                           | /userdata/roms/n64/Ridge Racer 64 (USA).z64

@@ -1,0 +1,1308 @@
+Mon Jul 17 17:13:06 2023 | INFO  | loadConfig                               | Config loaded
+Mon Jul 17 17:13:06 2023 | INFO  | initializeDisplay                        | well...
+Mon Jul 17 17:13:06 2023 | INFO  | initializeDisplay                        | maybe...
+Mon Jul 17 17:13:07 2023 | INFO  | initializeDisplay                        | 640x480
+Mon Jul 17 17:13:07 2023 | INFO  | initializeDisplay                        | Initialized Display
+Mon Jul 17 17:13:07 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 17:13:07 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Mon Jul 17 17:13:07 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Mon Jul 17 17:13:07 2023 | INFO  | checkThemes                              | Themes checked
+Mon Jul 17 17:13:07 2023 | INFO  | loadLastState                            | Last state loaded
+Mon Jul 17 17:13:07 2023 | INFO  | HW_Init                                  | HW Initialized
+Mon Jul 17 17:13:07 2023 | INFO  | initialSetup                             | Setting CPU to base
+Mon Jul 17 17:13:07 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Mon Jul 17 17:13:07 2023 | INFO  | setupKeys                                | Input successfully configured
+Mon Jul 17 17:13:07 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Mon Jul 17 17:13:07 2023 | INFO  | checkIfDefault                           | Default state checked
+Mon Jul 17 17:13:07 2023 | INFO  | main                                     | Setup 2
+Mon Jul 17 17:13:07 2023 | INFO  | initialSetup2                            | Loading theme
+Mon Jul 17 17:13:07 2023 | INFO  | initialSetup2                            | Loading section groups
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.png
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.png
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.png
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.ini
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.ini
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.ini
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.ini
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.ini
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.png
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.png
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:13:07 2023 | INFO  | recursivelyScanDirectory                 | No entry
+Mon Jul 17 17:13:07 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:13:07 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:13:07 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:13:07 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:13:07 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:13:07 2023 | INFO  | loadSectionGroups                        | Loaded section groups
+Mon Jul 17 17:13:07 2023 | INFO  | initialSetup2                            | Loading sections
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | PSP
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | Loading system logo
+Mon Jul 17 17:13:07 2023 | INFO  | loadSections                             | Loading system background
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Loading system picture
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | NINTENDO DS
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | GAME BOY
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | GAME BOY COLOR
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | GAME BOY ADVANCE
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | GAME & WATCH
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | GAME GEAR
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | ATARI LYNX
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | NEO GEO POCKET
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | WONDERSWAN
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | POKEMON MINI
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | SUPERVISION
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out 1
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out2
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out 3
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out 4
+Mon Jul 17 17:13:08 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out 5
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out 6
+Mon Jul 17 17:13:08 2023 | INFO  | loadSections                             | Out 7
+Mon Jul 17 17:13:08 2023 | INFO  | initialSetup2                            | Loading favorites
+Mon Jul 17 17:13:08 2023 | INFO  | loadFavorites                            | Loaded favorites
+Mon Jul 17 17:13:08 2023 | INFO  | initSuspendTimer                         | Suspend timer initialized
+Mon Jul 17 17:13:08 2023 | INFO  | determineStartingScreen                  | Loading game list
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | PSP
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | Should we skip this?
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | No, loading game list
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | Scanning directory
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | Processing files
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | All files loaded
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | The list needs to be sorted
+Mon Jul 17 17:13:08 2023 | INFO  | loadGameList                             | Finished
+Mon Jul 17 17:13:08 2023 | ERROR | loadFavoritesSectionGameList             | Setting total pages
+Mon Jul 17 17:13:08 2023 | INFO  | determineStartingScreen                  | Found starting screen
+Mon Jul 17 17:13:08 2023 | INFO  | Battery                                  | getBatteryLevel
+Mon Jul 17 17:13:08 2023 | INFO  | Battery                                  | Battery charge: 0
+Mon Jul 17 17:13:08 2023 | INFO  | Battery                                  | Battery charging: 0
+Mon Jul 17 17:13:08 2023 | INFO  | main                                     | Checking launch at boot
+Mon Jul 17 17:13:08 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:08 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:08 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:08 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:08 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:08 2023 | INFO  | Battery                                  | getBatteryLevel
+Mon Jul 17 17:13:08 2023 | INFO  | Battery                                  | Battery charge: 0
+Mon Jul 17 17:13:08 2023 | INFO  | Battery                                  | Battery charging: 1
+Mon Jul 17 17:13:08 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:08 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:08 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:08 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:08 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:13 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:13 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:13 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:13 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:13 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:13 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:13 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:13 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:13 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:13 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:14 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:14 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:14 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:14 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:15 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:15 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:15 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:15 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:15 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:15 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:15 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:15 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:15 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:15 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:15 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:15 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:15 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:15 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:16 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:16 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:16 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:16 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:17 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:17 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:17 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:17 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:18 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:18 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:18 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:18 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:18 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:18 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:18 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:18 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:18 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:18 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:18 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:18 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:18 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:19 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:19 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:19 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:19 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:19 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:19 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:19 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:19 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:19 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:19 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:13:19 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:13:19 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:13:19 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:13:20 2023 | INFO  | executeCommand                           | Launching Game
+Mon Jul 17 17:13:20 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Mon Jul 17 17:13:20 2023 | INFO  | executeCommand                           | /userdata/system/.simplemenu/launchers/
+Mon Jul 17 17:13:20 2023 | INFO  | executeCommand                           | ppsspp_libretro
+Mon Jul 17 17:13:20 2023 | INFO  | executeCommand                           | /userdata/roms/psp/Ikari Warriors (USA).cso
+Mon Jul 17 17:17:24 2023 | INFO  | loadConfig                               | Config loaded
+Mon Jul 17 17:17:24 2023 | INFO  | initializeDisplay                        | well...
+Mon Jul 17 17:17:24 2023 | INFO  | initializeDisplay                        | maybe...
+Mon Jul 17 17:17:24 2023 | INFO  | initializeDisplay                        | 640x480
+Mon Jul 17 17:17:24 2023 | INFO  | initializeDisplay                        | Initialized Display
+Mon Jul 17 17:17:24 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 17:17:24 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Mon Jul 17 17:17:24 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Mon Jul 17 17:17:24 2023 | INFO  | checkThemes                              | Themes checked
+Mon Jul 17 17:17:24 2023 | INFO  | loadLastState                            | Last state loaded
+Mon Jul 17 17:17:24 2023 | INFO  | HW_Init                                  | HW Initialized
+Mon Jul 17 17:17:24 2023 | INFO  | initialSetup                             | Setting CPU to base
+Mon Jul 17 17:17:24 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Mon Jul 17 17:17:24 2023 | INFO  | setupKeys                                | Input successfully configured
+Mon Jul 17 17:17:24 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Mon Jul 17 17:17:24 2023 | INFO  | checkIfDefault                           | Default state checked
+Mon Jul 17 17:17:24 2023 | INFO  | main                                     | Setup 2
+Mon Jul 17 17:17:24 2023 | INFO  | initialSetup2                            | Loading theme
+Mon Jul 17 17:17:24 2023 | INFO  | initialSetup2                            | Loading section groups
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.png
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.png
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.png
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.ini
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.ini
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.ini
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.ini
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.ini
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.png
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.png
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:24 2023 | INFO  | recursivelyScanDirectory                 | No entry
+Mon Jul 17 17:17:24 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:24 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:24 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:24 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:24 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:24 2023 | INFO  | loadSectionGroups                        | Loaded section groups
+Mon Jul 17 17:17:24 2023 | INFO  | initialSetup2                            | Loading sections
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | PSP
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:24 2023 | INFO  | loadSections                             | Loading system logo
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Loading system background
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Loading system picture
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | NINTENDO DS
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | GAME BOY
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | GAME BOY COLOR
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | GAME BOY ADVANCE
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | GAME & WATCH
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | GAME GEAR
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | ATARI LYNX
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | NEO GEO POCKET
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | WONDERSWAN
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | POKEMON MINI
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | SUPERVISION
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out 1
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out2
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out 3
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out 4
+Mon Jul 17 17:17:25 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out 5
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out 6
+Mon Jul 17 17:17:25 2023 | INFO  | loadSections                             | Out 7
+Mon Jul 17 17:17:25 2023 | INFO  | initialSetup2                            | Loading favorites
+Mon Jul 17 17:17:25 2023 | INFO  | loadFavorites                            | Loaded favorites
+Mon Jul 17 17:17:25 2023 | INFO  | initSuspendTimer                         | Suspend timer initialized
+Mon Jul 17 17:17:25 2023 | INFO  | determineStartingScreen                  | Loading game list
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | PSP
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | Should we skip this?
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | No, loading game list
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | Scanning directory
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | Processing files
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | All files loaded
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | The list needs to be sorted
+Mon Jul 17 17:17:25 2023 | INFO  | loadGameList                             | Finished
+Mon Jul 17 17:17:25 2023 | ERROR | loadFavoritesSectionGameList             | Setting total pages
+Mon Jul 17 17:17:25 2023 | INFO  | determineStartingScreen                  | Found starting screen
+Mon Jul 17 17:17:25 2023 | INFO  | Battery                                  | getBatteryLevel
+Mon Jul 17 17:17:25 2023 | INFO  | Battery                                  | Battery charge: 0
+Mon Jul 17 17:17:25 2023 | INFO  | Battery                                  | Battery charging: 1
+Mon Jul 17 17:17:25 2023 | INFO  | main                                     | Checking launch at boot
+Mon Jul 17 17:17:25 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:17:25 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:17:25 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:17:25 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:17:25 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:17:25 2023 | INFO  | Battery                                  | getBatteryLevel
+Mon Jul 17 17:17:25 2023 | INFO  | Battery                                  | Battery charge: 0
+Mon Jul 17 17:17:25 2023 | INFO  | Battery                                  | Battery charging: 1
+Mon Jul 17 17:17:25 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:17:25 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:17:25 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:17:25 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:17:25 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:17:26 2023 | INFO  | updateScreen                             | Menu mode
+Mon Jul 17 17:17:26 2023 | INFO  | displayGamePictureInMenu                 | Displaying...
+Mon Jul 17 17:17:26 2023 | INFO  | displayGamePictureInMenu                 | Displayed game picture
+Mon Jul 17 17:17:26 2023 | INFO  | drawGameList                             | Game list - Done
+Mon Jul 17 17:17:26 2023 | INFO  | setupDecorations                         | Decorations set
+Mon Jul 17 17:17:26 2023 | INFO  | drawRectangleToScreen                    | 640 - 480 - 0 - 0 - {30,30,130}
+Mon Jul 17 17:17:26 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:26 2023 | INFO  | showConsole                              | Current console shown
+Mon Jul 17 17:17:29 2023 | INFO  | Battery                                  | getBatteryLevel
+Mon Jul 17 17:17:29 2023 | INFO  | Battery                                  | Battery charge: 0
+Mon Jul 17 17:17:29 2023 | INFO  | Battery                                  | Battery charging: 0
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Setting options and values
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing shit
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 436 - 0 - 44 - {250,250,250}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 84 - 0 - 0 - {37,50,56}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 8 - 0 - 84 - {121,121,121}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Positioning batt 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 128 - 8 - 0 - 84 - {255,51,0}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Defining number of items
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | About to go through items
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | quit
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 38 - 0 - 92 - {225,225,225}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 130 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ATC Elegant Color
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 168 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 206 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 244 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 282 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 320 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 358 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 396 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 434 - {229,229,229}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Out of the loop
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | 640 - 44 - 0 - 436 - {37,50,56}
+Mon Jul 17 17:17:29 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:29 2023 | INFO  | drawSettingsScreen                       | Drawing Footer
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Setting options and values
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing shit
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 436 - 0 - 44 - {250,250,250}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 84 - 0 - 0 - {37,50,56}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 8 - 0 - 84 - {121,121,121}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Positioning batt 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 128 - 8 - 0 - 84 - {255,51,0}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Defining number of items
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | About to go through items
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | reboot
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 38 - 0 - 92 - {225,225,225}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 130 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ATC Elegant Color
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 168 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 206 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 244 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 282 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 320 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 358 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 396 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 434 - {229,229,229}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Out of the loop
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | 640 - 44 - 0 - 436 - {37,50,56}
+Mon Jul 17 17:17:36 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:36 2023 | INFO  | drawSettingsScreen                       | Drawing Footer
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Setting options and values
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing shit
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 436 - 0 - 44 - {250,250,250}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 84 - 0 - 0 - {37,50,56}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 8 - 0 - 84 - {121,121,121}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Positioning batt 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 128 - 8 - 0 - 84 - {255,51,0}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Defining number of items
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | About to go through items
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | shutdown
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 38 - 0 - 92 - {225,225,225}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 130 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ATC Elegant Color
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 168 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 206 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 244 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 282 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 320 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 358 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 396 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 434 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Out of the loop
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 44 - 0 - 436 - {37,50,56}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing Footer
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Setting options and values
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing shit
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 436 - 0 - 44 - {250,250,250}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 84 - 0 - 0 - {37,50,56}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 8 - 0 - 84 - {121,121,121}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Positioning batt 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 128 - 8 - 0 - 84 - {255,51,0}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Defining number of items
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | About to go through items
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Session 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | shutdown
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 38 - 0 - 92 - {225,225,225}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 130 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Theme 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ATC Elegant Color
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 168 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Appearance 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 206 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | System 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 244 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Help 
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 282 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 320 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 358 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 396 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Non-Chosen setting
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       |  
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing rect
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 2 - 0 - 434 - {229,229,229}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 1
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Next line 2
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | ---
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Out of the loop
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 44 - 0 - 436 - {37,50,56}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:37 2023 | INFO  | drawSettingsScreen                       | Drawing Footer
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | 640 - 480 - 0 - 0 - {0,0,0}
+Mon Jul 17 17:17:37 2023 | INFO  | drawRectangleToScreen                    | Filling
+Mon Jul 17 17:17:40 2023 | INFO  | loadConfig                               | Config loaded
+Mon Jul 17 17:17:40 2023 | INFO  | initializeDisplay                        | well...
+Mon Jul 17 17:17:40 2023 | INFO  | initializeDisplay                        | maybe...
+Mon Jul 17 17:17:40 2023 | INFO  | initializeDisplay                        | 640x480
+Mon Jul 17 17:17:40 2023 | INFO  | initializeDisplay                        | Initialized Display
+Mon Jul 17 17:17:40 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 17:17:40 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Mon Jul 17 17:17:40 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Mon Jul 17 17:17:40 2023 | INFO  | checkThemes                              | Themes checked
+Mon Jul 17 17:17:40 2023 | INFO  | loadLastState                            | Last state loaded
+Mon Jul 17 17:17:40 2023 | INFO  | HW_Init                                  | HW Initialized
+Mon Jul 17 17:17:40 2023 | INFO  | initialSetup                             | Setting CPU to base
+Mon Jul 17 17:17:40 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Mon Jul 17 17:17:40 2023 | INFO  | setupKeys                                | Input successfully configured
+Mon Jul 17 17:17:40 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Mon Jul 17 17:17:40 2023 | INFO  | checkIfDefault                           | Default state checked
+Mon Jul 17 17:17:40 2023 | INFO  | main                                     | Setup 2
+Mon Jul 17 17:17:40 2023 | INFO  | initialSetup2                            | Loading theme
+Mon Jul 17 17:17:40 2023 | INFO  | initialSetup2                            | Loading section groups
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.png
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.png
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.png
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.ini
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/home computers.ini
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.ini
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/arcades.ini
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/consoles.ini
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/handhelds.png
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/apps and games.png
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 17:17:40 2023 | INFO  | recursivelyScanDirectory                 | No entry
+Mon Jul 17 17:17:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:40 2023 | INFO  | loadSectionGroups                        | Loading group background
+Mon Jul 17 17:17:40 2023 | INFO  | loadSectionGroups                        | Loaded section groups
+Mon Jul 17 17:17:40 2023 | INFO  | initialSetup2                            | Loading sections
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | PSP
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Loading system logo
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Loading system background
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Loading system picture
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | NINTENDO DS
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | GAME BOY
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | GAME BOY COLOR
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | GAME BOY ADVANCE
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | GAME & WATCH
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | GAME GEAR
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | ATARI LYNX
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | NEO GEO POCKET
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | WONDERSWAN
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | POKEMON MINI
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | SUPERVISION
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Current exec ready
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | free as a bird 2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Executable set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Setting logo, background and system
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Set
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out 1
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out2
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out 3
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out 4
+Mon Jul 17 17:17:40 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out 5
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out 6
+Mon Jul 17 17:17:40 2023 | INFO  | loadSections                             | Out 7
+Mon Jul 17 17:17:40 202Mon Jul 17 20:32:08 2023 | INFO  | loadConfig                               | Config loaded
+Mon Jul 17 20:32:08 2023 | INFO  | initializeDisplay                        | well...
+Mon Jul 17 20:32:08 2023 | INFO  | initializeDisplay                        | maybe...
+Mon Jul 17 20:32:08 2023 | INFO  | initializeDisplay                        | 640x480
+Mon Jul 17 20:32:08 2023 | INFO  | initializeDisplay                        | Initialized Display
+Mon Jul 17 20:32:08 2023 | INFO  | initializeFonts                          | Fonts initialized
+Mon Jul 17 20:32:08 2023 | INFO  | initializeSettingsFonts                  | Initializing Settings Fonts
+Mon Jul 17 20:32:08 2023 | INFO  | initializeSettingsFonts                  | Settings Fonts initialized
+Mon Jul 17 20:32:08 2023 | INFO  | checkThemes                              | Themes checked
+Mon Jul 17 20:32:08 2023 | INFO  | loadLastState                            | Last state loaded
+Mon Jul 17 20:32:08 2023 | INFO  | HW_Init                                  | HW Initialized
+Mon Jul 17 20:32:08 2023 | INFO  | initialSetup                             | Setting CPU to base
+Mon Jul 17 20:32:08 2023 | INFO  | setCPU                                   | CPU speed set: 1008000
+Mon Jul 17 20:32:08 2023 | INFO  | setupKeys                                | Input successfully configured
+Mon Jul 17 20:32:08 2023 | INFO  | setupJoystick                            | Joystick successfully configured
+Mon Jul 17 20:32:08 2023 | INFO  | checkIfDefault                           | Default state checked
+Mon Jul 17 20:32:08 2023 | INFO  | main                                     | Setup 2
+Mon Jul 17 20:32:08 2023 | INFO  | initialSetup2                            | Loading theme
+Mon Jul 17 20:32:08 2023 | INFO  | initialSetup2                            | Loading section groups
+Mon Jul 17 20:32:08 2023 | INFO  | recursivelyScanDirectory                 | Entering
+Mon Jul 17 20:32:08 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_groups/
+Mon Jul 17 20:32:08 2023 | INFO  | recursivelyScanDirectory                 | Read dir
+Mon Jul 17 20:32:08 2023 | INFO  | recursivelyScanDirectory                 | It's a file
+Mon Jul 17 20:32:08 2023 | INFO  | recursivelyScanDirectory                 | /userdata/system/.simplemenu/section_gro

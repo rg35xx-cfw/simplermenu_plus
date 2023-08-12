@@ -1,0 +1,20 @@
+ 
+{
+    "name": "Settings",
+    "items": [
+	{ "name": "Session", "action": "Action 1" },
+	{ "name": "Theme", "action": "Action 2" },
+	{ "name": "Appearance", "action": "Action 3" },
+	{ "name": "System", "action": "Action 4" },
+	{ "name": "Help", "action": "Action 5" }
+    ],
+    "submenus": [
+	{
+	    "name": "Submenu 1",
+	    "items": [
+		{ "name": "Sub-option 1", "action": "Sub-action 1" }
+	    ],
+	    "submenus": []
+	}
+    ]
+}

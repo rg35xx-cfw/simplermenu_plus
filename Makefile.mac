@@ -1,0 +1,44 @@
+# Software Name
+TARGET = simplermenu_plus
+
+CC = g++-12
+CFLAGS = -Isrc/headers -I/opt/homebrew/include -I/opt/homebrew/include/SDL -D_THREAD_SAFE -DTARGET_RG35XX -DUSE_GZIP -Ofast -fdata-sections -ffunction-sections -fPIC -flto -Wall -Wextra
+LIBS = -lSDLmain -L/opt/homebrew/lib -lSDL -lSDL_image -lSDL_ttf -Wl,-framework,Cocoa -lpthread -lz
+
+CFLAGS += -g -I.
+LDFLAGS = -flto
+
+DEBUG = NO
+
+SRCDIR = src
+OBJDIR = src/obj
+BINDIR = output
+SOURCES := $(wildcard $(SRCDIR)/*.cpp)
+SOURCES += $(wildcard $(SRCDIR)/*.c)
+
+OBJECTS := $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SOURCES))
+OBJECTS := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(OBJECTS))
+
+rm = rm -f
+
+$(BINDIR)/$(TARGET): $(OBJECTS)
+	$(CC) $(OBJECTS) $(LDFLAGS) $(LIBS) -o $@
+	@echo "Linking complete!"
+
+$(OBJECTS): $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+	@echo "Compiled "$<" successfully!"
+
+.PHONY: clean
+clean:
+	$(rm) $(OBJECTS)
+	@echo "Cleanup complete!"
+
+.PHONY: remove
+remove: clean
+	$(rm) $(BINDIR)/$(TARGET)
+	@echo "Executable removed!"
