@@ -1,4 +1,4 @@
-# simplermenu_plus
+# Simplermenu+
 
 Simplermenu+ is an emulator launcher based on Simplemenu (https://github.com/fgl82/simplemenu) that has been written from the scratch in C++/SDL.
  
