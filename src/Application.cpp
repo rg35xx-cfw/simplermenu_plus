@@ -62,21 +62,6 @@ Application::Application() {
     // Load the list of rom aliases
     SimpleMenuItem::loadAliases();
 
-    // Set the background for the first folder in the main menu
-    if (SubMenuMenuItem* firstFolder = dynamic_cast<SubMenuMenuItem*>(mainMenu->getItem(0))) {
-        setBackgroundForFolder(firstFolder->getFolderName());
-    }
-
-    std::string folderBackground = Configuration::getInstance().getThemePath() + "resources/general/background.png";
-    SDL_Surface* tempSurface = IMG_Load(folderBackground.c_str());
-    if (!tempSurface) {
-        // Handle the error
-        printf("Unable to load image: %s\n", IMG_GetError());
-    } else {
-        folderBackgroundSurface = SDL_DisplayFormat(tempSurface);
-        SDL_FreeSurface(tempSurface);
-    }
-
     // Initialize the menu
     setupMenu();
 }
@@ -102,8 +87,6 @@ void Application::run() {
                     break;
                 case SDL_KEYDOWN:
                     handleKeyPress(event.key.keysym.sym);
-                    // Clear the screen
-                    //SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
                     // Render the current menu
                     if (currentState->getCurrentMenu()) {
                         currentState->getCurrentMenu()->render(screen, font);
@@ -112,16 +95,25 @@ void Application::run() {
             }
         }
 
-        SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
+        // Clear the screen
+        SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
 
-        if (currentState->getCurrentMenu() == mainMenu.get() && background) {
-            SDL_BlitSurface(background, nullptr, screen, nullptr);
+        // First, blit the background if one exists
+        MenuItem* selectedItem = currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex());
+        if (selectedItem->getBackground()) {
+            SDL_BlitSurface(selectedItem->getBackground(), NULL, screen, NULL);
         } else {
-            SDL_BlitSurface(folderBackgroundSurface, NULL, screen, NULL);
-            currentState->getCurrentMenu()->render(screen, font);
+                if (currentState->getCurrentMenu() == mainMenu.get()) {
+                MenuItem* selectedItem = currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex());
+                if (SubMenuMenuItem* subMenuItem = dynamic_cast<SubMenuMenuItem*>(selectedItem)) {
+                    subMenuItem->determineAndSetBackground(screen);
+                }
+            }
         }
 
-        SDL_Flip(screen);
+        // Then fill the screen and render the menu
+        currentState->getCurrentMenu()->render(screen, font);
+        SDL_Flip(screen);        
 
         Uint32 frameEnd = SDL_GetTicks();
         int frameTime = frameEnd - frameStart;
@@ -139,66 +131,22 @@ Menu* Application::getMainMenu() const {
     return mainMenu.get();
 }
 
-void Application::showSystemMenu() {
-    // Display the system menu and handle its input
-    // ...
-
-}
-
 void Application::showMainMenu() {
     currentState->setCurrentMenu(mainMenu.get());
 }
 
-void Application::setBackgroundForFolder(const std::string& folderName) {
-    if (background) {
-        SDL_FreeSurface(background);
-        background = nullptr;
-    }
-    std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/" + folderName + "/logo.png";
-    if (fileExists(backgroundPath)) {
-        background = IMG_Load(backgroundPath.c_str());
-        if (!background) {
-            std::cerr << "Failed to load backdrop: " << IMG_GetError() << std::endl;
-        }
-    } else {
-        SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
-        SDL_Color white = {255, 255, 255};
-        SDL_Surface* folderNameSurface = renderText(folderName, white);
-        if (folderNameSurface) {
-            SDL_Rect dstRect;
-            dstRect.x = (screen->w - folderNameSurface->w) / 2;
-            dstRect.y = (screen->h - folderNameSurface->h) / 2;
-            dstRect.w = folderNameSurface->w;
-            dstRect.h = folderNameSurface->h;
-            SDL_BlitSurface(folderNameSurface, NULL, screen, &dstRect);
-            SDL_FreeSurface(folderNameSurface);
-        }
-    }
-}
-
-SDL_Surface* Application::getBackground() const {
-    return background;
-}
-
-void Application::clearBackground() {
-if (background) {
-    SDL_FreeSurface(background);
-    background = nullptr;
-}
-}
-
 SDL_Surface* Application::renderText(const std::string& text, SDL_Color color) {
-std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
-int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
-TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
-if (!font) {
-    // Handle error
-    std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
-    return nullptr;
-}
-SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
-TTF_CloseFont(font);
-return textSurface;
+    std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
+    int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
+    TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
+    if (!font) {
+        // Handle error
+        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+        return nullptr;
+    }
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
+    TTF_CloseFont(font);
+    return textSurface;
 }
 
 void Application::setupMenu() {
@@ -223,8 +171,6 @@ for (const auto& folder : folders) {
     mainMenu->addItem(std::make_unique<SubMenuMenuItem>(folder, std::move(subMenu)));
 }
 
-//mainMenu->print();
-//mainMenu->printContents();
 std::cout << "Found folders: " << folders.size() << std::endl;
 }
 
@@ -232,56 +178,29 @@ void Application::handleKeyPress(SDLKey key) {
     switch (key) {
         case SDLK_UP:
             currentState->navigateUp();
-            if (currentState->getCurrentMenu() == mainMenu.get()) {
-                if (SubMenuMenuItem* selectedFolder = dynamic_cast<SubMenuMenuItem*>(currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex()))) {
-                    setBackgroundForFolder(selectedFolder->getFolderName());
-                }
-            }
             break;
         case SDLK_DOWN:
             currentState->navigateDown();
-            if (currentState->getCurrentMenu() == mainMenu.get()) {
-                if (SubMenuMenuItem* selectedFolder = dynamic_cast<SubMenuMenuItem*>(currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex()))) {
-                    setBackgroundForFolder(selectedFolder->getFolderName());
-                }
-            }
             break;
         case SDLK_LEFT:
             currentState->navigateLeft();
             break;
         case SDLK_RIGHT:
             currentState->navigateRight();
-
             break;
         case SDLK_RETURN:
-            if (dynamic_cast<SubMenuMenuItem*>(currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex()))) {
-                if (currentState->getCurrentMenu() == mainMenu.get()) {
-                    clearBackground();
-                }
-                currentState->enterFolder();
-            } else {
-                currentState->getCurrentMenu()->selectItem();
-            }
+            currentState->enterFolder();
             break;
         case SDLK_SPACE:
             currentState->exitFolder();
-            if (currentState->getCurrentMenu() == mainMenu.get()) {
-                if (SubMenuMenuItem* selectedFolder = dynamic_cast<SubMenuMenuItem*>(currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex()))) {
-                    setBackgroundForFolder(selectedFolder->getFolderName());
-                }
-            }
             break;
         case SDLK_ESCAPE:
             std::cout << "systemMenu" << std::endl;
-            showSystemMenu();
+            currentState->showSystemMenu();
             break;
         case SDLK_m: 
             std::cout << "rommenu" << std::endl;
-            if (currentState->romMenuIsActive()) {
-                currentState->hideRomMenu();
-            } else {
-                currentState->showRomMenu();
-            }
+            currentState->showRomMenu();
             break;
         default:
             // Do nothing

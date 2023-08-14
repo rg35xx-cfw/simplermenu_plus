@@ -7,6 +7,20 @@
 #include <memory>
 #include <fstream>
 
+std::unordered_map<std::string, SDL_Surface*> SimpleMenuItem::thumbnailCache;
+
+void MenuItem::setBackground(const std::string& backgroundPath, SDL_Surface* screen) {
+    std::cout <<"MenuItem SetBackground " << backgroundPath << std::endl;
+    if (background) {
+        SDL_FreeSurface(background);
+        background = nullptr;
+    }
+    background = IMG_Load(backgroundPath.c_str());
+    if (!background) {
+        std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+    }
+}
+
 void SimpleMenuItem::executeAction() {
     std::cout << "executeAction" << std::endl;
     // Execute the action associated with this menu item
@@ -18,42 +32,43 @@ void SimpleMenuItem::executeAction() {
     } else if (title == "Return to Main Menu") {
         Application::getInstance().showMainMenu();
     } else if (!path.empty()) {
-        std::cout << "Launching rom: " << path << std::endl;
+        std::cout << "Launching rom: " << path << " title: " << title << std::endl;
+    
+        // Launch emulator
+        std::string command = "/userdata/system/.simplemenu/resources/launcher.sh '" + path + "'";
+        std::cout << "Executing: " << command << std::endl;
+
+        system(command.c_str());
+
+        // Exit the application to free all resources
+        exit(0);
     }
 }
 
-SDL_Surface* SimpleMenuItem::loadThumbnail(const std::string& title, const std::string& romPath) {
-    if (thumbnailExists(romPath)) {
-        std::filesystem::path path(romPath);
-        std::string romNameWithoutExtension = path.stem().string();
-        std::string basePath = path.parent_path().string();
-        std::string imagesPath = Configuration::getInstance().getValue("Menu.imagesPath");
-        std::string thumbnailPath = basePath + imagesPath + romNameWithoutExtension + ".png";
+SDL_Surface* SimpleMenuItem::loadThumbnail() {
+    if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
+        // Return from cache
+        return thumbnailCache[thumbnailPath];
+    }
 
-        SDL_Surface* thumbnail = Application::getInstance().getThumbnailCache().get(thumbnailPath);
+    if (thumbnailExists()) { // Uses the member variable thumbnailPath
+        // Load and cache
+        SDL_Surface* thumbnail = IMG_Load(thumbnailPath.c_str());
+        int thumbnailWidth = Configuration::getInstance().getIntValue("Menu.thumbnailWidth");
+        int thumbnailHeight = Configuration::getInstance().getIntValue("Menu.thumbnailHeight");
 
-        if (!thumbnail && thumbnailExists(romPath)) {
-            SDL_Surface* original = IMG_Load(thumbnailPath.c_str());
-            int thumbnailWidth = Configuration::getInstance().getIntValue("Menu.thumbnailWidth");
-            int thumbnailHeight = Configuration::getInstance().getIntValue("Menu.thumbnailHeight");
+        if (thumbnail->w > thumbnailWidth || thumbnail->h > thumbnailHeight) {
+            double scaleX = (double)thumbnailWidth / thumbnail->w;
+            double scaleY = (double)thumbnailHeight / thumbnail->h;
+            double scale = std::min(scaleX,scaleY);
 
-            if (original->w > thumbnailWidth || original->h > thumbnailHeight) {
-                double scaleX = (double)thumbnailWidth / original->w;
-                double scaleY = (double)thumbnailHeight / original->h;
-                double scale = std::min(scaleX,scaleY);
-
-                thumbnail = zoomSurface(original, scale, scale, SMOOTHING_ON);
-                SDL_FreeSurface(original);
-            } else {
-                thumbnail = original;
-            }
-            Application::getInstance().getThumbnailCache().set(thumbnailPath, thumbnail);
-            if (!thumbnail) {
-                std::cerr << "Error loading thumbnail: " << IMG_GetError() << std::endl;
-            }
+            thumbnail = zoomSurface(thumbnail, scale, scale, SMOOTHING_ON);
         }
+
+        thumbnailCache[thumbnailPath] = thumbnail;
         return thumbnail;
     }
+
     return nullptr;
 }
 
@@ -91,7 +106,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
     titleWidth = textSurface->w;
 
     if (isSelected && SDL_GetTicks() - selectTime > SCROLL_TIMEOUT) {
-        if (scrollPixelPosition < titleWidth - 220) { 
+        if (scrollPixelPosition < titleWidth - 220) { // FIXME: calculate width dynamically based on theme
             scrollPixelPosition += 1;  // Increment by 1 pixel. Adjust for faster scrolling.
             if (scrollPixelPosition == titleWidth - 220) {
                 // Record the time when scrolling completes
@@ -111,10 +126,12 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
     SDL_BlitSurface(textSurface, nullptr, screen, &destRect);
     SDL_SetClipRect(screen, NULL);  // Reset the clip rect
 
-    SDL_Surface* thumbnail = loadThumbnail(title, path);
-    if (isSelected && thumbnail) {
-        SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
-        SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);  
+    if (isSelected) {
+        SDL_Surface* thumbnail = loadThumbnail();
+        if (thumbnail) {
+            SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
+            SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
+        }
     }
 
     SDL_FreeSurface(textSurface);
@@ -124,11 +141,7 @@ std::string SimpleMenuItem::getName() const {
     return title;
 }
 
-bool SimpleMenuItem::thumbnailExists(const std::string& romPath) {
-    std::filesystem::path path(romPath);
-    std::string romNameWithoutExtension = path.stem().string();
-    std::string basePath = path.parent_path().string();
-    std::string thumbnailPath = basePath + "/media/images/" + romNameWithoutExtension + ".png";
+bool SimpleMenuItem::thumbnailExists() {//const std::string& romPath) {
     return std::filesystem::exists(thumbnailPath);
 }
 
@@ -140,8 +153,8 @@ void SimpleMenuItem::select() {
     TTF_Font* currentFont = Application::getInstance().font;
     TTF_SizeText(currentFont, title.c_str(), &titleWidth, nullptr);
     
-    if (!thumbnail && thumbnailExists(path)) {
-        thumbnail = loadThumbnail(title, path);
+    if (!thumbnail && thumbnailExists()) {
+        thumbnail = loadThumbnail();
     }     
 }
 
@@ -149,6 +162,14 @@ void SimpleMenuItem::deselect() {
     thumbnail = nullptr;
     scrollPixelPosition = 0;
 }
+
+SDL_Surface* SimpleMenuItem::getAssociatedBackground() const {
+    if (parentMenu) {
+        return parentMenu->getBackground(); 
+    }
+    return nullptr; // Default behavior if no parent menu is set
+}
+
 
 void SubMenuMenuItem::executeAction() {
     // This will typically switch the current menu to the submenu
@@ -158,7 +179,8 @@ void SubMenuMenuItem::executeAction() {
 }
 
 void SubMenuMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) {
-    if (!Application::getInstance().getBackground()) {
+    SDL_Surface* currentBackground = this->getAssociatedBackground();  // Get the background from the current SubMenuMenuItem
+    if (!currentBackground) {
         // If there's no background, render the folder name centered
         SDL_Color white = {255, 255, 255};
         SDL_Surface* folderNameSurface = Application::getInstance().renderText(title, white);
@@ -188,4 +210,21 @@ std::string SubMenuMenuItem::getName() const {
 std::string SubMenuMenuItem::getFolderName() const {
     return title;
 }
+
+void SubMenuMenuItem::determineAndSetBackground(SDL_Surface* screen) {
+    std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
+    setBackground(backgroundPath, screen);
+    
+    if (background) {
+        std::cout << "Background successfully set!" << std::endl;
+        SDL_BlitSurface(background, NULL, screen, NULL);
+    } else {
+        std::cout << "Failed to set background!" << std::endl;
+    }
+}
+
+SDL_Surface* SubMenuMenuItem::getAssociatedBackground() const {
+    return background; // The background is already loaded for each system/folder
+}
+
 

@@ -11,7 +11,9 @@ std::vector<std::string> FileManager::getFolders(const std::string& path) {
     
     for (const auto& entry : std::filesystem::directory_iterator(path)) {
         if (entry.is_directory()) {
-            folders.push_back(entry.path().filename().string());
+            if(entry.path().filename().string() != "bios") {
+                folders.push_back(entry.path().filename().string());
+            }
         }
     }
     
@@ -25,6 +27,13 @@ std::vector<std::string> FileManager::getFiles(const std::string& folder) {
 
     for (const auto& entry : std::filesystem::directory_iterator(folder)) {
         if (entry.is_regular_file()) {
+            std::string filename = entry.path().filename().string();
+
+            // Exclude files starting with . or ._ (hidden files in UNIX-based systems)
+            if (filename[0] == '.' || (filename.length() > 1 && filename[0] == '.' && filename[1] == '_')) {
+                continue;
+            }
+
             std::string ext = entry.path().extension().string();
             if (excludedExtensions.find(ext) == excludedExtensions.end()) {
                 files.push_back(entry.path().filename().string());

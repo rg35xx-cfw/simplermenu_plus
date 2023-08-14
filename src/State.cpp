@@ -13,6 +13,13 @@ void State::navigateUp() {
     if (auto item = dynamic_cast<SimpleMenuItem*>(currentMenu->getItem(newIndex))) {
         item->select();
     }
+
+    if (currentMenu == mainMenu) {
+        MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
+        if (SubMenuMenuItem* subMenuItem = dynamic_cast<SubMenuMenuItem*>(selectedItem)) {
+            subMenuItem->determineAndSetBackground(screen);
+        }
+    }  
 }
 
 void State::navigateDown() {
@@ -27,6 +34,13 @@ void State::navigateDown() {
     if (auto item = dynamic_cast<SimpleMenuItem*>(currentMenu->getItem(newIndex))) {
         item->select();
     }
+
+    if (currentMenu == mainMenu) {
+        MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
+        if (SubMenuMenuItem* subMenuItem = dynamic_cast<SubMenuMenuItem*>(selectedItem)) {
+            subMenuItem->determineAndSetBackground(screen);
+        }
+    }  
 }
 
 void State::navigateLeft() {
@@ -52,15 +66,32 @@ void State::enterFolder() {
     if (SubMenuMenuItem* subMenuItem = dynamic_cast<SubMenuMenuItem*>(currentMenu->getItem(index))) {
         currentMenu = subMenuItem->getSubMenu();
     }
+
+    if (currentMenu == mainMenu) {
+        MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
+        if (SubMenuMenuItem* subMenuItem = dynamic_cast<SubMenuMenuItem*>(selectedItem)) {
+            subMenuItem->determineAndSetBackground(screen);
+        }
+    }  
+    navigationHistory.push(currentMenu);  // Push the current menu to the stack before changing it.
 }
 
 void State::exitFolder() {
-    // Assume each submenu has a pointer to its parent. 
-    // This requires updating the Menu class to store a pointer to its parent.
-    // If there's no parent (i.e., it's the main menu), this function does nothing.
+    if (!navigationHistory.empty()) {
+        currentMenu = navigationHistory.top();  // Set the previous menu as the current one.
+        navigationHistory.pop();  // Remove the top menu from the stack.
+    }
+    
     if (currentMenu->getParent()) {
         currentMenu = currentMenu->getParent();
     }
+
+    if (currentMenu == mainMenu) {
+        MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
+        if (SubMenuMenuItem* subMenuItem = dynamic_cast<SubMenuMenuItem*>(selectedItem)) {
+            subMenuItem->determineAndSetBackground(screen);
+        }
+    }  
 }
 
 void State::printCurrentContents() {
@@ -80,6 +111,16 @@ void State::showRomMenu() {
         isRomMenuActive = true;
         currentMenu = romMenu;
     }
+}
+
+void State::showSystemMenu() {
+    if (!isRomMenuActive && systemMenu) {
+        currentMenu = systemMenu;
+    }
+}
+
+void State::hideSystemMenu() {
+    currentMenu = currentMenu->getParent();
 }
 
 bool State::romMenuIsActive() const {

@@ -13,6 +13,7 @@
 class State;
 class SystemMenu;
 class RomMenu;
+class SystemMenu;
 class SimpleMenuItem;
 
 class Application {
@@ -56,11 +57,9 @@ public:
 
     Menu* getMainMenu() const;
 
-    void showSystemMenu();
-
     void showMainMenu();
 
-    void setBackgroundForFolder(const std::string& folderName);
+    void setBackgroundForFolder(const std::string& folderName, SDL_Surface* screen);
 
     SDL_Surface* getBackground() const;
 

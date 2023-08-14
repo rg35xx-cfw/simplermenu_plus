@@ -6,6 +6,7 @@
 Configuration::Configuration() {
     // Load values from .ini file using Boost.PropertyTree
     boost::property_tree::ptree pt;
+    // FIXME: need to put relative path from $HOME for config.ini
     boost::property_tree::ini_parser::read_ini("/userdata/system/simplermenu_plus/config.ini", pt);
 
     for (const auto& section : pt) {
