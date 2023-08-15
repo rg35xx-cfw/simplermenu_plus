@@ -4,6 +4,8 @@ Menu::Menu() {
     itemsPerPage = Configuration::getInstance().getIntValue("Menu.itemsPerPage");
     listOffset_x = Configuration::getInstance().getIntValue("Menu.listOffset_x");
     listOffset_y = Configuration::getInstance().getIntValue("Menu.listOffset_y"); 
+
+    customSpacing = 0;
 }
 
 void Menu::print() const {
@@ -38,6 +40,14 @@ void Menu::navigateDown() {
 
     // Adjust the currentPage if necessary
     handlePages();    
+}
+
+void Menu::navigateLeft() {
+    std::cout << "menu::navigateLeft" << std::endl;
+}
+
+void Menu::navigateRight() {
+    std::cout << "menu::navigateRight" << std::endl;
 }
 
 void Menu::selectItem() {
@@ -83,11 +93,11 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font) {
 
     int spacing = customSpacing ? customSpacing : 24;
 
-    if (useSelectionRectangle) {
+    if (useSelectionRectangle) {//} && drawSelectionRectangle) {
         SDL_Rect rectangle;
         rectangle.x = x - 10;
-        rectangle.y = y - 10 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
-        rectangle.w = selectionRectangleWidth ? selectionRectangleWidth : 640; // screen width as fallback
+        rectangle.y = y - 5 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
+        rectangle.w = selectionRectangleWidth ? selectionRectangleWidth : 220; // screen width as fallback
         rectangle.h = selectionRectangleHeight;
 
         SDL_FillRect(screen, &rectangle, SDL_MapRGB(screen->format, selectionRectangleColor.r, selectionRectangleColor.g, selectionRectangleColor.b));
@@ -176,36 +186,57 @@ void Menu::setSelectionRectangleProperties(const SDL_Color& color, int width, in
     selectionRectangleHeight = height;
 }
 
+void Menu::enableSelectionRectangle(bool enable) {
+    drawSelectionRectangle = enable;
+}
+
 SystemMenu::SystemMenu() {
-    addItem(std::make_unique<SimpleMenuItem>("Volume"));
-    addItem(std::make_unique<SimpleMenuItem>("Brightness"));
-    addItem(std::make_unique<SimpleMenuItem>("Overclock"));
-    addItem(std::make_unique<SimpleMenuItem>("Default Core/Emulator"));
-    addItem(std::make_unique<SimpleMenuItem>("Quit"));
+    addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
+    addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
+
+    std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
+
+    addItem(std::make_unique<MultiOptionMenuItem>("OVERCLOCK", overclockValues));
+
+    std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
+
+    addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
+    addItem(std::make_unique<BooleanMenuItem>("OVERCLOCK", "OFF", false));
+    addItem(std::make_unique<SimpleMenuItem>("QUIT"));
 
     std::string backgroundPath = "/userdata/system/.simplemenu/resources/settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
-    setFont("/userdata/system/.simplemenu/resources/akashi.ttf", 24);
-    setItemPosition(10,100);
+    setFont("/userdata/system/.simplemenu/resources/Akrobat-Bold.ttf", 32);
+    setItemPosition(10,92);
     setSpacing(46);
     useSelectionRectangle = true;
-    setSelectionRectangleProperties({0, 0, 0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+    // FIXME, width, line height, etc. needs to be set as options
+    setSelectionRectangleProperties({255, 0, 0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
 }
 
 RomMenu::RomMenu() {
-    addItem(std::make_unique<SimpleMenuItem>("Autostart"));
-    addItem(std::make_unique<SimpleMenuItem>("Auto Save State"));
-    addItem(std::make_unique<SimpleMenuItem>("Load State"));
-    addItem(std::make_unique<SimpleMenuItem>("Rom Overclock"));
+    addItem(std::make_unique<BooleanMenuItem>("AUTOSTART", "OFF", false));
+    
+    std::vector<std::string> coreOptions = {"mame2003_plus", "fbneo", "fbalpha", "mame2000", "mame2010"};
 
-    std::string backgroundPath = "/userdata/system/.simplemenu/resources/settings.png";
+    addItem(std::make_unique<MultiOptionMenuItem>("SELECT CORE/EMULATOR", coreOptions));
+    addItem(std::make_unique<BooleanMenuItem>("AUTO SAVE STATE", "OFF", false));
+    addItem(std::make_unique<BooleanMenuItem>("LOAD STATE", "OFF", false));
+
+    std::vector<std::string> overclockValues = {"OFF", "840 MHz", "1008 MHz", "1296 MHz"};
+
+    addItem(std::make_unique<MultiOptionMenuItem>("ROM OVERCLOCK", overclockValues));
+
+    std::string backgroundPath = "/userdata/system/.simplemenu/resources/rom_settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
-    setFont("/userdata/system/.simplemenu/resources/akashi.ttf", 24);
-    setItemPosition(10,100);
+
+    setFont("/userdata/system/.simplemenu/resources/Akrobat-Bold.ttf", 32);
+    setItemPosition(10,92);
     setSpacing(46);
     useSelectionRectangle = true;
-    setSelectionRectangleProperties({0, 0, 0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+    // FIXME, width, line height, etc. needs to be set as options
+    setSelectionRectangleProperties({255, 0, 0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
 }
 
 bool RomMenu::isRomMenu() const {

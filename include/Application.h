@@ -46,7 +46,6 @@ public:
 
     bool fileExists(const std::string& filename);
 
-
     ThumbnailCache& getThumbnailCache();
 
     static Application& getInstance();
@@ -64,8 +63,6 @@ public:
     SDL_Surface* getBackground() const;
 
     void clearBackground();
-
-    SDL_Surface* renderText(const std::string& text, SDL_Color color);
 
 private:
     void setupMenu();

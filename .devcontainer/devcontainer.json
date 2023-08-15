@@ -1,0 +1,70 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Ubuntu for simplermenu_plus",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "../Dockerfile"
+	},
+
+	// NOTE:
+	// There is a bug in the linter that warns about "consistency" property,
+	// just ignore it.
+	// https://github.com/microsoft/vscode-remote-release/issues/7743 
+	//
+	"mounts": [
+		// {
+		// 	"source": "${localWorkspaceFolder}/resources/config/x86/.simplemenu", 
+		// 	"target": "/userdata/system/.simplemenu", 
+		// 	"type": "bind", 
+		// 	"consistency": "cached"
+		// },
+		{
+			"source": "${localWorkspaceFolder}/output/resources/menu.json",
+			"target": "/userdata/system/menu.json", 
+			"type": "bind", 
+			"consistency": "cached"
+		},
+		{
+			"source": "${home}/roms",
+			"target": "/userdata/roms", 
+			"type": "bind", 
+			"consistency": "cached"
+		},
+		{
+			"source": "${home}/roms/bios",
+			"target": "/userdata/bios", 
+			"type": "bind", 
+			"consistency": "cached"
+		}	
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"ms-vscode.makefile-tools",
+				"ms-vscode.cpptools",
+				"ms-vscode.cpptools-extension-pack"
+			]
+		}
+	},
+
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "cat /etc/os-release",
+
+	// Configure tool-specific properties.
+	// "customizations": {},
+
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "goody",
+	"workspaceMount": "source=${localWorkspaceFolder},target=/userdata/system/simplermenu_plus,type=bind",
+	"workspaceFolder": "/userdata/system/simplermenu_plus"
+}

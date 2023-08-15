@@ -9,6 +9,8 @@
 
 class MenuItem;
 class SimpleMenuItem;
+class BooleanSettingsMenu;
+class MultiOptionMenuItem;
 
 class Menu {
 protected:
@@ -30,6 +32,9 @@ protected:
     int selectionRectangleWidth = 0; // default width; 0 means it will stretch to text width
     int selectionRectangleHeight = 24; // default height
 
+private:
+    bool drawSelectionRectangle = false; 
+
 public:
     Menu();
 
@@ -44,6 +49,10 @@ public:
 
     void navigateDown();
 
+    void navigateLeft();
+
+    void navigateRight();
+
     virtual void selectItem();
 
     void addItem(std::unique_ptr<MenuItem> item);
@@ -51,6 +60,7 @@ public:
     int getNumberOfItems();
 
     void render(SDL_Surface* screen, TTF_Font* font);
+    void render();
 
     int getSelectedItemIndex() const;
 
@@ -77,7 +87,7 @@ public:
     void setSpacing(int spacing);
 
     void setSelectionRectangleProperties(const SDL_Color& color, int width, int height);
-
+    void enableSelectionRectangle(bool enable = true);
 };
 
 class SystemMenu : public Menu {
@@ -91,6 +101,8 @@ public:
 class RomMenu : public Menu {
 public:
     RomMenu();
+
+    void specificSystemMenuActions();
 
     bool isRomMenu() const override;
 };

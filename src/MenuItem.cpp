@@ -89,7 +89,7 @@ void SimpleMenuItem::loadAliases() {
 
 void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) {
     // Set the colors, yellow for selected text, white for non-selected text
-    SDL_Color textColor = isSelected ? SDL_Color{255,255,0}: SDL_Color{255, 255, 255}; 
+    SDL_Color textColor = isSelected ? SDL_Color{0,0,0}: SDL_Color{255, 255, 255}; 
 
     std::string displayTitle = title;
     std::filesystem::path romPath(title);
@@ -125,6 +125,16 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
     SDL_SetClipRect(screen, &clipRect);
     SDL_BlitSurface(textSurface, nullptr, screen, &destRect);
     SDL_SetClipRect(screen, NULL);  // Reset the clip rect
+
+    if (value != "") {
+            // Render the value to the right of the title
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, value.c_str(), textColor);
+    
+        // Position the value surface to the right of the title
+        SDL_Rect valueDestRect = {static_cast<Sint16>(640 - valueSurface->w - 10), static_cast<Sint16>(y), 0, 0};
+        SDL_BlitSurface(valueSurface, nullptr, screen, &valueDestRect);
+        SDL_FreeSurface(valueSurface);
+    }
 
     if (isSelected) {
         SDL_Surface* thumbnail = loadThumbnail();
@@ -170,7 +180,6 @@ SDL_Surface* SimpleMenuItem::getAssociatedBackground() const {
     return nullptr; // Default behavior if no parent menu is set
 }
 
-
 void SubMenuMenuItem::executeAction() {
     // This will typically switch the current menu to the submenu
     // For this, you might need to communicate with the Application or State class
@@ -178,12 +187,26 @@ void SubMenuMenuItem::executeAction() {
     std::cout << "ExecuteAction" << std::endl;
 }
 
+SDL_Surface* MenuItem::renderText(const std::string& text, SDL_Color color) {
+    std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
+    int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
+    TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
+    if (!font) {
+        // Handle error
+        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+        return nullptr;
+    }
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
+    TTF_CloseFont(font);
+    return textSurface;
+}
+
 void SubMenuMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) {
     SDL_Surface* currentBackground = this->getAssociatedBackground();  // Get the background from the current SubMenuMenuItem
     if (!currentBackground) {
         // If there's no background, render the folder name centered
         SDL_Color white = {255, 255, 255};
-        SDL_Surface* folderNameSurface = Application::getInstance().renderText(title, white);
+        SDL_Surface* folderNameSurface = renderText(title, white);
         if (folderNameSurface && isSelected) {
             SDL_Rect dstRect;
             dstRect.x = (screen->w - folderNameSurface->w) / 2;
@@ -224,7 +247,36 @@ void SubMenuMenuItem::determineAndSetBackground(SDL_Surface* screen) {
 }
 
 SDL_Surface* SubMenuMenuItem::getAssociatedBackground() const {
-    return background; // The background is already loaded for each system/folder
+   if (background) {
+        return background; 
+    } else if (parentMenu) {
+        return parentMenu->getBackground();
+    }
+    return nullptr; // Default behavior if no associated background and no parent menu is set
 }
 
+bool BooleanMenuItem::getValue() const {
+    return boolValue;
+}
 
+void BooleanMenuItem::setValue(bool newValue) {
+    boolValue = newValue;
+    value = boolValue ? "ON" : "OFF";
+}
+
+void BooleanMenuItem::toggleValue() {
+    setValue(!boolValue);
+    std::cout << "Value set to " << value << std::endl;
+}
+
+void BooleanMenuItem::navigateLeft() {
+    std::cout << "boolnavleft: " << std::endl;
+
+    toggleValue();
+}
+
+void BooleanMenuItem::navigateRight() {
+    std::cout << "boolnavright: " << std::endl;
+
+    toggleValue();
+}

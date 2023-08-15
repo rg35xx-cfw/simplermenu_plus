@@ -57,7 +57,11 @@ Application::Application() {
 
     mainMenu = std::make_unique<Menu>();
     systemMenu = std::make_unique<SystemMenu>();
+    romMenu = std::make_unique<RomMenu>();
     currentState = std::make_unique<State>(mainMenu.get());
+
+    systemMenu->enableSelectionRectangle();
+    romMenu->enableSelectionRectangle();
 
     // Load the list of rom aliases
     SimpleMenuItem::loadAliases();
@@ -135,43 +139,29 @@ void Application::showMainMenu() {
     currentState->setCurrentMenu(mainMenu.get());
 }
 
-SDL_Surface* Application::renderText(const std::string& text, SDL_Color color) {
-    std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
-    int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
-    TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
-    if (!font) {
-        // Handle error
-        std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
-        return nullptr;
-    }
-    SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
-    TTF_CloseFont(font);
-    return textSurface;
-}
-
 void Application::setupMenu() {
-// Set up the main menu items and submenus
-// ...
-FileManager fileManager;
-std::string romsPath = Configuration::getInstance().getValue("Menu.romsPath");
-// Assuming "roms" is the root folder to start from
-auto folders = fileManager.getFolders(romsPath);
+    // Set up the main menu items and submenus
+    // ...
+    FileManager fileManager;
+    std::string romsPath = Configuration::getInstance().getValue("Menu.romsPath");
+    // Assuming "roms" is the root folder to start from
+    auto folders = fileManager.getFolders(romsPath);
 
-for (const auto& folder : folders) {
-    // For each folder, create a SubMenuMenuItem and populate it with files
-    auto files = fileManager.getFiles(romsPath + folder);
-    
-    auto subMenu = std::make_unique<Menu>();
-    subMenu->setParent(mainMenu.get());
-    for (const auto& file : files) {
-        std::string romPath = romsPath + folder + "/" + file;
-        subMenu->addItem(std::make_unique<SimpleMenuItem>(file, romPath));
+    for (const auto& folder : folders) {
+        // For each folder, create a SubMenuMenuItem and populate it with files
+        auto files = fileManager.getFiles(romsPath + folder);
+        
+        auto subMenu = std::make_unique<Menu>();
+        subMenu->setParent(mainMenu.get());
+        for (const auto& file : files) {
+            std::string romPath = romsPath + folder + "/" + file;
+            subMenu->addItem(std::make_unique<SimpleMenuItem>(file, "", romPath));
+        }
+
+        mainMenu->addItem(std::make_unique<SubMenuMenuItem>(folder, std::move(subMenu)));
     }
 
-    mainMenu->addItem(std::make_unique<SubMenuMenuItem>(folder, std::move(subMenu)));
-}
-
-std::cout << "Found folders: " << folders.size() << std::endl;
+    std::cout << "Found folders: " << folders.size() << std::endl;
 }
 
 void Application::handleKeyPress(SDLKey key) {

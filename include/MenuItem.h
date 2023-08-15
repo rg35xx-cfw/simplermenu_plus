@@ -18,9 +18,22 @@ protected:
     SDL_Surface* background = nullptr;
     Menu* parentMenu = nullptr;
 
+    std::string title;
+    std::string value;
+
 public:
+
+    MenuItem(const std::string& title, const std::string& value = "") : title(title), value(value) {}
+
+    virtual void navigateLeft() {}
+    virtual void navigateRight() {}
+
     virtual void executeAction() = 0;
     virtual void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) = 0;
+
+    virtual void renderTitle() const {};
+    virtual void renderValue() const {};
+
     virtual std::string getName() const = 0;
 
     virtual SDL_Surface* getAssociatedBackground() const = 0;
@@ -48,6 +61,9 @@ public:
         parentMenu = parent;
     }
 
+    // FIXME needs to be part of a different helper/utils class
+    SDL_Surface* renderText(const std::string& text, SDL_Color color);
+
     // Destructor to cleanup the background
     virtual ~MenuItem() {
         if (background) {
@@ -58,7 +74,6 @@ public:
 
 class SimpleMenuItem : public MenuItem {
 private:
-    std::string title;
     std::string path;
     SDL_Surface* thumbnail = nullptr;
     static std::unordered_map<std::string, SDL_Surface*> thumbnailCache;
@@ -80,7 +95,9 @@ private:
     // Potentially other attributes like action or callback
 
 public:
-    SimpleMenuItem(const std::string& title, const std::string& path = "") : title(title), path(path) {
+    SimpleMenuItem(const std::string& title = "", const std::string& value = "", const std::string& path = "") 
+        : MenuItem(title, value), path(path) {
+
         // Calculate thumbnail path here
         std::filesystem::path romPath(path);
         std::string romNameWithoutExtension = romPath.stem().string();
@@ -89,9 +106,7 @@ public:
 
     }
 
-    ~SimpleMenuItem() {
-
-    }
+    ~SimpleMenuItem() {}
 
     const std::string& getPath() const {
         return path;
@@ -114,16 +129,20 @@ public:
     void select();
 
     void deselect();
+
+    void renderValue() const {};
+
 };
 
 class SubMenuMenuItem : public MenuItem {
 private:
-    std::string title;
+    //std::string title;
     std::unique_ptr<Menu> submenu;
+    bool boolValue;
 
 public:
     SubMenuMenuItem(const std::string& title, std::unique_ptr<Menu> submenu)
-        : title(title), submenu(std::move(submenu)) {}
+        : MenuItem(title), submenu(std::move(submenu)) {}
 
     SDL_Surface* getAssociatedBackground() const override;
 
@@ -139,4 +158,84 @@ public:
 
     void determineAndSetBackground(SDL_Surface* screen) override;
 
+    void renderValue() const {};
+
+};
+
+// BooleanMenuItem
+
+class BooleanMenuItem : public SimpleMenuItem {
+private:
+    bool boolValue;
+
+public:
+    BooleanMenuItem();
+    BooleanMenuItem(const std::string& name, const std::string& value, bool initialValue) : SimpleMenuItem(name, value), boolValue(initialValue) {}; 
+
+    bool getValue() const;
+    void setValue(bool newValue);
+    void toggleValue();
+    void navigateLeft() override;
+    void navigateRight() override;  
+};
+
+// MultiOptionMenuItem
+
+class MultiOptionMenuItem : public SimpleMenuItem {
+private:
+    std::vector<std::string> options;  // List of available options
+    int currentIndex;                  // Index of the currently selected option
+
+public:
+    MultiOptionMenuItem(const std::string& title, const std::vector<std::string>& availableOptions)
+        : SimpleMenuItem(title, availableOptions.empty() ? "" : availableOptions[0]),
+          options(availableOptions),
+          currentIndex(0) {}
+
+    void navigateLeft() override {
+        if (currentIndex > 0) {
+            currentIndex--;
+            value = options[currentIndex];
+        }
+    }
+
+    void navigateRight() override {
+        if (currentIndex < options.size() - 1) {
+            currentIndex++;
+            value = options[currentIndex];
+        }
+    }
+};
+
+// IntegerMenuItem
+
+class IntegerMenuItem : public SimpleMenuItem {
+private:
+    int maxValue;
+    int minValue;
+    int intValue;                  // Index of the currently selected option
+
+public:
+    //IntegerMenuItem(const std::string& name, const std::string& value, bool initialValue) : SimpleMenuItem(name, value), boolValue(initialValue) {}; 
+
+    IntegerMenuItem(const std::string& name, const std::string& value, int min = 0, int max = 100)
+        : SimpleMenuItem(name, value) {
+            intValue = std::stoi(value);
+            maxValue = max;
+            minValue = min;
+        }
+
+    void navigateLeft() override {
+        if (intValue > (minValue + 5)) {
+            intValue-5;
+        }
+        value = std::to_string(intValue);
+    }
+
+    void navigateRight() override {
+        if (intValue < (maxValue - 5)) {
+            intValue+5;
+        }
+        value = std::to_string(intValue);
+    }
 };
