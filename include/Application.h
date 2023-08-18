@@ -33,12 +33,18 @@ private:
     int screenHeight;
     int screenDepth;
 
+    SDL_Joystick *joystick = nullptr;
+
 public:
     Application();
 
     ~Application() {
         TTF_CloseFont(font);
         TTF_Quit();
+        if (joystick) {
+            SDL_JoystickClose(joystick);
+            joystick = nullptr;
+        }
         SDL_Quit();
     }
 
@@ -54,7 +60,7 @@ public:
 
     State* getCurrentState() const;
 
-    Menu* getMainMenu() const;
+    // Menu* getMainMenu() const;
 
     void showMainMenu();
 
@@ -68,4 +74,7 @@ private:
     void setupMenu();
 
     void handleKeyPress(SDLKey key);
+
+    void handleJoystickEvents(SDL_Event& event);
+
 };

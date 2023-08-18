@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "State.h"
 
 Menu::Menu() {
     itemsPerPage = Configuration::getInstance().getIntValue("Menu.itemsPerPage");
@@ -56,7 +57,7 @@ void Menu::selectItem() {
     }
 }
 
-void Menu::addItem(std::unique_ptr<MenuItem> item) {
+void Menu::addItem(std::unique_ptr<SimpleMenuItem> item) {
     item->setParentMenu(this); // Set the parent menu
     items.push_back(std::move(item));
 }
@@ -65,10 +66,10 @@ int Menu::getNumberOfItems() {
     return static_cast<int>(items.size());
 }
 
-void Menu::render(SDL_Surface* screen, TTF_Font* font) {
+void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
    // Check if the menu is a ROM menu and set the background
-    if (this->isRomListMenu()) {
-        SDL_Surface* romBackground = MenuItem::loadRomBackground();
+    if (currentState == MenuState::ROMLIST_MENU) {
+        SDL_Surface* romBackground = SimpleMenuItem::loadRomBackground();
         if (romBackground) {
             SDL_BlitSurface(romBackground, NULL, screen, NULL);
             SDL_FreeSurface(romBackground);  // Free the surface after using it
@@ -93,11 +94,16 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font) {
 
     int spacing = customSpacing ? customSpacing : 24;
 
-    if (useSelectionRectangle) {//} && drawSelectionRectangle) {
+    if (useSelectionRectangle || (currentState == MenuState::ROMLIST_MENU)) {
         SDL_Rect rectangle;
-        rectangle.x = x - 10;
-        rectangle.y = y - 5 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
-        rectangle.w = selectionRectangleWidth ? selectionRectangleWidth : 220; // screen width as fallback
+        if (currentState == MenuState::ROMLIST_MENU) {
+            rectangle.x = x - 1;
+            rectangle.y = y + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
+        } else {
+            rectangle.x = x - 10;
+            rectangle.y = y - 5 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
+        }
+        rectangle.w = (selectionRectangleWidth > 0) ? selectionRectangleWidth : 225; // screen width as fallback
         rectangle.h = selectionRectangleHeight;
 
         SDL_FillRect(screen, &rectangle, SDL_MapRGB(screen->format, selectionRectangleColor.r, selectionRectangleColor.g, selectionRectangleColor.b));
@@ -107,14 +113,28 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font) {
     for (int i = startIndex; i < endIndex; i++) {
         bool isSelected = (i == selectedItemIndex);
         int spacing = customSpacing ? customSpacing : 24;
-        items[i]->render(screen, currentFont, x, y + (i - startIndex) * spacing, isSelected);
+        items[i]->render(screen, currentFont, x, y + (i - startIndex) * spacing, isSelected, currentState);
     }
 
-    if (this->isRomListMenu()) {
+    // If we are in the rom list view, we render the number of pages as well as the system title
+    if (currentState == MenuState::ROMLIST_MENU) {
+
+        MenuItem* selectedItem = items[selectedItemIndex].get();
+
+        std::string systemTitle = selectedItem->getFolderName() + "TEST";
+        transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
+        std::string fontPath = Configuration::getInstance().getValue("Menu.titleFont");
+        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);
+
+        SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
+        SDL_Rect destRect = {320 - titleSurface->w/2, 12, 0, 0};  // Position for System title
+        SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
+        TTF_CloseFont(titleFont);
+
         // Display pagination page number / total_pages at the bottom
         std::string pageInfo = std::to_string(currentPage) + " / " + std::to_string(total_pages);
         SDL_Surface* textSurface = TTF_RenderText_Blended(font, pageInfo.c_str(), {255,255,255});
-        SDL_Rect destRect = {100, 445, 0, 0};  // Adjust x position by scrollPixelPosition
+        destRect = {100, 445, 0, 0};  // Positon for page counter
         SDL_BlitSurface(textSurface, NULL, screen, &destRect);
     }
 
@@ -161,13 +181,10 @@ void Menu::printContents(int indentLevel) const {
     std::string indent(indentLevel * 2, ' ');  // Use two spaces per indent level
     for (const auto& item : items) {
         std::cout << indent << item->getName() << std::endl;
-        
-        // If the item is a submenu, print its contents recursively
-        if (auto subMenuItem = dynamic_cast<SubMenuMenuItem*>(item.get())) {
-            subMenuItem->getSubMenu()->printContents(indentLevel + 1);
-        }
     }
 }
+
+
 
 bool Menu::isRomListMenu() const {
     for (const auto& item : items) {
@@ -201,18 +218,23 @@ SystemMenu::SystemMenu() {
     std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
 
     addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
-    addItem(std::make_unique<BooleanMenuItem>("OVERCLOCK", "OFF", false));
-    addItem(std::make_unique<SimpleMenuItem>("QUIT"));
 
-    std::string backgroundPath = "/userdata/system/.simplemenu/resources/settings.png";
+    addItem(std::make_unique<BooleanMenuItem>("USB MODE", "ADB", false));
+    addItem(std::make_unique<BooleanMenuItem>("WIFI SETTINGS", "OFF", false));
+
+    addItem(std::make_unique<SimpleMenuItem>("QUIT", ""));
+
+    std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
-    setFont("/userdata/system/.simplemenu/resources/Akrobat-Bold.ttf", 32);
+    std::string settingsFont = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    setFont(settingsFont, 32);
     setItemPosition(10,92);
     setSpacing(46);
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
-    setSelectionRectangleProperties({255, 0, 0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+    setSelectionRectangleProperties({0x10, 0x22, 0xa0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+
 }
 
 RomMenu::RomMenu() {
@@ -228,15 +250,17 @@ RomMenu::RomMenu() {
 
     addItem(std::make_unique<MultiOptionMenuItem>("ROM OVERCLOCK", overclockValues));
 
-    std::string backgroundPath = "/userdata/system/.simplemenu/resources/rom_settings.png";
+
+    std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/rom_settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
-    setFont("/userdata/system/.simplemenu/resources/Akrobat-Bold.ttf", 32);
+    std::string settingsFont = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    setFont(settingsFont, 32);
     setItemPosition(10,92);
     setSpacing(46);
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
-    setSelectionRectangleProperties({255, 0, 0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+    setSelectionRectangleProperties({0, 0, 0, 200}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
 }
 
 bool RomMenu::isRomMenu() const {

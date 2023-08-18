@@ -62,7 +62,9 @@ std::set<std::string> Configuration::getStringList(const std::string& key, char 
 }
 
 std::string Configuration::getThemePath() const {
-    std::string themePath = "/userdata/system/.simplemenu/themes/" + std::to_string(getIntValue("Menu.screenWidth")) +
+
+
+    std::string themePath = getValue("Menu.themePath") + std::to_string(getIntValue("Menu.screenWidth")) +
                             "x" + std::to_string(getIntValue("Menu.screenHeight")) + "/" + getValue("Menu.themeName") + "/";
     return themePath;
 }

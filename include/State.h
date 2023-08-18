@@ -1,7 +1,14 @@
 #pragma once
 
-#include "Menu.h"
 #include <stack>
+#include "Menu.h"
+
+enum class MenuState {
+    SYSTEMS_MENU,
+    ROMLIST_MENU,
+    SYSTEM_SETTINGS_MENU,
+    ROM_SETTINGS_MENU
+};
 
 class State {
 private:
@@ -9,12 +16,14 @@ private:
     RomMenu* romMenu;
     SystemMenu* systemMenu;
     bool isRomMenuActive = false;
+    bool isSystemMenuActive = false;
     SDL_Surface* screen;
     Menu* mainMenu;
+    MenuState currentState;
     std::stack<Menu*> navigationHistory;
 
 public:
-    State(Menu* initialMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(new SystemMenu()) {}
+    State(Menu* initialMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(new SystemMenu()), currentState(MenuState::SYSTEMS_MENU) {}
 
     void navigateUp();
     void navigateDown();
@@ -27,7 +36,14 @@ public:
     void setCurrentMenu(Menu* newMenu);
     void showRomMenu() ;
     bool romMenuIsActive() const ;
+    bool systemMenuIsActive() const ;
     void hideRomMenu();
     void showSystemMenu();
     void hideSystemMenu();
+
+    MenuState getCurrentState() const {
+        return currentState;
+    }
+
+    std::string getActiveMenuName() const;
 };

@@ -12,24 +12,30 @@
 #include "Menu.h"
 
 class Menu;
+class Configuration;
+enum class MenuState;
+
+// MenuItem
+// Template class for menu items
 
 class MenuItem {
 protected:
     SDL_Surface* background = nullptr;
     Menu* parentMenu = nullptr;
+    std::unique_ptr<Menu> subMenu = nullptr;
 
     std::string title;
     std::string value;
 
-public:
-
-    MenuItem(const std::string& title, const std::string& value = "") : title(title), value(value) {}
+public:    
+    MenuItem(const std::string& title, const std::string& value = "", std::unique_ptr<Menu> submenu = nullptr)
+        : title(title), value(value), subMenu(std::move(submenu)) {}
 
     virtual void navigateLeft() {}
     virtual void navigateRight() {}
 
     virtual void executeAction() = 0;
-    virtual void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) = 0;
+    virtual void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) = 0;
 
     virtual void renderTitle() const {};
     virtual void renderValue() const {};
@@ -38,9 +44,7 @@ public:
 
     virtual SDL_Surface* getAssociatedBackground() const = 0;
 
-    virtual void determineAndSetBackground(SDL_Surface* screen) {
-        // Default logic if any (can be empty for the base class)
-    }
+    virtual void determineAndSetBackground(SDL_Surface* screen);
 
     static SDL_Surface* loadRomBackground() {
         std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/general/background.png";
@@ -64,6 +68,16 @@ public:
     // FIXME needs to be part of a different helper/utils class
     SDL_Surface* renderText(const std::string& text, SDL_Color color);
 
+    std::string getFolderName() const;
+
+    bool hasSubMenu() const {
+        return subMenu != nullptr;
+    }
+
+    Menu* getSubMenu() const {
+        return subMenu.get();
+    }
+
     // Destructor to cleanup the background
     virtual ~MenuItem() {
         if (background) {
@@ -72,13 +86,17 @@ public:
     }
 };
 
+// SimpleMenuItem
+// Single instance of a menu item, typically used for list entries in menus. 
+
 class SimpleMenuItem : public MenuItem {
 private:
     std::string path;
+
     SDL_Surface* thumbnail = nullptr;
     static std::unordered_map<std::string, SDL_Surface*> thumbnailCache;
     std::string thumbnailPath;
-    
+
     static std::unordered_map<std::string, std::string> aliasMap;
 
     // Text scroll
@@ -95,7 +113,13 @@ private:
     // Potentially other attributes like action or callback
 
 public:
-    SimpleMenuItem(const std::string& title = "", const std::string& value = "", const std::string& path = "") 
+    // Constructor with menu title, value (optional) and entry path
+    // e.g.
+    // title = mslug.zip
+    // value = false
+    // path = roms/neogeo/mslug.zip
+
+    SimpleMenuItem(const std::string& title, const std::string& path, const std::string& value = "") 
         : MenuItem(title, value), path(path) {
 
         // Calculate thumbnail path here
@@ -103,8 +127,12 @@ public:
         std::string romNameWithoutExtension = romPath.stem().string();
         std::string basePath = romPath.parent_path().string();
         thumbnailPath = basePath + "/media/images/" + romNameWithoutExtension + ".png";
-
     }
+
+    // Constructor to handle submenus
+    // Typically used for for
+    SimpleMenuItem(const std::string& title, std::unique_ptr<Menu> submenu, const std::string& path = "")
+    : MenuItem(title, "", std::move(submenu)), path(path) {}
 
     ~SimpleMenuItem() {}
 
@@ -120,7 +148,7 @@ public:
 
     static void loadAliases();
 
-    void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) override;
+    void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) override;
 
     std::string getName() const override;
 
@@ -134,34 +162,6 @@ public:
 
 };
 
-class SubMenuMenuItem : public MenuItem {
-private:
-    //std::string title;
-    std::unique_ptr<Menu> submenu;
-    bool boolValue;
-
-public:
-    SubMenuMenuItem(const std::string& title, std::unique_ptr<Menu> submenu)
-        : MenuItem(title), submenu(std::move(submenu)) {}
-
-    SDL_Surface* getAssociatedBackground() const override;
-
-    void executeAction() override;
-
-    void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected) override;
-
-    Menu* getSubMenu() const;
-
-    std::string getName() const override;
-
-    std::string getFolderName() const;
-
-    void determineAndSetBackground(SDL_Surface* screen) override;
-
-    void renderValue() const {};
-
-};
-
 // BooleanMenuItem
 
 class BooleanMenuItem : public SimpleMenuItem {
@@ -170,7 +170,7 @@ private:
 
 public:
     BooleanMenuItem();
-    BooleanMenuItem(const std::string& name, const std::string& value, bool initialValue) : SimpleMenuItem(name, value), boolValue(initialValue) {}; 
+    BooleanMenuItem(const std::string& name, const std::string& value, bool initialValue) : SimpleMenuItem(name, "", value), boolValue(initialValue) {}; 
 
     bool getValue() const;
     void setValue(bool newValue);
@@ -188,7 +188,7 @@ private:
 
 public:
     MultiOptionMenuItem(const std::string& title, const std::vector<std::string>& availableOptions)
-        : SimpleMenuItem(title, availableOptions.empty() ? "" : availableOptions[0]),
+        : SimpleMenuItem(title, "", availableOptions.empty() ? "" : availableOptions[0]),
           options(availableOptions),
           currentIndex(0) {}
 
@@ -216,10 +216,9 @@ private:
     int intValue;                  // Index of the currently selected option
 
 public:
-    //IntegerMenuItem(const std::string& name, const std::string& value, bool initialValue) : SimpleMenuItem(name, value), boolValue(initialValue) {}; 
 
     IntegerMenuItem(const std::string& name, const std::string& value, int min = 0, int max = 100)
-        : SimpleMenuItem(name, value) {
+        : SimpleMenuItem(name, "", value) {
             intValue = std::stoi(value);
             maxValue = max;
             minValue = min;
@@ -227,15 +226,16 @@ public:
 
     void navigateLeft() override {
         if (intValue > (minValue + 5)) {
-            intValue-5;
+            intValue-=5;
         }
         value = std::to_string(intValue);
     }
 
     void navigateRight() override {
         if (intValue < (maxValue - 5)) {
-            intValue+5;
+            intValue+=5;
         }
         value = std::to_string(intValue);
     }
 };
+

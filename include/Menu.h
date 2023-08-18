@@ -1,11 +1,15 @@
 #pragma once
 
+enum class MenuState;
+
 #include <vector>
 #include <iostream>
 #include <string>
+#include <bits/stdc++.h>
 #include <memory>
 #include "Configuration.h"
 #include "MenuItem.h"
+
 
 class MenuItem;
 class SimpleMenuItem;
@@ -28,7 +32,7 @@ protected:
     int customSpacing;
     SDL_Surface* background = nullptr;
     bool useSelectionRectangle = false; // by default, use the selection rectangle
-    SDL_Color selectionRectangleColor = {255, 255, 255, 128}; // default to semi-transparent white
+    SDL_Color selectionRectangleColor = {30, 60, 200, 128}; // default to semi-transparent white
     int selectionRectangleWidth = 0; // default width; 0 means it will stretch to text width
     int selectionRectangleHeight = 24; // default height
 
@@ -55,11 +59,11 @@ public:
 
     virtual void selectItem();
 
-    void addItem(std::unique_ptr<MenuItem> item);
+    void addItem(std::unique_ptr<SimpleMenuItem> item);
 
     int getNumberOfItems();
 
-    void render(SDL_Surface* screen, TTF_Font* font);
+    void render(SDL_Surface* screen, TTF_Font* font, MenuState currentState);
     void render();
 
     int getSelectedItemIndex() const;

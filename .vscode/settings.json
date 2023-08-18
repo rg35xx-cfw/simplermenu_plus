@@ -111,7 +111,8 @@
         "unordered_set": "cpp",
         "semaphore": "cpp",
         "stop_token": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "stack": "cpp"
     },
     "cmake.configureOnOpen": false
 }
