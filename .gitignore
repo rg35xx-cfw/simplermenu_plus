@@ -1,0 +1,13 @@
+/Build (GNU)/
+
+obj/
+
+# logs
+*.log
+
+# MacOS
+._*
+
+# ROMs and BIOS
+resources/roms/
+resources/bios/

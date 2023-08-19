@@ -28,13 +28,13 @@
 			"consistency": "cached"
 		},
 		{
-			"source": "/Users/ctalon/roms",
+			"source": "${localWorkspaceFolder}/resources/roms",
 			"target": "/userdata/roms", 
 			"type": "bind", 
 			"consistency": "cached"
 		},
 		{
-			"source": "/Users/ctalon/roms/bios",
+			"source": "${localWorkspaceFolder}/resources/bios",
 			"target": "/userdata/bios", 
 			"type": "bind", 
 			"consistency": "cached"
