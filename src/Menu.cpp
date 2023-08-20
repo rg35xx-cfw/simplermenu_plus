@@ -2,6 +2,7 @@
 #include "State.h"
 
 Menu::Menu() {
+
     itemsPerPage = Configuration::getInstance().getIntValue("Menu.itemsPerPage");
     listOffset_x = Configuration::getInstance().getIntValue("Menu.listOffset_x");
     listOffset_y = Configuration::getInstance().getIntValue("Menu.listOffset_y"); 
@@ -208,8 +209,10 @@ void Menu::enableSelectionRectangle(bool enable) {
 }
 
 SystemMenu::SystemMenu() {
+
     addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
     addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
+    addItem(std::make_unique<IntegerMenuItem>("screenRefresh", "5"));
 
     std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
 

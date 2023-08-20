@@ -55,6 +55,9 @@ public:
         return background;
     }
 
+    std::string getTitle();
+    std::string getValue();
+
     void setBackground(const std::string& backgroundPath, SDL_Surface* screen);
     
     SDL_Surface* getBackground() const {
@@ -217,25 +220,28 @@ private:
 
 public:
 
-    IntegerMenuItem(const std::string& name, const std::string& value, int min = 0, int max = 100)
+    IntegerMenuItem(const std::string& name, 
+                    const std::string& value, 
+                    int min = 0, 
+                    int max = 100)
         : SimpleMenuItem(name, "", value) {
-            intValue = std::stoi(value);
-            maxValue = max;
-            minValue = min;
-        }
+            this->intValue = std::stoi(value);
+            this->maxValue = max;
+            this->minValue = min;
+    }
 
     void navigateLeft() override {
-        if (intValue > (minValue + 5)) {
-            intValue-=5;
+        if (this->intValue > (this->minValue + 5)) {
+            this->intValue -= 5;
         }
-        value = std::to_string(intValue);
+        this->value = std::to_string(this->intValue);
     }
 
     void navigateRight() override {
-        if (intValue < (maxValue - 5)) {
-            intValue+=5;
+        if (this->intValue < (this->maxValue - 5)) {
+            this->intValue += 5;
         }
-        value = std::to_string(intValue);
+        this->value = std::to_string(this->intValue);
     }
 };
 

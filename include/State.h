@@ -27,8 +27,8 @@ public:
 
     void navigateUp();
     void navigateDown();
-    void navigateLeft();
-    void navigateRight();
+    MenuItem* navigateLeft();
+    MenuItem* navigateRight();
     void enterFolder();
     void exitFolder();
     void printCurrentContents();

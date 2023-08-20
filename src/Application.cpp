@@ -25,6 +25,9 @@ Application::Application() {
     screenHeight = Configuration::getInstance().getIntValue("Menu.screenHeight");
     screenDepth = Configuration::getInstance().getIntValue("Menu.screenDepth");
 
+    this->intSettings[this->SCREEN_REFRESH] = 
+        Configuration::getInstance().getIntValue("Menu." + this->SCREEN_REFRESH); 
+
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         // Handle error
@@ -103,11 +106,29 @@ bool Application::fileExists(const std::string& filename) {
 void Application::run() {
     bool isRunning = true;
     SDL_Event event;
-    const int FPS = 60;
-    const int frameDelay = 1000 / FPS;
+
+    int fps = 0;
+    int frameCount = 0;
+    Uint32 fpsTimer = 0;
+
+    Uint32 frameStart = 0;
 
     while (isRunning) {
-        Uint32 frameStart = SDL_GetTicks();
+
+        int frameDelay = 1000 / this->intSettings[this->SCREEN_REFRESH];
+
+        // Wait if last frame was drawn too fast
+        if (SDL_GetTicks() - frameStart < frameDelay) {
+            continue;
+        }
+
+        // Fine tune FPS
+        if (frameCount == this->intSettings[this->SCREEN_REFRESH] 
+            and (SDL_GetTicks() - fpsTimer) < 1000) {
+            continue;
+        }
+
+        frameStart = SDL_GetTicks();
 
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
@@ -128,6 +149,13 @@ void Application::run() {
                     handleJoystickEvents(event);
                     break;
             }
+        }
+
+        // Handle FPS information
+        if (SDL_GetTicks() - fpsTimer >= 1000) {
+            fps = frameCount;
+            frameCount = 0;
+            fpsTimer = SDL_GetTicks();
         }
 
         // Clear the screen
@@ -157,14 +185,27 @@ void Application::run() {
 
         // Then fill the screen and render the menu
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
-        SDL_Flip(screen);        
 
-        Uint32 frameEnd = SDL_GetTicks();
-        int frameTime = frameEnd - frameStart;
-        if (frameDelay > frameTime) {
-            SDL_Delay(frameDelay - frameTime);
-        }
+        printFPS(fps);
+
+        SDL_Flip(screen);
+
+        frameCount++;
+         
+        // int frameTime = SDL_GetTicks() - frameStart;
+        // if (frameDelay > frameTime) {
+        //     SDL_Delay(frameDelay - frameTime);
+        // }
+    
     }
+}
+
+void Application::printFPS(int fps) {
+    // Display FPS page number / total_pages at the bottom
+    std::string fpsText = "FPS: " + std::to_string(fps);
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
+    SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
+    SDL_BlitSurface(textSurface, NULL, screen, &destRect);
 }
 
 State* Application::getCurrentState() const {
@@ -214,12 +255,22 @@ void Application::handleKeyPress(SDLKey key) {
         case SDLK_DOWN:
             currentState->navigateDown();
             break;
-        case SDLK_LEFT:
-            currentState->navigateLeft();
+        case SDLK_LEFT: {
+            MenuItem* selectedItem = currentState->navigateLeft();
+            if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
+                std::cout << "screenRefresh" << std::endl;
+                this->intSettings[this->SCREEN_REFRESH] = std::stoi(selectedItem->getValue());
+            }
             break;
-        case SDLK_RIGHT:
-            currentState->navigateRight();
+        }
+        case SDLK_RIGHT:{
+            MenuItem* selectedItem = currentState->navigateRight();
+            if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
+                std::cout << "screenRefresh" << std::endl;
+                this->intSettings[this->SCREEN_REFRESH] = std::stoi(selectedItem->getValue());
+            }
             break;
+        }
         case SDLK_RETURN:
             currentState->enterFolder();
             break;

@@ -10,6 +10,14 @@
 
 std::unordered_map<std::string, SDL_Surface*> SimpleMenuItem::thumbnailCache;
 
+std::string MenuItem::getTitle() {
+    return this->title;
+}
+
+std::string MenuItem::getValue() {
+    return this->value;
+}
+
 void MenuItem::setBackground(const std::string& backgroundPath, SDL_Surface* screen) {
     std::cout <<"MenuItem SetBackground " << backgroundPath << std::endl;
     if (background) {

@@ -39,7 +39,7 @@ void State::navigateDown() {
     }  
 }
 
-void State::navigateLeft() {
+MenuItem* State::navigateLeft() {
     int currentIndex = currentMenu->getSelectedItemIndex();
         std::cout << "Navigating Left from index: " << currentIndex << std::endl;
 
@@ -54,10 +54,12 @@ void State::navigateLeft() {
     if (selectedItem) {
         selectedItem->navigateLeft();
     }
+
+    return selectedItem;
     
 }
 
-void State::navigateRight() {
+MenuItem* State::navigateRight() {
     int currentIndex = currentMenu->getSelectedItemIndex();
         std::cout << "Navigating Right from index: " << currentIndex << std::endl;
 
@@ -72,6 +74,8 @@ void State::navigateRight() {
     if (selectedItem) {
         selectedItem->navigateRight();
     }
+
+    return selectedItem;
 }
 
 // void State::enterFolder() {
