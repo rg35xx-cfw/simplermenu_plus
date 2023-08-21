@@ -283,6 +283,8 @@ void Application::handleKeyPress(SDLKey key) {
             currentState->navigateDown();
             break;
         case SDLK_LEFT: {
+            // TODO instead of returning the item, fire an event
+            //      with the change.
             MenuItem* selectedItem = currentState->navigateLeft();
             this->handleSettingsChange(selectedItem);
             break;
@@ -338,6 +340,10 @@ void Application::handleJoystickEvents(SDL_Event& event) {
 }
 
 void Application::handleSettingsChange(MenuItem* selectedItem) {
+    // TODO this should be a listener for settings change events
+    // FIXME this is broken because the title != key
+    //       screenRefresh != Menu.screenRefresh
+    //       Add id field to Item class
     if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
         std::cout << "screenRefresh" << std::endl;
         this->cfg.setValue(this->SCREEN_REFRESH, selectedItem->getValue());
