@@ -19,7 +19,7 @@ class SimpleMenuItem;
 class Application {
 private:
 
-    const std::string SCREEN_REFRESH = "screenRefresh";
+    const std::string SCREEN_REFRESH = "Menu.screenRefresh";
 
     std::unique_ptr<Menu> mainMenu;
     std::unique_ptr<State> currentState;
@@ -36,7 +36,9 @@ private:
     int screenHeight;
     int screenDepth;
 
-    std::map<std::string, int> intSettings;
+    Configuration& cfg = Configuration::getInstance();
+
+    // std::map<std::string, int> intSettings;
 
     SDL_Joystick *joystick = nullptr;
 
@@ -78,10 +80,14 @@ public:
 private:
     void setupMenu();
 
+    void createSystemMenu();
+
     void printFPS(int fps);
 
     void handleKeyPress(SDLKey key);
 
     void handleJoystickEvents(SDL_Event& event);
+
+    void handleSettingsChange(MenuItem* selectedItem);
 
 };

@@ -25,8 +25,6 @@ Application::Application() {
     screenHeight = Configuration::getInstance().getIntValue("Menu.screenHeight");
     screenDepth = Configuration::getInstance().getIntValue("Menu.screenDepth");
 
-    this->intSettings[this->SCREEN_REFRESH] = 
-        Configuration::getInstance().getIntValue("Menu." + this->SCREEN_REFRESH); 
 
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -75,10 +73,12 @@ Application::Application() {
     // * systeMenu is the system settings menu
     // * romMenu is the rom settings menu (to select rom specific settings)
     mainMenu = std::make_unique<Menu>();
-    systemMenu = std::make_unique<SystemMenu>();
+
+    createSystemMenu();
+
     romMenu = std::make_unique<RomMenu>();
 
-    currentState = std::make_unique<State>(mainMenu.get());
+    currentState = std::make_unique<State>(mainMenu.get(), systemMenu.get());
 
     systemMenu->enableSelectionRectangle();
     romMenu->enableSelectionRectangle();
@@ -88,6 +88,37 @@ Application::Application() {
 
     // Initialize the menu
     setupMenu();
+}
+
+void Application::createSystemMenu() {
+
+    std::string backgroundPath = 
+        Configuration::getInstance().getValue("Menu.homePath") 
+        + ".simplemenu/resources/settings.png";
+    std::string settingsFont = 
+        Configuration::getInstance().getValue("Menu.homePath") 
+        + ".simplemenu/resources/Akrobat-Bold.ttf";
+
+        
+    systemMenu = std::make_unique<SystemMenu>(backgroundPath, settingsFont);
+    
+    systemMenu->addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
+    systemMenu->addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
+    systemMenu->addItem(std::make_unique<IntegerMenuItem>("screenRefresh", "5"));
+
+    std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
+
+    systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("OVERCLOCK", overclockValues));
+
+    std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
+
+    systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
+
+    systemMenu->addItem(std::make_unique<BooleanMenuItem>("USB MODE", "ADB", false));
+    systemMenu->addItem(std::make_unique<BooleanMenuItem>("WIFI SETTINGS", "OFF", false));
+
+    systemMenu->addItem(std::make_unique<SimpleMenuItem>("QUIT", ""));
+
 }
 
 ThumbnailCache& Application::getThumbnailCache() {
@@ -115,7 +146,7 @@ void Application::run() {
 
     while (isRunning) {
 
-        int frameDelay = 1000 / this->intSettings[this->SCREEN_REFRESH];
+        int frameDelay = 1000 / this->cfg.getIntValue(this->SCREEN_REFRESH);
 
         // Wait if last frame was drawn too fast
         if (SDL_GetTicks() - frameStart < frameDelay) {
@@ -123,7 +154,7 @@ void Application::run() {
         }
 
         // Fine tune FPS
-        if (frameCount == this->intSettings[this->SCREEN_REFRESH] 
+        if (frameCount == this->cfg.getIntValue(this->SCREEN_REFRESH) 
             and (SDL_GetTicks() - fpsTimer) < 1000) {
             continue;
         }
@@ -186,16 +217,12 @@ void Application::run() {
         // Then fill the screen and render the menu
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
 
+        // TODO add bolean setting to show/hide FPS
         printFPS(fps);
 
         SDL_Flip(screen);
 
         frameCount++;
-         
-        // int frameTime = SDL_GetTicks() - frameStart;
-        // if (frameDelay > frameTime) {
-        //     SDL_Delay(frameDelay - frameTime);
-        // }
     
     }
 }
@@ -257,18 +284,12 @@ void Application::handleKeyPress(SDLKey key) {
             break;
         case SDLK_LEFT: {
             MenuItem* selectedItem = currentState->navigateLeft();
-            if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
-                std::cout << "screenRefresh" << std::endl;
-                this->intSettings[this->SCREEN_REFRESH] = std::stoi(selectedItem->getValue());
-            }
+            this->handleSettingsChange(selectedItem);
             break;
         }
         case SDLK_RIGHT:{
             MenuItem* selectedItem = currentState->navigateRight();
-            if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
-                std::cout << "screenRefresh" << std::endl;
-                this->intSettings[this->SCREEN_REFRESH] = std::stoi(selectedItem->getValue());
-            }
+            this->handleSettingsChange(selectedItem);
             break;
         }
         case SDLK_RETURN:
@@ -313,5 +334,12 @@ void Application::handleJoystickEvents(SDL_Event& event) {
             break;
         default:
             break;
+    }
+}
+
+void Application::handleSettingsChange(MenuItem* selectedItem) {
+    if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
+        std::cout << "screenRefresh" << std::endl;
+        this->cfg.setValue(this->SCREEN_REFRESH, selectedItem->getValue());
     }
 }

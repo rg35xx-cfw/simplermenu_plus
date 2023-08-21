@@ -96,7 +96,7 @@ public:
 
 class SystemMenu : public Menu {
 public:
-    SystemMenu();
+    SystemMenu(std::string backgroundPath, std::string settingsFont);
 
     void specificSystemMenuActions();
 

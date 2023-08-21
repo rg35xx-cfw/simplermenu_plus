@@ -23,7 +23,7 @@ private:
     std::stack<Menu*> navigationHistory;
 
 public:
-    State(Menu* initialMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(new SystemMenu()), currentState(MenuState::SYSTEMS_MENU) {}
+    State(Menu* initialMenu, SystemMenu* systemMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(systemMenu), currentState(MenuState::SYSTEMS_MENU) {}
 
     void navigateUp();
     void navigateDown();

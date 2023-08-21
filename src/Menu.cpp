@@ -208,29 +208,10 @@ void Menu::enableSelectionRectangle(bool enable) {
     drawSelectionRectangle = enable;
 }
 
-SystemMenu::SystemMenu() {
+SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 
-    addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
-    addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
-    addItem(std::make_unique<IntegerMenuItem>("screenRefresh", "5"));
-
-    std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
-
-    addItem(std::make_unique<MultiOptionMenuItem>("OVERCLOCK", overclockValues));
-
-    std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
-
-    addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
-
-    addItem(std::make_unique<BooleanMenuItem>("USB MODE", "ADB", false));
-    addItem(std::make_unique<BooleanMenuItem>("WIFI SETTINGS", "OFF", false));
-
-    addItem(std::make_unique<SimpleMenuItem>("QUIT", ""));
-
-    std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
-    std::string settingsFont = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
     setFont(settingsFont, 32);
     setItemPosition(10,92);
     setSpacing(46);
