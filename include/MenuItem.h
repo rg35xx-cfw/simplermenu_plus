@@ -18,7 +18,22 @@ enum class MenuState;
 // MenuItem
 // Template class for menu items
 
-class MenuItem {
+class ISettingsObserver {
+ public:
+  virtual ~ISettingsObserver(){};
+  virtual void settingsChanged(const std::string &title, 
+                               const std::string &value) = 0;
+};
+
+class ISettingsSubject {
+ public:
+  virtual ~ISettingsSubject(){};
+  virtual void attach(ISettingsObserver *observer) = 0;
+  virtual void detach(ISettingsObserver *observer) = 0;
+  virtual void notifySettingsChange() = 0;
+};
+
+class MenuItem : public ISettingsSubject {
 protected:
     SDL_Surface* background = nullptr;
     Menu* parentMenu = nullptr;
@@ -26,6 +41,8 @@ protected:
 
     std::string title;
     std::string value;
+
+    std::list<ISettingsObserver *> observers_;
 
 public:    
     MenuItem(const std::string& title, const std::string& value = "", std::unique_ptr<Menu> submenu = nullptr)
@@ -38,6 +55,7 @@ public:
     virtual void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) = 0;
 
     virtual void renderTitle() const {};
+    // TODO is this method implemented somewhere?
     virtual void renderValue() const {};
 
     virtual std::string getName() const = 0;
@@ -87,6 +105,13 @@ public:
             SDL_FreeSurface(background);
         }
     }
+
+    /**
+     * ISettingsObserver methods
+    */
+    void attach(ISettingsObserver *observer) override;
+    void detach(ISettingsObserver *observer) override;
+    void notifySettingsChange() override;
 };
 
 // SimpleMenuItem
@@ -218,30 +243,15 @@ private:
     int minValue;
     int intValue;                  // Index of the currently selected option
 
+    void updateValuefromInt();
 public:
 
     IntegerMenuItem(const std::string& name, 
                     const std::string& value, 
                     int min = 0, 
-                    int max = 100)
-        : SimpleMenuItem(name, "", value) {
-            this->intValue = std::stoi(value);
-            this->maxValue = max;
-            this->minValue = min;
-    }
+                    int max = 100);
 
-    void navigateLeft() override {
-        if (this->intValue > (this->minValue + 5)) {
-            this->intValue -= 5;
-        }
-        this->value = std::to_string(this->intValue);
-    }
-
-    void navigateRight() override {
-        if (this->intValue < (this->maxValue - 5)) {
-            this->intValue += 5;
-        }
-        this->value = std::to_string(this->intValue);
-    }
+    void navigateLeft() override;
+    void navigateRight() override;
 };
 

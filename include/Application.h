@@ -16,10 +16,11 @@ class RomMenu;
 class SystemMenu;
 class SimpleMenuItem;
 
-class Application {
+class Application : public ISettingsObserver {
 private:
 
-    const std::string SCREEN_REFRESH = "Menu.screenRefresh";
+    const std::string SCREEN_REFRESH_ID = "Menu.screenRefresh";
+    const std::string SCREEN_REFRESH_TITLE = "screenRefresh";
 
     std::unique_ptr<Menu> mainMenu;
     std::unique_ptr<State> currentState;
@@ -77,6 +78,13 @@ public:
 
     void clearBackground();
 
+
+    /**
+     * ISettingsObserver methods
+    */
+    void settingsChanged(const std::string &title, 
+                         const std::string &value) override;
+
 private:
     void setupMenu();
 
@@ -87,7 +95,5 @@ private:
     void handleKeyPress(SDLKey key);
 
     void handleJoystickEvents(SDL_Event& event);
-
-    void handleSettingsChange(MenuItem* selectedItem);
 
 };

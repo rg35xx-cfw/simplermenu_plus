@@ -104,7 +104,11 @@ void Application::createSystemMenu() {
     
     systemMenu->addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
     systemMenu->addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
-    systemMenu->addItem(std::make_unique<IntegerMenuItem>("screenRefresh", "5"));
+
+    std::unique_ptr<IntegerMenuItem> refreshItem = 
+        std::make_unique<IntegerMenuItem>("screenRefresh", "5");
+    refreshItem->attach(this);
+    systemMenu->addItem(std::move(refreshItem));
 
     std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
 
@@ -146,7 +150,7 @@ void Application::run() {
 
     while (isRunning) {
 
-        int frameDelay = 1000 / this->cfg.getIntValue(this->SCREEN_REFRESH);
+        int frameDelay = 1000 / this->cfg.getIntValue(this->SCREEN_REFRESH_ID);
 
         // Wait if last frame was drawn too fast
         if (SDL_GetTicks() - frameStart < frameDelay) {
@@ -154,7 +158,7 @@ void Application::run() {
         }
 
         // Fine tune FPS
-        if (frameCount == this->cfg.getIntValue(this->SCREEN_REFRESH) 
+        if (frameCount == this->cfg.getIntValue(this->SCREEN_REFRESH_ID) 
             and (SDL_GetTicks() - fpsTimer) < 1000) {
             continue;
         }
@@ -282,18 +286,12 @@ void Application::handleKeyPress(SDLKey key) {
         case SDLK_DOWN:
             currentState->navigateDown();
             break;
-        case SDLK_LEFT: {
-            // TODO instead of returning the item, fire an event
-            //      with the change.
-            MenuItem* selectedItem = currentState->navigateLeft();
-            this->handleSettingsChange(selectedItem);
+        case SDLK_LEFT:
+            currentState->navigateLeft();
             break;
-        }
-        case SDLK_RIGHT:{
-            MenuItem* selectedItem = currentState->navigateRight();
-            this->handleSettingsChange(selectedItem);
+        case SDLK_RIGHT:
+            currentState->navigateRight();
             break;
-        }
         case SDLK_RETURN:
             currentState->enterFolder();
             break;
@@ -339,13 +337,12 @@ void Application::handleJoystickEvents(SDL_Event& event) {
     }
 }
 
-void Application::handleSettingsChange(MenuItem* selectedItem) {
-    // TODO this should be a listener for settings change events
-    // FIXME this is broken because the title != key
-    //       screenRefresh != Menu.screenRefresh
-    //       Add id field to Item class
-    if (selectedItem->getTitle() == this->SCREEN_REFRESH) {
+void Application::settingsChanged(const std::string &title, 
+                                  const std::string &value) {
+
+    if (title == this->SCREEN_REFRESH_TITLE) {
         std::cout << "screenRefresh" << std::endl;
-        this->cfg.setValue(this->SCREEN_REFRESH, selectedItem->getValue());
+        this->cfg.setValue(this->SCREEN_REFRESH_ID, value);
     }
+
 }

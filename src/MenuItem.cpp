@@ -30,6 +30,33 @@ void MenuItem::setBackground(const std::string& backgroundPath, SDL_Surface* scr
     }
 }
 
+  /**
+   * The subscription management methods.
+   */
+  void MenuItem::attach(ISettingsObserver *observer) {
+    this->observers_.push_back(observer);
+    std::cout << "Observer attached.\n";
+  }
+
+  void MenuItem::detach(ISettingsObserver *observer) {
+    this->observers_.remove(observer);
+  }
+
+  void MenuItem::notifySettingsChange() {
+    std::list<ISettingsObserver *>::iterator iterator = 
+        this->observers_.begin();
+
+    while (iterator != this->observers_.end()) {
+      (*iterator)->settingsChanged(this->title, this->value);
+      ++iterator;
+      std::cout << "Observer notified.\n";
+    }
+  }
+
+  /**
+   * SimpleMenuItem methods 
+   */
+
 void SimpleMenuItem::executeAction() {
     std::cout << "executeAction for entry " << title << " value: " << value << std::endl;
     // Execute the action associated with this menu item
@@ -279,3 +306,34 @@ void BooleanMenuItem::navigateRight() {
 
     toggleValue();
 }
+
+IntegerMenuItem::IntegerMenuItem(const std::string& name, 
+                                 const std::string& value, 
+                                 int min, 
+                                 int max)
+                    : SimpleMenuItem(name, "", value) {
+    this->intValue = std::stoi(value);
+    this->maxValue = max;
+    this->minValue = min;
+}
+
+void IntegerMenuItem::updateValuefromInt() {
+    this->value = std::to_string(this->intValue);
+    this->notifySettingsChange();
+}
+
+void IntegerMenuItem::navigateLeft() {
+    if (this->intValue > (this->minValue + 5)) {
+        this->intValue -= 5;
+        this->updateValuefromInt();
+    }
+}
+
+void IntegerMenuItem::navigateRight() {
+    if (this->intValue < (this->maxValue - 5)) {
+        this->intValue += 5;
+        this->updateValuefromInt();
+    }
+    
+}
+
