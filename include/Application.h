@@ -1,14 +1,19 @@
 #pragma once
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <memory>
 #include <string>
 #include <SDL/SDL.h>
+
 #include "Configuration.h"
 #include "Menu.h"
 #include "MenuItem.h"
 #include "ThumbnailCache.h"
 #include "State.h"
 #include "FileManager.h"
+
+namespace pt = boost::property_tree;
 
 class State;
 class SystemMenu;
@@ -21,6 +26,8 @@ private:
 
     const std::string SCREEN_REFRESH_ID = "Menu.screenRefresh";
     const std::string SCREEN_REFRESH_TITLE = "screenRefresh";
+    const std::string SHOW_FPS_ID = "Menu.showFPS";
+    const std::string SHOW_FPS_TITLE = "showFPS";
 
     std::unique_ptr<Menu> mainMenu;
     std::unique_ptr<State> currentState;
@@ -95,5 +102,8 @@ private:
     void handleKeyPress(SDLKey key);
 
     void handleJoystickEvents(SDL_Event& event);
+
+    void loadMenuFromJSON(const std::string& jsonPath);
+
 
 };

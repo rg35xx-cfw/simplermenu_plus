@@ -2,6 +2,7 @@
 #include <iostream>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
+#include <boost/algorithm/string.hpp>
 
 Configuration::Configuration() {
     // Load values from .ini file using Boost.PropertyTree
@@ -31,7 +32,18 @@ std::string Configuration::getValue(const std::string& key) const {
     if (it != configValues.end()) {
         return it->second;
     } else {
+        // TODO fire an exception?
         return "NOT FOUND"; 
+    }
+}
+
+bool Configuration::getBoolValue(const std::string& key) const {
+    std::string value = boost::algorithm::to_lower_copy(getValue(key));
+    try {
+        return value == "on";
+    } catch (const std::exception& e) {
+        std::cerr << "Error converting value for key '" << key << "' to boolean: " << e.what() << std::endl;
+        return false; // Return a default value or handle the error appropriately
     }
 }
 

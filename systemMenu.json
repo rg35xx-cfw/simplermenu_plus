@@ -1,0 +1,53 @@
+ 
+{
+    "SystemMenu": [
+        {
+            "type": "IntegerMenuItem",
+            "title": "VOLUME",
+            "value": "80"
+        },
+        {
+            "type": "IntegerMenuItem",
+            "title": "BRIGHTNESS",
+            "value": "50"
+        },
+        {
+            "type": "IntegerMenuItem",
+            "title": "screenRefresh",
+            "value": "5"
+        },
+        {
+            "type": "BooleanMenuItem",
+            "title": "showFPS",
+            "value": "ON",
+            "default": true
+        },
+        {
+            "type": "MultiOptionMenuItem",
+            "title": "OVERCLOCK",
+            "options": ["840 MHz", "1008 MHz", "1296 MHz"]
+        },
+        {
+            "type": "MultiOptionMenuItem",
+            "title": "THEME",
+            "options": ["Comicbook", "Simplemenu", "BigCody"]
+        },
+        {
+            "type": "BooleanMenuItem",
+            "title": "USB MODE",
+            "value": "ADB",
+            "default": false
+        },
+        {
+            "type": "BooleanMenuItem",
+            "title": "WIFI SETTINGS",
+            "value": "OFF",
+            "default": false
+        },
+        {
+            "type": "SimpleMenuItem",
+            "title": "QUIT",
+            "value": ""
+        }
+    ]
+}

@@ -288,11 +288,13 @@ bool BooleanMenuItem::getValue() const {
 void BooleanMenuItem::setValue(bool newValue) {
     boolValue = newValue;
     value = boolValue ? "ON" : "OFF";
+    this->notifySettingsChange();
 }
 
 void BooleanMenuItem::toggleValue() {
     setValue(!boolValue);
     std::cout << "Value set to " << value << std::endl;
+    this->notifySettingsChange();
 }
 
 void BooleanMenuItem::navigateLeft() {

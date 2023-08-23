@@ -18,6 +18,7 @@ public:
 
     void setValue(const std::string& key, const std::string& value);
     std::string getValue(const std::string& key) const;
+    bool getBoolValue(const std::string& key) const;
     int getIntValue(const std::string& key) const;
     std::set<std::string> getStringList(const std::string& key, char delimiter = ',') const;
     std::string getThemePath() const;

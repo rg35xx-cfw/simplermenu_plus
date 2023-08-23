@@ -99,29 +99,33 @@ void Application::createSystemMenu() {
         Configuration::getInstance().getValue("Menu.homePath") 
         + ".simplemenu/resources/Akrobat-Bold.ttf";
 
-        
-    systemMenu = std::make_unique<SystemMenu>(backgroundPath, settingsFont);
-    
-    systemMenu->addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
-    systemMenu->addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
+    this->systemMenu = std::make_unique<SystemMenu>(backgroundPath, settingsFont);
 
-    std::unique_ptr<IntegerMenuItem> refreshItem = 
-        std::make_unique<IntegerMenuItem>("screenRefresh", "5");
-    refreshItem->attach(this);
-    systemMenu->addItem(std::move(refreshItem));
+    std::string systemMenuJSON = 
+        Configuration::getInstance().getValue("Menu.systemMenuJSON");
 
-    std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
+    loadMenuFromJSON(systemMenuJSON);
 
-    systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("OVERCLOCK", overclockValues));
+    // systemMenu->addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
+    // systemMenu->addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
 
-    std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
+    // std::unique_ptr<IntegerMenuItem> refreshItem = 
+    //     std::make_unique<IntegerMenuItem>("screenRefresh", "5");
+    // refreshItem->attach(this);
+    // systemMenu->addItem(std::move(refreshItem));
 
-    systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
+    // std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
 
-    systemMenu->addItem(std::make_unique<BooleanMenuItem>("USB MODE", "ADB", false));
-    systemMenu->addItem(std::make_unique<BooleanMenuItem>("WIFI SETTINGS", "OFF", false));
+    // systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("OVERCLOCK", overclockValues));
 
-    systemMenu->addItem(std::make_unique<SimpleMenuItem>("QUIT", ""));
+    // std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
+
+    // systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
+
+    // systemMenu->addItem(std::make_unique<BooleanMenuItem>("USB MODE", "ADB", false));
+    // systemMenu->addItem(std::make_unique<BooleanMenuItem>("WIFI SETTINGS", "OFF", false));
+
+    // systemMenu->addItem(std::make_unique<SimpleMenuItem>("QUIT", ""));
 
 }
 
@@ -222,7 +226,9 @@ void Application::run() {
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
 
         // TODO add bolean setting to show/hide FPS
-        printFPS(fps);
+        if (this->cfg.getBoolValue(this->SHOW_FPS_ID)) {
+            printFPS(fps);
+        }
 
         SDL_Flip(screen);
 
@@ -341,8 +347,83 @@ void Application::settingsChanged(const std::string &title,
                                   const std::string &value) {
 
     if (title == this->SCREEN_REFRESH_TITLE) {
-        std::cout << "screenRefresh" << std::endl;
         this->cfg.setValue(this->SCREEN_REFRESH_ID, value);
+
+    } else if (title == this->SHOW_FPS_TITLE) {
+        this->cfg.setValue(this->SHOW_FPS_ID, value);
+    }   
+
+}
+
+void Application::loadMenuFromJSON(const std::string& jsonPath) {
+    // Create a root
+    pt::ptree root;
+
+    // Load the JSON file into the property tree
+    try {
+        pt::read_json(jsonPath, root);
+    } catch (const pt::json_parser::json_parser_error& e) {
+        std::cerr << "Failed to parse " << jsonPath << ": " << e.what() << std::endl;
+        return;
     }
 
+    // TODO default value must be stored in Configuration
+    //      iif there is no value in the ini file
+    //      Doing nothing at the moment as we still need
+    //      to initialize menu items based on the initial
+    //      configuration loaded from the ini file
+
+    // Iterate over the menu items
+    for (const auto& jsonItem : root.get_child("SystemMenu")) {
+        auto type = jsonItem.second.get<std::string>("type");
+
+        std::unique_ptr<SimpleMenuItem> menuItem = nullptr;
+
+        if (type == "SimpleMenuItem") {
+
+            menuItem = 
+                std::make_unique<SimpleMenuItem>(
+                    jsonItem.second.get<std::string>("title"),
+                    jsonItem.second.get<std::string>("value"));
+
+        } else if (type == "IntegerMenuItem") {
+
+            menuItem = 
+                std::make_unique<IntegerMenuItem>(
+                    jsonItem.second.get<std::string>("title"),
+                    jsonItem.second.get<std::string>("value"));
+        
+        } else if (type == "BooleanMenuItem") {
+
+            menuItem = 
+                std::make_unique<BooleanMenuItem>(
+                    jsonItem.second.get<std::string>("title"),
+                    jsonItem.second.get<std::string>("value"),
+                    jsonItem.second.get<bool>("default"));
+
+        } else if (type == "MultiOptionMenuItem") {
+            
+            std::vector<std::string> options;
+            pt::ptree const& children = jsonItem.second.get_child("options");
+            for (const auto& child : children) {
+                // children is a list of `std::pair("", value)`
+                //   - child.first contains the string ""
+                //   - child.second contains the option value
+                options.push_back(child.second.data());
+            }
+
+            menuItem = 
+                std::make_unique<MultiOptionMenuItem>(
+                    jsonItem.second.get<std::string>("title"),
+                    options);
+        
+        }
+
+        if (menuItem) {
+            menuItem->attach(this);
+            systemMenu->addItem(std::move(menuItem));
+        }
+
+        
+    }
 }
