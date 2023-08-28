@@ -21,13 +21,42 @@ class RomMenu;
 class SystemMenu;
 class SimpleMenuItem;
 
+enum class SettingId {
+    VOLUME,
+    BRIGHTNESS,
+    SCREEN_REFRESH,
+    SHOW_FPS,
+    OVERCLOCK,
+    THEME,
+    USB_MODE,
+    WIFI,
+    QUIT
+
+};
+
 class Application : public ISettingsObserver {
 private:
 
-    const std::string SCREEN_REFRESH_ID = "Menu.screenRefresh";
-    const std::string SCREEN_REFRESH_TITLE = "screenRefresh";
-    const std::string SHOW_FPS_ID = "Menu.showFPS";
-    const std::string SHOW_FPS_TITLE = "showFPS";
+    // TODO should this be constant?
+    std::map<SettingId, std::string> idToString{
+        {SettingId::VOLUME, "System.volume"}, 
+        {SettingId::BRIGHTNESS, "System.brightness"}, 
+        {SettingId::SCREEN_REFRESH, "System.screenRefresh"},
+        {SettingId::SHOW_FPS, "System.showFPS"},
+        {SettingId::OVERCLOCK, "System.overclock"},
+        {SettingId::THEME, "System.theme"},
+        {SettingId::USB_MODE, "System.usbMode"},
+        {SettingId::WIFI, "System.wifi"},
+        {SettingId::QUIT, "System.quit"}
+    };
+
+    // const std::string VOLUME_ID = "System.volume";
+    // const std::string BRIGHTNESS_ID = "System.brightness";
+    // const std::string SCREEN_REFRESH_ID = "System.screenRefresh";
+    // const std::string SHOW_FPS_ID = "System.showFPS";
+    // const std::string OVERCLOCK_ID = "System.overclock";
+    // const std::string THEME_ID = "System.theme";
+
 
     std::unique_ptr<Menu> mainMenu;
     std::unique_ptr<State> currentState;
@@ -89,7 +118,7 @@ public:
     /**
      * ISettingsObserver methods
     */
-    void settingsChanged(const std::string &title, 
+    void settingsChanged(const std::string &id, 
                          const std::string &value) override;
 
 private:

@@ -154,7 +154,10 @@ void Application::run() {
 
     while (isRunning) {
 
-        int frameDelay = 1000 / this->cfg.getIntValue(this->SCREEN_REFRESH_ID);
+        int screenRefresh = this->cfg.getIntValue(
+                            idToString[SettingId::SCREEN_REFRESH]);
+
+        int frameDelay = 1000 / screenRefresh;
 
         // Wait if last frame was drawn too fast
         if (SDL_GetTicks() - frameStart < frameDelay) {
@@ -162,7 +165,7 @@ void Application::run() {
         }
 
         // Fine tune FPS
-        if (frameCount == this->cfg.getIntValue(this->SCREEN_REFRESH_ID) 
+        if (frameCount == screenRefresh 
             and (SDL_GetTicks() - fpsTimer) < 1000) {
             continue;
         }
@@ -226,7 +229,7 @@ void Application::run() {
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
 
         // TODO add bolean setting to show/hide FPS
-        if (this->cfg.getBoolValue(this->SHOW_FPS_ID)) {
+        if (this->cfg.getBoolValue(idToString[SettingId::SHOW_FPS])) {
             printFPS(fps);
         }
 
@@ -274,11 +277,13 @@ void Application::setupMenu() {
         subMenu->setParent(mainMenu.get());
         for (const auto& file : files) {
             std::string romPath = romsPath + folder + "/" + file;
-            subMenu->addItem(std::make_unique<SimpleMenuItem>(file, romPath));
+            // FIXME MenuItem id should not be ""
+            subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
         }
 
         // Add each folder (game system) populated with its own submenu (list of games in the folder)
-        mainMenu->addItem(std::make_unique<SimpleMenuItem>(folder, std::move(subMenu)));
+        // FIXME MenuItem id should not be ""
+        mainMenu->addItem(std::make_unique<SimpleMenuItem>("", folder, std::move(subMenu)));
     }
 
     std::cout << "Found folders: " << folders.size() << std::endl;
@@ -343,14 +348,14 @@ void Application::handleJoystickEvents(SDL_Event& event) {
     }
 }
 
-void Application::settingsChanged(const std::string &title, 
+void Application::settingsChanged(const std::string &id, 
                                   const std::string &value) {
 
-    if (title == this->SCREEN_REFRESH_TITLE) {
-        this->cfg.setValue(this->SCREEN_REFRESH_ID, value);
+    if (id == idToString[SettingId::SCREEN_REFRESH]) {
+        this->cfg.setValue(idToString[SettingId::SCREEN_REFRESH], value);
 
-    } else if (title == this->SHOW_FPS_TITLE) {
-        this->cfg.setValue(this->SHOW_FPS_ID, value);
+    } else if (id == idToString[SettingId::SHOW_FPS]) {
+        this->cfg.setValue(idToString[SettingId::SHOW_FPS], value);
     }   
 
 }
@@ -367,41 +372,31 @@ void Application::loadMenuFromJSON(const std::string& jsonPath) {
         return;
     }
 
-    // TODO default value must be stored in Configuration
-    //      iif there is no value in the ini file
-    //      Doing nothing at the moment as we still need
-    //      to initialize menu items based on the initial
-    //      configuration loaded from the ini file
-
     // Iterate over the menu items
     for (const auto& jsonItem : root.get_child("SystemMenu")) {
         auto type = jsonItem.second.get<std::string>("type");
 
         std::unique_ptr<SimpleMenuItem> menuItem = nullptr;
+        std::string id = jsonItem.second.get<std::string>("id");
+        // TODO check if id is known (exists in settingsMap)? 
+        std::string title = jsonItem.second.get<std::string>("title");
 
         if (type == "SimpleMenuItem") {
-
             menuItem = 
-                std::make_unique<SimpleMenuItem>(
-                    jsonItem.second.get<std::string>("title"),
-                    jsonItem.second.get<std::string>("value"));
+                std::make_unique<SimpleMenuItem>(id, title, "");
 
         } else if (type == "IntegerMenuItem") {
-
+            std::string value = this->cfg.getValue(id);
             menuItem = 
-                std::make_unique<IntegerMenuItem>(
-                    jsonItem.second.get<std::string>("title"),
-                    jsonItem.second.get<std::string>("value"));
+                std::make_unique<IntegerMenuItem>(id, title, value);
         
         } else if (type == "BooleanMenuItem") {
-
+            std::string value = this->cfg.getValue(id);
             menuItem = 
-                std::make_unique<BooleanMenuItem>(
-                    jsonItem.second.get<std::string>("title"),
-                    jsonItem.second.get<std::string>("value"),
-                    jsonItem.second.get<bool>("default"));
+                std::make_unique<BooleanMenuItem>(id, title, value);
 
         } else if (type == "MultiOptionMenuItem") {
+            std::string value = this->cfg.getValue(id);
             
             std::vector<std::string> options;
             pt::ptree const& children = jsonItem.second.get_child("options");
@@ -414,8 +409,7 @@ void Application::loadMenuFromJSON(const std::string& jsonPath) {
 
             menuItem = 
                 std::make_unique<MultiOptionMenuItem>(
-                    jsonItem.second.get<std::string>("title"),
-                    options);
+                    id, title, value, options);
         
         }
 

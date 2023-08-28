@@ -210,6 +210,8 @@ void Menu::enableSelectionRectangle(bool enable) {
 
 SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 
+    itemsPerPage = Configuration::getInstance().getIntValue("System.itemsPerPage");
+
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
     setFont(settingsFont, 32);
@@ -222,17 +224,17 @@ SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 }
 
 RomMenu::RomMenu() {
-    addItem(std::make_unique<BooleanMenuItem>("AUTOSTART", "OFF", false));
+    addItem(std::make_unique<BooleanMenuItem>("Rom.autostart", "AUTOSTART", "OFF"));
     
     std::vector<std::string> coreOptions = {"mame2003_plus", "fbneo", "fbalpha", "mame2000", "mame2010"};
 
-    addItem(std::make_unique<MultiOptionMenuItem>("SELECT CORE/EMULATOR", coreOptions));
-    addItem(std::make_unique<BooleanMenuItem>("AUTO SAVE STATE", "OFF", false));
-    addItem(std::make_unique<BooleanMenuItem>("LOAD STATE", "OFF", false));
+    addItem(std::make_unique<MultiOptionMenuItem>("Rom.selectCore", "SELECT CORE/EMULATOR", coreOptions[0], coreOptions));
+    addItem(std::make_unique<BooleanMenuItem>("Rom.saveState", "AUTO SAVE STATE", "OFF"));
+    addItem(std::make_unique<BooleanMenuItem>("Rom.loadState", "LOAD STATE", "OFF"));
 
     std::vector<std::string> overclockValues = {"OFF", "840 MHz", "1008 MHz", "1296 MHz"};
 
-    addItem(std::make_unique<MultiOptionMenuItem>("ROM OVERCLOCK", overclockValues));
+    addItem(std::make_unique<MultiOptionMenuItem>("Rom.overclock", "ROM OVERCLOCK", overclockValues[0], overclockValues));
 
 
     std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/rom_settings.png";

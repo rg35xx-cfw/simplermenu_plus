@@ -2,6 +2,7 @@
 #include "Menu.h"
 #include "State.h"
 #include "Application.h"
+#include "Exception.h"
 
 #include <iostream>
 #include <filesystem>
@@ -47,9 +48,10 @@ void MenuItem::setBackground(const std::string& backgroundPath, SDL_Surface* scr
         this->observers_.begin();
 
     while (iterator != this->observers_.end()) {
-      (*iterator)->settingsChanged(this->title, this->value);
-      ++iterator;
-      std::cout << "Observer notified.\n";
+        (*iterator)->settingsChanged(this->id, this->value);
+        ++iterator;
+        std::cout << "Observer notified: " << this->id << " : " 
+            << this->value << "\n";
     }
   }
 
@@ -309,11 +311,61 @@ void BooleanMenuItem::navigateRight() {
     toggleValue();
 }
 
-IntegerMenuItem::IntegerMenuItem(const std::string& name, 
+MultiOptionMenuItem::MultiOptionMenuItem(
+    const std::string& id,
+    const std::string& title,
+    const std::string& value,
+    const std::vector<std::string>& availableOptions) : 
+    SimpleMenuItem(id, 
+                   title, 
+                   "", 
+                   "") {
+        this->options = availableOptions;
+        this->setValue(value);
+    }
+
+int MultiOptionMenuItem::mod(int a, int b) { 
+    return (a % b + b) % b; 
+}
+
+void MultiOptionMenuItem::setValue(const std::string& value) {
+
+    int valueIndex = -1;
+
+    for (int i=0; i < this->options.size(); i++) {
+        if (this->options[i] == value) {
+            valueIndex = i;
+            break;
+        }
+    }
+
+    if (valueIndex >= 0) {
+        this->currentIndex = valueIndex;
+        this->value = this->options[valueIndex];
+    } else {
+        std::string optionsStr;
+        for (const auto &option : this->options) optionsStr += option + " ";
+            throw OptionValueNotFoundException(
+                "Value " + value + " not found in " + optionsStr);
+    }
+}
+
+void MultiOptionMenuItem::navigateLeft() {
+    this->currentIndex = this->mod((this->currentIndex - 1), this->options.size());
+    this->value = this->options[this->currentIndex];
+}
+
+void MultiOptionMenuItem::navigateRight() {
+    this->currentIndex = this->mod((this->currentIndex + 1), this->options.size());
+    this->value = this->options[this->currentIndex];
+}
+
+IntegerMenuItem::IntegerMenuItem(const std::string& id,
+                                 const std::string& name, 
                                  const std::string& value, 
                                  int min, 
                                  int max)
-                    : SimpleMenuItem(name, "", value) {
+                    : SimpleMenuItem(id, name, "", value) {
     this->intValue = std::stoi(value);
     this->maxValue = max;
     this->minValue = min;

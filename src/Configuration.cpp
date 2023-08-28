@@ -1,4 +1,5 @@
 #include "Configuration.h"
+#include "Exception.h"
 #include <iostream>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
@@ -32,8 +33,7 @@ std::string Configuration::getValue(const std::string& key) const {
     if (it != configValues.end()) {
         return it->second;
     } else {
-        // TODO fire an exception?
-        return "NOT FOUND"; 
+        throw IniValueNotFoundException("Value not found for key: " + key); 
     }
 }
 

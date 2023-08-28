@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <memory>
 #include <filesystem>
+#include <boost/algorithm/string.hpp>
 
 #include "Menu.h"
 
@@ -21,7 +22,7 @@ enum class MenuState;
 class ISettingsObserver {
  public:
   virtual ~ISettingsObserver(){};
-  virtual void settingsChanged(const std::string &title, 
+  virtual void settingsChanged(const std::string &id, 
                                const std::string &value) = 0;
 };
 
@@ -39,14 +40,18 @@ protected:
     Menu* parentMenu = nullptr;
     std::unique_ptr<Menu> subMenu = nullptr;
 
+    std::string id;
     std::string title;
     std::string value;
 
     std::list<ISettingsObserver *> observers_;
 
 public:    
-    MenuItem(const std::string& title, const std::string& value = "", std::unique_ptr<Menu> submenu = nullptr)
-        : title(title), value(value), subMenu(std::move(submenu)) {}
+    MenuItem(const std::string& id, 
+             const std::string& title, 
+             const std::string& value = "", 
+             std::unique_ptr<Menu> submenu = nullptr)
+        : id(id), title(title), value(value), subMenu(std::move(submenu)) {}
 
     virtual void navigateLeft() {}
     virtual void navigateRight() {}
@@ -147,8 +152,11 @@ public:
     // value = false
     // path = roms/neogeo/mslug.zip
 
-    SimpleMenuItem(const std::string& title, const std::string& path, const std::string& value = "") 
-        : MenuItem(title, value), path(path) {
+    SimpleMenuItem(const std::string& id,
+                   const std::string& title, 
+                   const std::string& path, 
+                   const std::string& value = "") 
+        : MenuItem(id, title, value), path(path) {
 
         // Calculate thumbnail path here
         std::filesystem::path romPath(path);
@@ -159,8 +167,11 @@ public:
 
     // Constructor to handle submenus
     // Typically used for for
-    SimpleMenuItem(const std::string& title, std::unique_ptr<Menu> submenu, const std::string& path = "")
-    : MenuItem(title, "", std::move(submenu)), path(path) {}
+    SimpleMenuItem(const std::string& id, 
+                   const std::string& title, 
+                   std::unique_ptr<Menu> submenu, 
+                   const std::string& path = "")
+    : MenuItem(id, title, "", std::move(submenu)), path(path) {}
 
     ~SimpleMenuItem() {}
 
@@ -198,7 +209,14 @@ private:
 
 public:
     BooleanMenuItem();
-    BooleanMenuItem(const std::string& name, const std::string& value, bool initialValue) : SimpleMenuItem(name, "", value), boolValue(initialValue) {}; 
+    BooleanMenuItem(const std::string& id,
+                    const std::string& title, 
+                    const std::string& value) 
+    : SimpleMenuItem(id, 
+                     title, 
+                     "", 
+                     boost::algorithm::to_upper_copy(value)), 
+      boolValue(boost::algorithm::to_upper_copy(value) == "ON" ? true : false) {};
 
     bool getValue() const;
     void setValue(bool newValue);
@@ -214,25 +232,17 @@ private:
     std::vector<std::string> options;  // List of available options
     int currentIndex;                  // Index of the currently selected option
 
+    int mod(int a, int b);
+
 public:
-    MultiOptionMenuItem(const std::string& title, const std::vector<std::string>& availableOptions)
-        : SimpleMenuItem(title, "", availableOptions.empty() ? "" : availableOptions[0]),
-          options(availableOptions),
-          currentIndex(0) {}
+    MultiOptionMenuItem(const std::string& id,
+                        const std::string& title,
+                        const std::string& value,
+                        const std::vector<std::string>& availableOptions);
 
-    void navigateLeft() override {
-        if (currentIndex > 0) {
-            currentIndex--;
-            value = options[currentIndex];
-        }
-    }
-
-    void navigateRight() override {
-        if (currentIndex < options.size() - 1) {
-            currentIndex++;
-            value = options[currentIndex];
-        }
-    }
+    void setValue(const std::string& value);
+    void navigateLeft() override;
+    void navigateRight() override;
 };
 
 // IntegerMenuItem
@@ -246,7 +256,8 @@ private:
     void updateValuefromInt();
 public:
 
-    IntegerMenuItem(const std::string& name, 
+    IntegerMenuItem(const std::string& id,
+                    const std::string& name, 
                     const std::string& value, 
                     int min = 0, 
                     int max = 100);

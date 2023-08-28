@@ -2,52 +2,56 @@
 {
     "SystemMenu": [
         {
+            "id": "System.volume",
             "type": "IntegerMenuItem",
-            "title": "VOLUME",
-            "value": "80"
+            "title": "Volume"
         },
         {
+            "id": "System.brightness",
             "type": "IntegerMenuItem",
-            "title": "BRIGHTNESS",
-            "value": "50"
+            "title": "Brightness"
         },
         {
+            "id": "System.screenRefresh",
             "type": "IntegerMenuItem",
-            "title": "screenRefresh",
-            "value": "5"
+            "title": "Screen Refresh Rate"
         },
         {
+            "id": "System.showFPS",
             "type": "BooleanMenuItem",
-            "title": "showFPS",
-            "value": "ON",
-            "default": true
+            "title": "showFPS"
         },
         {
+            "id": "System.overclock",
             "type": "MultiOptionMenuItem",
-            "title": "OVERCLOCK",
+            "title": "Overclock",
             "options": ["840 MHz", "1008 MHz", "1296 MHz"]
         },
         {
+            "id": "System.theme",
             "type": "MultiOptionMenuItem",
-            "title": "THEME",
+            "title": "Theme",
             "options": ["Comicbook", "Simplemenu", "BigCody"]
         },
         {
+            "id": "System.usbMode",
             "type": "BooleanMenuItem",
-            "title": "USB MODE",
-            "value": "ADB",
-            "default": false
+            "title": "USB Mode"
         },
         {
+            "id": "System.wifi",
             "type": "BooleanMenuItem",
-            "title": "WIFI SETTINGS",
-            "value": "OFF",
-            "default": false
+            "title": "WIFI"
         },
         {
+            "id": "System.rotation",
+            "type": "BooleanMenuItem",
+            "title": "Auto rotate"
+        },
+        {
+            "id": "System.quit",
             "type": "SimpleMenuItem",
-            "title": "QUIT",
-            "value": ""
+            "title": "Quit"
         }
     ]
 }
