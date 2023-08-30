@@ -330,11 +330,13 @@ void Application::setupMenu() {
                     subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
                 }
             }
-
-            sectionMenu->addItem(std::make_unique<SimpleMenuItem>("", consoleName, std::move(subMenu)));
+            if (subMenu->getNumberOfItems() > 0) {
+                sectionMenu->addItem(std::make_unique<SimpleMenuItem>("", consoleName, std::move(subMenu)));
+            }
         }
-
-        mainMenu->addItem(std::make_unique<SimpleMenuItem>("", sectionGroupFile, std::move(sectionMenu)));
+        if (sectionMenu->getNumberOfItems() >0) {
+            mainMenu->addItem(std::make_unique<SimpleMenuItem>("", sectionGroupFile, std::move(sectionMenu)));
+        }
     }
 }
 
