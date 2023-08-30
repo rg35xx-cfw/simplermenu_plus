@@ -68,22 +68,22 @@ int Menu::getNumberOfItems() {
 }
 
 void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
-   // Check if the menu is a ROM menu and set the background
+    // Check if the menu is a ROM menu and set the background
+    SDL_Surface* background = nullptr;
     if (currentState == MenuState::ROMLIST_MENU) {
-        SDL_Surface* romBackground = SimpleMenuItem::loadRomBackground();
-        if (romBackground) {
-            SDL_BlitSurface(romBackground, NULL, screen, NULL);
-            SDL_FreeSurface(romBackground);  // Free the surface after using it
-        }
-    } else {
-        // Existing logic to set the background for other views
+       background = SimpleMenuItem::loadRomBackground();
+    } else if(currentState == MenuState::SYSTEMS_MENU) {
         MenuItem* selectedItem = items[selectedItemIndex].get();
-        SDL_Surface* background = selectedItem->getAssociatedBackground();
-        if (background) {
-            SDL_BlitSurface(background, NULL, screen, NULL);
-        } else {
-            SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
-        }
+        background = selectedItem->getBackground();     
+    } else {
+        background = SimpleMenuItem::loadSettingsBackground();
+    }
+
+    if (background) {
+        SDL_BlitSurface(background, NULL, screen, NULL);
+    } else {
+        // If there's no background, we set the background to black
+        SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
     }
 
     // 3. Render each menu item
@@ -114,7 +114,10 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     for (int i = startIndex; i < endIndex; i++) {
         bool isSelected = (i == selectedItemIndex);
         int spacing = customSpacing ? customSpacing : 24;
-        items[i]->render(screen, currentFont, x, y + (i - startIndex) * spacing, isSelected, currentState);
+        // We only render the current item if we are in single screen view, otherwise we display all items
+        if (isSelected || (currentState != MenuState::SYSTEMS_MENU && currentState != MenuState::SECTIONS_MENU)) {
+            items[i]->render(screen, currentFont, x, y + (i - startIndex) * spacing, isSelected, currentState);
+        }
     }
 
     // If we are in the rom list view, we render the number of pages as well as the system title
@@ -122,7 +125,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         MenuItem* selectedItem = items[selectedItemIndex].get();
 
-        std::string systemTitle = selectedItem->getFolderName() + "TEST";
+        std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
         std::string fontPath = Configuration::getInstance().getValue("Menu.titleFont");
         TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);

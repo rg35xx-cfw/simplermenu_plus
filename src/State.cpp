@@ -13,11 +13,6 @@ void State::navigateUp() {
     if (auto item = dynamic_cast<SimpleMenuItem*>(currentMenu->getItem(newIndex))) {
         item->select();
     }
-
-    if (currentMenu == mainMenu) {
-        MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
-        selectedItem->determineAndSetBackground(screen);
-    }  
 }
 
 void State::navigateDown() {
@@ -32,11 +27,6 @@ void State::navigateDown() {
     if (auto item = dynamic_cast<SimpleMenuItem*>(currentMenu->getItem(newIndex))) {
         item->select();
     }
-
-    if (currentMenu == mainMenu) {
-        MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
-        selectedItem->determineAndSetBackground(screen);
-    }  
 }
 
 void State::navigateLeft() {
@@ -97,6 +87,15 @@ void State::enterFolder() {
     std::cout << "enterFolder, IN state: " << getActiveMenuName() << std::endl;
 
     switch (currentState) {
+        case MenuState::SECTIONS_MENU:
+        {
+            int index = currentMenu->getSelectedItemIndex();
+            if (MenuItem* menuItem = currentMenu->getItem(index)) {
+                currentMenu = menuItem->getSubMenu();
+                currentState = MenuState::SYSTEMS_MENU;
+            }
+            break;
+        }
         case MenuState::SYSTEMS_MENU:
             // Logic to transition from SYSTEMS_MENU to ROMLIST_MENU
             {
@@ -153,7 +152,10 @@ void State::exitFolder() {
         //     // Handle the transition, e.g., load ROMs for the selected system
         //     break;
         //     }
-
+        case MenuState::SYSTEMS_MENU:
+            currentMenu = currentMenu->getParent();
+            currentState = MenuState::SECTIONS_MENU;
+            break;
         case MenuState::ROMLIST_MENU:
             currentMenu = currentMenu->getParent();
             currentState = MenuState::SYSTEMS_MENU;
@@ -169,8 +171,6 @@ void State::exitFolder() {
             //currentMenu = currentMenu->getParent();
             currentMenu = navigationHistory.top(); 
             navigationHistory.pop();
-            // MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
-            // selectedItem->determineAndSetBackground(screen);
             currentState = MenuState::ROMLIST_MENU;
             break;
         }
@@ -225,7 +225,7 @@ void State::showSystemMenu() {
 
 void State::hideSystemMenu() {
     currentMenu = currentMenu->getParent();
-    currentState = MenuState::SYSTEMS_MENU;
+    //currentState = MenuState::SYSTEMS_MENU;
 }
 
 bool State::romMenuIsActive() const {
@@ -246,6 +246,8 @@ void State::hideRomMenu() {
 
 std::string State::getActiveMenuName() const {
     switch (currentState) {
+        case MenuState::SECTIONS_MENU:
+            return "SectionsMenu";
         case MenuState::ROMLIST_MENU:
             return "RomListMenu";
         case MenuState::ROM_SETTINGS_MENU:

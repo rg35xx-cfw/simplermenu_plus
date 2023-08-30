@@ -3,6 +3,8 @@
 #include <fstream>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
 
 #include "Configuration.h"
 #include "Menu.h"
@@ -105,28 +107,6 @@ void Application::createSystemMenu() {
         Configuration::getInstance().getValue("Menu.systemMenuJSON");
 
     loadMenuFromJSON(systemMenuJSON);
-
-    // systemMenu->addItem(std::make_unique<IntegerMenuItem>("VOLUME", "80"));
-    // systemMenu->addItem(std::make_unique<IntegerMenuItem>("BRIGHTNESS","50"));
-
-    // std::unique_ptr<IntegerMenuItem> refreshItem = 
-    //     std::make_unique<IntegerMenuItem>("screenRefresh", "5");
-    // refreshItem->attach(this);
-    // systemMenu->addItem(std::move(refreshItem));
-
-    // std::vector<std::string> overclockValues = {"840 MHz", "1008 MHz", "1296 MHz"};
-
-    // systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("OVERCLOCK", overclockValues));
-
-    // std::vector<std::string> themes = {"Comicbook", "Simplemenu", "BigCody"};
-
-    // systemMenu->addItem(std::make_unique<MultiOptionMenuItem>("THEME", themes));
-
-    // systemMenu->addItem(std::make_unique<BooleanMenuItem>("USB MODE", "ADB", false));
-    // systemMenu->addItem(std::make_unique<BooleanMenuItem>("WIFI SETTINGS", "OFF", false));
-
-    // systemMenu->addItem(std::make_unique<SimpleMenuItem>("QUIT", ""));
-
 }
 
 ThumbnailCache& Application::getThumbnailCache() {
@@ -208,23 +188,6 @@ void Application::run() {
             return;  // or handle this error appropriately
         }
 
-        // First, blit the background if one exists
-        // int selectedIndex = currentState->getCurrentMenu()->getSelectedItemIndex();
-        // MenuItem* selectedItem = currentState->getCurrentMenu()->getItem(selectedIndex);
-        // if (!selectedItem) {
-        //     std::cerr << "Error: Selected item is null!" << std::endl;
-        //     return;  // or handle this error appropriately
-        // }
-        MenuItem* selectedItem = currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex());
-        if (selectedItem->getBackground()) {
-            SDL_BlitSurface(selectedItem->getBackground(), NULL, screen, NULL);
-        } else {
-            if (currentState->getCurrentMenu() == mainMenu.get()) {
-                MenuItem* selectedItem = currentState->getCurrentMenu()->getItem(currentState->getCurrentMenu()->getSelectedItemIndex());
-                selectedItem->determineAndSetBackground(screen);
-            }
-        }
-
         // Then fill the screen and render the menu
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
 
@@ -260,33 +223,110 @@ void Application::showMainMenu() {
     currentState->setCurrentMenu(mainMenu.get());
 }
 
+// FIXME
+struct ConsoleData {
+    std::string name;
+    std::vector<std::string> execs;
+    std::vector<std::string> romExts;
+    std::vector<std::string> romDirs;
+};
+
+std::map<std::string, ConsoleData> parseIniFile(const std::string& iniPath) {
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_ini(iniPath, pt);
+
+    std::map<std::string, ConsoleData> consoleDataMap;
+    auto consoleList = pt.get<std::string>("CONSOLES.consoleList");
+    std::stringstream ss(consoleList);
+    std::string consoleName;
+
+    while (std::getline(ss, consoleName, ',')) {
+        ConsoleData data;
+        data.name = consoleName;
+        
+        std::string execs_str = pt.get<std::string>(consoleName + ".execs");
+        std::stringstream ss(execs_str);
+        std::string exec;
+        while (std::getline(ss, exec, ',')) {
+            data.execs.push_back(exec);
+        }
+        std::string romExts_str = pt.get<std::string>(consoleName + ".romExts");
+        ss = std::stringstream(romExts_str);
+        std::string romExt;
+        while (std::getline(ss, romExt, ',')) {
+            data.execs.push_back(romExt);
+        }
+        std::string romDirs_str = pt.get<std::string>(consoleName + ".romDirs");
+        ss = std::stringstream(romDirs_str);
+        std::string romDir;
+        while (std::getline(ss, romDir, ',')) {
+            data.execs.push_back(romDir);
+        }
+
+        consoleDataMap[consoleName] = data;
+    }
+
+    return consoleDataMap;
+}
+
+
 // Set up the main menu items and submenus
 // Browse the folders in romsPath, and create menu entries
 // Each Menu entry contains a series of MenuItem(s) 
+// void Application::setupMenu() {
+//     FileManager fileManager;
+//     std::string romsPath = Configuration::getInstance().getValue("Menu.romsPath");
+//     // Assuming "roms" is the root folder to start from
+//     auto folders = fileManager.getFolders(romsPath);
+
+//     for (const auto& folder : folders) {
+//         // For each folder, create a MenuItem and populate it with files
+//         auto files = fileManager.getFiles(romsPath + folder);
+        
+//         auto subMenu = std::make_unique<Menu>();
+//         subMenu->setParent(mainMenu.get());
+//         for (const auto& file : files) {
+//             std::string romPath = romsPath + folder + "/" + file;
+//             // FIXME MenuItem id should not be ""
+//             subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
+//         }
+
+//         // Add each folder (game system) populated with its own submenu (list of games in the folder)
+//         // FIXME MenuItem id should not be ""
+//         mainMenu->addItem(std::make_unique<SimpleMenuItem>("", folder, std::move(subMenu)));
+//     }
+
+//     std::cout << "Found folders: " << folders.size() << std::endl;
+// }
+
 void Application::setupMenu() {
     FileManager fileManager;
-    std::string romsPath = Configuration::getInstance().getValue("Menu.romsPath");
-    // Assuming "roms" is the root folder to start from
-    auto folders = fileManager.getFolders(romsPath);
 
-    for (const auto& folder : folders) {
-        // For each folder, create a MenuItem and populate it with files
-        auto files = fileManager.getFiles(romsPath + folder);
-        
-        auto subMenu = std::make_unique<Menu>();
-        subMenu->setParent(mainMenu.get());
-        for (const auto& file : files) {
-            std::string romPath = romsPath + folder + "/" + file;
-            // FIXME MenuItem id should not be ""
-            subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
+    // Load section groups from the section_groups folder
+    auto sectionGroups = fileManager.getFiles("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/");
+    
+    for (const auto& sectionGroupFile : sectionGroups) {
+        auto sectionMenu = std::make_unique<Menu>();
+        // sectionMenu->setParent(sectionMenu.get());
+        auto consoleDataMap = parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + sectionGroupFile);
+
+        for (const auto& [consoleName, data] : consoleDataMap) {
+            auto subMenu = std::make_unique<Menu>();
+           subMenu->setParent(sectionMenu.get());
+            
+            for (const auto& romDir : data.romDirs) {
+                auto files = fileManager.getFiles(romDir);
+                for (const auto& file : files) {
+                    std::string romPath = romDir + file;
+                    subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
+                }
+            }
+
+            sectionMenu->addItem(std::make_unique<SimpleMenuItem>("", consoleName, std::move(subMenu)));
         }
 
-        // Add each folder (game system) populated with its own submenu (list of games in the folder)
-        // FIXME MenuItem id should not be ""
-        mainMenu->addItem(std::make_unique<SimpleMenuItem>("", folder, std::move(subMenu)));
+        mainMenu->addItem(std::make_unique<SimpleMenuItem>("", sectionGroupFile, std::move(sectionMenu)));
     }
-
-    std::cout << "Found folders: " << folders.size() << std::endl;
 }
 
 void Application::handleKeyPress(SDLKey key) {

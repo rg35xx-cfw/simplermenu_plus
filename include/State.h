@@ -4,6 +4,7 @@
 #include "Menu.h"
 
 enum class MenuState {
+    SECTIONS_MENU,
     SYSTEMS_MENU,
     ROMLIST_MENU,
     SYSTEM_SETTINGS_MENU,
@@ -23,7 +24,7 @@ private:
     std::stack<Menu*> navigationHistory;
 
 public:
-    State(Menu* initialMenu, SystemMenu* systemMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(systemMenu), currentState(MenuState::SYSTEMS_MENU) {}
+    State(Menu* initialMenu, SystemMenu* systemMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(systemMenu), currentState(MenuState::SECTIONS_MENU) {}
 
     void navigateUp();
     void navigateDown();

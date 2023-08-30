@@ -60,14 +60,19 @@ public:
     virtual void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) = 0;
 
     virtual void renderTitle() const {};
+
     // TODO is this method implemented somewhere?
-    virtual void renderValue() const {};
+    //virtual void renderValue() const {};
 
     virtual std::string getName() const = 0;
 
-    virtual SDL_Surface* getAssociatedBackground() const = 0;
+//    virtual SDL_Surface* getAssociatedBackground() const = 0;
 
-    virtual void determineAndSetBackground(SDL_Surface* screen);
+    virtual SDL_Surface* determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {};
+    
+    SDL_Surface* getBackground() const {
+        return background;
+    }
 
     static SDL_Surface* loadRomBackground() {
         std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/general/background.png";
@@ -78,14 +83,18 @@ public:
         return background;
     }
 
+    static SDL_Surface* loadSettingsBackground() {
+        std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/settings.png";
+        
+        SDL_Surface* background = IMG_Load(backgroundPath.c_str());
+        if (!background) {
+            std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
+        }
+        return background; 
+    }
+
     std::string getTitle();
     std::string getValue();
-
-    void setBackground(const std::string& backgroundPath, SDL_Surface* screen);
-    
-    SDL_Surface* getBackground() const {
-        return background;
-    }
 
     void setParentMenu(Menu* parent) {
         parentMenu = parent;
@@ -142,6 +151,7 @@ private:
     static const Uint32 END_SCROLL_PAUSE = 3000;
     int thumbnailOffset_x;
     int thumbnailOffset_y;
+    SDL_Surface* background = nullptr;
 
     // Potentially other attributes like action or callback
 
@@ -179,7 +189,7 @@ public:
         return path;
     }
 
-    SDL_Surface* getAssociatedBackground() const override;
+    SDL_Surface* determineAndSetBackground(SDL_Surface* screen, MenuState currentState) override;
 
     void executeAction() override; 
 

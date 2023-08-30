@@ -19,18 +19,6 @@ std::string MenuItem::getValue() {
     return this->value;
 }
 
-void MenuItem::setBackground(const std::string& backgroundPath, SDL_Surface* screen) {
-    std::cout <<"MenuItem SetBackground " << backgroundPath << std::endl;
-    if (background) {
-        SDL_FreeSurface(background);
-        background = nullptr;
-    }
-    background = IMG_Load(backgroundPath.c_str());
-    if (!background) {
-        std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
-    }
-}
-
   /**
    * The subscription management methods.
    */
@@ -128,10 +116,18 @@ void SimpleMenuItem::loadAliases() {
 }
 
 void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) {
-    if(currentState == MenuState::SYSTEMS_MENU) {
-        SDL_Surface* currentBackground = this->getAssociatedBackground();  // Get the background from the current MenuItem
+    
+    // If we have a section or system menu that is basically a background picture
+    if(currentState == MenuState::SYSTEMS_MENU || currentState == MenuState::SECTIONS_MENU) {
+        SDL_Surface* currentBackground;
+
+        if(this->background == nullptr) {
+            currentBackground = determineAndSetBackground(screen, currentState);
+        }
+        
+        //if (!currentBackground) {
         if (!currentBackground) {
-            // If there's no background, render the folder name centered
+            // If there's no background, render the folder name centered with black background
             SDL_Color white = {255, 255, 255};
             SDL_Surface* folderNameSurface = renderText(title, white);
             if (folderNameSurface && isSelected) {
@@ -146,8 +142,15 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
                 SDL_FreeSurface(folderNameSurface);
             }
             return;
+        } else {
+                SDL_BlitSurface(background, NULL, screen, NULL);
         }
     } else {
+        // Otherwise, we are in a romlist, system settings or rom settings view
+        // In this case we render a list of items:
+        // * For Romlist we also render a thumbnail view
+        // * For System or Rom Settings we render the title and value
+
         // Set the colors, white for selected text, gray for non-selected text
         SDL_Color textColor = isSelected ? SDL_Color{0xe7,0xcb,0x08}: SDL_Color{180, 180, 180}; 
 
@@ -162,13 +165,21 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
             displayTitle = filenameWithoutExt;
         }
 
+        // Determine text width
         SDL_Surface* textSurface = TTF_RenderText_Blended(font, displayTitle.c_str(), textColor);
         titleWidth = textSurface->w;
 
+        // TODO replace clipWidth the correct width based on theme.ini settings
+        int clipWidth = 220; // FIXME: default for rom list width
+        if( currentState == MenuState::SYSTEM_SETTINGS_MENU) {
+            clipWidth = 500; // FIXME: default for setting list so it does no overlap with value
+        }
+
+        // Create the scrolling view for titles that are too wide
         if (isSelected && SDL_GetTicks() - selectTime > SCROLL_TIMEOUT) {
-            if (scrollPixelPosition < titleWidth - 220) { // FIXME: calculate width dynamically based on theme
+            if (scrollPixelPosition < titleWidth - clipWidth) { // FIXME: calculate width dynamically based on theme
                 scrollPixelPosition += 1;  // Increment by 1 pixel. Adjust for faster scrolling.
-                if (scrollPixelPosition == titleWidth - 220) {
+                if (scrollPixelPosition == titleWidth - clipWidth) {
                     // Record the time when scrolling completes
                     scrollEndTime = SDL_GetTicks();
                 }
@@ -180,15 +191,15 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         }
 
         SDL_Rect destRect = {static_cast<Sint16>(x - scrollPixelPosition), static_cast<Sint16>(y), 0, 0};  // Adjust x position by scrollPixelPosition
-        SDL_Rect clipRect = {static_cast<Sint16>(x), static_cast<Sint16>(y), 220 /*screen->w / 2 - 20*/, static_cast<Uint16>(textSurface->h)}; // Ensure text doesn't spill over the intended area
+        SDL_Rect clipRect = {static_cast<Sint16>(x), static_cast<Sint16>(y), clipWidth, static_cast<Uint16>(textSurface->h)}; // Ensure text doesn't spill over the intended area
 
         SDL_SetClipRect(screen, &clipRect);
         SDL_BlitSurface(textSurface, nullptr, screen, &destRect);
         SDL_SetClipRect(screen, NULL);  // Reset the clip rect
 
+        // If we have a value associated with the item (e.g. settings) we render that at the end of each row
         if (value != "") {
             // Render the value to the right of the title
-            //TTF_Font* titleFont = TTF_OpenFont(Configuration::getInstance().getValue("Menu.MainFont").c_str(), 32);
             SDL_Surface* valueSurface = TTF_RenderText_Blended(font, value.c_str(), textColor);
         
             // Position the value surface to the right of the title
@@ -198,6 +209,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         }
 
         // Load Thumbnail for the selected Rom
+        // TODO replace coordinates from those in the theme.ini
         if (isSelected) {
             SDL_Surface* thumbnail = loadThumbnail();
             if (thumbnail) {
@@ -236,15 +248,6 @@ void SimpleMenuItem::deselect() {
     scrollPixelPosition = 0;
 }
 
-SDL_Surface* SimpleMenuItem::getAssociatedBackground() const {
-   if (background) {
-        return background; 
-    } else if (parentMenu) {
-        return parentMenu->getBackground();
-    }    
-    return nullptr; // Default behavior if no parent menu is set
-}
-
 SDL_Surface* MenuItem::renderText(const std::string& text, SDL_Color color) {
     std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
     int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
@@ -270,17 +273,35 @@ std::string MenuItem::getFolderName() const {
     }
 }
 
-void MenuItem::determineAndSetBackground(SDL_Surface* screen) {
-    std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
+SDL_Surface* SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {
+    std::string backgroundPath;
+    if(currentState == MenuState::SECTIONS_MENU) {
+        std::string title = this->getTitle();
+        size_t lastindex = title.find_last_of(".");
+        std::string titleName = title.substr(0,lastindex);
+        backgroundPath = Configuration::getInstance().getThemePath() + "resources/section_groups/" + titleName + ".png";
+        std::cout << "det & set bkg SECTION" << std::endl;
+    } else if(currentState == MenuState::SYSTEMS_MENU) {
+        backgroundPath = Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
+        std::cout << "det & set bkg SYSTEMS" << std::endl;
+    } 
+    // Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
     std::cout << "background: " << backgroundPath << std::endl;
-    if (background) {
-        std::cout << "Background successfully set!" << std::endl;
-        SDL_BlitSurface(background, NULL, screen, NULL);
-    } else {
-        std::cout << "Failed to set background!" << std::endl;
-        setBackground(backgroundPath, screen);
 
+    //setBackground(backgroundPath, screen);
+    std::cout <<"MenuItem SetBackground " << backgroundPath << std::endl;
+    if (background) {
+        SDL_FreeSurface(background);
+        background = nullptr;
     }
+    background = IMG_Load(backgroundPath.c_str());
+    if (!background) {
+        std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+    }
+
+    SDL_BlitSurface(background, NULL, screen, NULL);
+
+    return this->background;
 }
 
 bool BooleanMenuItem::getValue() const {
