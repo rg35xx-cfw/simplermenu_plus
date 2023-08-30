@@ -63,28 +63,9 @@ void State::navigateRight() {
     }
 }
 
-// void State::enterFolder() {
-//     int index = currentMenu->getSelectedItemIndex();
-//     if (MenuItem* menuItem = currentMenu->getItem(index)) {
-//         currentMenu = menuItem->getSubMenu();
-//         currentState = MenuState::ROMLIST_MENU;
-//     }
-
-//     if (currentMenu != mainMenu) {
-//         MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
-//         if (MenuItem* menuItem = selectedItem) {
-//             menuItem->determineAndSetBackground(screen);
-//         }
-//     } 
-
-//     if (currentMenu == systemMenu || currentMenu == romMenu || isRomMenuActive) {
-//         currentMenu->getItem(currentMenu->getSelectedItemIndex())->executeAction();
-//     } 
-//     navigationHistory.push(currentMenu);  // Push the current menu to the stack before changing it.
-// }
-
 void State::enterFolder() {
     std::cout << "enterFolder, IN state: " << getActiveMenuName() << std::endl;
+    navigationHistory.push({currentMenu, currentState});
 
     switch (currentState) {
         case MenuState::SECTIONS_MENU:
@@ -132,66 +113,21 @@ void State::enterFolder() {
     }
 
     std::cout << "enterFolder, OUT state: " << getActiveMenuName() << std::endl;
-
-    // Any common logic for entering a folder, regardless of the current state
-    navigationHistory.push(currentMenu);  // Push the current menu to the stack before changing it.
 }
-
 
 void State::exitFolder() {
     std::cout << "exitFolder, IN state: " << getActiveMenuName() << std::endl;
-    switch (currentState) {
-        // case MenuState::SYSTEMS_MENU:
-        //     // Logic to transition from SYSTEMS_MENU to ROMLIST_MENU
-        //     {
-        //     int index = currentMenu->getSelectedItemIndex();
-        //     if (MenuItem* menuItem = currentMenu->getItem(index)) {
-        //         currentMenu = menuItem->getSubMenu();
-        //         currentState = MenuState::ROMLIST_MENU;
-        //     }
-        //     // Handle the transition, e.g., load ROMs for the selected system
-        //     break;
-        //     }
-        case MenuState::SYSTEMS_MENU:
-            currentMenu = currentMenu->getParent();
-            currentState = MenuState::SECTIONS_MENU;
-            break;
-        case MenuState::ROMLIST_MENU:
-            currentMenu = currentMenu->getParent();
-            currentState = MenuState::SYSTEMS_MENU;
-            break;
-        case MenuState::SYSTEM_SETTINGS_MENU:
-            std::cout << "navigating back " << std::endl;
-            currentMenu = navigationHistory.top();  // Set the previous menu as the current one.
-            navigationHistory.pop();  // Remove the top menu from the stack.
-            currentState = MenuState::SYSTEMS_MENU;
-            break;
-        case MenuState::ROM_SETTINGS_MENU:
-        {
-            //currentMenu = currentMenu->getParent();
-            currentMenu = navigationHistory.top(); 
-            navigationHistory.pop();
-            currentState = MenuState::ROMLIST_MENU;
-            break;
-        }
-        default:
-            break;
-    }
-    // if (!navigationHistory.empty()) {
-    //     std::cout << "navigating back " << std::endl;
-    //     currentMenu = navigationHistory.top();  // Set the previous menu as the current one.
-    //     navigationHistory.pop();  // Remove the top menu from the stack.
-    // }
     
-    // if (currentMenu->getParent()) {
-    //     currentMenu = currentMenu->getParent();
-    //     currentState = MenuState::SYSTEMS_MENU;
-    // }
+    if (!navigationHistory.empty()) {
+        auto [prevMenu, prevState] = navigationHistory.top();
+        currentMenu = prevMenu;
+        currentState = prevState;
+        navigationHistory.pop();
+    } else {
+        std::cerr << "Error: Navigation history is empty!" << std::endl;
+        return; // or handle the error differently
+    }
 
-    // if (currentMenu == mainMenu) {
-    //     MenuItem* selectedItem = currentMenu->getItem(currentMenu->getSelectedItemIndex());
-    //     selectedItem->determineAndSetBackground(screen);
-    // }  
     std::cout << "exitFolder, OUT state: " << getActiveMenuName() << std::endl;
 }
 
@@ -208,39 +144,26 @@ void State::setCurrentMenu(Menu* newMenu) {
 }
 
 void State::showRomMenu() {
-    if (!isRomMenuActive && romMenu) {
-        isRomMenuActive = true;
-        currentMenu = romMenu;
-        currentState = MenuState::ROM_SETTINGS_MENU;
+    navigationHistory.push({currentMenu, currentState});
+    // Only enter the RomSettings Menu from the romlist
+    if (currentState == MenuState::ROMLIST_MENU) {
+        // if (!isRomMenuActive && romMenu) {
+        if (romMenu) {
+            isRomMenuActive = true;
+            currentMenu = romMenu;
+            currentState = MenuState::ROM_SETTINGS_MENU;
+        }
+    } else {
+        std::cout << "Not in romlist menu, ignoring" << std::endl;
     }
 }
 
 void State::showSystemMenu() {
-    if (!isRomMenuActive && systemMenu) {
+    navigationHistory.push({currentMenu, currentState});
+    if (systemMenu) {
         isSystemMenuActive = true;
         currentMenu = systemMenu;
         currentState = MenuState::SYSTEM_SETTINGS_MENU;
-    }
-}
-
-void State::hideSystemMenu() {
-    currentMenu = currentMenu->getParent();
-    //currentState = MenuState::SYSTEMS_MENU;
-}
-
-bool State::romMenuIsActive() const {
-    return isRomMenuActive;
-}
-
-bool State::systemMenuIsActive() const {
-    return isSystemMenuActive;
-}
-
-void State::hideRomMenu() {
-    if (isRomMenuActive) {
-        isRomMenuActive = false;
-        currentMenu = currentMenu->getParent();
-        currentState = MenuState::SYSTEMS_MENU;
     }
 }
 
@@ -251,9 +174,9 @@ std::string State::getActiveMenuName() const {
         case MenuState::ROMLIST_MENU:
             return "RomListMenu";
         case MenuState::ROM_SETTINGS_MENU:
-            return "RomMenu";
+            return "RomSettingsMenu";
         case MenuState::SYSTEM_SETTINGS_MENU:
-            return "SystemMenu";
+            return "SystemSettingsMenu";
         case MenuState::SYSTEMS_MENU:
         default:
             return "MainMenu";

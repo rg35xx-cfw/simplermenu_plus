@@ -21,7 +21,8 @@ private:
     SDL_Surface* screen;
     Menu* mainMenu;
     MenuState currentState;
-    std::stack<Menu*> navigationHistory;
+    std::stack<std::pair<Menu*, MenuState>> navigationHistory;
+
 
 public:
     State(Menu* initialMenu, SystemMenu* systemMenu) : currentMenu(initialMenu), romMenu(new RomMenu()), systemMenu(systemMenu), currentState(MenuState::SECTIONS_MENU) {}
@@ -36,11 +37,7 @@ public:
     Menu* getCurrentMenu();
     void setCurrentMenu(Menu* newMenu);
     void showRomMenu() ;
-    bool romMenuIsActive() const ;
-    bool systemMenuIsActive() const ;
-    void hideRomMenu();
     void showSystemMenu();
-    void hideSystemMenu();
 
     MenuState getCurrentState() const {
         return currentState;

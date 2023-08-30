@@ -27,7 +27,6 @@ Application::Application() {
     screenHeight = Configuration::getInstance().getIntValue("Menu.screenHeight");
     screenDepth = Configuration::getInstance().getIntValue("Menu.screenDepth");
 
-
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         // Handle error
@@ -362,7 +361,7 @@ void Application::handleKeyPress(SDLKey key) {
             currentState->exitFolder();
             break;
         case SDLK_ESCAPE:
-            std::cout << "systemMenu" << std::endl;
+            std::cout << "Enter systemSettingsMenu" << std::endl;
             currentState->showSystemMenu();
             break;
         case SDLK_m: 
