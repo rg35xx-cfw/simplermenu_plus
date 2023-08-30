@@ -214,89 +214,9 @@ State* Application::getCurrentState() const {
     return currentState.get();
 }
 
-// Menu* Application::getMainMenu() const {
-//     return mainMenu.get();
-// }
-
 void Application::showMainMenu() {
     currentState->setCurrentMenu(mainMenu.get());
 }
-
-// FIXME
-struct ConsoleData {
-    std::string name;
-    std::vector<std::string> execs;
-    std::vector<std::string> romExts;
-    std::vector<std::string> romDirs;
-};
-
-std::map<std::string, ConsoleData> parseIniFile(const std::string& iniPath) {
-    boost::property_tree::ptree pt;
-    boost::property_tree::read_ini(iniPath, pt);
-
-    std::map<std::string, ConsoleData> consoleDataMap;
-    auto consoleList = pt.get<std::string>("CONSOLES.consoleList");
-    std::stringstream ss(consoleList);
-    std::string consoleName;
-
-    while (std::getline(ss, consoleName, ',')) {
-        ConsoleData data;
-        data.name = consoleName;
-        
-        std::string execs_str = pt.get<std::string>(consoleName + ".execs");
-        std::stringstream ss(execs_str);
-        std::string exec;
-        while (std::getline(ss, exec, ',')) {
-            data.execs.push_back(exec);
-        }
-        std::string romExts_str = pt.get<std::string>(consoleName + ".romExts");
-        ss = std::stringstream(romExts_str);
-        std::string romExt;
-        while (std::getline(ss, romExt, ',')) {
-            data.romExts.push_back(romExt);
-        }
-        std::string romDirs_str = pt.get<std::string>(consoleName + ".romDirs");
-        ss = std::stringstream(romDirs_str);
-        std::string romDir;
-        while (std::getline(ss, romDir, ',')) {
-            data.romDirs.push_back(romDir);
-        }
-
-        consoleDataMap[consoleName] = data;
-    }
-
-    return consoleDataMap;
-}
-
-
-// Set up the main menu items and submenus
-// Browse the folders in romsPath, and create menu entries
-// Each Menu entry contains a series of MenuItem(s) 
-// void Application::setupMenu() {
-//     FileManager fileManager;
-//     std::string romsPath = Configuration::getInstance().getValue("Menu.romsPath");
-//     // Assuming "roms" is the root folder to start from
-//     auto folders = fileManager.getFolders(romsPath);
-
-//     for (const auto& folder : folders) {
-//         // For each folder, create a MenuItem and populate it with files
-//         auto files = fileManager.getFiles(romsPath + folder);
-        
-//         auto subMenu = std::make_unique<Menu>();
-//         subMenu->setParent(mainMenu.get());
-//         for (const auto& file : files) {
-//             std::string romPath = romsPath + folder + "/" + file;
-//             // FIXME MenuItem id should not be ""
-//             subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
-//         }
-
-//         // Add each folder (game system) populated with its own submenu (list of games in the folder)
-//         // FIXME MenuItem id should not be ""
-//         mainMenu->addItem(std::make_unique<SimpleMenuItem>("", folder, std::move(subMenu)));
-//     }
-
-//     std::cout << "Found folders: " << folders.size() << std::endl;
-// }
 
 void Application::setupMenu() {
     FileManager fileManager;
@@ -306,26 +226,16 @@ void Application::setupMenu() {
     auto sectionGroups = fileManager.getFiles("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/");
     
     for (const auto& sectionGroupFile : sectionGroups) {
-        std::cout << "SectionGroup: " << sectionGroupFile << std::endl;
         auto sectionMenu = std::make_unique<Menu>();
-        // sectionMenu->setParent(sectionMenu.get());
-        auto consoleDataMap = parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + sectionGroupFile);
-        for (const auto& [key, value] : consoleDataMap) {
-            std::cout << "Key: " << key << " RomDir: " << (value.romDirs.empty() ? "EMPTY" : value.romDirs[0]) << std::endl;
-        }
+        auto consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + sectionGroupFile);
         for (const auto& [consoleName, data] : consoleDataMap) {
-            std::cout << " - ConsoleName: " << consoleName << std::endl;
-            // std::cout << " - data.romDirs: " << data.romDirs[0] << std::endl;
-
             auto subMenu = std::make_unique<Menu>();
             subMenu->setParent(sectionMenu.get());
             
             for (const auto& romDir : data.romDirs) {
-                std::cout << "*** romDir: " << romDir << std::endl;
                 auto files = fileManager.getFiles(romDir);
                 for (const auto& file : files) {
                     std::string romPath = romDir + file;
-                    std::cout << "Adding ROM: " << romPath << std::endl;
                     subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
                 }
             }

@@ -80,3 +80,41 @@ std::string Configuration::getThemePath() const {
                             "x" + std::to_string(getIntValue("Menu.screenHeight")) + "/" + getValue("Menu.themeName") + "/";
     return themePath;
 }
+
+std::map<std::string, ConsoleData> Configuration::parseIniFile(const std::string& iniPath) {
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_ini(iniPath, pt);
+
+    std::map<std::string, ConsoleData> consoleDataMap;
+    auto consoleList = pt.get<std::string>("CONSOLES.consoleList");
+    std::stringstream ss(consoleList);
+    std::string consoleName;
+
+    while (std::getline(ss, consoleName, ',')) {
+        ConsoleData data;
+        data.name = consoleName;
+        
+        std::string execs_str = pt.get<std::string>(consoleName + ".execs");
+        std::stringstream ss(execs_str);
+        std::string exec;
+        while (std::getline(ss, exec, ',')) {
+            data.execs.push_back(exec);
+        }
+        std::string romExts_str = pt.get<std::string>(consoleName + ".romExts");
+        ss = std::stringstream(romExts_str);
+        std::string romExt;
+        while (std::getline(ss, romExt, ',')) {
+            data.romExts.push_back(romExt);
+        }
+        std::string romDirs_str = pt.get<std::string>(consoleName + ".romDirs");
+        ss = std::stringstream(romDirs_str);
+        std::string romDir;
+        while (std::getline(ss, romDir, ',')) {
+            data.romDirs.push_back(romDir);
+        }
+
+        consoleDataMap[consoleName] = data;
+    }
+
+    return consoleDataMap;
+}

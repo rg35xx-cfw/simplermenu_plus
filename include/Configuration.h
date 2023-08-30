@@ -1,7 +1,17 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+#include <map>
 #include <set>
+#include <vector>
+#include <memory>
+
+struct ConsoleData {
+    std::string name;
+    std::vector<std::string> execs;
+    std::vector<std::string> romExts;
+    std::vector<std::string> romDirs;
+};
 
 class Configuration {
 private:
@@ -22,4 +32,6 @@ public:
     int getIntValue(const std::string& key) const;
     std::set<std::string> getStringList(const std::string& key, char delimiter = ',') const;
     std::string getThemePath() const;
+    std::map<std::string, ConsoleData> parseIniFile(const std::string& iniPath);
+
 };
