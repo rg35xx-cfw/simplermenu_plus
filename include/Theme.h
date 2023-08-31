@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <set>
+#include <SDL/SDL.h>
 
 class Theme {
 private:
@@ -22,5 +23,6 @@ public:
     bool getBoolValue(const std::string& key) const;
     int getIntValue(const std::string& key) const;
     std::set<std::string> getStringList(const std::string& key, char delimiter = ',') const;
+    SDL_Color getColor(const std::string& key) const;
     std::string getThemePath() const;
 };

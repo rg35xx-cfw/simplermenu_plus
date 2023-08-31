@@ -75,6 +75,19 @@ std::set<std::string> Theme::getStringList(const std::string& key, char delimite
     return result;
 }
 
+SDL_Color Theme::getColor(const std::string& key) const {
+    std::string value = getValue(key);
+    unsigned long valColor = stoul(value, nullptr, 16);
+
+    SDL_Color color;
+
+    color.r = (valColor >> 16) & 0xff;
+    color.g = (valColor >> 8) & 0xff;
+    color.b = (valColor >> 0) & 0xff;
+
+    return color;
+}
+
 std::string Theme::getThemePath() const {
 
 

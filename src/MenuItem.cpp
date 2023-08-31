@@ -129,7 +129,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         if (!currentBackground) {
             // If there's no background, render the folder name centered with black background
             SDL_Color white = {255, 255, 255};
-            SDL_Surface* folderNameSurface = renderText(title, white, theme.getValue("GENERAL.font", true), theme.getIntValue("GENERAL.font_size"));
+            SDL_Surface* folderNameSurface = renderText(title, white, theme.getValue("GENERAL.font", true), 32);
             if (folderNameSurface && isSelected) {
                 SDL_Rect dstRect;
                 dstRect.x = (screen->w - folderNameSurface->w) / 2;
@@ -152,7 +152,8 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // * For System or Rom Settings we render the title and value
 
         // Set the colors, white for selected text, gray for non-selected text
-        SDL_Color textColor = isSelected ? SDL_Color{0xe7,0xcb,0x08}: SDL_Color{180, 180, 180}; 
+        //SDL_Color textColor = isSelected ? SDL_Color{0xe7,0xcb,0x08}: SDL_Color{180, 180, 180}; 
+        SDL_Color textColor = isSelected ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color"); 
 
         std::string displayTitle = title;
         std::filesystem::path romPath(title);
@@ -230,7 +231,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
             SDL_Color white = {255, 255, 255};
 
             
-            SDL_Surface* gameCountSurface = renderText(title + " GAMES", white, theme.getValue("GENERAL.game_count_font", true), theme.getIntValue("GENERAL.game_count_font_size"));
+            SDL_Surface* gameCountSurface = renderText(title + " GAMES", theme.getColor("GENERAL.game_count_font_color"), theme.getValue("GENERAL.game_count_font", true), theme.getIntValue("GENERAL.game_count_font_size"));
             if (gameCountSurface) {
                 SDL_Rect dstRect;
                 dstRect.x = theme.getIntValue("GENERAL.game_count_x") - gameCountSurface->w / 2; 
