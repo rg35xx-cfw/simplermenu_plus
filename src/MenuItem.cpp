@@ -82,8 +82,8 @@ SDL_Surface* SimpleMenuItem::loadThumbnail() {
     if (thumbnailExists()) { // Uses the member variable thumbnailPath
         // Load and cache
         SDL_Surface* thumbnail = IMG_Load(thumbnailPath.c_str());
-        int thumbnailWidth = Configuration::getInstance().getIntValue("Menu.thumbnailWidth");
-        int thumbnailHeight = Configuration::getInstance().getIntValue("Menu.thumbnailHeight");
+        int thumbnailWidth = this->cfg.getIntValue(SettingId::THUMBNAIL_WIDTH);
+        int thumbnailHeight = this->cfg.getIntValue(SettingId::THUMBNAIL_HEIGHT);
 
         if (thumbnail->w > thumbnailWidth || thumbnail->h > thumbnailHeight) {
             double scaleX = (double)thumbnailWidth / thumbnail->w;
@@ -103,7 +103,7 @@ SDL_Surface* SimpleMenuItem::loadThumbnail() {
 std::unordered_map<std::string, std::string> SimpleMenuItem::aliasMap;
 
 void SimpleMenuItem::loadAliases() {
-    std::ifstream infile(Configuration::getInstance().getValue("Menu.aliasPath"));
+    std::ifstream infile(Configuration::getInstance().getValue(SettingId::ALIAS_PATH));
     std::string line;
     while (std::getline(infile, line)) {
         size_t pos = line.find('=');
@@ -249,8 +249,8 @@ void SimpleMenuItem::deselect() {
 }
 
 SDL_Surface* MenuItem::renderText(const std::string& text, SDL_Color color) {
-    std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
-    int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
+    std::string titleFont = this->cfg.getValue(SettingId::TITLE_FONT);
+    int titleFontSize = this->cfg.getIntValue(SettingId::TITLE_FONT_SIZE);
     TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
     if (!font) {
         // Handle error
@@ -333,7 +333,7 @@ void BooleanMenuItem::navigateRight() {
 }
 
 MultiOptionMenuItem::MultiOptionMenuItem(
-    const std::string& id,
+    const SettingId& id,
     const std::string& title,
     const std::string& value,
     const std::vector<std::string>& availableOptions) : 
@@ -381,7 +381,7 @@ void MultiOptionMenuItem::navigateRight() {
     this->value = this->options[this->currentIndex];
 }
 
-IntegerMenuItem::IntegerMenuItem(const std::string& id,
+IntegerMenuItem::IntegerMenuItem(const SettingId& id,
                                  const std::string& name, 
                                  const std::string& value, 
                                  int min, 

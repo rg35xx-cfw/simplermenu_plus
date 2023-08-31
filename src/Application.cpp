@@ -21,12 +21,6 @@ Application* Application::instance = nullptr;
 Application::Application() {
     instance = this;
 
-    mainFont = Configuration::getInstance().getValue("Menu.mainFont");
-    mainFontSize = Configuration::getInstance().getIntValue("Menu.mainFontSize");
-    screenWidth = Configuration::getInstance().getIntValue("Menu.screenWidth");
-    screenHeight = Configuration::getInstance().getIntValue("Menu.screenHeight");
-    screenDepth = Configuration::getInstance().getIntValue("Menu.screenDepth");
-
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         // Handle error
@@ -54,7 +48,12 @@ Application::Application() {
     }
 
     // Set VideoMode
-    screen = SDL_SetVideoMode(screenWidth, screenHeight, screenDepth, SDL_HWSURFACE | SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(
+        this->cfg.getIntValue(SettingId::SCREEN_WIDTH), 
+        this->cfg.getIntValue(SettingId::SCREEN_HEIGHT),
+        this->cfg.getIntValue(SettingId::SCREEN_DEPTH), 
+        SDL_HWSURFACE | SDL_DOUBLEBUF);
+    
     if (!screen) {
         // Handle error
         exit(1);
@@ -65,7 +64,9 @@ Application::Application() {
         exit(1);
     }
 
-    font = TTF_OpenFont(mainFont.c_str(), mainFontSize);
+    font = TTF_OpenFont(
+        this->cfg.getValue(SettingId::MAIN_FONT).c_str(), 
+        this->cfg.getIntValue(SettingId::MAIN_FONT_SIZE));
     TTF_SetFontHinting(font, TTF_HINTING_NORMAL);  // or TTF_HINTING_LIGHT, TTF_HINTING_MONO, TTF_HINTING_NONE
     TTF_SetFontKerning(font, 1); // 1 to enable, 0 to disable
 
@@ -94,18 +95,19 @@ Application::Application() {
 void Application::createSystemMenu() {
 
     std::string backgroundPath = 
-        Configuration::getInstance().getValue("Menu.homePath") 
+        this->cfg.getValue(SettingId::HOME_PATH) 
         + ".simplemenu/resources/settings.png";
     std::string settingsFont = 
-        Configuration::getInstance().getValue("Menu.homePath") 
+        this->cfg.getValue(SettingId::HOME_PATH) 
         + ".simplemenu/resources/Akrobat-Bold.ttf";
 
     this->systemMenu = std::make_unique<SystemMenu>(backgroundPath, settingsFont);
 
     std::string systemMenuJSON = 
-        Configuration::getInstance().getValue("Menu.systemMenuJSON");
+        this->cfg.getValue(SettingId::SYSTEM_MENU_JSON);
 
     loadMenuFromJSON(systemMenuJSON);
+
 }
 
 ThumbnailCache& Application::getThumbnailCache() {
@@ -133,8 +135,7 @@ void Application::run() {
 
     while (isRunning) {
 
-        int screenRefresh = this->cfg.getIntValue(
-                            idToString[SettingId::SCREEN_REFRESH]);
+        int screenRefresh = this->cfg.getIntValue(SettingId::SCREEN_REFRESH);
 
         int frameDelay = 1000 / screenRefresh;
 
@@ -191,7 +192,7 @@ void Application::run() {
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
 
         // TODO add bolean setting to show/hide FPS
-        if (this->cfg.getBoolValue(idToString[SettingId::SHOW_FPS])) {
+        if (this->cfg.getBoolValue(SettingId::SHOW_FPS)) {
             printFPS(fps);
         }
 
@@ -235,15 +236,15 @@ void Application::setupMenu() {
                 auto files = fileManager.getFiles(romDir);
                 for (const auto& file : files) {
                     std::string romPath = romDir + file;
-                    subMenu->addItem(std::make_unique<SimpleMenuItem>("", file, romPath));
+                    subMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, file, romPath));
                 }
             }
             if (subMenu->getNumberOfItems() > 0) {
-                sectionMenu->addItem(std::make_unique<SimpleMenuItem>("", consoleName, std::move(subMenu)));
+                sectionMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, consoleName, std::move(subMenu)));
             }
         }
         if (sectionMenu->getNumberOfItems() >0) {
-            mainMenu->addItem(std::make_unique<SimpleMenuItem>("", sectionGroupFile, std::move(sectionMenu)));
+            mainMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, sectionGroupFile, std::move(sectionMenu)));
         }
     }
 }
@@ -307,16 +308,19 @@ void Application::handleJoystickEvents(SDL_Event& event) {
     }
 }
 
-void Application::settingsChanged(const std::string &id, 
+void Application::settingsChanged(const SettingId &id, 
                                   const std::string &value) {
-
-    if (id == idToString[SettingId::SCREEN_REFRESH]) {
-        this->cfg.setValue(idToString[SettingId::SCREEN_REFRESH], value);
-
-    } else if (id == idToString[SettingId::SHOW_FPS]) {
-        this->cfg.setValue(idToString[SettingId::SHOW_FPS], value);
-    }   
-
+    switch (id) {
+        case SettingId::SCREEN_REFRESH:
+            this->cfg.setValue(SettingId::SCREEN_REFRESH, value);
+            break;
+        
+        case SettingId::SHOW_FPS:
+            this->cfg.setValue(SettingId::SHOW_FPS, value);
+            break;
+        default:
+            break;
+    }
 }
 
 void Application::loadMenuFromJSON(const std::string& jsonPath) {
@@ -336,8 +340,9 @@ void Application::loadMenuFromJSON(const std::string& jsonPath) {
         auto type = jsonItem.second.get<std::string>("type");
 
         std::unique_ptr<SimpleMenuItem> menuItem = nullptr;
-        std::string id = jsonItem.second.get<std::string>("id");
-        // TODO check if id is known (exists in settingsMap)? 
+        SettingId id = cfg.getSettingId(
+            jsonItem.second.get<std::string>("id"));
+        // TODO what if id is unknown? 
         std::string title = jsonItem.second.get<std::string>("title");
 
         if (type == "SimpleMenuItem") {
@@ -356,7 +361,7 @@ void Application::loadMenuFromJSON(const std::string& jsonPath) {
 
         } else if (type == "MultiOptionMenuItem") {
             std::string value = this->cfg.getValue(id);
-            
+
             std::vector<std::string> options;
             pt::ptree const& children = jsonItem.second.get_child("options");
             for (const auto& child : children) {

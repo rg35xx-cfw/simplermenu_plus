@@ -22,7 +22,7 @@ enum class MenuState;
 class ISettingsObserver {
  public:
   virtual ~ISettingsObserver(){};
-  virtual void settingsChanged(const std::string &id, 
+  virtual void settingsChanged(const SettingId &id, 
                                const std::string &value) = 0;
 };
 
@@ -40,14 +40,16 @@ protected:
     Menu* parentMenu = nullptr;
     std::unique_ptr<Menu> subMenu = nullptr;
 
-    std::string id;
+    SettingId id;
     std::string title;
     std::string value;
 
     std::list<ISettingsObserver *> observers_;
 
+    Configuration& cfg = Configuration::getInstance();
+
 public:    
-    MenuItem(const std::string& id, 
+    MenuItem(const SettingId& id, 
              const std::string& title, 
              const std::string& value = "", 
              std::unique_ptr<Menu> submenu = nullptr)
@@ -75,7 +77,9 @@ public:
     }
 
     static SDL_Surface* loadRomBackground() {
-        std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/general/background.png";
+        std::string backgroundPath = Configuration::getInstance().getValue(SettingId::THEME_PATH) + 
+                                     "640x480/" + Configuration::getInstance().getValue(SettingId::THEME_NAME) +
+                                     "/resources/general/background.png";
         SDL_Surface* background = IMG_Load(backgroundPath.c_str());
         if (!background) {
             std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
@@ -84,7 +88,7 @@ public:
     }
 
     static SDL_Surface* loadSettingsBackground() {
-        std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/settings.png";
+        std::string backgroundPath = Configuration::getInstance().getValue(SettingId::HOME_PATH) + ".simplemenu/resources/settings.png";
         
         SDL_Surface* background = IMG_Load(backgroundPath.c_str());
         if (!background) {
@@ -162,7 +166,7 @@ public:
     // value = false
     // path = roms/neogeo/mslug.zip
 
-    SimpleMenuItem(const std::string& id,
+    SimpleMenuItem(const SettingId& id,
                    const std::string& title, 
                    const std::string& path, 
                    const std::string& value = "") 
@@ -177,7 +181,7 @@ public:
 
     // Constructor to handle submenus
     // Typically used for for
-    SimpleMenuItem(const std::string& id, 
+    SimpleMenuItem(const SettingId& id, 
                    const std::string& title, 
                    std::unique_ptr<Menu> submenu, 
                    const std::string& path = "")
@@ -219,7 +223,7 @@ private:
 
 public:
     BooleanMenuItem();
-    BooleanMenuItem(const std::string& id,
+    BooleanMenuItem(const SettingId& id,
                     const std::string& title, 
                     const std::string& value) 
     : SimpleMenuItem(id, 
@@ -245,7 +249,7 @@ private:
     int mod(int a, int b);
 
 public:
-    MultiOptionMenuItem(const std::string& id,
+    MultiOptionMenuItem(const SettingId& id,
                         const std::string& title,
                         const std::string& value,
                         const std::vector<std::string>& availableOptions);
@@ -266,7 +270,7 @@ private:
     void updateValuefromInt();
 public:
 
-    IntegerMenuItem(const std::string& id,
+    IntegerMenuItem(const SettingId& id,
                     const std::string& name, 
                     const std::string& value, 
                     int min = 0, 
