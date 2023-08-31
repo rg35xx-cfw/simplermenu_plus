@@ -14,6 +14,7 @@
 
 class Menu;
 class Configuration;
+class Theme;
 enum class MenuState;
 
 // MenuItem
@@ -105,7 +106,7 @@ public:
     }
 
     // FIXME needs to be part of a different helper/utils class
-    SDL_Surface* renderText(const std::string& text, SDL_Color color);
+    SDL_Surface* renderText(const std::string& text, SDL_Color color, std::string fontType, int fontSize);
 
     std::string getFolderName() const;
 
@@ -158,6 +159,8 @@ private:
     SDL_Surface* background = nullptr;
 
     // Potentially other attributes like action or callback
+
+    Theme& theme = Theme::getInstance();
 
 public:
     // Constructor with menu title, value (optional) and entry path

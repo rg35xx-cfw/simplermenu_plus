@@ -129,7 +129,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         if (!currentBackground) {
             // If there's no background, render the folder name centered with black background
             SDL_Color white = {255, 255, 255};
-            SDL_Surface* folderNameSurface = renderText(title, white);
+            SDL_Surface* folderNameSurface = renderText(title, white, theme.getValue("GENERAL.font", true), theme.getIntValue("GENERAL.font_size"));
             if (folderNameSurface && isSelected) {
                 SDL_Rect dstRect;
                 dstRect.x = (screen->w - folderNameSurface->w) / 2;
@@ -170,14 +170,14 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         titleWidth = textSurface->w;
 
         // TODO replace clipWidth the correct width based on theme.ini settings
-        int clipWidth = 220; // FIXME: default for rom list width
+        int clipWidth = theme.getIntValue("GENERAL.game_list_w"); 
         if( currentState == MenuState::SYSTEM_SETTINGS_MENU) {
             clipWidth = 500; // FIXME: default for setting list so it does no overlap with value
         }
 
         // Create the scrolling view for titles that are too wide
         if (isSelected && SDL_GetTicks() - selectTime > SCROLL_TIMEOUT) {
-            if (scrollPixelPosition < titleWidth - clipWidth) { // FIXME: calculate width dynamically based on theme
+            if (scrollPixelPosition < titleWidth - clipWidth) { 
                 scrollPixelPosition += 1;  // Increment by 1 pixel. Adjust for faster scrolling.
                 if (scrollPixelPosition == titleWidth - clipWidth) {
                     // Record the time when scrolling completes
@@ -213,12 +213,35 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         if (isSelected) {
             SDL_Surface* thumbnail = loadThumbnail();
             if (thumbnail) {
-                SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
+                int x = theme.getIntValue("GENERAL.art_x"); 
+                int y = theme.getIntValue("GENERAL.art_y"); 
+                int w = theme.getIntValue("GENERAL.art_max_w"); 
+                int h = theme.getIntValue("GENERAL.art_max_h"); 
+                //SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
+                SDL_Rect destRect = {x, y, w, h};
                 SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
             }
         }
 
         SDL_FreeSurface(textSurface);
+    }
+
+    if (currentState == MenuState::SYSTEMS_MENU) {
+            SDL_Color white = {255, 255, 255};
+
+            
+            SDL_Surface* gameCountSurface = renderText(title + " GAMES", white, theme.getValue("GENERAL.game_count_font", true), theme.getIntValue("GENERAL.game_count_font_size"));
+            if (gameCountSurface) {
+                SDL_Rect dstRect;
+                dstRect.x = theme.getIntValue("GENERAL.game_count_x") - gameCountSurface->w / 2; 
+                dstRect.y = theme.getIntValue("GENERAL.game_count_y") - gameCountSurface->h / 2; 
+                dstRect.w = 0;
+                dstRect.h = 0;
+
+                SDL_BlitSurface(gameCountSurface, NULL, screen, &dstRect);
+                SDL_FreeSurface(gameCountSurface);
+            }
+            return;
     }
 }
 
@@ -248,10 +271,8 @@ void SimpleMenuItem::deselect() {
     scrollPixelPosition = 0;
 }
 
-SDL_Surface* MenuItem::renderText(const std::string& text, SDL_Color color) {
-    std::string titleFont = this->cfg.getValue(SettingId::TITLE_FONT);
-    int titleFontSize = this->cfg.getIntValue(SettingId::TITLE_FONT_SIZE);
-    TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
+SDL_Surface* MenuItem::renderText(const std::string& text, SDL_Color color, std::string fontType, int fontSize) {
+    TTF_Font* font = TTF_OpenFont(fontType.c_str(), fontSize);  // Adjust font path and size as necessary
     if (!font) {
         // Handle error
         std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;

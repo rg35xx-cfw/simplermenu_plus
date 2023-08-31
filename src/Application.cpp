@@ -7,6 +7,7 @@
 #include <boost/property_tree/ini_parser.hpp>
 
 #include "Configuration.h"
+#include "Theme.h"
 #include "Menu.h"
 #include "MenuItem.h"
 #include "ThumbnailCache.h"
@@ -65,8 +66,8 @@ Application::Application() {
     }
 
     font = TTF_OpenFont(
-        this->cfg.getValue(SettingId::MAIN_FONT).c_str(), 
-        this->cfg.getIntValue(SettingId::MAIN_FONT_SIZE));
+        theme.getValue("GENERAL.textX_font", true).c_str(), 
+        theme.getIntValue("GENERAL.text1_font_size"));
     TTF_SetFontHinting(font, TTF_HINTING_NORMAL);  // or TTF_HINTING_LIGHT, TTF_HINTING_MONO, TTF_HINTING_NONE
     TTF_SetFontKerning(font, 1); // 1 to enable, 0 to disable
 

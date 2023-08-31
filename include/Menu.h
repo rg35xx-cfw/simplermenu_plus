@@ -8,6 +8,7 @@ enum class MenuState;
 #include <bits/stdc++.h>
 #include <memory>
 #include "Configuration.h"
+#include "Theme.h"
 #include "MenuItem.h"
 
 
@@ -37,6 +38,7 @@ protected:
     int selectionRectangleHeight = 24; // default height
 
     Configuration& cfg = Configuration::getInstance();
+    Theme& theme = Theme::getInstance();
 
 private:
     bool drawSelectionRectangle = false; 

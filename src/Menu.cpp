@@ -3,7 +3,7 @@
 
 Menu::Menu() {
 
-    this->itemsPerPage = this->cfg.getIntValue(SettingId::ITEMS_PER_PAGE);
+    this->itemsPerPage = theme.getIntValue("GENERAL.items");
 
     this->customSpacing = 0;
 }
@@ -86,14 +86,14 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
     // 3. Render each menu item
     int x = customFontPath.empty() ? 
-        this->cfg.getIntValue(SettingId::LIST_OFFSET_X) : itemOffset_x;
+        theme.getIntValue("GENERAL.game_list_x") : itemOffset_x;
     int y = customFontPath.empty() ? 
-        this->cfg.getIntValue(SettingId::LIST_OFFSET_Y) : itemOffset_y;
+        theme.getIntValue("GENERAL.game_list_y") : itemOffset_y;
 
     // Open customFont if defined (used for settings menu)
     TTF_Font* currentFont = customFontPath.empty() ? font : TTF_OpenFont(customFontPath.c_str(), customFontSize);
 
-    int spacing = customSpacing ? customSpacing : 24;
+    int spacing = customSpacing ? customSpacing : theme.getIntValue("GENERAL.items_separation");
 
     if (useSelectionRectangle || (currentState == MenuState::ROMLIST_MENU)) {
         SDL_Rect rectangle;
@@ -104,7 +104,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
             rectangle.x = x - 10;
             rectangle.y = y - 5 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
         }
-        rectangle.w = (selectionRectangleWidth > 0) ? selectionRectangleWidth : 225; // screen width as fallback
+        rectangle.w = (selectionRectangleWidth > 0) ? selectionRectangleWidth : theme.getIntValue("GENERAL.game_list_w"); // screen width as fallback
         rectangle.h = selectionRectangleHeight;
 
         SDL_FillRect(screen, &rectangle, SDL_MapRGB(screen->format, selectionRectangleColor.r, selectionRectangleColor.g, selectionRectangleColor.b));
@@ -113,7 +113,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     int endIndex = std::min(startIndex + itemsPerPage, static_cast<int>(items.size()));
     for (int i = startIndex; i < endIndex; i++) {
         bool isSelected = (i == selectedItemIndex);
-        int spacing = customSpacing ? customSpacing : 24;
+        int spacing = customSpacing ? customSpacing : theme.getIntValue("GENERAL.items_separation");// 24;
         // We only render the current item if we are in single screen view, otherwise we display all items
         if (isSelected || (currentState != MenuState::SYSTEMS_MENU && currentState != MenuState::SECTIONS_MENU)) {
             items[i]->render(screen, currentFont, x, y + (i - startIndex) * spacing, isSelected, currentState);
@@ -127,11 +127,11 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
-        std::string fontPath = this->cfg.getValue(SettingId::TITLE_FONT);
+        std::string fontPath = theme.getValue("GENERAL.textX_font", true);
         TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);
 
         SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
-        SDL_Rect destRect = {320 - titleSurface->w/2, 12, 0, 0};  // Position for System title
+        SDL_Rect destRect = {theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y") - titleSurface->h / 2, 0, 0};//{320 - titleSurface->w/2, 12, 0, 0};  // Position for System title
         SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
         TTF_CloseFont(titleFont);
 
@@ -211,7 +211,7 @@ void Menu::enableSelectionRectangle(bool enable) {
 
 SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 
-    this->itemsPerPage = this->cfg.getIntValue(SettingId::SETTINGS_PER_PAGE);
+    this->itemsPerPage = theme.getIntValue("GENERAL.items");
 
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 

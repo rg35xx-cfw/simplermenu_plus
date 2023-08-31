@@ -21,8 +21,6 @@ enum class SettingId {
     None,
 
     // Menu main settings
-    MAIN_FONT,
-    MAIN_FONT_SIZE,
     SCREEN_WIDTH,
     SCREEN_HEIGHT,
     SCREEN_DEPTH,
@@ -33,11 +31,6 @@ enum class SettingId {
     THEME_NAME,
     SYSTEM_MENU_JSON,
     EXCLUDED_EXTENSIONS,
-    ITEMS_PER_PAGE,
-    LIST_OFFSET_X,
-    LIST_OFFSET_Y,
-    TITLE_FONT,
-    TITLE_FONT_SIZE,
     THUMBNAIL_WIDTH,
     THUMBNAIL_HEIGHT,
 
@@ -72,8 +65,6 @@ private:
     // TODO should this be constant?
     std::unordered_map<SettingId, std::string> idToStr {
         // Menu main settings
-        {SettingId::MAIN_FONT, "Menu.mainFont"},
-        {SettingId::MAIN_FONT_SIZE, "Menu.mainFontSize"},
         {SettingId::SCREEN_WIDTH, "Menu.screenWidth"},
         {SettingId::SCREEN_HEIGHT, "Menu.screenHeight"},
         {SettingId::SCREEN_DEPTH, "Menu.screenDepth"},
@@ -84,11 +75,6 @@ private:
         {SettingId::THEME_NAME, "Menu.themeName"},
         {SettingId::SYSTEM_MENU_JSON, "Menu.systemMenuJSON"},
         {SettingId::EXCLUDED_EXTENSIONS, "Menu.excludedExtensions"},
-        {SettingId::ITEMS_PER_PAGE, "Menu.itemsPerPage"},
-        {SettingId::LIST_OFFSET_X, "Menu.listOffset_x"},
-        {SettingId::LIST_OFFSET_Y, "Menu.listOffset_y"},
-        {SettingId::TITLE_FONT, "Menu.titleFont"},
-        {SettingId::TITLE_FONT_SIZE, "Menu.titleFontSize"},
         {SettingId::THUMBNAIL_WIDTH, "Menu.thumbnailWidth"},
         {SettingId::THUMBNAIL_HEIGHT, "Menu.thumbnailHeight"},
 

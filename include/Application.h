@@ -40,8 +40,7 @@ private:
     int screenDepth;
 
     Configuration& cfg = Configuration::getInstance();
-
-    // std::map<std::string, int> intSettings;
+    Theme& theme = Theme::getInstance();
 
     SDL_Joystick *joystick = nullptr;
 
