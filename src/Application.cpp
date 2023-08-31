@@ -220,7 +220,6 @@ void Application::showMainMenu() {
 
 void Application::setupMenu() {
     FileManager fileManager;
-    std::string romsPath = Configuration::getInstance().getValue("Menu.romsPath");
 
     // Load section groups from the section_groups folder
     auto sectionGroups = fileManager.getFiles("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/");
