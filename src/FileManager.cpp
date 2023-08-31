@@ -23,7 +23,8 @@ std::vector<std::string> FileManager::getFolders(const std::string& path) {
 // Retrieve a list of files from a given folder
 std::vector<std::string> FileManager::getFiles(const std::string& folder) {
     std::vector<std::string> files;
-    std::set<std::string> excludedExtensions = Configuration::getInstance().getStringList("Menu.excludedExtensions");
+    std::set<std::string> excludedExtensions = 
+        Configuration::getInstance().getStringList(SettingId::EXCLUDED_EXTENSIONS);
 
     for (const auto& entry : std::filesystem::directory_iterator(folder)) {
         if (entry.is_regular_file()) {

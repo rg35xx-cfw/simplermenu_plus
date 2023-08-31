@@ -3,11 +3,9 @@
 
 Menu::Menu() {
 
-    itemsPerPage = Configuration::getInstance().getIntValue("Menu.itemsPerPage");
-    listOffset_x = Configuration::getInstance().getIntValue("Menu.listOffset_x");
-    listOffset_y = Configuration::getInstance().getIntValue("Menu.listOffset_y"); 
+    this->itemsPerPage = this->cfg.getIntValue(SettingId::ITEMS_PER_PAGE);
 
-    customSpacing = 0;
+    this->customSpacing = 0;
 }
 
 void Menu::print() const {
@@ -87,8 +85,10 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     }
 
     // 3. Render each menu item
-    int x = customFontPath.empty() ? listOffset_x : itemOffset_x;
-    int y = customFontPath.empty() ? listOffset_y : itemOffset_y;
+    int x = customFontPath.empty() ? 
+        this->cfg.getIntValue(SettingId::LIST_OFFSET_X) : itemOffset_x;
+    int y = customFontPath.empty() ? 
+        this->cfg.getIntValue(SettingId::LIST_OFFSET_Y) : itemOffset_y;
 
     // Open customFont if defined (used for settings menu)
     TTF_Font* currentFont = customFontPath.empty() ? font : TTF_OpenFont(customFontPath.c_str(), customFontSize);
@@ -124,7 +124,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         std::string systemTitle = selectedItem->getFolderName() + "TEST";
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
-        std::string fontPath = Configuration::getInstance().getValue("Menu.titleFont");
+        std::string fontPath = this->cfg.getValue(SettingId::TITLE_FONT);
         TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);
 
         SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
@@ -210,7 +210,7 @@ void Menu::enableSelectionRectangle(bool enable) {
 
 SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 
-    itemsPerPage = Configuration::getInstance().getIntValue("System.itemsPerPage");
+    this->itemsPerPage = this->cfg.getIntValue(SettingId::SETTINGS_PER_PAGE);
 
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
@@ -224,23 +224,37 @@ SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 }
 
 RomMenu::RomMenu() {
-    addItem(std::make_unique<BooleanMenuItem>("Rom.autostart", "AUTOSTART", "OFF"));
+    // FIXME decide how to deal with rom ids to know which rom they belong to
+    addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.autostart", 
+                                              "AUTOSTART", 
+                                              "OFF"));
     
     std::vector<std::string> coreOptions = {"mame2003_plus", "fbneo", "fbalpha", "mame2000", "mame2010"};
 
-    addItem(std::make_unique<MultiOptionMenuItem>("Rom.selectCore", "SELECT CORE/EMULATOR", coreOptions[0], coreOptions));
-    addItem(std::make_unique<BooleanMenuItem>("Rom.saveState", "AUTO SAVE STATE", "OFF"));
-    addItem(std::make_unique<BooleanMenuItem>("Rom.loadState", "LOAD STATE", "OFF"));
+    addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.selectCore", 
+                                                  "SELECT CORE/EMULATOR", 
+                                                  coreOptions[0], 
+                                                  coreOptions));
+    addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.saveState",
+                                              "AUTO SAVE STATE", 
+                                              "OFF"));
+    addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.loadState", 
+                                              "LOAD STATE", 
+                                              "OFF"));
 
     std::vector<std::string> overclockValues = {"OFF", "840 MHz", "1008 MHz", "1296 MHz"};
 
-    addItem(std::make_unique<MultiOptionMenuItem>("Rom.overclock", "ROM OVERCLOCK", overclockValues[0], overclockValues));
+    addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.overclock",
+                                                  "ROM OVERCLOCK", 
+                                                  overclockValues[0], overclockValues));
 
 
-    std::string backgroundPath = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/rom_settings.png";
+    std::string backgroundPath = this->cfg.getValue(SettingId::HOME_PATH) 
+                                 + ".simplemenu/resources/rom_settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
 
-    std::string settingsFont = Configuration::getInstance().getValue("Menu.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    std::string settingsFont = this->cfg.getValue(SettingId::HOME_PATH) 
+                               + ".simplemenu/resources/Akrobat-Bold.ttf";
     setFont(settingsFont, 32);
     setItemPosition(10,92);
     setSpacing(46);

@@ -36,6 +36,8 @@ protected:
     int selectionRectangleWidth = 0; // default width; 0 means it will stretch to text width
     int selectionRectangleHeight = 24; // default height
 
+    Configuration& cfg = Configuration::getInstance();
+
 private:
     bool drawSelectionRectangle = false; 
 

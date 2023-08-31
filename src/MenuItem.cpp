@@ -94,8 +94,8 @@ SDL_Surface* SimpleMenuItem::loadThumbnail() {
     if (thumbnailExists()) { // Uses the member variable thumbnailPath
         // Load and cache
         SDL_Surface* thumbnail = IMG_Load(thumbnailPath.c_str());
-        int thumbnailWidth = Configuration::getInstance().getIntValue("Menu.thumbnailWidth");
-        int thumbnailHeight = Configuration::getInstance().getIntValue("Menu.thumbnailHeight");
+        int thumbnailWidth = this->cfg.getIntValue(SettingId::THUMBNAIL_WIDTH);
+        int thumbnailHeight = this->cfg.getIntValue(SettingId::THUMBNAIL_HEIGHT);
 
         if (thumbnail->w > thumbnailWidth || thumbnail->h > thumbnailHeight) {
             double scaleX = (double)thumbnailWidth / thumbnail->w;
@@ -115,7 +115,7 @@ SDL_Surface* SimpleMenuItem::loadThumbnail() {
 std::unordered_map<std::string, std::string> SimpleMenuItem::aliasMap;
 
 void SimpleMenuItem::loadAliases() {
-    std::ifstream infile(Configuration::getInstance().getValue("Menu.aliasPath"));
+    std::ifstream infile(Configuration::getInstance().getValue(SettingId::ALIAS_PATH));
     std::string line;
     while (std::getline(infile, line)) {
         size_t pos = line.find('=');
@@ -188,7 +188,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
 
         if (value != "") {
             // Render the value to the right of the title
-            //TTF_Font* titleFont = TTF_OpenFont(Configuration::getInstance().getValue("Menu.MainFont").c_str(), 32);
+            //TTF_Font* titleFont = TTF_OpenFont(this->cfg.getValue("Menu.MainFont").c_str(), 32);
             SDL_Surface* valueSurface = TTF_RenderText_Blended(font, value.c_str(), textColor);
         
             // Position the value surface to the right of the title
@@ -246,8 +246,8 @@ SDL_Surface* SimpleMenuItem::getAssociatedBackground() const {
 }
 
 SDL_Surface* MenuItem::renderText(const std::string& text, SDL_Color color) {
-    std::string titleFont = Configuration::getInstance().getValue("Menu.titleFont");
-    int titleFontSize = Configuration::getInstance().getIntValue("Menu.titleFontSize");
+    std::string titleFont = this->cfg.getValue(SettingId::TITLE_FONT);
+    int titleFontSize = this->cfg.getIntValue(SettingId::TITLE_FONT_SIZE);
     TTF_Font* font = TTF_OpenFont(titleFont.c_str(), titleFontSize);  // Adjust font path and size as necessary
     if (!font) {
         // Handle error
@@ -271,7 +271,7 @@ std::string MenuItem::getFolderName() const {
 }
 
 void MenuItem::determineAndSetBackground(SDL_Surface* screen) {
-    std::string backgroundPath = Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
+    std::string backgroundPath = this->cfg.getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
     std::cout << "background: " << backgroundPath << std::endl;
     if (background) {
         std::cout << "Background successfully set!" << std::endl;
@@ -312,7 +312,7 @@ void BooleanMenuItem::navigateRight() {
 }
 
 MultiOptionMenuItem::MultiOptionMenuItem(
-    const std::string& id,
+    const SettingId& id,
     const std::string& title,
     const std::string& value,
     const std::vector<std::string>& availableOptions) : 
@@ -360,7 +360,7 @@ void MultiOptionMenuItem::navigateRight() {
     this->value = this->options[this->currentIndex];
 }
 
-IntegerMenuItem::IntegerMenuItem(const std::string& id,
+IntegerMenuItem::IntegerMenuItem(const SettingId& id,
                                  const std::string& name, 
                                  const std::string& value, 
                                  int min, 

@@ -22,7 +22,7 @@ enum class MenuState;
 class ISettingsObserver {
  public:
   virtual ~ISettingsObserver(){};
-  virtual void settingsChanged(const std::string &id, 
+  virtual void settingsChanged(const SettingId &id, 
                                const std::string &value) = 0;
 };
 
@@ -40,14 +40,16 @@ protected:
     Menu* parentMenu = nullptr;
     std::unique_ptr<Menu> subMenu = nullptr;
 
-    std::string id;
+    SettingId id;
     std::string title;
     std::string value;
 
     std::list<ISettingsObserver *> observers_;
 
+    Configuration& cfg = Configuration::getInstance();
+
 public:    
-    MenuItem(const std::string& id, 
+    MenuItem(const SettingId& id, 
              const std::string& title, 
              const std::string& value = "", 
              std::unique_ptr<Menu> submenu = nullptr)
@@ -152,7 +154,7 @@ public:
     // value = false
     // path = roms/neogeo/mslug.zip
 
-    SimpleMenuItem(const std::string& id,
+    SimpleMenuItem(const SettingId& id,
                    const std::string& title, 
                    const std::string& path, 
                    const std::string& value = "") 
@@ -167,7 +169,7 @@ public:
 
     // Constructor to handle submenus
     // Typically used for for
-    SimpleMenuItem(const std::string& id, 
+    SimpleMenuItem(const SettingId& id, 
                    const std::string& title, 
                    std::unique_ptr<Menu> submenu, 
                    const std::string& path = "")
@@ -209,7 +211,7 @@ private:
 
 public:
     BooleanMenuItem();
-    BooleanMenuItem(const std::string& id,
+    BooleanMenuItem(const SettingId& id,
                     const std::string& title, 
                     const std::string& value) 
     : SimpleMenuItem(id, 
@@ -235,7 +237,7 @@ private:
     int mod(int a, int b);
 
 public:
-    MultiOptionMenuItem(const std::string& id,
+    MultiOptionMenuItem(const SettingId& id,
                         const std::string& title,
                         const std::string& value,
                         const std::vector<std::string>& availableOptions);
@@ -256,7 +258,7 @@ private:
     void updateValuefromInt();
 public:
 
-    IntegerMenuItem(const std::string& id,
+    IntegerMenuItem(const SettingId& id,
                     const std::string& name, 
                     const std::string& value, 
                     int min = 0, 
