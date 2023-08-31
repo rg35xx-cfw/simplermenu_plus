@@ -112,7 +112,24 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "typeindex": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "regex": "cpp",
+        "csetjmp": "cpp",
+        "any": "cpp",
+        "barrier": "cpp",
+        "cfenv": "cpp",
+        "charconv": "cpp",
+        "coroutine": "cpp",
+        "cuchar": "cpp",
+        "forward_list": "cpp",
+        "source_location": "cpp",
+        "future": "cpp",
+        "latch": "cpp",
+        "scoped_allocator": "cpp",
+        "shared_mutex": "cpp",
+        "span": "cpp",
+        "syncstream": "cpp",
+        "valarray": "cpp"
     },
     "cmake.configureOnOpen": false
 }
