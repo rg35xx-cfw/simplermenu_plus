@@ -82,10 +82,10 @@ SDL_Surface* SimpleMenuItem::loadThumbnail() {
     if (thumbnailExists()) { // Uses the member variable thumbnailPath
         // Load and cache
         SDL_Surface* thumbnail = IMG_Load(thumbnailPath.c_str());
-        int thumbnailWidth = this->cfg.getIntValue(SettingId::THUMBNAIL_WIDTH);
-        int thumbnailHeight = this->cfg.getIntValue(SettingId::THUMBNAIL_HEIGHT);
+        int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
+        int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
 
-        if (thumbnail->w > thumbnailWidth || thumbnail->h > thumbnailHeight) {
+        if (thumbnail->w != thumbnailWidth || thumbnail->h != thumbnailHeight) {
             double scaleX = (double)thumbnailWidth / thumbnail->w;
             double scaleY = (double)thumbnailHeight / thumbnail->h;
             double scale = std::min(scaleX,scaleY);
@@ -150,9 +150,6 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // In this case we render a list of items:
         // * For Romlist we also render a thumbnail view
         // * For System or Rom Settings we render the title and value
-
-        // Set the colors, white for selected text, gray for non-selected text
-        //SDL_Color textColor = isSelected ? SDL_Color{0xe7,0xcb,0x08}: SDL_Color{180, 180, 180}; 
         SDL_Color textColor = isSelected ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color"); 
 
         std::string displayTitle = title;
@@ -227,11 +224,9 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         SDL_FreeSurface(textSurface);
     }
 
-    if (currentState == MenuState::SYSTEMS_MENU) {
-            SDL_Color white = {255, 255, 255};
-
-            
-            SDL_Surface* gameCountSurface = renderText(title + " GAMES", theme.getColor("GENERAL.game_count_font_color"), theme.getValue("GENERAL.game_count_font", true), theme.getIntValue("GENERAL.game_count_font_size"));
+    // Add the game count field for the system view if display_game_count is enabled
+    if (currentState == MenuState::SYSTEMS_MENU && theme.getIntValue("GENERAL.display_game_count") == 1 ) {
+            SDL_Surface* gameCountSurface = renderText(std::to_string(numberOfItems) + " GAMES", theme.getColor("GENERAL.game_count_font_color"), theme.getValue("GENERAL.game_count_font", true), theme.getIntValue("GENERAL.game_count_font_size"));
             if (gameCountSurface) {
                 SDL_Rect dstRect;
                 dstRect.x = theme.getIntValue("GENERAL.game_count_x") - gameCountSurface->w / 2; 
@@ -302,15 +297,9 @@ SDL_Surface* SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, Menu
         size_t lastindex = title.find_last_of(".");
         std::string titleName = title.substr(0,lastindex);
         backgroundPath = Configuration::getInstance().getThemePath() + "resources/section_groups/" + titleName + ".png";
-        std::cout << "det & set bkg SECTION" << std::endl;
     } else if(currentState == MenuState::SYSTEMS_MENU) {
-        backgroundPath = Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
-        std::cout << "det & set bkg SYSTEMS" << std::endl;
+        backgroundPath = Configuration::getInstance().getThemePath() + theme.getValue(this->getFolderName() + ".logo");
     } 
-    // Configuration::getInstance().getThemePath() + "resources/" + this->getFolderName() + "/logo.png";
-    std::cout << "background: " << backgroundPath << std::endl;
-
-    //setBackground(backgroundPath, screen);
     std::cout <<"MenuItem SetBackground " << backgroundPath << std::endl;
     if (background) {
         SDL_FreeSurface(background);

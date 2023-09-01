@@ -49,6 +49,10 @@ protected:
 
     Configuration& cfg = Configuration::getInstance();
 
+    static Configuration& getConfig() {
+        return Configuration::getInstance();
+    }
+
 public:    
     MenuItem(const SettingId& id, 
              const std::string& title, 
@@ -64,12 +68,7 @@ public:
 
     virtual void renderTitle() const {};
 
-    // TODO is this method implemented somewhere?
-    //virtual void renderValue() const {};
-
     virtual std::string getName() const = 0;
-
-//    virtual SDL_Surface* getAssociatedBackground() const = 0;
 
     virtual SDL_Surface* determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {};
     
@@ -78,9 +77,10 @@ public:
     }
 
     static SDL_Surface* loadRomBackground() {
-        std::string backgroundPath = Configuration::getInstance().getValue(SettingId::THEME_PATH) + 
-                                     "640x480/" + Configuration::getInstance().getValue(SettingId::THEME_NAME) +
-                                     "/resources/general/background.png";
+        std::string backgroundPath = "/userdata/system/.simplemenu/themes/" + 
+                                     std::to_string(getConfig().getIntValue(SettingId::SCREEN_WIDTH)) + "x" + std::to_string(getConfig().getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
+                                     getConfig().getValue(SettingId::THEME_NAME) + "/" +
+                                     Theme::getInstance().getValue("DEFAULT.background") ;
         SDL_Surface* background = IMG_Load(backgroundPath.c_str());
         if (!background) {
             std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
@@ -158,6 +158,8 @@ private:
     int thumbnailOffset_y;
     SDL_Surface* background = nullptr;
 
+    int numberOfItems = 0;
+
     // Potentially other attributes like action or callback
 
     Theme& theme = Theme::getInstance();
@@ -187,8 +189,9 @@ public:
     SimpleMenuItem(const SettingId& id, 
                    const std::string& title, 
                    std::unique_ptr<Menu> submenu, 
+                   int numberofitems = 0,
                    const std::string& path = "")
-    : MenuItem(id, title, "", std::move(submenu)), path(path) {}
+    : MenuItem(id, title, "", std::move(submenu)), numberOfItems(numberofitems), path(path) { }
 
     ~SimpleMenuItem() {}
 

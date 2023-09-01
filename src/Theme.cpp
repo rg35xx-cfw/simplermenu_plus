@@ -1,4 +1,5 @@
 #include "Theme.h"
+#include "Configuration.h"
 #include <iostream>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
@@ -8,8 +9,13 @@ Theme::Theme() {
     // Load values from .ini file using Boost.PropertyTree
     boost::property_tree::ptree pt;
 
-    // FIXME: Removed hardcoded theme.ini 
-    baseThemePath = "/userdata/system/.simplemenu/themes/640x480/Simplermenu/";
+    Configuration& cfg = Configuration::getInstance();
+
+    baseThemePath = "/userdata/system/.simplemenu/themes/" + 
+                    std::to_string(cfg.getIntValue(SettingId::SCREEN_WIDTH)) + "x" + 
+                    std::to_string(cfg.getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
+                    cfg.getValue(SettingId::THEME_NAME) + "/";
+
     boost::property_tree::ini_parser::read_ini(baseThemePath + "theme.ini", pt);
 
     for (const auto& section : pt) {

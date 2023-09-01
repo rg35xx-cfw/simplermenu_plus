@@ -241,7 +241,7 @@ void Application::setupMenu() {
                 }
             }
             if (subMenu->getNumberOfItems() > 0) {
-                sectionMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, consoleName, std::move(subMenu)));
+                sectionMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, consoleName, std::move(subMenu), subMenu->getNumberOfItems()));
             }
         }
         if (sectionMenu->getNumberOfItems() >0) {
