@@ -124,8 +124,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         if(this->background == nullptr) {
             currentBackground = determineAndSetBackground(screen, currentState);
         }
-        
-        //if (!currentBackground) {
+
         if (!currentBackground) {
             // If there's no background, render the folder name centered with black background
             SDL_Color white = {255, 255, 255};
@@ -222,6 +221,43 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         }
 
         SDL_FreeSurface(textSurface);
+    }
+
+    // Some themes have text 
+    if (theme.getValue("GENERAL.display_section_group_name") == "1" && currentState == MenuState::SECTIONS_MENU) {
+        SDL_Color white = {255, 255, 255};
+
+        // Remove extension from section and transform to uppercase
+        std::filesystem::path ss(title);
+        std::string sectionName(ss.stem().string()); 
+        transform(sectionName.begin(), sectionName.end(), sectionName.begin(), ::toupper);
+
+        SDL_Surface* folderNameSurface = renderText(sectionName, white, theme.getValue("GENERAL.font", true), 96);
+        if (folderNameSurface && isSelected) {
+            SDL_Rect dstRect;
+            dstRect.x = (screen->w - folderNameSurface->w) / 2;
+            dstRect.y = (screen->h - folderNameSurface->h) / 2;
+            dstRect.w = folderNameSurface->w;
+            dstRect.h = folderNameSurface->h;
+
+            // Create a semi-transparent surface for the background
+            SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, 640, dstRect.h, 32, 0, 0, 0, 0);
+
+            // Enable blending for the surface
+            SDL_SetAlpha(transparentBg, SDL_SRCALPHA, 127);
+
+            SDL_FillRect(transparentBg, NULL, SDL_MapRGBA(transparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
+
+            SDL_Rect fadeRect = {0, 180, 640, 200};
+            // Render the semi-transparent background
+            SDL_BlitSurface(transparentBg, NULL, screen, &fadeRect);
+
+            // Render the text on top of the semi-transparent background
+            SDL_BlitSurface(folderNameSurface, NULL, screen, &dstRect);
+
+            SDL_FreeSurface(folderNameSurface);
+            SDL_FreeSurface(transparentBg); // Don't forget to free the surface when done
+        }
     }
 
     // Add the game count field for the system view if display_game_count is enabled
