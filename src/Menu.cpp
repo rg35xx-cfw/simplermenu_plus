@@ -1,13 +1,6 @@
 #include "Menu.h"
 #include "State.h"
 
-Menu::Menu() {
-
-    this->itemsPerPage = theme.getIntValue("GENERAL.items");
-
-    this->customSpacing = 0;
-}
-
 void Menu::print() const {
     for (const auto& item : items) {
         std::cout << item->getName() << std::endl;
@@ -98,14 +91,19 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     if (useSelectionRectangle || (currentState == MenuState::ROMLIST_MENU)) {
         SDL_Rect rectangle;
         if (currentState == MenuState::ROMLIST_MENU) {
-            rectangle.x = x - 1;
+            rectangle.x = x - 2;
             rectangle.y = y + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
         } else {
             rectangle.x = x - 10;
             rectangle.y = y - 5 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
         }
-        rectangle.w = (selectionRectangleWidth > 0) ? selectionRectangleWidth : theme.getIntValue("GENERAL.game_list_w"); // screen width as fallback
+        rectangle.w = (selectionRectangleWidth > 0) ? selectionRectangleWidth : theme.getIntValue("GENERAL.game_list_w") + 4; // screen width as fallback
         rectangle.h = selectionRectangleHeight;
+
+        // TODO: decide if the same color is going to be used for settings or just for the romlist
+        if (currentState == MenuState::ROMLIST_MENU) {
+            selectionRectangleColor = theme.getColor("DEFAULT.selected_item_background_color");
+        }
 
         SDL_FillRect(screen, &rectangle, SDL_MapRGB(screen->format, selectionRectangleColor.r, selectionRectangleColor.g, selectionRectangleColor.b));
     }
@@ -128,7 +126,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
         std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);
+         TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);//////////
 
         SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
         SDL_Rect destRect = {theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y") - titleSurface->h / 2, 0, 0};//{320 - titleSurface->w/2, 12, 0, 0};  // Position for System title
@@ -209,7 +207,7 @@ void Menu::enableSelectionRectangle(bool enable) {
     drawSelectionRectangle = enable;
 }
 
-SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
+SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) : Menu("System Settings Menu") {
 
     this->itemsPerPage = theme.getIntValue("GENERAL.items");
 
@@ -224,7 +222,8 @@ SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) {
 
 }
 
-RomMenu::RomMenu() {
+RomMenu::RomMenu() : Menu("Rom Settings Menu") {
+    setTitle("Rom Settings Menu");
     // FIXME decide how to deal with rom ids to know which rom they belong to
     addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.autostart", 
                                               "AUTOSTART", 

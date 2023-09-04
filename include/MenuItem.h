@@ -39,6 +39,8 @@ class MenuItem : public ISettingsSubject {
 protected:
     SDL_Surface* background = nullptr;
     Menu* parentMenu = nullptr;
+    Menu* rootMenu = nullptr;
+
     std::unique_ptr<Menu> subMenu = nullptr;
 
     SettingId id;
@@ -59,6 +61,12 @@ public:
              const std::string& value = "", 
              std::unique_ptr<Menu> submenu = nullptr)
         : id(id), title(title), value(value), subMenu(std::move(submenu)) {}
+
+    void setParentMenu(Menu* parent) { parentMenu = parent; }
+    Menu* getParentMenu() const { return parentMenu; }
+
+    void setRootMenu(Menu* root) { rootMenu = root; }
+    Menu* getRootMenu() const;// return rootMenu ? rootMenu : (parentMenu ? parentMenu->getRootMenu() : nullptr); }
 
     virtual void navigateLeft() {}
     virtual void navigateRight() {}
@@ -100,10 +108,6 @@ public:
 
     std::string getTitle();
     std::string getValue();
-
-    void setParentMenu(Menu* parent) {
-        parentMenu = parent;
-    }
 
     // FIXME needs to be part of a different helper/utils class
     SDL_Surface* renderText(const std::string& text, SDL_Color color, std::string fontType, int fontSize);

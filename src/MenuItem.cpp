@@ -43,6 +43,10 @@ std::string MenuItem::getValue() {
     }
   }
 
+Menu* MenuItem::getRootMenu() const {
+    return rootMenu ? rootMenu : (parentMenu ? parentMenu->getRootMenu() : nullptr);
+}
+
   /**
    * SimpleMenuItem methods 
    */
@@ -60,8 +64,29 @@ void SimpleMenuItem::executeAction() {
     } else if (!path.empty()) {
         std::cout << "Launching rom: " << path << " title: " << title << std::endl;
     
+        std::map<std::string, ConsoleData> consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + this->getRootMenu()->getTitle());
+
+        // Get the title of the parent menu
+        std::string parentTitle = this->getParentMenu()->getTitle();
+
+        // FIXME: temporary solution to select the first available emulator launcher as defined
+        //        in the .ini execs. This will have to be changed once the launcher is selected and saved
+        std::string execLauncher;
+
+        // Check if the parentTitle exists in the consoleDataMap
+        if (consoleDataMap.find(parentTitle) != consoleDataMap.end()) {
+            // Access the ConsoleData for the parentTitle
+            ConsoleData consoleData = consoleDataMap[parentTitle];
+
+            // Check if the execs vector is not empty
+            if (!consoleData.execs.empty()) {
+                // Retrieve the first exec string
+                execLauncher = consoleData.execs.front();
+            }
+        }
+
         // Launch emulator
-        std::string command = "/userdata/system/.simplemenu/resources/launcher.sh '" + path + "'";
+        std::string command = execLauncher + " '" + path + "'";
         std::cout << "Executing: " << command << std::endl;
 
         system(command.c_str());
@@ -223,7 +248,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         SDL_FreeSurface(textSurface);
     }
 
-    // Some themes have text 
+    // Some themes have text in the section selection
     if (theme.getValue("GENERAL.display_section_group_name") == "1" && currentState == MenuState::SECTIONS_MENU) {
         SDL_Color white = {255, 255, 255};
 

@@ -66,8 +66,8 @@ Application::Application() {
     }
 
     font = TTF_OpenFont(
-        theme.getValue("GENERAL.textX_font", true).c_str(), 
-        theme.getIntValue("GENERAL.text1_font_size"));
+    theme.getValue("GENERAL.font", true).c_str(), 
+    theme.getIntValue("GENERAL.font_size"));
     TTF_SetFontHinting(font, TTF_HINTING_NORMAL);  // or TTF_HINTING_LIGHT, TTF_HINTING_MONO, TTF_HINTING_NONE
     TTF_SetFontKerning(font, 1); // 1 to enable, 0 to disable
 
@@ -227,17 +227,21 @@ void Application::setupMenu() {
     auto sectionGroups = fileManager.getFiles("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/");
     
     for (const auto& sectionGroupFile : sectionGroups) {
-        auto sectionMenu = std::make_unique<Menu>();
+        auto sectionMenu = std::make_unique<Menu>(sectionGroupFile);
         auto consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + sectionGroupFile);
         for (const auto& [consoleName, data] : consoleDataMap) {
-            auto subMenu = std::make_unique<Menu>();
+            auto subMenu = std::make_unique<Menu>(consoleName);
             subMenu->setParent(sectionMenu.get());
+            subMenu->setRootMenu(sectionMenu.get());
             
             for (const auto& romDir : data.romDirs) {
                 auto files = fileManager.getFiles(romDir);
                 for (const auto& file : files) {
                     std::string romPath = romDir + file;
-                    subMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, file, romPath));
+                    auto simpleMenuItem = std::make_unique<SimpleMenuItem>(SettingId::None, file, romPath);
+                    simpleMenuItem->setParentMenu(subMenu.get());  // Setting parent for SimpleMenuItem
+                    simpleMenuItem->setRootMenu(sectionMenu.get());  // Setting root for SimpleMenuItem
+                    subMenu->addItem(std::move(simpleMenuItem));
                 }
             }
             if (subMenu->getNumberOfItems() > 0) {

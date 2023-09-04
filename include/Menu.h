@@ -20,6 +20,7 @@ class MultiOptionMenuItem;
 class Menu {
 protected:
     std::vector<std::unique_ptr<MenuItem>> items;
+    std::string title;
     int selectedItemIndex = 0;
     Menu* parent = nullptr;
     int currentPage = 0;
@@ -42,9 +43,23 @@ protected:
 
 private:
     bool drawSelectionRectangle = false; 
+    Menu* rootMenu = nullptr;
 
 public:
-    Menu();
+    Menu(const std::string& menuTitle = "") : title(menuTitle) {
+        this->itemsPerPage = theme.getIntValue("GENERAL.items");
+
+        this->customSpacing = 0;
+    }; // Updated constructor
+
+    void setRootMenu(Menu* root) { rootMenu = root; }
+
+    const Menu* getRootMenu() const { return rootMenu ? rootMenu : this; }
+    Menu* getRootMenu() { return rootMenu ? rootMenu : this; }
+
+    const std::string& getTitle() const { return title; } // Getter for title
+    void setTitle(const std::string& newTitle) { title = newTitle; } // Setter for title
+
 
     bool isRomListMenu() const;
     void printContents(int indentLevel = 0) const;
