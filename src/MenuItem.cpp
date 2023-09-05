@@ -117,31 +117,32 @@ void SimpleMenuItem::executeAction() {
     }
 }
 
-SDL_Surface* SimpleMenuItem::loadThumbnail() {
+void SimpleMenuItem::loadThumbnail() {
     if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
         // Return from cache
-        return thumbnailCache[thumbnailPath];
+        thumbnail = thumbnailCache[thumbnailPath];
     }
 
     if (thumbnailExists()) { // Uses the member variable thumbnailPath
         // Load and cache
-        SDL_Surface* thumbnail = IMG_Load(thumbnailPath.c_str());
+        SDL_Surface* tmpThumbnail = IMG_Load(thumbnailPath.c_str());
         int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
         int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
 
-        if (thumbnail->w != thumbnailWidth || thumbnail->h != thumbnailHeight) {
-            double scaleX = (double)thumbnailWidth / thumbnail->w;
-            double scaleY = (double)thumbnailHeight / thumbnail->h;
+        if (tmpThumbnail->w != thumbnailWidth || tmpThumbnail->h != thumbnailHeight) {
+            double scaleX = (double)thumbnailWidth / tmpThumbnail->w;
+            double scaleY = (double)thumbnailHeight / tmpThumbnail->h;
             double scale = std::min(scaleX,scaleY);
 
-            thumbnail = zoomSurface(thumbnail, scale, scale, SMOOTHING_ON);
+            tmpThumbnail = zoomSurface(tmpThumbnail, scale, scale, SMOOTHING_ON);
         }
 
-        thumbnailCache[thumbnailPath] = thumbnail;
-        return thumbnail;
+        thumbnailCache[thumbnailPath] = tmpThumbnail;
+        //return thumbnail;
+        thumbnail = tmpThumbnail;
     }
 
-    return nullptr;
+    //return nullptr;
 }
 
 std::unordered_map<std::string, std::string> MenuItem::aliasMap;
@@ -163,13 +164,14 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
     
     // If we have a section or system menu that is basically a background picture
     if(currentState == MenuState::SYSTEMS_MENU || currentState == MenuState::SECTIONS_MENU) {
-        SDL_Surface* currentBackground;
+        //SDL_Surface* currentBackground;
 
         if(this->background == nullptr) {
-            currentBackground = determineAndSetBackground(screen, currentState);
+            //currentBackground = 
+            determineAndSetBackground(screen, currentState);
         }
 
-        if (!currentBackground) {
+        if (currentBackground == nullptr) {
             // If there's no background, render the folder name centered with black background
             SDL_Color white = {255, 255, 255};
             SDL_Surface* folderNameSurface = renderText(title, white, theme.getValue("GENERAL.font", true), 32);
@@ -241,7 +243,8 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // Load Thumbnail for the selected Rom
         // TODO replace coordinates from those in the theme.ini
         if (isSelected) {
-            SDL_Surface* thumbnail = loadThumbnail();
+            //SDL_Surface* thumbnail = 
+            loadThumbnail();
             if (thumbnail) {
                 Uint16 x = theme.getIntValue("GENERAL.art_x"); 
                 Uint16 y = theme.getIntValue("GENERAL.art_y"); 
@@ -327,7 +330,8 @@ void SimpleMenuItem::select() {
     TTF_SizeText(currentFont, title.c_str(), &titleWidth, nullptr);
     
     if (!thumbnail && thumbnailExists()) {
-        thumbnail = loadThumbnail();
+        //thumbnail = 
+        loadThumbnail();
     }     
 }
 
@@ -359,7 +363,7 @@ std::string MenuItem::getFolderName() const {
     }
 }
 
-SDL_Surface* SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {
+void SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {
     std::string backgroundPath;
     if(currentState == MenuState::SECTIONS_MENU) {
         std::string title = this->getTitle();
@@ -383,7 +387,8 @@ SDL_Surface* SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, Menu
 
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-    return this->background;
+    currentBackground = background;
+    //return this->background;
 }
 
 bool BooleanMenuItem::getValue() const {

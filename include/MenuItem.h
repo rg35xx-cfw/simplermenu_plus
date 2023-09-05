@@ -58,6 +58,9 @@ protected:
         return Configuration::getInstance();
     }
 
+    SDL_Surface* currentBackground = nullptr;
+    SDL_Surface* thumbnail = nullptr;
+
 public:    
     MenuItem(const SettingId& id, 
              const std::string& title, 
@@ -83,7 +86,7 @@ public:
 
     virtual std::string getName() const = 0;
 
-    virtual SDL_Surface* determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {};
+    virtual void determineAndSetBackground(SDL_Surface* screen, MenuState currentState) {};
     
     SDL_Surface* getBackground() const {
         return background;
@@ -205,17 +208,25 @@ public:
                    const std::string& path = "")
     : MenuItem(id, title, "", std::move(submenu)), numberOfItems(numberofitems), path(path) { }
 
-    ~SimpleMenuItem() {}
+    ~SimpleMenuItem() {
+        if(currentBackground) {
+            SDL_FreeSurface(currentBackground);
+        }
+        if(thumbnail) {
+            SDL_FreeSurface(thumbnail);
+        }
+    }
 
     const std::string& getPath() const {
         return path;
     }
 
-    SDL_Surface* determineAndSetBackground(SDL_Surface* screen, MenuState currentState) override;
+    void determineAndSetBackground(SDL_Surface* screen, MenuState currentState) override;
 
     void executeAction() override; 
 
-    SDL_Surface* loadThumbnail();
+    //SDL_Surface* 
+    void loadThumbnail();
 
     void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) override;
 
