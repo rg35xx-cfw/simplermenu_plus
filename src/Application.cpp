@@ -224,11 +224,11 @@ void Application::setupMenu() {
     FileManager fileManager;
 
     // Load section groups from the section_groups folder
-    auto sectionGroups = fileManager.getFiles("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/");
+    auto sectionGroups = fileManager.getFiles("/userdata/system/.simplemenu/section_groups/");
     
     for (const auto& sectionGroupFile : sectionGroups) {
         auto sectionMenu = std::make_unique<Menu>(sectionGroupFile);
-        auto consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + sectionGroupFile);
+        auto consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/.simplemenu/section_groups/" + sectionGroupFile);
         for (const auto& [consoleName, data] : consoleDataMap) {
             auto subMenu = std::make_unique<Menu>(consoleName);
             subMenu->setParent(sectionMenu.get());
@@ -300,8 +300,13 @@ void Application::handleJoystickEvents(SDL_Event& event) {
             break;
         case SDL_JOYBUTTONDOWN:
         {
+            if (buttonPressed != event.jbutton.button) {
+                buttonPressed = event.jbutton.button;
+                lastButtonPressTime = SDL_GetTicks();
+                repeatStartTime = lastButtonPressTime + initialDelay;
+            }
             // Handle button press events
-            int buttonPressed = event.jbutton.button; 
+            //int buttonPressed = event.jbutton.button; 
             if (buttonPressed == controlMapping.getControl("A")) {
                 currentState->enterFolder();
             } else if (buttonPressed == controlMapping.getControl("B")) {
@@ -323,12 +328,28 @@ void Application::handleJoystickEvents(SDL_Event& event) {
         }
         case SDL_JOYBUTTONUP:
             // Handle button release events if needed
+            if (event.jbutton.button == buttonPressed) {
+                buttonPressed = -1;
+                lastButtonPressTime = 0;
+            }
             break;
         case SDL_JOYHATMOTION:
             // Handle D-pad movements
             break;
         default:
             break;
+    }
+    // Check for button repetition outside of the switch statement
+    if (buttonPressed != -1) {
+        Uint32 currentTime = SDL_GetTicks();
+        if (currentTime > repeatStartTime && (currentTime - repeatStartTime) % repeatInterval == 0) {
+            // Simulate button press for repetition
+            SDL_Event repeatEvent;
+            repeatEvent.type = SDL_JOYBUTTONDOWN;
+            repeatEvent.jbutton.button = buttonPressed;
+            SDL_PushEvent(&repeatEvent);
+            repeatStartTime += repeatInterval;
+        }
     }
 }
 

@@ -47,6 +47,12 @@ private:
 
     ControlMapping& controlMapping;
 
+    Uint32 lastButtonPressTime = 0;
+    int buttonPressed = -1;
+    Uint32 repeatStartTime = 0;
+    const Uint32 initialDelay = 500;  // for example, 500ms
+    const Uint32 repeatInterval = 100;  // for example, 100ms
+
 public:
     Application();
 

@@ -36,7 +36,7 @@ protected:
     bool useSelectionRectangle = false; // by default, use the selection rectangle
     SDL_Color selectionRectangleColor = {30, 60, 200, 128}; // default to semi-transparent white
     int selectionRectangleWidth = 0; // default width; 0 means it will stretch to text width
-    int selectionRectangleHeight = 24; // default height
+    int selectionRectangleHeight = 0; // default height
 
     Configuration& cfg = Configuration::getInstance();
     Theme& theme = Theme::getInstance();

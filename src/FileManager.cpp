@@ -5,6 +5,7 @@
 #include <set>
 #include <filesystem>
 #include <iostream>
+#include <algorithm>
 
 std::vector<std::string> FileManager::getFolders(const std::string& path) {
     std::vector<std::string> folders;
@@ -17,6 +18,7 @@ std::vector<std::string> FileManager::getFolders(const std::string& path) {
         }
     }
     
+    std::sort(folders.begin(), folders.end());
     return folders;
 }
 
@@ -46,6 +48,7 @@ std::vector<std::string> FileManager::getFiles(const std::string& folder) {
         std::cerr << "Error accessing directory " << folder << ": " << e.what() << std::endl;
     }
     
+    std::sort(files.begin(), files.end());
     return files;
 }
 

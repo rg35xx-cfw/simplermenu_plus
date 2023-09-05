@@ -15,12 +15,12 @@
 	// https://github.com/microsoft/vscode-remote-release/issues/7743 
 	//
 	"mounts": [
-		// {
-		// 	"source": "${localWorkspaceFolder}/resources/config/x86/.simplemenu", 
-		// 	"target": "/userdata/system/.simplemenu", 
-		// 	"type": "bind", 
-		// 	"consistency": "cached"
-		// },
+		{
+			"source": "${localWorkspaceFolder}/resources/config/x86/.simplemenu", 
+			"target": "/userdata/system/.simplemenu", 
+			"type": "bind", 
+			"consistency": "cached"
+		},
 		{
 			"source": "${localWorkspaceFolder}/output/resources/menu.json",
 			"target": "/userdata/system/menu.json", 

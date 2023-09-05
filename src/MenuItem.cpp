@@ -64,7 +64,7 @@ void SimpleMenuItem::executeAction() {
     } else if (!path.empty()) {
         std::cout << "Launching rom: " << path << " title: " << title << std::endl;
     
-        std::map<std::string, ConsoleData> consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/simplermenu_plus/resources/config/x86/.simplemenu/section_groups/" + this->getRootMenu()->getTitle());
+        std::map<std::string, ConsoleData> consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/.simplemenu/section_groups/" + this->getRootMenu()->getTitle());
 
         // Get the title of the parent menu
         std::string parentTitle = this->getParentMenu()->getTitle();

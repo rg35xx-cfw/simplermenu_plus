@@ -98,7 +98,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
             rectangle.y = y - 5 + (selectedItemIndex - startIndex) * spacing; // Adjust for current item position
         }
         rectangle.w = (selectionRectangleWidth > 0) ? selectionRectangleWidth : theme.getIntValue("GENERAL.game_list_w") + 4; // screen width as fallback
-        rectangle.h = selectionRectangleHeight;
+        rectangle.h = (selectionRectangleHeight > -0) ? selectionRectangleHeight : theme.getIntValue("GENERAL.items_separation");
 
         // TODO: decide if the same color is going to be used for settings or just for the romlist
         if (currentState == MenuState::ROMLIST_MENU) {
