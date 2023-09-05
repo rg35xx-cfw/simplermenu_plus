@@ -46,6 +46,9 @@ protected:
     SettingId id;
     std::string title;
     std::string value;
+    std::string alias;
+
+    static std::unordered_map<std::string, std::string> aliasMap;
 
     std::list<ISettingsObserver *> observers_;
 
@@ -60,7 +63,9 @@ public:
              const std::string& title, 
              const std::string& value = "", 
              std::unique_ptr<Menu> submenu = nullptr)
-        : id(id), title(title), value(value), subMenu(std::move(submenu)) {}
+        : id(id), title(title), value(value), subMenu(std::move(submenu)) {
+            getAlias();
+        }
 
     void setParentMenu(Menu* parent) { parentMenu = parent; }
     Menu* getParentMenu() const { return parentMenu; }
@@ -108,6 +113,11 @@ public:
 
     std::string getTitle();
     std::string getValue();
+    std::string getRomAlias();
+
+    void getAlias();
+
+    static void loadAliases();
 
     // FIXME needs to be part of a different helper/utils class
     SDL_Surface* renderText(const std::string& text, SDL_Color color, std::string fontType, int fontSize);
@@ -147,8 +157,6 @@ private:
     SDL_Surface* thumbnail = nullptr;
     static std::unordered_map<std::string, SDL_Surface*> thumbnailCache;
     std::string thumbnailPath;
-
-    static std::unordered_map<std::string, std::string> aliasMap;
 
     // Text scroll
     int scrollPixelPosition = 0;
@@ -208,8 +216,6 @@ public:
     void executeAction() override; 
 
     SDL_Surface* loadThumbnail();
-
-    static void loadAliases();
 
     void render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) override;
 

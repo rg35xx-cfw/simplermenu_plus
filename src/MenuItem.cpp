@@ -19,6 +19,25 @@ std::string MenuItem::getValue() {
     return this->value;
 }
 
+std::string MenuItem::getRomAlias() {
+    return this->alias;
+}
+
+void MenuItem::getAlias() {
+    std::string displayTitle = title;
+    std::filesystem::path romPath(title);
+    std::string filenameWithoutExt = romPath.stem().string();
+    // Check if the rom name exists in the alias map
+    if (aliasMap.find(filenameWithoutExt) != aliasMap.end()) {
+        displayTitle = aliasMap[filenameWithoutExt];
+    } else {
+        // If no alias is available, remove the file extension
+        displayTitle = filenameWithoutExt;
+    }
+
+    alias = displayTitle;
+}
+
   /**
    * The subscription management methods.
    */
@@ -125,9 +144,9 @@ SDL_Surface* SimpleMenuItem::loadThumbnail() {
     return nullptr;
 }
 
-std::unordered_map<std::string, std::string> SimpleMenuItem::aliasMap;
+std::unordered_map<std::string, std::string> MenuItem::aliasMap;
 
-void SimpleMenuItem::loadAliases() {
+void MenuItem::loadAliases() {
     std::ifstream infile(Configuration::getInstance().getValue(SettingId::ALIAS_PATH));
     std::string line;
     while (std::getline(infile, line)) {
@@ -176,19 +195,8 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // * For System or Rom Settings we render the title and value
         SDL_Color textColor = isSelected ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color"); 
 
-        std::string displayTitle = title;
-        std::filesystem::path romPath(title);
-        std::string filenameWithoutExt = romPath.stem().string();
-        // Check if the rom name exists in the alias map
-        if (aliasMap.find(filenameWithoutExt) != aliasMap.end()) {
-            displayTitle = aliasMap[filenameWithoutExt];
-        } else {
-            // If no alias is available, remove the file extension
-            displayTitle = filenameWithoutExt;
-        }
-
         // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(font, displayTitle.c_str(), textColor);
+        SDL_Surface* textSurface = TTF_RenderText_Blended(font, alias.c_str(), textColor);
         titleWidth = textSurface->w;
 
         // TODO replace clipWidth the correct width based on theme.ini settings
@@ -235,10 +243,10 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         if (isSelected) {
             SDL_Surface* thumbnail = loadThumbnail();
             if (thumbnail) {
-                int x = theme.getIntValue("GENERAL.art_x"); 
-                int y = theme.getIntValue("GENERAL.art_y"); 
-                int w = theme.getIntValue("GENERAL.art_max_w"); 
-                int h = theme.getIntValue("GENERAL.art_max_h"); 
+                Uint16 x = theme.getIntValue("GENERAL.art_x"); 
+                Uint16 y = theme.getIntValue("GENERAL.art_y"); 
+                Uint16 w = theme.getIntValue("GENERAL.art_max_w"); 
+                Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
                 //SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
                 SDL_Rect destRect = {x, y, w, h};
                 SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);

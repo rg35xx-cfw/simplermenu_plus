@@ -140,7 +140,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
                 theme.getIntValue("GENERAL.art_max_h") + 
                 theme.getIntValue("GENERAL.art_text_distance_from_picture") +
                 theme.getIntValue("GENERAL.art_text_line_separation");
-        titleSurface = TTF_RenderText_Blended(titleFont, items[selectedItemIndex]->getTitle().c_str(), {255,255,255});
+        titleSurface = TTF_RenderText_Blended(titleFont, items[selectedItemIndex]->getRomAlias().c_str(), {255,255,255});
         destRect = {x - titleSurface->w /2, y, 0, 0};
         SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
         TTF_CloseFont(titleFont);
