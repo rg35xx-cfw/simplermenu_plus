@@ -44,7 +44,23 @@ enum class SettingId {
     USB_MODE,
     WIFI,
     SETTINGS_PER_PAGE,
-    QUIT
+    QUIT,
+
+    // Control Settings
+    BTN_A,
+    BTN_B,
+    BTN_X,
+    BTN_Y,
+    BTN_L1,
+    BTN_L2,
+    BTN_R1,
+    BTN_R2,
+    BTN_UP,
+    BTN_DOWN,
+    BTN_RIGHT,
+    BTN_LEFT,
+    BTN_START,
+    BTN_SELECT
 
 };
 
@@ -88,7 +104,26 @@ private:
         {SettingId::USB_MODE, "System.usbMode"},
         {SettingId::WIFI, "System.wifi"},
         {SettingId::SETTINGS_PER_PAGE, "System.itemsPerPage"},
-        {SettingId::QUIT, "System.quit"}
+        {SettingId::QUIT, "System.quit"},
+
+        // Control Settings
+        {SettingId::BTN_A, "CONTROLS.BTN_A"}, 
+        {SettingId::BTN_B, "CONTROLS.BTN_B"}, 
+        {SettingId::BTN_X, "CONTROLS.BTN_X"}, 
+        {SettingId::BTN_Y, "CONTROLS.BTN_Y"}, 
+        {SettingId::BTN_L1, "CONTROLS.BTN_L1"}, 
+        {SettingId::BTN_L2, "CONTROLS.BTN_L2"}, 
+        {SettingId::BTN_R1, "CONTROLS.BTN_R1"}, 
+        {SettingId::BTN_R2, "CONTROLS.BTN_R2"}, 
+        {SettingId::BTN_UP, "CONTROLS.BTN_UP"}, 
+        {SettingId::BTN_DOWN, "CONTROLS.BTN_DOWN"}, 
+        {SettingId::BTN_LEFT, "CONTROLS.BTN_LEFT"}, 
+        {SettingId::BTN_RIGHT, "CONTROLS.BTN_RIGHT"}, 
+        {SettingId::BTN_START, "CONTROLS.BTN_START"}, 
+        {SettingId::BTN_SELECT, "CONTROLS.BTN_SELECT"}, 
+
+
+
     };
 
     std::unordered_map<std::string, SettingId> strToId;

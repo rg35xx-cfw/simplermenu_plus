@@ -19,7 +19,7 @@ class MenuItem;
 
 Application* Application::instance = nullptr;
 
-Application::Application() {
+Application::Application() : controlMapping(ControlMapping::getInstance()) {
     instance = this;
 
     // Initialize SDL
@@ -299,9 +299,28 @@ void Application::handleJoystickEvents(SDL_Event& event) {
             // You can map specific axis movements to navigate up, down, left, or right
             break;
         case SDL_JOYBUTTONDOWN:
+        {
             // Handle button press events
-            // For example, a specific button might be mapped to "enterFolder"
+            int buttonPressed = event.jbutton.button; 
+            if (buttonPressed == controlMapping.getControl("A")) {
+                currentState->enterFolder();
+            } else if (buttonPressed == controlMapping.getControl("B")) {
+                currentState->exitFolder();
+            } else if (buttonPressed == controlMapping.getControl("UP")) {
+                currentState->navigateUp();
+            } else if (buttonPressed == controlMapping.getControl("DOWN")) {
+                currentState->navigateDown();
+            } else if (buttonPressed == controlMapping.getControl("LEFT")) {
+                currentState->navigateLeft();
+            } else if (buttonPressed == controlMapping.getControl("RIGHT")) {
+                currentState->navigateRight();
+            } else if (buttonPressed == controlMapping.getControl("START")) {
+                currentState->showSystemMenu();
+            } else if (buttonPressed == controlMapping.getControl("SELECT")) {
+                currentState->showRomMenu();
+            }                    
             break;
+        }
         case SDL_JOYBUTTONUP:
             // Handle button release events if needed
             break;

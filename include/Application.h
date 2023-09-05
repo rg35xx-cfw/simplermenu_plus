@@ -12,6 +12,7 @@
 #include "ThumbnailCache.h"
 #include "State.h"
 #include "FileManager.h"
+#include "ControlMapping.h"
 
 namespace pt = boost::property_tree;
 
@@ -43,6 +44,8 @@ private:
     Theme& theme = Theme::getInstance();
 
     SDL_Joystick *joystick = nullptr;
+
+    ControlMapping& controlMapping;
 
 public:
     Application();
