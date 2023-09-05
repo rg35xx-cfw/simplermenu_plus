@@ -184,6 +184,8 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
                 SDL_BlitSurface(folderNameSurface, NULL, screen, &dstRect);
                 SDL_FreeSurface(folderNameSurface);
             }
+            SDL_FreeSurface(folderNameSurface);
+            SDL_FreeSurface(currentBackground);
             return;
         } else {
                 SDL_BlitSurface(background, NULL, screen, NULL);
@@ -374,6 +376,8 @@ SDL_Surface* SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, Menu
         SDL_FreeSurface(background);
         background = nullptr;
     }
+
+    std::cout << "rom title: " << title << std::endl;
     background = IMG_Load(backgroundPath.c_str());
     if (!background) {
         std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;

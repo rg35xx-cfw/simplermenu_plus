@@ -72,6 +72,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
     if (background) {
         SDL_BlitSurface(background, NULL, screen, NULL);
+        SDL_FreeSurface(background);
     } else {
         // If there's no background, we set the background to black
         SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
@@ -131,6 +132,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
         SDL_Rect destRect = {theme.getIntValue("GENERAL.text1_x") - titleSurface->w /2, theme.getIntValue("GENERAL.text1_y") - titleSurface->h / 2, 0, 0}; // Position for System title
         SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
+        SDL_FreeSurface(titleSurface);
         TTF_CloseFont(titleFont);
 
         // Add rom/art title (some graphic themes hide this rendering it outside the screen)
@@ -143,6 +145,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         titleSurface = TTF_RenderText_Blended(titleFont, items[selectedItemIndex]->getRomAlias().c_str(), {255,255,255});
         destRect = {x - titleSurface->w /2, y, 0, 0};
         SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
+        SDL_FreeSurface(titleSurface);
         TTF_CloseFont(titleFont);
 
         // Display pagination page number / total_pages at the bottom
@@ -291,6 +294,7 @@ void Menu::setBackground(const std::string& backgroundPath) {
     } else {
         // Handle error: could not load the background image.
     }
+    SDL_FreeSurface(newBackground);
 }
 
 void Menu::setFont(const std::string& fontPath, int fontSize) {
