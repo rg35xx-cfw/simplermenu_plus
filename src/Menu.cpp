@@ -126,10 +126,22 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
         std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-         TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32);//////////
+        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
 
         SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
-        SDL_Rect destRect = {theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y") - titleSurface->h / 2, 0, 0};//{320 - titleSurface->w/2, 12, 0, 0};  // Position for System title
+        SDL_Rect destRect = {theme.getIntValue("GENERAL.text1_x") - titleSurface->w /2, theme.getIntValue("GENERAL.text1_y") - titleSurface->h / 2, 0, 0}; // Position for System title
+        SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
+        TTF_CloseFont(titleFont);
+
+        // Add rom/art title (some graphic themes hide this rendering it outside the screen)
+        titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
+        int x = theme.getIntValue("GENERAL.art_x") + theme.getIntValue("GENERAL.art_max_w")/2;
+        int y = theme.getIntValue("GENERAL.art_y") + 
+                theme.getIntValue("GENERAL.art_max_h") + 
+                theme.getIntValue("GENERAL.art_text_distance_from_picture") +
+                theme.getIntValue("GENERAL.art_text_line_separation");
+        titleSurface = TTF_RenderText_Blended(titleFont, items[selectedItemIndex]->getTitle().c_str(), {255,255,255});
+        destRect = {x - titleSurface->w /2, y, 0, 0};
         SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
         TTF_CloseFont(titleFont);
 
@@ -138,6 +150,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         SDL_Surface* textSurface = TTF_RenderText_Blended(font, pageInfo.c_str(), {255,255,255});
         destRect = {100, 445, 0, 0};  // Positon for page counter
         SDL_BlitSurface(textSurface, NULL, screen, &destRect);
+        SDL_FreeSurface(textSurface);
     }
 
     //  Close the customFont
