@@ -182,10 +182,8 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
                 SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
 
                 SDL_BlitSurface(folderNameSurface, NULL, screen, &dstRect);
-                SDL_FreeSurface(folderNameSurface);
             }
             SDL_FreeSurface(folderNameSurface);
-            SDL_FreeSurface(currentBackground);
             return;
         } else {
                 SDL_BlitSurface(background, NULL, screen, NULL);
