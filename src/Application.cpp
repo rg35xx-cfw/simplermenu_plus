@@ -146,10 +146,10 @@ void Application::run() {
         }
 
         // Fine tune FPS
-        if (frameCount == screenRefresh 
-            and (SDL_GetTicks() - fpsTimer) < 1000) {
-            continue;
-        }
+        // if (frameCount == screenRefresh 
+        //     and (SDL_GetTicks() - fpsTimer) < 1000) {
+        //     continue;
+        // }
 
         frameStart = SDL_GetTicks();
 
@@ -293,6 +293,8 @@ void Application::handleKeyPress(SDLKey key) {
 }
 
 void Application::handleJoystickEvents(SDL_Event& event) {
+    static Uint32 lastButtonPressTime = 0;
+
     switch (event.type) {
         case SDL_JOYAXISMOTION:
             // Handle axis motion events
@@ -342,7 +344,8 @@ void Application::handleJoystickEvents(SDL_Event& event) {
     // Check for button repetition outside of the switch statement
     if (buttonPressed != -1) {
         Uint32 currentTime = SDL_GetTicks();
-        if (currentTime > repeatStartTime && (currentTime - repeatStartTime) % repeatInterval == 0) {
+        //if (currentTime > repeatStartTime && (currentTime - repeatStartTime) % repeatInterval == 0) {
+        if (currentTime - lastButtonPressTime >= repeatInterval) {
             // Simulate button press for repetition
             SDL_Event repeatEvent;
             repeatEvent.type = SDL_JOYBUTTONDOWN;

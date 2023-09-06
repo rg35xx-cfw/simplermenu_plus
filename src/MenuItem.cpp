@@ -118,31 +118,45 @@ void SimpleMenuItem::executeAction() {
 }
 
 void SimpleMenuItem::loadThumbnail() {
+    // If thumbnail is already in cache, set it and return
     if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
-        // Return from cache
         thumbnail = thumbnailCache[thumbnailPath];
+        return;
     }
 
-    if (thumbnailExists()) { // Uses the member variable thumbnailPath
-        // Load and cache
+    // If thumbnail exists, proceed with loading and caching
+    if (thumbnailExists()) { 
         SDL_Surface* tmpThumbnail = IMG_Load(thumbnailPath.c_str());
+
         int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
         int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
 
+        // Check if the thumbnail needs to be resized
         if (tmpThumbnail->w != thumbnailWidth || tmpThumbnail->h != thumbnailHeight) {
             double scaleX = (double)thumbnailWidth / tmpThumbnail->w;
             double scaleY = (double)thumbnailHeight / tmpThumbnail->h;
-            double scale = std::min(scaleX,scaleY);
+            double scale = std::min(scaleX, scaleY);
 
-            tmpThumbnail = zoomSurface(tmpThumbnail, scale, scale, SMOOTHING_ON);
+            SDL_Surface* resizedThumbnail = zoomSurface(tmpThumbnail, scale, scale, SMOOTHING_ON);
+            
+            // Free the original loaded thumbnail as it's no longer needed
+            if (tmpThumbnail) {
+                SDL_FreeSurface(tmpThumbnail);
+            }
+
+            tmpThumbnail = resizedThumbnail;
         }
 
+        // Before caching the new thumbnail, free any existing surface associated with that thumbnailPath
+        if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
+            //SDL_FreeSurface(thumbnailCache[thumbnailPath]);
+            thumbnailCache.erase(thumbnailPath);
+        }
+
+        // Cache and set the thumbnail
         thumbnailCache[thumbnailPath] = tmpThumbnail;
-        //return thumbnail;
         thumbnail = tmpThumbnail;
     }
-
-    //return nullptr;
 }
 
 std::unordered_map<std::string, std::string> MenuItem::aliasMap;
@@ -243,7 +257,6 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // Load Thumbnail for the selected Rom
         // TODO replace coordinates from those in the theme.ini
         if (isSelected) {
-            //SDL_Surface* thumbnail = 
             loadThumbnail();
             if (thumbnail) {
                 Uint16 x = theme.getIntValue("GENERAL.art_x"); 
@@ -330,7 +343,6 @@ void SimpleMenuItem::select() {
     TTF_SizeText(currentFont, title.c_str(), &titleWidth, nullptr);
     
     if (!thumbnail && thumbnailExists()) {
-        //thumbnail = 
         loadThumbnail();
     }     
 }
