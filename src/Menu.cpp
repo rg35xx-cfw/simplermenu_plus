@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "State.h"
+#include "RenderUtils.h"
 
 void Menu::print() const {
     for (const auto& item : items) {
@@ -59,6 +60,8 @@ int Menu::getNumberOfItems() {
 }
 
 void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
+    std::cout << "SimpleMenuItem::render" << std::endl;
+
     // Check if the menu is a ROM menu and set the background
     SDL_Surface* background = nullptr;
     if (currentState == MenuState::ROMLIST_MENU) {
@@ -66,7 +69,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     } else if(currentState == MenuState::SYSTEMS_MENU) {
         MenuItem* selectedItem = items[selectedItemIndex].get();
         background = selectedItem->getBackground();     
-    } else {
+    } else if(currentState == MenuState::SYSTEM_SETTINGS_MENU || currentState == MenuState::ROM_SETTINGS_MENU) {
         background = SimpleMenuItem::loadSettingsBackground();
     }
 
@@ -129,38 +132,38 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         std::string fontPath = theme.getValue("GENERAL.textX_font", true);
         TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
 
-        SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, systemTitle.c_str(), {255,255,255});
-        SDL_Rect destRect = {theme.getIntValue("GENERAL.text1_x") - titleSurface->w /2, theme.getIntValue("GENERAL.text1_y") - titleSurface->h / 2, 0, 0}; // Position for System title
-        SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
-        SDL_FreeSurface(titleSurface);
-        TTF_CloseFont(titleFont);
+        RenderUtils renderUtil(titleFont);
+        renderUtil.setFont(theme.getValue("GENERAL.textX_font", true),  theme.getIntValue("GENERAL.text1_font_size"));
+
+        renderUtil.renderText(screen, systemTitle, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment"));
 
         // Add rom/art title (some graphic themes hide this rendering it outside the screen)
         titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
+
+        renderUtil.setFont(fontPath, theme.getIntValue("GENERAL.art_text_font_size"));
         int x = theme.getIntValue("GENERAL.art_x") + theme.getIntValue("GENERAL.art_max_w")/2;
         int y = theme.getIntValue("GENERAL.art_y") + 
                 theme.getIntValue("GENERAL.art_max_h") + 
                 theme.getIntValue("GENERAL.art_text_distance_from_picture") +
                 theme.getIntValue("GENERAL.art_text_line_separation");
-        titleSurface = TTF_RenderText_Blended(titleFont, items[selectedItemIndex]->getRomAlias().c_str(), {255,255,255});
-        destRect = {x - titleSurface->w /2, y, 0, 0};
-        SDL_BlitSurface(titleSurface, NULL, screen, &destRect);
-        SDL_FreeSurface(titleSurface);
-        TTF_CloseFont(titleFont);
+        renderUtil.renderText(screen,items[selectedItemIndex]->getRomAlias(), x, y, 0, 0, {255, 255, 255}, 1);
+
+        // Calculate number of pages FIXME: move that to the constructor
+        total_pages = (items.size() + itemsPerPage - 1)/ itemsPerPage;
 
         // Display pagination page number / total_pages at the bottom
-        std::string pageInfo = std::to_string(currentPage) + " / " + std::to_string(total_pages);
-        SDL_Surface* textSurface = TTF_RenderText_Blended(font, pageInfo.c_str(), {255,255,255});
-        destRect = {100, 445, 0, 0};  // Positon for page counter
-        SDL_BlitSurface(textSurface, NULL, screen, &destRect);
-        SDL_FreeSurface(textSurface);
+        std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
+        x = theme.getIntValue("GENERAL.text2_x");
+        y = theme.getIntValue("GENERAL.text2_y");
+        renderUtil.setFont(fontPath, theme.getIntValue("GENERAL.text2_font_size"));
+
+        renderUtil.renderText(screen, pageInfo, x, y, 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
     }
 
     //  Close the customFont
     if (!customFontPath.empty()) {
         TTF_CloseFont(currentFont);
     }
-
 }
 
 int Menu::getSelectedItemIndex() const {

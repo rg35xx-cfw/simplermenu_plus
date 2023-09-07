@@ -31,7 +31,7 @@
             "id": "System.theme",
             "type": "MultiOptionMenuItem",
             "title": "Theme",
-            "options": ["Comicbook", "Simplemenu", "BigCody"]
+            "options": ["Comicbook", "Simplermenu", "BigCody"]
         },
         {
             "id": "System.usbMode",

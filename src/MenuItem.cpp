@@ -3,6 +3,7 @@
 #include "State.h"
 #include "Application.h"
 #include "Exception.h"
+#include "RenderUtils.h"
 
 #include <iostream>
 #include <filesystem>
@@ -175,7 +176,7 @@ void MenuItem::loadAliases() {
 }
 
 void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) {
-    
+    std::cout << "SimpleMenuItem::render" << std::endl;
     // If we have a section or system menu that is basically a background picture
     if(currentState == MenuState::SYSTEMS_MENU || currentState == MenuState::SECTIONS_MENU) {
         //SDL_Surface* currentBackground;
@@ -187,19 +188,15 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
 
         if (currentBackground == nullptr) {
             // If there's no background, render the folder name centered with black background
-            SDL_Color white = {255, 255, 255};
-            SDL_Surface* folderNameSurface = renderText(title, white, theme.getValue("GENERAL.font", true), 32);
-            if (folderNameSurface && isSelected) {
-                SDL_Rect dstRect;
-                dstRect.x = (screen->w - folderNameSurface->w) / 2;
-                dstRect.y = (screen->h - folderNameSurface->h) / 2;
-                dstRect.w = folderNameSurface->w;
-                dstRect.h = folderNameSurface->h;
-                SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
+            if (isSelected) {
+                RenderUtils renderUtil(theme.getValue("GENERAL.font", true), 32);
 
-                SDL_BlitSurface(folderNameSurface, NULL, screen, &dstRect);
+                //SDL_Rect dstRect;
+                int x = (screen->w) / 2;
+                int y = (screen->h) / 2;
+                SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
+                renderUtil.renderText(screen, title, x, y, 0, 0, {255, 255, 255}, 1);
             }
-            SDL_FreeSurface(folderNameSurface);
             return;
         } else {
                 SDL_BlitSurface(background, NULL, screen, NULL);
@@ -297,7 +294,10 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
 
             SDL_FillRect(transparentBg, NULL, SDL_MapRGBA(transparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
 
-            SDL_Rect fadeRect = {0, 180, 640, 200};
+            SDL_Rect fadeRect = {0, getConfig().getIntValue(SettingId::SCREEN_HEIGHT) / 2 - folderNameSurface->h / 2, 
+                                 getConfig().getIntValue(SettingId::SCREEN_WIDTH), 
+                                 getConfig().getIntValue(SettingId::SCREEN_HEIGHT) / 2 + folderNameSurface->h / 2};
+
             // Render the semi-transparent background
             SDL_BlitSurface(transparentBg, NULL, screen, &fadeRect);
 

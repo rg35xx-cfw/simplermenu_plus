@@ -146,10 +146,9 @@ void Application::run() {
         }
 
         // Fine tune FPS
-        // if (frameCount == screenRefresh 
-        //     and (SDL_GetTicks() - fpsTimer) < 1000) {
-        //     continue;
-        // }
+        if (frameCount == screenRefresh && ((SDL_GetTicks() - fpsTimer) < 1000)) {
+            continue;
+        }
 
         frameStart = SDL_GetTicks();
 
@@ -160,10 +159,6 @@ void Application::run() {
                     break;
                 case SDL_KEYDOWN:
                     handleKeyPress(event.key.keysym.sym);
-                    // Render the current menu
-                    if (currentState->getCurrentMenu()) {
-                        currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
-                    }
                     break;
                 case SDL_JOYAXISMOTION:
                 case SDL_JOYBUTTONDOWN:
@@ -181,9 +176,6 @@ void Application::run() {
             fpsTimer = SDL_GetTicks();
         }
 
-        // Clear the screen
-        SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
-
         if (currentState->getCurrentMenu()->getNumberOfItems() == 0) {
             std::cerr << "Error: Current menu has no items!" << std::endl;
             return;  // or handle this error appropriately
@@ -200,7 +192,7 @@ void Application::run() {
         SDL_Flip(screen);
 
         frameCount++;
-    
+
     }
 }
 
