@@ -134,7 +134,22 @@ void Application::run() {
 
     Uint32 frameStart = 0;
 
+    Uint32 currentTime = SDL_GetTicks();
+    nextRepeatTime = currentTime + initialDelay;
+
     while (isRunning) {
+
+        // Handle button repetition outside of the event processing loop
+        currentTime = SDL_GetTicks();
+        //std::cout << buttonPressed << " ... " << currentTime << " ... " << nextRepeatTime <<std::endl;
+        if (buttonPressed != -1 && currentTime >= nextRepeatTime) {
+            // Simulate button press for repetition
+            SDL_Event repeatEvent;
+            repeatEvent.type = SDL_JOYBUTTONDOWN;
+            repeatEvent.jbutton.button = buttonPressed;
+            SDL_PushEvent(&repeatEvent);
+            nextRepeatTime += repeatInterval;
+        }
 
         int screenRefresh = this->cfg.getIntValue(SettingId::SCREEN_REFRESH);
 
@@ -298,6 +313,7 @@ void Application::handleJoystickEvents(SDL_Event& event) {
                 buttonPressed = event.jbutton.button;
                 lastButtonPressTime = SDL_GetTicks();
                 repeatStartTime = lastButtonPressTime + initialDelay;
+                nextRepeatTime = lastButtonPressTime + initialDelay;
             }
             // Handle button press events
             //int buttonPressed = event.jbutton.button; 
@@ -332,19 +348,6 @@ void Application::handleJoystickEvents(SDL_Event& event) {
             break;
         default:
             break;
-    }
-    // Check for button repetition outside of the switch statement
-    if (buttonPressed != -1) {
-        Uint32 currentTime = SDL_GetTicks();
-        //if (currentTime > repeatStartTime && (currentTime - repeatStartTime) % repeatInterval == 0) {
-        if (currentTime - lastButtonPressTime >= repeatInterval) {
-            // Simulate button press for repetition
-            SDL_Event repeatEvent;
-            repeatEvent.type = SDL_JOYBUTTONDOWN;
-            repeatEvent.jbutton.button = buttonPressed;
-            SDL_PushEvent(&repeatEvent);
-            repeatStartTime += repeatInterval;
-        }
     }
 }
 
