@@ -2,54 +2,54 @@
 {
     "SystemMenu": [
         {
-            "id": "System.volume",
+            "id": "SYSTEM.volume",
             "type": "IntegerMenuItem",
             "title": "Volume"
         },
         {
-            "id": "System.brightness",
+            "id": "SYSTEM.brightness",
             "type": "IntegerMenuItem",
             "title": "Brightness"
         },
         {
-            "id": "System.screenRefresh",
+            "id": "SYSTEM.screenRefresh",
             "type": "IntegerMenuItem",
             "title": "Screen Refresh Rate"
         },
         {
-            "id": "System.showFPS",
+            "id": "SYSTEM.showFPS",
             "type": "BooleanMenuItem",
             "title": "showFPS"
         },
         {
-            "id": "System.overclock",
+            "id": "SYSTEM.overclock",
             "type": "MultiOptionMenuItem",
             "title": "Overclock",
             "options": ["840 MHz", "1008 MHz", "1296 MHz"]
         },
         {
-            "id": "System.theme",
+            "id": "SYSTEM.theme",
             "type": "MultiOptionMenuItem",
             "title": "Theme",
             "options": ["Comicbook", "Simplermenu", "BigCody"]
         },
         {
-            "id": "System.usbMode",
+            "id": "SYSTEM.usbMode",
             "type": "BooleanMenuItem",
             "title": "USB Mode"
         },
         {
-            "id": "System.wifi",
+            "id": "SYSTEM.wifi",
             "type": "BooleanMenuItem",
             "title": "WIFI"
         },
         {
-            "id": "System.rotation",
+            "id": "SYSTEM.rotation",
             "type": "BooleanMenuItem",
             "title": "Auto rotate"
         },
         {
-            "id": "System.quit",
+            "id": "SYSTEM.quit",
             "type": "SimpleMenuItem",
             "title": "Quit"
         }

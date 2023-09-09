@@ -26,9 +26,9 @@ class SimpleMenuItem;
 class Application : public ISettingsObserver {
 private:
     std::unique_ptr<Menu> mainMenu;
-    std::unique_ptr<State> currentState;
-    std::unique_ptr<SystemMenu> systemMenu;
-    std::unique_ptr<RomMenu> romMenu;
+    State* currentState;
+    std::unique_ptr<SystemSettingsMenu> systemSettingsMenu;
+    std::unique_ptr<RomSettingsMenu> romSettingsMenu;
     ThumbnailCache thumbnailCache;
     SDL_Surface* screen;
     SDL_Surface* background = nullptr;
@@ -55,6 +55,7 @@ private:
     const Uint32 repeatInterval = 50;  // for example, 100ms
 
 public:
+
     Application();
 
     ~Application() {
@@ -67,19 +68,26 @@ public:
         SDL_Quit();
     }
 
+    static Application* getInstance() {
+        if (!instance) {
+            instance = new Application();
+        }
+        return instance;
+    }
+
     TTF_Font* font;
 
     bool fileExists(const std::string& filename);
 
     ThumbnailCache& getThumbnailCache();
 
-    static Application& getInstance();
+    SDL_Surface* getScreen() {
+        return screen;
+    }
 
     void run();
 
     State* getCurrentState() const;
-
-    // Menu* getMainMenu() const;
 
     void showMainMenu();
 
@@ -99,7 +107,9 @@ public:
 private:
     void setupMenu();
 
-    void createSystemMenu();
+    void createSystemSettingsMenu();
+
+    void createRomSettingsMenu();
 
     void printFPS(int fps);
 

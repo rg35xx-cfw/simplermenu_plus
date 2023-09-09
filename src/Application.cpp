@@ -77,23 +77,27 @@ Application::Application() : controlMapping(ControlMapping::getInstance()) {
     // * romMenu is the rom settings menu (to select rom specific settings)
     mainMenu = std::make_unique<Menu>();
 
-    createSystemMenu();
+    createSystemSettingsMenu();
+    createRomSettingsMenu();
 
-    romMenu = std::make_unique<RomMenu>();
+    //romSettingsMenu = std::make_unique<RomSettingsMenu>();
 
-    currentState = std::make_unique<State>(mainMenu.get(), systemMenu.get());
+    //currentState = std::make_unique<State>(mainMenu.get(), systemMenu.get());
+    currentState = State::getInstance(mainMenu.get(), systemSettingsMenu.get(), romSettingsMenu.get());
 
-    systemMenu->enableSelectionRectangle();
-    romMenu->enableSelectionRectangle();
+    systemSettingsMenu->enableSelectionRectangle();
+    romSettingsMenu->enableSelectionRectangle();
 
     // Load the list of rom aliases
     SimpleMenuItem::loadAliases();
 
     // Initialize the menu
     setupMenu();
+
+    currentState->loadAppState("/userdata/system/simplermenu_plus/state.txt");
 }
 
-void Application::createSystemMenu() {
+void Application::createSystemSettingsMenu() {
 
     std::string backgroundPath = 
         this->cfg.getValue(SettingId::HOME_PATH) 
@@ -102,21 +106,37 @@ void Application::createSystemMenu() {
         this->cfg.getValue(SettingId::HOME_PATH) 
         + ".simplemenu/resources/Akrobat-Bold.ttf";
 
-    this->systemMenu = std::make_unique<SystemMenu>(backgroundPath, settingsFont);
+    this->systemSettingsMenu = std::make_unique<SystemSettingsMenu>(backgroundPath, settingsFont);
 
-    std::string systemMenuJSON = 
+    std::string systemSettingsMenuJSON = 
         this->cfg.getValue(SettingId::SYSTEM_MENU_JSON);
 
-    loadMenuFromJSON(systemMenuJSON);
+    std::cout << "systemSettingsMenuJSON: " << systemSettingsMenuJSON << std::endl;
+
+    loadMenuFromJSON(systemSettingsMenuJSON);
+
+}
+
+void Application::createRomSettingsMenu() {
+
+    std::string backgroundPath = 
+        this->cfg.getValue(SettingId::HOME_PATH) 
+        + ".simplemenu/resources/rom_settings.png";
+    std::string settingsFont = 
+        this->cfg.getValue(SettingId::HOME_PATH) 
+        + ".simplemenu/resources/Akrobat-Bold.ttf";
+
+    this->romSettingsMenu = std::make_unique<RomSettingsMenu>(backgroundPath, settingsFont);
+
+    // std::string systemSettingsMenuJSON = 
+    //     this->cfg.getValue(SettingId::SYSTEM_MENU_JSON);
+
+    // loadMenuFromJSON(systemSettingsMenuJSON);
 
 }
 
 ThumbnailCache& Application::getThumbnailCache() {
     return thumbnailCache;
-}
-
-Application& Application::getInstance() {
-    return *instance;
 }
 
 bool Application::fileExists(const std::string& filename) {
@@ -220,7 +240,7 @@ void Application::printFPS(int fps) {
 }
 
 State* Application::getCurrentState() const {
-    return currentState.get();
+    return currentState;//.get();
 }
 
 void Application::showMainMenu() {
@@ -357,9 +377,11 @@ void Application::settingsChanged(const SettingId &id,
         case SettingId::SCREEN_REFRESH:
             this->cfg.setValue(SettingId::SCREEN_REFRESH, value);
             break;
-        
         case SettingId::SHOW_FPS:
             this->cfg.setValue(SettingId::SHOW_FPS, value);
+            break;
+        case SettingId::THEME_NAME:
+            this->cfg.setValue(SettingId::THEME_NAME, value);
             break;
         default:
             break;
@@ -422,9 +444,7 @@ void Application::loadMenuFromJSON(const std::string& jsonPath) {
 
         if (menuItem) {
             menuItem->attach(this);
-            systemMenu->addItem(std::move(menuItem));
+            systemSettingsMenu->addItem(std::move(menuItem));
         }
-
-        
     }
 }

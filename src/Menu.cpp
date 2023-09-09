@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include "State.h"
 #include "RenderUtils.h"
+#include "Application.h"
 
 void Menu::print() const {
     for (const auto& item : items) {
@@ -60,8 +61,6 @@ int Menu::getNumberOfItems() {
 }
 
 void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
-    std::cout << "SimpleMenuItem::render" << std::endl;
-
     // Check if the menu is a ROM menu and set the background
     SDL_Surface* background = nullptr;
     if (currentState == MenuState::ROMLIST_MENU) {
@@ -70,12 +69,12 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         MenuItem* selectedItem = items[selectedItemIndex].get();
         background = selectedItem->getBackground();     
     } else if(currentState == MenuState::SYSTEM_SETTINGS_MENU || currentState == MenuState::ROM_SETTINGS_MENU) {
-        background = SimpleMenuItem::loadSettingsBackground();
+        background = getBackground();   
     }
 
     if (background) {
         SDL_BlitSurface(background, NULL, screen, NULL);
-        SDL_FreeSurface(background);
+        //SDL_FreeSurface(background);
     } else {
         // If there's no background, we set the background to black
         SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
@@ -160,6 +159,23 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         renderUtil.renderText(screen, pageInfo, x, y, 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
     }
 
+    if (currentState == MenuState::ROM_SETTINGS_MENU) {
+        std::string fontPath = theme.getValue("GENERAL.textX_font", true);
+        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
+
+        RenderUtils renderUtil(titleFont);
+        std::string settingsFont = 
+        this->cfg.getValue(SettingId::HOME_PATH) 
+        + ".simplemenu/resources/Akrobat-Bold.ttf";
+
+        renderUtil.setFont(settingsFont,  32);
+
+        SDL_Color textColor = theme.getColor("DEFAULT.selected_item_font_color");
+
+        renderUtil.renderText(screen, getTitle(), Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) / 2 , 65, 0, 0, textColor, 1);
+
+    }
+
     //  Close the customFont
     if (!customFontPath.empty()) {
         TTF_CloseFont(currentFont);
@@ -226,11 +242,15 @@ void Menu::enableSelectionRectangle(bool enable) {
     drawSelectionRectangle = enable;
 }
 
-SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) : Menu("System Settings Menu") {
+SystemSettingsMenu::SystemSettingsMenu(std::string backgroundPath, std::string settingsFont) : Menu("System Settings Menu") {
 
-    this->itemsPerPage = theme.getIntValue("GENERAL.items");
+    this->itemsPerPage = Configuration::getInstance().getIntValue(SettingId::SETTINGS_PER_PAGE);
 
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
+    background = IMG_Load(backgroundPath.c_str());
+    if (!background) {
+        std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
+    }
 
     setFont(settingsFont, 32);
     setItemPosition(10,92);
@@ -238,42 +258,18 @@ SystemMenu::SystemMenu(std::string backgroundPath, std::string settingsFont) : M
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
     setSelectionRectangleProperties({0x10, 0x22, 0xa0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
-
 }
 
-RomMenu::RomMenu() : Menu("Rom Settings Menu") {
-    setTitle("Rom Settings Menu");
-    // FIXME decide how to deal with rom ids to know which rom they belong to
-    addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.autostart", 
-                                              "AUTOSTART", 
-                                              "OFF"));
-    
-    std::vector<std::string> coreOptions = {"mame2003_plus", "fbneo", "fbalpha", "mame2000", "mame2010"};
+RomSettingsMenu::RomSettingsMenu(std::string backgroundPath, std::string settingsFont) : Menu("Rom Settings Menu") {
 
-    addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.selectCore", 
-                                                  "SELECT CORE/EMULATOR", 
-                                                  coreOptions[0], 
-                                                  coreOptions));
-    addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.saveState",
-                                              "AUTO SAVE STATE", 
-                                              "OFF"));
-    addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.loadState", 
-                                              "LOAD STATE", 
-                                              "OFF"));
+    this->itemsPerPage = Configuration::getInstance().getIntValue(SettingId::SETTINGS_PER_PAGE);
 
-    std::vector<std::string> overclockValues = {"OFF", "840 MHz", "1008 MHz", "1296 MHz"};
-
-    addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.overclock",
-                                                  "ROM OVERCLOCK", 
-                                                  overclockValues[0], overclockValues));
-
-
-    std::string backgroundPath = this->cfg.getValue(SettingId::HOME_PATH) 
-                                 + ".simplemenu/resources/rom_settings.png";
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
+    background = IMG_Load(backgroundPath.c_str());
+    if (!background) {
+        std::cerr << "Failed to load Rom Settings background: " << IMG_GetError() << std::endl;
+    }
 
-    std::string settingsFont = this->cfg.getValue(SettingId::HOME_PATH) 
-                               + ".simplemenu/resources/Akrobat-Bold.ttf";
     setFont(settingsFont, 32);
     setItemPosition(10,92);
     setSpacing(46);
@@ -282,7 +278,7 @@ RomMenu::RomMenu() : Menu("Rom Settings Menu") {
     setSelectionRectangleProperties({0, 0, 0, 200}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
 }
 
-bool RomMenu::isRomMenu() const {
+bool RomSettingsMenu::isRomMenu() const {
     return true;
 }
 
@@ -312,4 +308,84 @@ void Menu::setItemPosition(int x, int y) {
 
 void Menu::setSpacing(int spacing) {
     customSpacing = spacing;
+}
+
+std::string extractBeforeUnderscore(const std::string& str) {
+    size_t lastSlash = str.find_last_of("/");
+    size_t underscorePos = str.find_last_of("_");
+
+    // If there's no '_', return the original string
+    if (underscorePos == std::string::npos) {
+        return str;
+    }
+
+    // If there's no '/', start from the beginning of the string
+    if (lastSlash == std::string::npos) {
+        return str.substr(0, underscorePos);
+    }
+
+    // Extract the portion between the last slash and the underscore
+    return str.substr(lastSlash + 1, underscorePos - lastSlash - 1);
+}
+
+void RomSettingsMenu::populateForROM(MenuItem* rom) {
+
+    setTitle(rom->getRomAlias());
+
+    //std::cout << "ROM --- " << rom->getFolderName() << " --- " << rom->getRootMenu()->getTitle() <<std::endl;
+
+    // Clear existing items
+    this->clearItems();
+
+    if (hasCustomSettings(rom)) {
+        // populate the menu with custom settings
+    } else {
+        // populate the menu with default settings
+        // FIXME decide how to deal with rom ids to know which rom they belong to
+        addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.autostart", 
+                                                "AUTOSTART", 
+                                                "OFF"));
+        
+        std::string iniFile = "/userdata/system/.simplemenu/section_groups/" + rom->getRootMenu()->getTitle();
+
+        std::map<std::string, ConsoleData> consoleDataMap = Configuration::getInstance().parseIniFile(iniFile);
+
+        // Get the title of the parent menu
+        std::string parentTitle = rom->getParentMenu()->getTitle();
+
+        std::cout << "parenTitle " << parentTitle << std::endl;
+
+        // FIXME: temporary solution to select the first available emulator launcher as defined
+        //        in the .ini execs. This will have to be changed once the launcher is selected and saved
+        ConsoleData consoleData = consoleDataMap[parentTitle];
+
+        std::vector<std::string> coreOptions = consoleData.execs;
+        std::vector<std::string> coreList;
+
+        for (const auto& str : coreOptions) {
+            std::string out = extractBeforeUnderscore(str);
+            coreList.push_back(out);
+        }
+
+        std::cout << "execs " << coreOptions[0] << " -> " << coreList[0] << std::endl;
+
+        addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.selectCore", 
+                                                    "SELECT CORE/EMULATOR", 
+                                                    coreList[0], 
+                                                    coreList));
+        addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.saveState",
+                                                "AUTO SAVE STATE", 
+                                                "OFF"));
+        addItem(std::make_unique<BooleanMenuItem>(SettingId::None, //"Rom.loadState", 
+                                                "LOAD STATE", 
+                                                "OFF"));
+
+        std::vector<std::string> overclockValues = {"OFF", "840 MHz", "1008 MHz", "1296 MHz"};
+
+        addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.overclock",
+                                                    "ROM OVERCLOCK", 
+                                                    overclockValues[0], overclockValues));
+    }
+
+    // Add other common menu items
 }

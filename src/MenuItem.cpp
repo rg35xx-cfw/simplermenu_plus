@@ -78,9 +78,9 @@ void SimpleMenuItem::executeAction() {
     if (title == "Back") {
     // This is a simplistic way to handle it. 
     // A better way would be to use callbacks or command patterns.
-        Application::getInstance().showMainMenu();
+        Application::getInstance()->showMainMenu();
     } else if (title == "Return to Main Menu") {
-        Application::getInstance().showMainMenu();
+        Application::getInstance()->showMainMenu();
     } else if (!path.empty()) {
         std::cout << "Launching rom: " << path << " title: " << title << std::endl;
     
@@ -88,6 +88,8 @@ void SimpleMenuItem::executeAction() {
 
         // Get the title of the parent menu
         std::string parentTitle = this->getParentMenu()->getTitle();
+
+        std::cout << "parenTitle " << parentTitle << std::endl;
 
         // FIXME: temporary solution to select the first available emulator launcher as defined
         //        in the .ini execs. This will have to be changed once the launcher is selected and saved
@@ -105,6 +107,11 @@ void SimpleMenuItem::executeAction() {
             }
         }
 
+        // SaveState currentState;
+        // currentState.menuName = "mainMenu"; // Get the current menu's name or ID
+        // currentState.selectedItemPosition = 5; // Get the current selected item's position
+        State::getInstance()->saveAppState("/userdata/system/simplermenu_plus/state.txt");
+
         // Launch emulator
         std::string command = execLauncher + " '" + path + "'";
         std::cout << "Executing: " << command << std::endl;
@@ -112,8 +119,10 @@ void SimpleMenuItem::executeAction() {
         system(command.c_str());
 
         // Exit the application to free all resources
+        SDL_Quit();
         exit(0);
     } else if (title == "QUIT") {
+        SDL_Quit();
         exit(0);
     }
 }
@@ -176,7 +185,6 @@ void MenuItem::loadAliases() {
 }
 
 void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) {
-    std::cout << "SimpleMenuItem::render" << std::endl;
     // If we have a section or system menu that is basically a background picture
     if(currentState == MenuState::SYSTEMS_MENU || currentState == MenuState::SECTIONS_MENU) {
         //SDL_Surface* currentBackground;
@@ -214,7 +222,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
 
         // TODO replace clipWidth the correct width based on theme.ini settings
         int clipWidth = theme.getIntValue("GENERAL.game_list_w"); 
-        if( currentState == MenuState::SYSTEM_SETTINGS_MENU) {
+        if( currentState == MenuState::SYSTEM_SETTINGS_MENU || currentState == MenuState::ROM_SETTINGS_MENU) {
             clipWidth = 500; // FIXME: default for setting list so it does no overlap with value
         }
 
@@ -339,7 +347,7 @@ void SimpleMenuItem::select() {
     selectTime = SDL_GetTicks();
     
     // Measure the width of the title
-    TTF_Font* currentFont = Application::getInstance().font;
+    TTF_Font* currentFont = Application::getInstance()->font;
     TTF_SizeText(currentFont, title.c_str(), &titleWidth, nullptr);
     
     if (!thumbnail && thumbnailExists()) {

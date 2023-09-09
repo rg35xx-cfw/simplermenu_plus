@@ -16,6 +16,7 @@ class MenuItem;
 class SimpleMenuItem;
 class BooleanSettingsMenu;
 class MultiOptionMenuItem;
+class LabelMenuItem;
 
 class Menu {
 protected:
@@ -80,6 +81,10 @@ public:
 
     void addItem(std::unique_ptr<SimpleMenuItem> item);
 
+    void clearItems() {
+        items.clear();
+    }
+
     int getNumberOfItems();
 
     void render(SDL_Surface* screen, TTF_Font* font, MenuState currentState);
@@ -113,19 +118,36 @@ public:
     void enableSelectionRectangle(bool enable = true);
 };
 
-class SystemMenu : public Menu {
+class SystemSettingsMenu : public Menu {
 public:
-    SystemMenu(std::string backgroundPath, std::string settingsFont);
+    SystemSettingsMenu(std::string backgroundPath, std::string settingsFont);
 
     void specificSystemMenuActions();
 
 };
 
-class RomMenu : public Menu {
+class RomSettingsMenu : public Menu {
+    std::string romName;
 public:
-    RomMenu();
+    RomSettingsMenu(std::string backgroundPath, std::string settingsFont);
 
-    void specificSystemMenuActions();
+    void populateForROM(MenuItem* rom);
+
+    bool hasCustomSettings(MenuItem* rom) {
+        // Check if there are custom settings for the given ROM
+        // Return true if there are, false otherwise
+        return false;
+    }
+
+    void setRomName(std::string rom) {
+        romName = rom;
+    }
+
+    std::string& getRomName() {
+        return romName;
+    }
+
+    void specificRomMenuActions();
 
     bool isRomMenu() const override;
 };

@@ -104,15 +104,15 @@ public:
         return background;
     }
 
-    static SDL_Surface* loadSettingsBackground() {
-        std::string backgroundPath = Configuration::getInstance().getValue(SettingId::HOME_PATH) + ".simplemenu/resources/settings.png";
+    // static SDL_Surface* loadSettingsBackground() {
+    //     std::string backgroundPath = Configuration::getInstance().getValue(SettingId::HOME_PATH) + ".simplemenu/resources/settings.png";
         
-        SDL_Surface* background = IMG_Load(backgroundPath.c_str());
-        if (!background) {
-            std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
-        }
-        return background; 
-    }
+    //     SDL_Surface* background = IMG_Load(backgroundPath.c_str());
+    //     if (!background) {
+    //         std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
+    //     }
+    //     return background; 
+    // }
 
     std::string getTitle();
     std::string getValue();
@@ -305,5 +305,17 @@ public:
 
     void navigateLeft() override;
     void navigateRight() override;
+};
+
+// LabelMenuItem
+
+class LabelMenuItem : public SimpleMenuItem {
+private:
+    std::string labelText;
+public:
+
+    LabelMenuItem(const SettingId& id, const std::string& label, const std::string& value = "") : SimpleMenuItem(id, label, "", value) {
+        labelText = label;
+    };
 };
 
