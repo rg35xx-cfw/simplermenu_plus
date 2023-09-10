@@ -99,7 +99,7 @@ public:
 
     void clearBackground();
 
-    bool getRender() {
+    bool getRender() const {
         return needsRender;
     }
 

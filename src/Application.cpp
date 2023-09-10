@@ -205,6 +205,9 @@ void Application::run() {
                     handleJoystickEvents(event);
                     setRender(true);
                     break;
+                case SDL_KEYUP:
+                    setRender(false);
+                    break;
             }
         }
 

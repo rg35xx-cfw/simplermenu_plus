@@ -60,8 +60,6 @@ int Menu::getNumberOfItems() {
 }
 
 void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
-    if(Application::getInstance()->getRender() == true) {
-
     // Check if the menu is a ROM menu and set the background
     if(currentState == MenuState::SYSTEMS_MENU) {
         MenuItem* selectedItem = items[selectedItemIndex].get();
@@ -83,8 +81,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     int y = customFontPath.empty() ? 
         theme.getIntValue("GENERAL.game_list_y") : itemOffset_y;
 
-    // Open customFont if defined (used for settings menu)
-    TTF_Font* currentFont = customFontPath.empty() ? font : TTF_OpenFont(customFontPath.c_str(), customFontSize);
 
     int spacing = customSpacing ? customSpacing : theme.getIntValue("GENERAL.items_separation");
 
@@ -107,6 +103,9 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         SDL_FillRect(screen, &rectangle, SDL_MapRGB(screen->format, selectionRectangleColor.r, selectionRectangleColor.g, selectionRectangleColor.b));
     }
+    
+    // Open customFont if defined (used for settings menu)
+    TTF_Font* currentFont = customFontPath.empty() ? font : TTF_OpenFont(customFontPath.c_str(), customFontSize);
 
     int endIndex = std::min(startIndex + itemsPerPage, static_cast<int>(items.size()));
     for (int i = startIndex; i < endIndex; i++) {
@@ -125,18 +124,10 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
-        std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-//        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
-
-        //RenderUtils renderUtil(titleFont);
-        //renderUtil.setFont(theme.getValue("GENERAL.textX_font", true),  theme.getIntValue("GENERAL.text1_font_size"));
+        // std::string fontPath = theme.getValue("GENERAL.textX_font", true);
 
         RenderUtils::getInstance()->renderText(screen, "generalFont", systemTitle, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment"));
 
-        // // Add rom/art title (some graphic themes hide this rendering it outside the screen)
-  //      titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
-
-        // RenderUtils::getInstance().setFont(fontPath, theme.getIntValue("GENERAL.art_text_font_size"));
         int x = theme.getIntValue("GENERAL.art_x") + theme.getIntValue("GENERAL.art_max_w")/2;
         int y = theme.getIntValue("GENERAL.art_y") + 
                 theme.getIntValue("GENERAL.art_max_h") + 
@@ -157,16 +148,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     }
 
     if (currentState == MenuState::ROM_SETTINGS_MENU) {
-        //std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-        //TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
-
-        //RenderUtils renderUtil(titleFont);
-        // std::string settingsFont = 
-        // this->cfg.getValue(SettingId::HOME_PATH) 
-        // + ".simplemenu/resources/Akrobat-Bold.ttf";
-
-        //renderUtil.setFont(settingsFont,  32);
-
         SDL_Color textColor = theme.getColor("DEFAULT.selected_item_font_color");
 
         RenderUtils::getInstance()->renderText(screen, "textFont", getTitle(), Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) / 2 , 65, 0, 0, textColor, 1);
@@ -176,7 +157,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     //  Close the customFont
     if (!customFontPath.empty()) {
         TTF_CloseFont(currentFont);
-    }
     }
 }
 
