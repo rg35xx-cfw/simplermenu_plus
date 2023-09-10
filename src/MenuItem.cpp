@@ -392,7 +392,9 @@ void SimpleMenuItem::determineAndSetBackground(SDL_Surface* screen, MenuState cu
         backgroundPath = Configuration::getInstance().getThemePath() + "resources/section_groups/" + titleName + ".png";
     } else if(currentState == MenuState::SYSTEMS_MENU) {
         backgroundPath = Configuration::getInstance().getThemePath() + theme.getValue(this->getFolderName() + ".logo");
-    } 
+    } else if(currentState == MenuState::ROMLIST_MENU) {
+        backgroundPath = Configuration::getInstance().getThemePath() + theme.getValue("DEFAULT.background");
+    }
     std::cout <<"MenuItem SetBackground " << backgroundPath << std::endl;
     if (background) {
         SDL_FreeSurface(background);

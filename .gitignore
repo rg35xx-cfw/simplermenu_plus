@@ -11,3 +11,7 @@ obj/
 # ROMs and BIOS
 resources/roms/
 resources/bios/
+
+# MISC
+state.txt
+

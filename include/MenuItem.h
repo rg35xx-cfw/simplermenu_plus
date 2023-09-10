@@ -92,16 +92,18 @@ public:
         return background;
     }
 
-    static SDL_Surface* loadRomBackground() {
+    // static SDL_Surface* loadRomBackground() {
+    void loadRomBackground() {
         std::string backgroundPath = "/userdata/system/.simplemenu/themes/" + 
                                      std::to_string(getConfig().getIntValue(SettingId::SCREEN_WIDTH)) + "x" + std::to_string(getConfig().getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
                                      getConfig().getValue(SettingId::THEME_NAME) + "/" +
                                      Theme::getInstance().getValue("DEFAULT.background") ;
-        SDL_Surface* background = IMG_Load(backgroundPath.c_str());
+        //SDL_Surface* 
+        background = IMG_Load(backgroundPath.c_str());
         if (!background) {
             std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
         }
-        return background;
+        // return background;
     }
 
     // static SDL_Surface* loadSettingsBackground() {

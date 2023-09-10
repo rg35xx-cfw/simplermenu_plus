@@ -22,6 +22,12 @@ public:
         }
     }
 
+    ~RenderUtils() {
+        if(m_font) {
+            TTF_CloseFont(m_font);
+        }
+    }
+
     void renderText(SDL_Surface* screen, const std::string& text, int x, int y, int w, int h, SDL_Color color, int align = LEFT) {
         SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, text.c_str(), color);
         
@@ -48,9 +54,9 @@ public:
 
     // Method to set a new font and size
     void setFont(const std::string& fontPath, int size) {
-        if (m_font) {
-            TTF_CloseFont(m_font);
-        }
+        // if (m_font) {
+        //     TTF_CloseFont(m_font);
+        // }
         m_font = TTF_OpenFont(fontPath.c_str(), size);
         if (!m_font) {
             // Handle font loading error appropriately

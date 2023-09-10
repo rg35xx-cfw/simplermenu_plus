@@ -62,10 +62,7 @@ int Menu::getNumberOfItems() {
 
 void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     // Check if the menu is a ROM menu and set the background
-    SDL_Surface* background = nullptr;
-    if (currentState == MenuState::ROMLIST_MENU) {
-       background = SimpleMenuItem::loadRomBackground();
-    } else if(currentState == MenuState::SYSTEMS_MENU) {
+    if(currentState == MenuState::SYSTEMS_MENU) {
         MenuItem* selectedItem = items[selectedItemIndex].get();
         background = selectedItem->getBackground();     
     } else if(currentState == MenuState::SYSTEM_SETTINGS_MENU || currentState == MenuState::ROM_SETTINGS_MENU) {
@@ -74,7 +71,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
     if (background) {
         SDL_BlitSurface(background, NULL, screen, NULL);
-        //SDL_FreeSurface(background);
     } else {
         // If there's no background, we set the background to black
         SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));
@@ -129,15 +125,15 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
         std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
+//        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
 
         RenderUtils renderUtil(titleFont);
         renderUtil.setFont(theme.getValue("GENERAL.textX_font", true),  theme.getIntValue("GENERAL.text1_font_size"));
 
         renderUtil.renderText(screen, systemTitle, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment"));
 
-        // Add rom/art title (some graphic themes hide this rendering it outside the screen)
-        titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
+        // // Add rom/art title (some graphic themes hide this rendering it outside the screen)
+  //      titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
 
         renderUtil.setFont(fontPath, theme.getIntValue("GENERAL.art_text_font_size"));
         int x = theme.getIntValue("GENERAL.art_x") + theme.getIntValue("GENERAL.art_max_w")/2;
@@ -161,7 +157,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
     if (currentState == MenuState::ROM_SETTINGS_MENU) {
         std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-        TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
+        //TTF_Font* titleFont = TTF_OpenFont(fontPath.c_str(), 32); // FIXME: size needs to be based on theme settings
 
         RenderUtils renderUtil(titleFont);
         std::string settingsFont = 

@@ -42,6 +42,8 @@ protected:
     Configuration& cfg = Configuration::getInstance();
     Theme& theme = Theme::getInstance();
 
+    TTF_Font* titleFont;
+
 private:
     bool drawSelectionRectangle = false; 
     Menu* rootMenu = nullptr;
@@ -51,6 +53,20 @@ public:
         this->itemsPerPage = theme.getIntValue("GENERAL.items");
 
         this->customSpacing = 0;
+
+        std::string backgroundPath = "/userdata/system/.simplemenu/themes/" + 
+                                     std::to_string(cfg.getIntValue(SettingId::SCREEN_WIDTH)) + "x" + std::to_string(cfg.getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
+                                     cfg.getValue(SettingId::THEME_NAME) + "/" +
+                                     Theme::getInstance().getValue("DEFAULT.background") ;
+        //SDL_Surface* 
+        background = IMG_Load(backgroundPath.c_str());
+        if (!background) {
+            std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
+        }
+        
+        std::string fontPath = theme.getValue("GENERAL.textX_font", true);
+        titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
+
     }; // Updated constructor
 
     void setRootMenu(Menu* root) { rootMenu = root; }
