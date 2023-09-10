@@ -15,6 +15,7 @@
 class Menu;
 class Configuration;
 class Theme;
+class RenderUtils;
 enum class MenuState;
 
 // MenuItem
@@ -174,7 +175,7 @@ private:
     int thumbnailOffset_x;
     int thumbnailOffset_y;
     SDL_Surface* background = nullptr;
-
+    SDL_Surface* tmpThumbnail = nullptr;
     int numberOfItems = 0;
 
     // Potentially other attributes like action or callback

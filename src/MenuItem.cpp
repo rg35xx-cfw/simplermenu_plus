@@ -3,7 +3,6 @@
 #include "State.h"
 #include "Application.h"
 #include "Exception.h"
-#include "RenderUtils.h"
 
 #include <iostream>
 #include <filesystem>
@@ -131,12 +130,15 @@ void SimpleMenuItem::loadThumbnail() {
     // If thumbnail is already in cache, set it and return
     if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
         thumbnail = thumbnailCache[thumbnailPath];
+        std::cout << "loadThumbnail cached" << std::endl;
         return;
     }
 
     // If thumbnail exists, proceed with loading and caching
     if (thumbnailExists()) { 
-        SDL_Surface* tmpThumbnail = IMG_Load(thumbnailPath.c_str());
+                std::cout << "loadThumbnail exist, loading..." << std::endl;
+
+        tmpThumbnail = IMG_Load(thumbnailPath.c_str());
 
         int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
         int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
@@ -197,13 +199,13 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         if (currentBackground == nullptr) {
             // If there's no background, render the folder name centered with black background
             if (isSelected) {
-                RenderUtils renderUtil(theme.getValue("GENERAL.font", true), 32);
+                //RenderUtils renderUtil(theme.getValue("GENERAL.font", true), 32);
 
                 //SDL_Rect dstRect;
                 int x = (screen->w) / 2;
                 int y = (screen->h) / 2;
                 SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
-                renderUtil.renderText(screen, title, x, y, 0, 0, {255, 255, 255}, 1);
+                RenderUtils::getInstance()->renderText(screen, "generalFont", title, x, y, 0, 0, {255, 255, 255}, 1);
             }
             return;
         } else {
@@ -262,16 +264,16 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // Load Thumbnail for the selected Rom
         // TODO replace coordinates from those in the theme.ini
         if (isSelected) {
-            loadThumbnail();
-            if (thumbnail) {
-                Uint16 x = theme.getIntValue("GENERAL.art_x"); 
-                Uint16 y = theme.getIntValue("GENERAL.art_y"); 
-                Uint16 w = theme.getIntValue("GENERAL.art_max_w"); 
-                Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
-                //SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
-                SDL_Rect destRect = {x, y, w, h};
-                SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
+            if(!thumbnail) {
+                loadThumbnail();
             }
+            Uint16 x = theme.getIntValue("GENERAL.art_x"); 
+            Uint16 y = theme.getIntValue("GENERAL.art_y"); 
+            Uint16 w = theme.getIntValue("GENERAL.art_max_w"); 
+            Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
+            //SDL_Rect destRect = {static_cast<Sint16>(screen->w / 2 - 20), 100, 0, 0};
+            SDL_Rect destRect = {x, y, w, h};
+            SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
         }
 
         SDL_FreeSurface(textSurface);
