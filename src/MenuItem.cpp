@@ -188,7 +188,7 @@ void MenuItem::loadAliases() {
 
 void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, bool isSelected, MenuState currentState) {
     // If we have a section or system menu that is basically a background picture
-    if(currentState == MenuState::SYSTEMS_MENU || currentState == MenuState::SECTIONS_MENU) {
+    if((currentState == MenuState::SYSTEMS_MENU || currentState == MenuState::SECTIONS_MENU) && Application::getInstance()->getRender() == true) {
         //SDL_Surface* currentBackground;
 
         if(this->background == nullptr) {
@@ -250,6 +250,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         SDL_BlitSurface(textSurface, nullptr, screen, &destRect);
         SDL_SetClipRect(screen, NULL);  // Reset the clip rect
 
+    if(Application::getInstance()->getRender() == true) {
         // If we have a value associated with the item (e.g. settings) we render that at the end of each row
         if (value != "") {
             // Render the value to the right of the title
@@ -265,6 +266,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         // TODO replace coordinates from those in the theme.ini
         if (isSelected) {
             if(!thumbnail) {
+                std::cout << "no thumbnail" << std::endl;
                 loadThumbnail();
             }
             Uint16 x = theme.getIntValue("GENERAL.art_x"); 
@@ -278,6 +280,9 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
 
         SDL_FreeSurface(textSurface);
     }
+    }
+
+    if(Application::getInstance()->getRender() == true) {
 
     // Some themes have text in the section selection
     if (theme.getValue("GENERAL.display_section_group_name") == "1" && currentState == MenuState::SECTIONS_MENU) {
@@ -333,6 +338,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
                 SDL_FreeSurface(gameCountSurface);
             }
             return;
+    }
     }
 }
 

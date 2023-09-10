@@ -54,6 +54,8 @@ private:
     const Uint32 initialDelay = 500;  // for example, 500ms
     const Uint32 repeatInterval = 50;  // for example, 100ms
 
+    bool needsRender;
+
 public:
 
     Application();
@@ -96,6 +98,14 @@ public:
     SDL_Surface* getBackground() const;
 
     void clearBackground();
+
+    bool getRender() {
+        return needsRender;
+    }
+
+    void setRender(bool value) {
+        needsRender = value;
+    }
 
 
     /**

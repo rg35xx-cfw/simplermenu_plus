@@ -60,6 +60,8 @@ int Menu::getNumberOfItems() {
 }
 
 void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
+    if(Application::getInstance()->getRender() == true) {
+
     // Check if the menu is a ROM menu and set the background
     if(currentState == MenuState::SYSTEMS_MENU) {
         MenuItem* selectedItem = items[selectedItemIndex].get();
@@ -174,6 +176,7 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
     //  Close the customFont
     if (!customFontPath.empty()) {
         TTF_CloseFont(currentFont);
+    }
     }
 }
 

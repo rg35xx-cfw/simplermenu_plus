@@ -157,6 +157,8 @@ void Application::run() {
     Uint32 currentTime = SDL_GetTicks();
     nextRepeatTime = currentTime + initialDelay;
 
+    setRender(true);
+
     while (isRunning) {
 
         // Handle button repetition outside of the event processing loop
@@ -176,14 +178,14 @@ void Application::run() {
         int frameDelay = 1000 / screenRefresh;
 
         // Wait if last frame was drawn too fast
-        if (SDL_GetTicks() - frameStart < frameDelay) {
-            continue;
-        }
+        // if (SDL_GetTicks() - frameStart < frameDelay) {
+        //     continue;
+        // }
 
-        // Fine tune FPS
-        if (frameCount == screenRefresh && ((SDL_GetTicks() - fpsTimer) < 1000)) {
-            continue;
-        }
+        // // Fine tune FPS
+        // if (frameCount == screenRefresh && ((SDL_GetTicks() - fpsTimer) < 1000)) {
+        //     continue;
+        // }
 
         frameStart = SDL_GetTicks();
 
@@ -194,12 +196,14 @@ void Application::run() {
                     break;
                 case SDL_KEYDOWN:
                     handleKeyPress(event.key.keysym.sym);
+                    setRender(true);
                     break;
                 case SDL_JOYAXISMOTION:
                 case SDL_JOYBUTTONDOWN:
                 case SDL_JOYBUTTONUP:
                 case SDL_JOYHATMOTION:
                     handleJoystickEvents(event);
+                    setRender(true);
                     break;
             }
         }
@@ -227,7 +231,6 @@ void Application::run() {
         SDL_Flip(screen);
 
         frameCount++;
-
     }
 }
 
@@ -362,6 +365,7 @@ void Application::handleJoystickEvents(SDL_Event& event) {
                 buttonPressed = -1;
                 lastButtonPressTime = 0;
             }
+            setRender(false);
             break;
         case SDL_JOYHATMOTION:
             // Handle D-pad movements
