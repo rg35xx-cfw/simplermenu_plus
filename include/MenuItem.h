@@ -218,6 +218,10 @@ public:
         if(thumbnail) {
             SDL_FreeSurface(thumbnail);
         }
+        if(tmpThumbnail) {
+            SDL_FreeSurface(tmpThumbnail);
+        }
+
     }
 
     const std::string& getPath() const {

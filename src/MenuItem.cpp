@@ -136,7 +136,7 @@ void SimpleMenuItem::loadThumbnail() {
 
     // If thumbnail exists, proceed with loading and caching
     if (thumbnailExists()) { 
-                std::cout << "loadThumbnail exist, loading..." << std::endl;
+        std::cout << "loadThumbnail exist, loading..." << std::endl;
 
         tmpThumbnail = IMG_Load(thumbnailPath.c_str());
 

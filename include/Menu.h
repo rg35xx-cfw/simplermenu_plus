@@ -65,9 +65,15 @@ public:
             std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
         }
 
-        std::string fontPath = theme.getValue("GENERAL.textX_font", true);
-        titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
+        // std::string fontPath = theme.getValue("GENERAL.textX_font", true);
+        // titleFont = TTF_OpenFont(fontPath.c_str(), theme.getIntValue("GENERAL.art_text_font_size"));
     }; // Updated constructor
+
+    ~Menu() {
+        if(background) {
+            SDL_FreeSurface(background);
+        }
+    }
 
     void setRootMenu(Menu* root) { rootMenu = root; }
 
