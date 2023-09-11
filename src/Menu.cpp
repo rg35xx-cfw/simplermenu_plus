@@ -233,7 +233,7 @@ SystemSettingsMenu::SystemSettingsMenu(std::string backgroundPath, std::string s
     setSpacing(46);
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
-    setSelectionRectangleProperties({0x10, 0x22, 0xa0, 128}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+    setSelectionRectangleProperties({0x10, 0x22, 0xa0, 128}, Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH), 46); // Semi-transparent red rectangle with screen width and height 24px
 }
 
 RomSettingsMenu::RomSettingsMenu(std::string backgroundPath, std::string settingsFont) : Menu("Rom Settings Menu") {
@@ -251,7 +251,7 @@ RomSettingsMenu::RomSettingsMenu(std::string backgroundPath, std::string setting
     setSpacing(46);
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
-    setSelectionRectangleProperties({0, 0, 0, 200}, 640, 46); // Semi-transparent red rectangle with width 200px and height 24px
+    setSelectionRectangleProperties({0, 0, 0, 200}, Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH), 46); // Semi-transparent red rectangle with screen width and height 24px
 }
 
 bool RomSettingsMenu::isRomMenu() const {

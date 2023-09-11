@@ -249,7 +249,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
             SDL_Surface* valueSurface = TTF_RenderText_Blended(font, value.c_str(), textColor);
         
             // Position the value surface to the right of the title
-            SDL_Rect valueDestRect = {static_cast<Sint16>(640 - valueSurface->w - 10), static_cast<Sint16>(y), 0, 0};
+            SDL_Rect valueDestRect = {static_cast<Sint16>(cfg.getIntValue(SettingId::SCREEN_WIDTH) - valueSurface->w - 10), static_cast<Sint16>(y), 0, 0};
             SDL_BlitSurface(valueSurface, nullptr, screen, &valueDestRect);
             SDL_FreeSurface(valueSurface);
         }
@@ -290,7 +290,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
             dstRect.h = folderNameSurface->h;
 
             // Create a semi-transparent surface for the background
-            SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, 640, dstRect.h, 32, 0, 0, 0, 0);
+            SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, cfg.getIntValue(SettingId::SCREEN_WIDTH), dstRect.h, 32, 0, 0, 0, 0);
 
             // Enable blending for the surface
             SDL_SetAlpha(transparentBg, SDL_SRCALPHA, 127);
@@ -313,18 +313,13 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
     }
 
     // Add the game count field for the system view if display_game_count is enabled
-    if (currentState == MenuState::SYSTEMS_MENU && theme.getIntValue("GENERAL.display_game_count") == 1 ) {
-            SDL_Surface* gameCountSurface = renderText(std::to_string(numberOfItems) + " GAMES", theme.getColor("GENERAL.game_count_font_color"), theme.getValue("GENERAL.game_count_font", true), theme.getIntValue("GENERAL.game_count_font_size"));
-            if (gameCountSurface) {
-                SDL_Rect dstRect;
-                dstRect.x = theme.getIntValue("GENERAL.game_count_x") - gameCountSurface->w / 2; 
-                dstRect.y = theme.getIntValue("GENERAL.game_count_y") - gameCountSurface->h / 2; 
-                dstRect.w = 0;
-                dstRect.h = 0;
+    if (currentState == MenuState::SYSTEMS_MENU && theme.getIntValue("GENERAL.display_game_count") == 1 ) {            
+            RenderUtils::getInstance()->renderText(screen, "textFont", 
+                                                   std::to_string(numberOfItems) + " GAMES", 
+                                                   theme.getIntValue("GENERAL.game_count_x"), 
+                                                   theme.getIntValue("GENERAL.game_count_y"), 0, 0, 
+                                                   theme.getColor("GENERAL.game_count_font_color"), 1); 
 
-                SDL_BlitSurface(gameCountSurface, NULL, screen, &dstRect);
-                SDL_FreeSurface(gameCountSurface);
-            }
             return;
     }
 }
