@@ -195,18 +195,17 @@ void Application::run() {
                     isRunning = false;
                     break;
                 case SDL_KEYDOWN:
-                    handleKeyPress(event.key.keysym.sym);
                     setRender(true);
+                    handleKeyPress(event.key.keysym.sym);
                     break;
                 case SDL_JOYAXISMOTION:
                 case SDL_JOYBUTTONDOWN:
                 case SDL_JOYBUTTONUP:
                 case SDL_JOYHATMOTION:
-                    handleJoystickEvents(event);
                     setRender(true);
+                    handleJoystickEvents(event);
                     break;
                 case SDL_KEYUP:
-                    setRender(false);
                     break;
             }
         }
@@ -234,6 +233,7 @@ void Application::run() {
         SDL_Flip(screen);
 
         frameCount++;
+        setRender(false);
     }
 }
 

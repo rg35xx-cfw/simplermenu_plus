@@ -35,13 +35,15 @@ void State::navigateLeft() {
     int currentIndex = currentMenu->getSelectedItemIndex();
         std::cout << "Navigating Left from index: " << currentIndex << std::endl;
 
-    if (currentIndex - 16 >= 0) {
-        currentMenu->setSelectedItemIndex(currentIndex - 16);
-        // Reset the selectedRomIndex to the top of the new page
-        currentMenu->startIndex = currentIndex - 16;
+    if (currentState == MenuState::ROMLIST_MENU) {
+        if (currentIndex - 16 >= 0) {
+            currentMenu->setSelectedItemIndex(currentIndex - 16);
+            // Reset the selectedRomIndex to the top of the new page
+            currentMenu->startIndex = currentIndex - 16;
+        }
+        currentMenu->navigateLeft();
     }
-    currentMenu->navigateLeft();
-
+    
     MenuItem* selectedItem = currentMenu->getItem(currentIndex);
     if (selectedItem) {
         selectedItem->navigateLeft();
@@ -52,12 +54,14 @@ void State::navigateRight() {
     int currentIndex = currentMenu->getSelectedItemIndex();
         std::cout << "Navigating Right from index: " << currentIndex << std::endl;
 
-    if (currentIndex + 16 < currentMenu->getNumberOfItems()) {
-        currentMenu->setSelectedItemIndex(currentIndex + 16);
-        // Reset the selectedRomIndex to the top of the new page
-        currentMenu->startIndex = currentIndex + 16;
+    if (currentState == MenuState::ROMLIST_MENU) {
+        if (currentIndex + 16 < currentMenu->getNumberOfItems()) {
+            currentMenu->setSelectedItemIndex(currentIndex + 16);
+            // Reset the selectedRomIndex to the top of the new page
+            currentMenu->startIndex = currentIndex + 16;
+        }
+        currentMenu->navigateRight();
     }
-    currentMenu->navigateRight();
 
     MenuItem* selectedItem = currentMenu->getItem(currentIndex);
     if (selectedItem) {
@@ -148,17 +152,6 @@ void State::showRomMenu() {
         currentMenu = romSettingsMenu;
         currentState = MenuState::ROM_SETTINGS_MENU;
     }
-
-    // if (currentState == MenuState::ROMLIST_MENU) {
-    //     // if (!isRomMenuActive && romMenu) {
-    //     if (romSettingsMenu) {
-    //         isRomMenuActive = true;
-    //         currentMenu = romSettingsMenu;
-    //         currentState = MenuState::ROM_SETTINGS_MENU;
-    //     }
-    // } else {
-    //     std::cout << "Not in romlist menu, ignoring" << std::endl;
-    // }
 }
 
 void State::showSystemMenu() {

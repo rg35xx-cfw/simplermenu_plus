@@ -124,7 +124,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         std::string systemTitle = selectedItem->getFolderName();
         transform(systemTitle.begin(), systemTitle.end(), systemTitle.begin(), ::toupper);
-        // std::string fontPath = theme.getValue("GENERAL.textX_font", true);
 
         RenderUtils::getInstance()->renderText(screen, "generalFont", systemTitle, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment"));
 
@@ -142,7 +141,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
         std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
         x = theme.getIntValue("GENERAL.text2_x");
         y = theme.getIntValue("GENERAL.text2_y");
-        //renderUtil.setFont(fontPath, theme.getIntValue("GENERAL.text2_font_size"));
 
         RenderUtils::getInstance()->renderText(screen, "generalFont", pageInfo, x, y, 0, 0, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
     }
