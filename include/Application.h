@@ -51,8 +51,15 @@ private:
     Uint32 repeatStartTime = 0;
     Uint32 lastButtonPressTime = 0;
     Uint32 nextRepeatTime = 0;
-    const Uint32 initialDelay = 500;  // for example, 500ms
+    const Uint32 initialDelay = 200;  // for example, 500ms
     const Uint32 repeatInterval = 50;  // for example, 100ms
+
+    int horizontalAxisDirection = 0; // -1 for left, 1 for right, 0 for neutral
+    int verticalAxisDirection = 0;   // -1 for up, 1 for down, 0 for neutral
+    int horizontalAxisValue = 0;
+    int verticalAxisValue = 0;
+    Uint32 nextHorizontalAxisRepeatTime = 0;
+    Uint32 nextVerticalAxisRepeatTime = 0;
 
     bool needsRender;
 

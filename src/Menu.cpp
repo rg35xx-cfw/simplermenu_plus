@@ -228,12 +228,16 @@ SystemSettingsMenu::SystemSettingsMenu(std::string backgroundPath, std::string s
         std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
     }
 
-    setFont(settingsFont, 32);
-    setItemPosition(10,92);
-    setSpacing(46);
+    int fontSize=16;//32
+    int marginY=43;//92
+    int spacing=23;//46
+
+    setFont(settingsFont,fontSize);
+    setItemPosition(10, marginY);
+    setSpacing(spacing);
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
-    setSelectionRectangleProperties({0x10, 0x22, 0xa0, 128}, Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH), 46); // Semi-transparent red rectangle with screen width and height 24px
+    setSelectionRectangleProperties({0x10, 0x22, 0xa0, 128}, Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH), spacing); // Semi-transparent red rectangle with screen width and height 24px
 }
 
 RomSettingsMenu::RomSettingsMenu(std::string backgroundPath, std::string settingsFont) : Menu("Rom Settings Menu") {
@@ -246,12 +250,16 @@ RomSettingsMenu::RomSettingsMenu(std::string backgroundPath, std::string setting
         std::cerr << "Failed to load Rom Settings background: " << IMG_GetError() << std::endl;
     }
 
-    setFont(settingsFont, 32);
-    setItemPosition(10,92);
-    setSpacing(46);
+    int fontSize=16;//32
+    int marginY=43;//92
+    int spacing=23;//46
+
+    setFont(settingsFont, fontSize);
+    setItemPosition(10, marginY);
+    setSpacing(spacing);
     useSelectionRectangle = true;
     // FIXME, width, line height, etc. needs to be set as options
-    setSelectionRectangleProperties({0, 0, 0, 200}, Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH), 46); // Semi-transparent red rectangle with screen width and height 24px
+    setSelectionRectangleProperties({0, 0, 0, 200}, Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH), spacing); // Semi-transparent red rectangle with screen width and height 24px
 }
 
 bool RomSettingsMenu::isRomMenu() const {

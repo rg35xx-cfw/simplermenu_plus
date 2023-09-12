@@ -53,7 +53,7 @@ Application::Application() : controlMapping(ControlMapping::getInstance()) {
         this->cfg.getIntValue(SettingId::SCREEN_WIDTH), 
         this->cfg.getIntValue(SettingId::SCREEN_HEIGHT),
         this->cfg.getIntValue(SettingId::SCREEN_DEPTH), 
-        SDL_HWSURFACE | SDL_DOUBLEBUF);
+        SDL_HWSURFACE | SDL_TRIPLEBUF);
     
     if (!screen) {
         // Handle error
@@ -173,19 +173,39 @@ void Application::run() {
             nextRepeatTime += repeatInterval;
         }
 
+        // Handle horizontal axis repetition
+        if (horizontalAxisDirection != 0 && currentTime >= nextHorizontalAxisRepeatTime) {
+            SDL_Event repeatAxisEvent;
+            repeatAxisEvent.type = SDL_JOYAXISMOTION;
+            repeatAxisEvent.jaxis.axis = 1;  // 0 for horizontal
+            repeatAxisEvent.jaxis.value = horizontalAxisValue;
+            SDL_PushEvent(&repeatAxisEvent);
+            nextHorizontalAxisRepeatTime += repeatInterval;
+        }
+
+        // Handle vertical axis repetition
+        if (verticalAxisDirection != 0 && currentTime >= nextVerticalAxisRepeatTime) {
+            SDL_Event repeatAxisEvent;
+            repeatAxisEvent.type = SDL_JOYAXISMOTION;
+            repeatAxisEvent.jaxis.axis = 0;  // 1 for vertical
+            repeatAxisEvent.jaxis.value = verticalAxisValue;
+            SDL_PushEvent(&repeatAxisEvent);
+            nextVerticalAxisRepeatTime += repeatInterval;
+        }
+
         int screenRefresh = this->cfg.getIntValue(SettingId::SCREEN_REFRESH);
 
         int frameDelay = 1000 / screenRefresh;
 
         // Wait if last frame was drawn too fast
-        // if (SDL_GetTicks() - frameStart < frameDelay) {
-        //     continue;
-        // }
+        if (SDL_GetTicks() - frameStart < frameDelay) {
+            continue;
+        }
 
         // // Fine tune FPS
-        // if (frameCount == screenRefresh && ((SDL_GetTicks() - fpsTimer) < 1000)) {
-        //     continue;
-        // }
+        if (frameCount == screenRefresh && ((SDL_GetTicks() - fpsTimer) < 1000)) {
+            continue;
+        }
 
         frameStart = SDL_GetTicks();
 
@@ -246,7 +266,7 @@ void Application::printFPS(int fps) {
 }
 
 State* Application::getCurrentState() const {
-    return currentState;//.get();
+    return currentState;
 }
 
 void Application::showMainMenu() {
@@ -318,12 +338,34 @@ void Application::handleJoystickEvents(SDL_Event& event) {
             // You can map specific axis movements to navigate up, down, left, or right
             int axis = event.jaxis.axis;
             int value = event.jaxis.value;
-            std::cout << "Joystick AXIS " << axis << " - value: " << value << std::endl;
+
+            if (value < 258 || value > 258) {
+                if (axis == 1) {  // horizontal
+                    horizontalAxisDirection = (value < 0) ? -1 : 1;
+                    horizontalAxisValue = value;
+                    nextHorizontalAxisRepeatTime = SDL_GetTicks() + initialDelay;
+                } else if (axis == 0) {  // vertical
+                    verticalAxisDirection = (value < 0) ? -1 : 1;
+                    verticalAxisValue = value;
+                    nextVerticalAxisRepeatTime = SDL_GetTicks() + initialDelay;
+                }
+            } else {
+                // Reset axis direction and timers if joystick is near the rest position
+                if (axis == 1) {
+                    horizontalAxisDirection = 0;
+                    nextHorizontalAxisRepeatTime = 0;
+                } else if (axis == 0) {
+                    verticalAxisDirection = 0;
+                    nextVerticalAxisRepeatTime = 0;
+                }
+            }
+
+            //std::cout << "Joystick AXIS " << axis << " - value: " << value << std::endl;
             if (axis == 0) {
                 if (value < 258) {
                     currentState->navigateDown();
                 } else if (value > 258) {
-                    currentState->navigateLeft();
+                    currentState->navigateUp();
                 } else if (value == 258) {
                     printf("AXIS U/D ZERO\n");
                 }

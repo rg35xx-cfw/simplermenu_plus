@@ -281,7 +281,12 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
         std::string sectionName(ss.stem().string()); 
         transform(sectionName.begin(), sectionName.end(), sectionName.begin(), ::toupper);
 
-        SDL_Surface* folderNameSurface = renderText(sectionName, white, theme.getValue("GENERAL.font", true), 96);
+        int sectionFontSize = 96;
+        if(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) == 320) {
+            sectionFontSize = 48;
+        }
+
+        SDL_Surface* folderNameSurface = renderText(sectionName, white, theme.getValue("GENERAL.font", true), sectionFontSize);
         if (folderNameSurface && isSelected) {
             SDL_Rect dstRect;
             dstRect.x = (screen->w - folderNameSurface->w) / 2;
