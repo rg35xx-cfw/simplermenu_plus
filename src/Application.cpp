@@ -288,60 +288,24 @@ void Application::setupMenu() {
 }
 
 void Application::handleKeyPress(SDLKey key) {
-    if (key == controlMapping.getControl("A")) {
+    std::cout << "KEY " << key <<std::endl;
+    if (key == controlMapping.getControl("KEY_A")) {
         currentState->enterFolder();
-    } else if (key == controlMapping.getControl("B")) {
+    } else if (key == controlMapping.getControl("KEY_B")) {
         currentState->exitFolder();
-    } else if (key == controlMapping.getControl("UP")) {
+    } else if (key == controlMapping.getControl("KEY_UP")) {
         currentState->navigateUp();
-    } else if (key == controlMapping.getControl("DOWN")) {
+    } else if (key == controlMapping.getControl("KEY_DOWN")) {
         currentState->navigateDown();
-    } else if (key == controlMapping.getControl("LEFT")) {
+    } else if (key == controlMapping.getControl("KEY_LEFT")) {
         currentState->navigateLeft();
-    } else if (key == controlMapping.getControl("RIGHT")) {
+    } else if (key == controlMapping.getControl("KEY_RIGHT")) {
         currentState->navigateRight();
-    } else if (key == controlMapping.getControl("START")) {
+    } else if (key == controlMapping.getControl("KEY_START")) {
         currentState->showSystemMenu();
-    } else if (key == controlMapping.getControl("SELECT")) {
+    } else if (key == controlMapping.getControl("KEY_SELECT")) {
         currentState->showRomMenu();
     }       
-/*
-    switch (key) {
-        case SDLK_UP:
-            currentState->navigateUp();
-            break;
-        case SDLK_DOWN:
-            currentState->navigateDown();
-            break;
-        case SDLK_LEFT:
-            currentState->navigateLeft();
-            break;
-        case SDLK_RIGHT:
-            currentState->navigateRight();
-            break;
-        case SDLK_RETURN:
-            currentState->enterFolder();
-            break;
-        case SDLK_SPACE:
-            std::cout << "SPACE -> exitFolder" << std::endl;
-            currentState->exitFolder();
-            break;
-        case SDLK_ESCAPE:
-            std::cout << "Enter systemSettingsMenu" << std::endl;
-            currentState->showSystemMenu();
-            break;
-        case SDLK_m: 
-            std::cout << "rommenu" << std::endl;
-            currentState->showRomMenu();
-            break;
-        default:
-            // Do nothing
-            break;
-        // Handle other keys...
-    }
-    // Debug, print listings
-    //currentState->printCurrentContents();
-    */
 }
 
 void Application::handleJoystickEvents(SDL_Event& event) {
