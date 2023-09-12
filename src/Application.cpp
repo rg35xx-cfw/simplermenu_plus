@@ -288,6 +288,24 @@ void Application::setupMenu() {
 }
 
 void Application::handleKeyPress(SDLKey key) {
+    if (key == controlMapping.getControl("A")) {
+        currentState->enterFolder();
+    } else if (key == controlMapping.getControl("B")) {
+        currentState->exitFolder();
+    } else if (key == controlMapping.getControl("UP")) {
+        currentState->navigateUp();
+    } else if (key == controlMapping.getControl("DOWN")) {
+        currentState->navigateDown();
+    } else if (key == controlMapping.getControl("LEFT")) {
+        currentState->navigateLeft();
+    } else if (key == controlMapping.getControl("RIGHT")) {
+        currentState->navigateRight();
+    } else if (key == controlMapping.getControl("START")) {
+        currentState->showSystemMenu();
+    } else if (key == controlMapping.getControl("SELECT")) {
+        currentState->showRomMenu();
+    }       
+/*
     switch (key) {
         case SDLK_UP:
             currentState->navigateUp();
@@ -323,6 +341,7 @@ void Application::handleKeyPress(SDLKey key) {
     }
     // Debug, print listings
     //currentState->printCurrentContents();
+    */
 }
 
 void Application::handleJoystickEvents(SDL_Event& event) {
@@ -330,9 +349,31 @@ void Application::handleJoystickEvents(SDL_Event& event) {
 
     switch (event.type) {
         case SDL_JOYAXISMOTION:
+        {
             // Handle axis motion events
             // You can map specific axis movements to navigate up, down, left, or right
+            int axis = event.jaxis.axis;
+            int value = event.jaxis.value;
+            std::cout << "Joystick AXIS " << axis << " - value: " << value << std::endl;
+            if (axis == 0) {
+                if (value < 258) {
+                    currentState->navigateDown();
+                } else if (value > 258) {
+                    currentState->navigateLeft();
+                } else if (value == 258) {
+                    printf("AXIS U/D ZERO\n");
+                }
+            } else if (axis == 1) {
+                if (value < 258) {
+                    currentState->navigateRight();
+                } else if (value > 258) {
+                    currentState->navigateLeft();
+                } else if (value == 258) {
+                    printf("AXIS L/R ZERO\n");
+                }
+            }
             break;
+        }
         case SDL_JOYBUTTONDOWN:
         {
             if (buttonPressed != event.jbutton.button) {
@@ -343,21 +384,21 @@ void Application::handleJoystickEvents(SDL_Event& event) {
             }
             // Handle button press events
             //int buttonPressed = event.jbutton.button; 
-            if (buttonPressed == controlMapping.getControl("A")) {
+            if (buttonPressed == controlMapping.getControl("BTN_A")) {
                 currentState->enterFolder();
-            } else if (buttonPressed == controlMapping.getControl("B")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_B")) {
                 currentState->exitFolder();
-            } else if (buttonPressed == controlMapping.getControl("UP")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_UP")) {
                 currentState->navigateUp();
-            } else if (buttonPressed == controlMapping.getControl("DOWN")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_DOWN")) {
                 currentState->navigateDown();
-            } else if (buttonPressed == controlMapping.getControl("LEFT")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_LEFT")) {
                 currentState->navigateLeft();
-            } else if (buttonPressed == controlMapping.getControl("RIGHT")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_RIGHT")) {
                 currentState->navigateRight();
-            } else if (buttonPressed == controlMapping.getControl("START")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_START")) {
                 currentState->showSystemMenu();
-            } else if (buttonPressed == controlMapping.getControl("SELECT")) {
+            } else if (buttonPressed == controlMapping.getControl("BTN_SELECT")) {
                 currentState->showRomMenu();
             }                    
             break;
