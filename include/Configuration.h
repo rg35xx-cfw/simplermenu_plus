@@ -1,4 +1,5 @@
 #pragma once
+#include <boost/property_tree/ptree.hpp>
 #include <iostream>
 #include <string>
 #include <unordered_map>
@@ -45,6 +46,8 @@ enum class SettingId {
     WIFI,
     SETTINGS_PER_PAGE,
     QUIT,
+    SAVE,
+    ROTATION,
 
     // Control Settings
     KEY_A,
@@ -91,6 +94,11 @@ inline std::string operator+(std::string s, SettingId c) {
 
 class Configuration {
 private:
+
+    static const std::string CONFIG_INI_FILEPATH;
+
+    boost::property_tree::ptree mainPt;
+
     std::unordered_map<SettingId, std::string> configValues;
 
     // TODO should this be constant?
@@ -120,6 +128,8 @@ private:
         {SettingId::WIFI, "SYSTEM.wifi"},
         {SettingId::SETTINGS_PER_PAGE, "SYSTEM.itemsPerPage"},
         {SettingId::QUIT, "SYSTEM.quit"},
+        {SettingId::SAVE, "SYSTEM.save"},
+        {SettingId::ROTATION, "SYSTEM.rotation"},
 
         // Control Settings
         {SettingId::KEY_A, "CONTROLS.KEY_A"}, 
@@ -180,4 +190,6 @@ public:
 
     std::string getIniKey(const SettingId& settingId) const;
     SettingId getSettingId(const std::string& key) const;
+
+    void saveConfigIni();
 };

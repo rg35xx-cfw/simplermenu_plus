@@ -123,6 +123,10 @@ void SimpleMenuItem::executeAction() {
     } else if (title == "QUIT") {
         SDL_Quit();
         exit(0);
+    } else if (title == "Save") {
+        // TODO this should be notified to Application in a cleaner way
+        //      This class should not be aware of the actions to perform
+        this->notifySettingsChange();
     }
 }
 

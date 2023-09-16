@@ -53,7 +53,7 @@ Application::Application() : controlMapping(ControlMapping::getInstance()) {
         this->cfg.getIntValue(SettingId::SCREEN_WIDTH), 
         this->cfg.getIntValue(SettingId::SCREEN_HEIGHT),
         this->cfg.getIntValue(SettingId::SCREEN_DEPTH), 
-        SDL_HWSURFACE | SDL_TRIPLEBUF);
+        SDL_HWSURFACE | SDL_DOUBLEBUF);
     
     if (!screen) {
         // Handle error
@@ -429,14 +429,18 @@ void Application::settingsChanged(const SettingId &id,
                                   const std::string &value) {
     switch (id) {
         case SettingId::SCREEN_REFRESH:
-            this->cfg.setValue(SettingId::SCREEN_REFRESH, value);
-            break;
         case SettingId::SHOW_FPS:
-            this->cfg.setValue(SettingId::SHOW_FPS, value);
-            break;
+        case SettingId::VOLUME:
+        case SettingId::OVERCLOCK:
         case SettingId::THEME_NAME:
-            this->cfg.setValue(SettingId::THEME_NAME, value);
+            std::cout << id << " CHANGED TO " << value << "\n";
+            this->cfg.setValue(id, value);
             break;
+
+        case SettingId::SAVE:
+            this->cfg.saveConfigIni();
+            break;
+
         default:
             break;
     }
