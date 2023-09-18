@@ -13,6 +13,7 @@
 #include "ThumbnailCache.h"
 #include "RenderUtils.h"
 #include "State.h"
+#include "MenuCache.h"
 
 #include "Application.h"
 
@@ -315,6 +316,7 @@ void Application::showMainMenu() {
 
 void Application::setupMenu() {
     FileManager fileManager;
+    MenuCache menuCache;
 
     // Load section groups from the section_groups folder
     auto sectionGroups = fileManager.getFiles("/userdata/system/.simplemenu/section_groups/");
@@ -322,21 +324,36 @@ void Application::setupMenu() {
     for (const auto& sectionGroupFile : sectionGroups) {
         auto sectionMenu = std::make_unique<Menu>(sectionGroupFile);
         auto consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/.simplemenu/section_groups/" + sectionGroupFile);
+
         for (const auto& [consoleName, data] : consoleDataMap) {
             auto subMenu = std::make_unique<Menu>(consoleName);
             subMenu->setParent(sectionMenu.get());
             subMenu->setRootMenu(sectionMenu.get());
+
+            std::string cacheFilePath = "/userdata/system/simplermenu_plus/caches/cache_" + consoleName + ".json";
             
-            for (const auto& romDir : data.romDirs) {
-                auto files = fileManager.getFiles(romDir);
-                for (const auto& file : files) {
-                    std::string romPath = romDir + file;
-                    auto simpleMenuItem = std::make_unique<SimpleMenuItem>(SettingId::None, file, romPath);
-                    simpleMenuItem->setParentMenu(subMenu.get());  // Setting parent for SimpleMenuItem
-                    simpleMenuItem->setRootMenu(sectionMenu.get());  // Setting root for SimpleMenuItem
-                    subMenu->addItem(std::move(simpleMenuItem));
+            std::vector<CachedMenuItem> cachedItems;
+
+            if (menuCache.cacheExists(cacheFilePath)) {
+                cachedItems = menuCache.loadFromCache(cacheFilePath);
+            } else {
+                for (const auto& romDir : data.romDirs) {
+                    auto files = fileManager.getFiles(romDir);
+                    for (const auto& file : files) {
+                        std::string romPath = romDir + file;
+                        cachedItems.push_back({file, romPath});
+                    }
                 }
+                menuCache.saveToCache(cacheFilePath, cachedItems);
             }
+
+            for (const auto& item: cachedItems) {
+                auto simpleMenuItem = std::make_unique<SimpleMenuItem>(SettingId::None, item.title, item.path);
+                simpleMenuItem->setParentMenu(subMenu.get());  // Setting parent for SimpleMenuItem
+                simpleMenuItem->setRootMenu(sectionMenu.get());  // Setting root for SimpleMenuItem
+                subMenu->addItem(std::move(simpleMenuItem));
+            }
+            
             if (subMenu->getNumberOfItems() > 0) {
                 sectionMenu->addItem(std::make_unique<SimpleMenuItem>(SettingId::None, consoleName, std::move(subMenu), subMenu->getNumberOfItems()));
             }
