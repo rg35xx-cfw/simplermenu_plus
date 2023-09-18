@@ -60,7 +60,13 @@ public:
                                      cfg.getValue(SettingId::THEME_NAME) + "/" +
                                      Theme::getInstance().getValue("DEFAULT.background") ;
 
-        background = IMG_Load(backgroundPath.c_str());
+	SDL_Surface* loadedSurface = IMG_Load(backgroundPath.c_str());
+	if(loadedSurface) {
+		background = SDL_DisplayFormat(loadedSurface);
+		SDL_FreeSurface(loadedSurface);
+	} else {
+            std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
+        }
         if (!background) {
             std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
         }

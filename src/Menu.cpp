@@ -239,7 +239,14 @@ SystemSettingsMenu::SystemSettingsMenu(std::string backgroundPath, std::string s
     this->itemsPerPage = Configuration::getInstance().getIntValue(SettingId::SETTINGS_PER_PAGE);
 
     setBackground(backgroundPath);  // Assuming Menu has this method. If not, you might need to adapt.
-    background = IMG_Load(backgroundPath.c_str());
+    SDL_Surface* loadedSurface = IMG_Load(backgroundPath.c_str());
+    if(loadedSurface) {
+        background = SDL_DisplayFormat(loadedSurface);
+        SDL_FreeSurface(loadedSurface);
+    } else {
+        std::cerr << "Failed to load ROM background: " << IMG_GetError() << std::endl;
+    }
+
     if (!background) {
         std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
     }
@@ -284,16 +291,17 @@ bool RomSettingsMenu::isRomMenu() const {
 
 void Menu::setBackground(const std::string& backgroundPath) {
     std::cout << "Setting background: " << backgroundPath << std::endl;
-    SDL_Surface* newBackground = IMG_Load(backgroundPath.c_str());
-    if (newBackground) {
-        if (background) {
-            SDL_FreeSurface(background);
-        }
-        background = newBackground;
+    SDL_Surface* loadedSurface = IMG_Load(backgroundPath.c_str());
+    if(loadedSurface) {
+        background = SDL_DisplayFormat(loadedSurface);
+        SDL_FreeSurface(loadedSurface);
+        //SDL_BlitSurface(background, NULL, screen, NULL);
     } else {
-        // Handle error: could not load the background image.
+        std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
     }
-    SDL_FreeSurface(newBackground);
+    if (!background) {
+        std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+    }
 }
 
 void Menu::setFont(const std::string& fontPath, int fontSize) {

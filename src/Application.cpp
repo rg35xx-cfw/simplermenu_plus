@@ -66,6 +66,9 @@ Application::Application() : controlMapping(ControlMapping::getInstance()) {
         exit(1);
     }
 
+   SDL_ShowCursor(SDL_DISABLE);
+
+
     font = TTF_OpenFont(
     theme.getValue("GENERAL.font", true).c_str(), 
     theme.getIntValue("GENERAL.font_size"));
