@@ -49,6 +49,11 @@
             "title": "Auto rotate"
         },
         {
+            "id": "SYSTEM.save",
+            "type": "SimpleMenuItem",
+            "title": "Save"
+        },
+        {
             "id": "SYSTEM.quit",
             "type": "SimpleMenuItem",
             "title": "Quit"

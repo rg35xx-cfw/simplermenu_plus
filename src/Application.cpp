@@ -11,6 +11,7 @@
 #include "Menu.h"
 #include "MenuItem.h"
 #include "ThumbnailCache.h"
+#include "RenderUtils.h"
 #include "State.h"
 
 #include "Application.h"
@@ -151,6 +152,7 @@ void Application::run() {
     int fps = 0;
     int frameCount = 0;
     Uint32 fpsTimer = 0;
+    Uint32 msgDelay = 0;
 
     Uint32 frameStart = 0;
 
@@ -245,9 +247,26 @@ void Application::run() {
         // Then fill the screen and render the menu
         currentState->getCurrentMenu()->render(screen, font, currentState->getCurrentState());
 
-        // TODO add bolean setting to show/hide FPS
         if (this->cfg.getBoolValue(SettingId::SHOW_FPS)) {
             printFPS(fps);
+        }
+
+        // Display info message, if any
+        if (!this->screenMsg.empty()) {
+
+            // Start message timer if this is the first time rendering the
+            // current message (timer should be 0 in that case)
+            if (!msgDelay) {
+                msgDelay = SDL_GetTicks();
+            }
+
+            printMessage(this->screenMsg);
+
+            // After 2 seconds, clear the message and restart the timer
+            if (SDL_GetTicks() - msgDelay >= 2000) {
+                this->screenMsg.clear();
+                msgDelay = 0;
+            }
         }
 
         SDL_Flip(screen);
@@ -263,6 +282,24 @@ void Application::printFPS(int fps) {
     SDL_Surface* textSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
     SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
     SDL_BlitSurface(textSurface, NULL, screen, &destRect);
+}
+
+void Application::printMessage(const std::string& message) {
+    // Display message on the bottom left corner of the screen
+    
+    int fontSize = Theme::getInstance().getIntValue("GENERAL.font_size");
+    // std::cout << "Font size: " << fontSize << "\n";
+
+    RenderUtils::getInstance()->renderText(
+        this->screen, 
+        Theme::getInstance().getValue("GENERAL.font", true).c_str(), 
+        message,
+        5, 
+        this->cfg.getIntValue(SettingId::SCREEN_HEIGHT) - fontSize - 2,
+        0, 
+        0, 
+        {255, 255, 0},
+        fontSize);
 }
 
 State* Application::getCurrentState() const {
@@ -429,14 +466,19 @@ void Application::settingsChanged(const SettingId &id,
                                   const std::string &value) {
     switch (id) {
         case SettingId::SCREEN_REFRESH:
-            this->cfg.setValue(SettingId::SCREEN_REFRESH, value);
-            break;
         case SettingId::SHOW_FPS:
-            this->cfg.setValue(SettingId::SHOW_FPS, value);
-            break;
+        case SettingId::VOLUME:
+        case SettingId::OVERCLOCK:
         case SettingId::THEME_NAME:
-            this->cfg.setValue(SettingId::THEME_NAME, value);
+            std::cout << id << " CHANGED TO " << value << "\n";
+            this->cfg.setValue(id, value);
             break;
+
+        case SettingId::SAVE:
+            this->cfg.saveConfigIni();
+            this->screenMsg = "System settings saved to file";
+            break;
+
         default:
             break;
     }

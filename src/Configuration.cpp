@@ -1,9 +1,12 @@
 #include "Configuration.h"
 #include "Exception.h"
 #include <iostream>
-#include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/algorithm/string.hpp>
+
+
+const std::string Configuration::CONFIG_INI_FILEPATH = "/userdata/system/simplermenu_plus/config.ini";
+
 
 Configuration::Configuration() {
 
@@ -16,17 +19,22 @@ Configuration::Configuration() {
     }
 
     // Load values from .ini file using Boost.PropertyTree
-    boost::property_tree::ptree pt;
+    // boost::property_tree::ptree pt;
     // FIXME: need to put relative path from $HOME for config.ini
-    boost::property_tree::ini_parser::read_ini("/userdata/system/simplermenu_plus/config.ini", pt);
+    boost::property_tree::ini_parser::read_ini(
+        CONFIG_INI_FILEPATH, 
+        this->mainPt);
 
-    for (const auto& section : pt) {
+    for (const auto& section : this->mainPt) {
         for (const auto& key_value : section.second) {
-            // TODO add all settings to the enum and map
-            //      check before what happens with unknown values
-            //      and fix it if needed
-            SettingId full_key = this->strToId[section.first + "." + key_value.first];
-            this->configValues[full_key] = key_value.second.get_value<std::string>();
+            std::string idStr = section.first + "." + key_value.first;
+            if (this->strToId.find(idStr) != this->strToId.end()) {
+                SettingId settingId = this->strToId[idStr];
+                this->configValues[settingId] = key_value.second.get_value<std::string>();
+            } else {
+                // TODO Raise an exception or log this properly
+                std::cout << "Unsupported setting: " << section.first + "." + key_value.first << "\n";
+            }
         }
     }
 }
@@ -38,6 +46,7 @@ Configuration& Configuration::getInstance() {
 
 void Configuration::setValue(const SettingId& settingId, const std::string& value) {
     this->configValues[settingId] = value;
+    this->mainPt.put(this->idToStr[settingId], value);
 }
 
 std::string Configuration::getValue(const SettingId& settingId) const {
@@ -157,4 +166,22 @@ std::map<std::string, ConsoleData> Configuration::parseIniFile(const std::string
     }
 
     return consoleDataMap;
+}
+
+void Configuration::saveConfigIni() {
+    // boost::property_tree::ptree pt;
+
+    // // Loop through the configValues map
+    // std::unordered_map<SettingId, std::string>::iterator it = 
+    //     this->configValues.begin();
+    // while (it != this->configValues.end()) {
+    //     pt.put(this->idToStr[it->first], it->second);
+    //     ++it;
+    // }
+    
+    boost::property_tree::ini_parser::write_ini(
+        CONFIG_INI_FILEPATH, 
+        this->mainPt);
+
+    std::cout << CONFIG_INI_FILEPATH << " written.\n";
 }

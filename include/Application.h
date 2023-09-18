@@ -63,6 +63,8 @@ private:
 
     bool needsRender;
 
+    std::string screenMsg = std::string();
+
 public:
 
     Application();
@@ -129,6 +131,8 @@ private:
     void createRomSettingsMenu();
 
     void printFPS(int fps);
+
+    void printMessage(const std::string& message);
 
     void handleKeyPress(SDLKey key);
 
