@@ -251,9 +251,15 @@ SystemSettingsMenu::SystemSettingsMenu(std::string backgroundPath, std::string s
         std::cerr << "Failed to load Settings background: " << IMG_GetError() << std::endl;
     }
 
-    int fontSize=16;//32
-    int marginY=43;//92
-    int spacing=23;//46
+    int fontSize = 32;
+    int marginY = 92;
+    int spacing = 46;
+
+    if(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) == 320) {
+        fontSize=16;
+        marginY=43;
+        spacing=23;
+    }
 
     setFont(settingsFont,fontSize);
     setItemPosition(10, marginY);
@@ -273,9 +279,15 @@ RomSettingsMenu::RomSettingsMenu(std::string backgroundPath, std::string setting
         std::cerr << "Failed to load Rom Settings background: " << IMG_GetError() << std::endl;
     }
 
-    int fontSize=16;//32
-    int marginY=43;//92
-    int spacing=23;//46
+    int fontSize = 32;
+    int marginY = 92;
+    int spacing = 46;
+
+    if(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) == 320) {
+        fontSize=16;
+        marginY=43;
+        spacing=23;
+    }
 
     setFont(settingsFont, fontSize);
     setItemPosition(10, marginY);

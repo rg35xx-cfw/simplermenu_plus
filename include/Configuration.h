@@ -32,8 +32,6 @@ enum class SettingId {
     THEME_NAME,
     SYSTEM_MENU_JSON,
     EXCLUDED_EXTENSIONS,
-    THUMBNAIL_WIDTH,
-    THUMBNAIL_HEIGHT,
 
     // System Settings
     VOLUME,
@@ -114,8 +112,6 @@ private:
         {SettingId::THEME_NAME, "MENU.themeName"},
         {SettingId::SYSTEM_MENU_JSON, "MENU.systemMenuJSON"},
         {SettingId::EXCLUDED_EXTENSIONS, "MENU.excludedExtensions"},
-        {SettingId::THUMBNAIL_WIDTH, "MENU.thumbnailWidth"},
-        {SettingId::THUMBNAIL_HEIGHT, "MENU.thumbnailHeight"},
 
         // System settings
         {SettingId::VOLUME, "SYSTEM.volume"}, 
