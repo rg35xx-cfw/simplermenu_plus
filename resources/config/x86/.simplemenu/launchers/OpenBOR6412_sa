@@ -3,4 +3,9 @@
 export HOME=/userdata/system
 cd $HOME
 
+evmapy &
+
 OpenBOR6142 "$1"
+
+killall evmapy
+
