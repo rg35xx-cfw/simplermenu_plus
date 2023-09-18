@@ -53,7 +53,7 @@ Application::Application() : controlMapping(ControlMapping::getInstance()) {
         this->cfg.getIntValue(SettingId::SCREEN_WIDTH), 
         this->cfg.getIntValue(SettingId::SCREEN_HEIGHT),
         this->cfg.getIntValue(SettingId::SCREEN_DEPTH), 
-        SDL_HWSURFACE | SDL_TRIPLEBUF);
+        SDL_HWSURFACE | SDL_DOUBLEBUF);
     
     if (!screen) {
         // Handle error

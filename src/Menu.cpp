@@ -132,7 +132,23 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
                 theme.getIntValue("GENERAL.art_max_h") + 
                 theme.getIntValue("GENERAL.art_text_distance_from_picture") +
                 theme.getIntValue("GENERAL.art_text_line_separation");
-        RenderUtils::getInstance()->renderText(screen,"generalFont", items[selectedItemIndex]->getRomAlias(), x, y, 0, 0, {255, 255, 255}, 1);
+
+        std::string romAlias = items[selectedItemIndex]->getRomAlias();
+
+        std::cout << "ROM: " << romAlias << std::endl;
+        std::cout << "ROM length: " << romAlias.length() << std::endl;
+
+        if(romAlias.find("/") != std::string::npos) {
+            size_t position = romAlias.find("/");
+            std::string firstLine = romAlias.substr(0, position - 1);
+            std::string secondLine = romAlias.substr(position + 2);
+            int separation = theme.getIntValue("GENERAL.art_text_line_separation") / 2;
+
+            RenderUtils::getInstance()->renderText(screen,"generalFont", firstLine, x, y - separation, 0, 0, {255, 255, 255}, 1);
+            RenderUtils::getInstance()->renderText(screen,"generalFont", secondLine, x, y + separation, 0, 0, {255, 255, 255}, 1);
+        } else {
+            RenderUtils::getInstance()->renderText(screen,"generalFont", items[selectedItemIndex]->getRomAlias(), x, y, 0, 0, {255, 255, 255}, 1);
+        }
 
         // Calculate number of pages FIXME: move that to the constructor
         total_pages = (items.size() + itemsPerPage - 1)/ itemsPerPage;
