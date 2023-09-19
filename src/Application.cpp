@@ -334,9 +334,10 @@ void Application::setupMenu() {
             
             std::vector<CachedMenuItem> cachedItems;
 
-            if (menuCache.cacheExists(cacheFilePath)) {
-                cachedItems = menuCache.loadFromCache(cacheFilePath);
-            } else {
+            // Disable cache for the time being
+            // if (menuCache.cacheExists(cacheFilePath)) {
+            //     cachedItems = menuCache.loadFromCache(cacheFilePath);
+            // } else {
                 for (const auto& romDir : data.romDirs) {
                     auto files = fileManager.getFiles(romDir);
                     for (const auto& file : files) {
@@ -344,8 +345,8 @@ void Application::setupMenu() {
                         cachedItems.push_back({file, romPath});
                     }
                 }
-                menuCache.saveToCache(cacheFilePath, cachedItems);
-            }
+            //     menuCache.saveToCache(cacheFilePath, cachedItems);
+            // }
 
             for (const auto& item: cachedItems) {
                 auto simpleMenuItem = std::make_unique<SimpleMenuItem>(SettingId::None, item.title, item.path);

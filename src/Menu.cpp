@@ -135,9 +135,6 @@ void Menu::render(SDL_Surface* screen, TTF_Font* font, MenuState currentState) {
 
         std::string romAlias = items[selectedItemIndex]->getRomAlias();
 
-        std::cout << "ROM: " << romAlias << std::endl;
-        std::cout << "ROM length: " << romAlias.length() << std::endl;
-
         if(romAlias.find("/") != std::string::npos) {
             size_t position = romAlias.find("/");
             std::string firstLine = romAlias.substr(0, position - 1);

@@ -45,6 +45,7 @@ enum class SettingId {
     SETTINGS_PER_PAGE,
     QUIT,
     SAVE,
+    RESTART,
     ROTATION,
 
     // Control Settings
@@ -125,6 +126,7 @@ private:
         {SettingId::SETTINGS_PER_PAGE, "SYSTEM.itemsPerPage"},
         {SettingId::QUIT, "SYSTEM.quit"},
         {SettingId::SAVE, "SYSTEM.save"},
+        {SettingId::RESTART, "SYSTEM.restart"},
         {SettingId::ROTATION, "SYSTEM.rotation"},
 
         // Control Settings

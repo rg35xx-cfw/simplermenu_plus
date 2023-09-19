@@ -120,7 +120,7 @@ void SimpleMenuItem::executeAction() {
         // Exit the application to free all resources
         SDL_Quit();
         exit(0);
-    } else if (title == "QUIT") {
+    } else if (title == "Quit" || title == "Restart") {
         SDL_Quit();
         exit(0);
     } else if (title == "Save") {

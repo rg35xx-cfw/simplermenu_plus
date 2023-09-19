@@ -9,7 +9,7 @@ void MenuCache::saveToCache(const std::string& filePath, const std::vector<Cache
         itemNode.put("title", item.title);
         itemNode.put("path", item.path);
 
-        root.push_back(std::make_pair("", itemNode));
+        root.push_back(std::make_pair(item.title, itemNode));
     }
 
     pt::write_json(filePath, root);
