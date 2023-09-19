@@ -327,7 +327,7 @@ void SimpleMenuItem::render(SDL_Surface* screen, TTF_Font* font, int x, int y, b
                                                    std::to_string(numberOfItems) + " GAMES", 
                                                    theme.getIntValue("GENERAL.game_count_x"), 
                                                    theme.getIntValue("GENERAL.game_count_y"), 0, 0, 
-                                                   theme.getColor("GENERAL.game_count_font_color"), 1); 
+                                                   theme.getColor("GENERAL.game_count_font_color"), 0); 
 
             return;
     }
