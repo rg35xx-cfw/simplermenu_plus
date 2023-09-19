@@ -143,23 +143,27 @@ void State::setCurrentMenu(Menu* newMenu) {
 }
 
 void State::showRomMenu() {
-    navigationHistory.push({currentMenu, currentState});
-    showRomSettingsMenuForSelectedROM(currentMenu->getItem(currentMenu->getSelectedItemIndex()));
+    if (currentState == MenuState::ROMLIST_MENU) {
+        navigationHistory.push({currentMenu, currentState});
+        showRomSettingsMenuForSelectedROM(currentMenu->getItem(currentMenu->getSelectedItemIndex()));
 
-    // Only enter the RomSettings Menu from the romlist
-    if (romSettingsMenu) {
-        isRomMenuActive = true;
-        currentMenu = romSettingsMenu;
-        currentState = MenuState::ROM_SETTINGS_MENU;
+        // Only enter the RomSettings Menu from the romlist
+        if (romSettingsMenu) {
+            isRomMenuActive = true;
+            currentMenu = romSettingsMenu;
+            currentState = MenuState::ROM_SETTINGS_MENU;
+        }
     }
 }
 
 void State::showSystemMenu() {
-    navigationHistory.push({currentMenu, currentState});
-    if (systemSettingsMenu) {
-        isSystemMenuActive = true;
-        currentMenu = systemSettingsMenu;
-        currentState = MenuState::SYSTEM_SETTINGS_MENU;
+    if (currentState != MenuState::SYSTEM_SETTINGS_MENU) {
+        navigationHistory.push({currentMenu, currentState});
+        if (systemSettingsMenu) {
+            isSystemMenuActive = true;
+            currentMenu = systemSettingsMenu;
+            currentState = MenuState::SYSTEM_SETTINGS_MENU;
+        }
     }
 }
 

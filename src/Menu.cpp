@@ -402,6 +402,8 @@ void RomSettingsMenu::populateForROM(MenuItem* rom) {
         addItem(std::make_unique<MultiOptionMenuItem>(SettingId::None, //"Rom.overclock",
                                                     "ROM OVERCLOCK", 
                                                     overclockValues[0], overclockValues));
+        
+        addItem(std::make_unique<SimpleMenuItem>(SettingId::None, "SAVE ROM SETTINGS",""));
     }
 
     // Add other common menu items
