@@ -25,6 +25,7 @@ void RenderComponent::drawSection(const std::string& name, const std::string& pa
     clearScreen();
 
     setBackground(path);
+
     // Decide on the x, y positions, colors, and other styling details
     renderText(name, 50, 50, {255, 255, 255}); // White color, for example
     renderText("Folders: " + std::to_string(numSystems), 50, 150, {150, 150, 150}); // More gray for meta info, for example
@@ -43,7 +44,14 @@ void RenderComponent::drawSystem(const std::string& name, const std::string& pat
     // As before, determine x, y positions and styles
     renderText(name, 50, 50, {255, 255, 255}); 
     renderText(path, 50, 100, {200, 200, 200}); 
-    renderText("ROMs: " + std::to_string(numRoms), 50, 150, {150, 150, 150}); 
+
+    if(theme.getIntValue("GENERAL.display_game_count") == 1 ) {
+        int x = theme.getIntValue("GENERAL.game_count_x");
+        int y = theme.getIntValue("GENERAL.game_count_y");
+        SDL_Color color = theme.getColor("GENERAL.game_count_font_color");
+        renderText(std::to_string(numRoms) + " GAMES", x, y, color);
+    }
+
 }
 
 void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
@@ -58,7 +66,7 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
                                  theme.getValue("DEFAULT.background");
 
     setBackground(backgroundPath);
-    
+
     for (int i = 0; i < romData.size(); i++) {
         SDL_Color color = (i == currentRomIndex) ? SDL_Color{255, 0, 0} : SDL_Color{255, 255, 255}; // Red for selected, White for others
         renderText(romData[i].first, 50, startY, color); // Render ROM name
