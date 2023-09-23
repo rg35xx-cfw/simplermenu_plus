@@ -1,18 +1,23 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "MenuItem.h"
+// #include "MenuItem.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
 namespace pt = boost::property_tree;
 
 struct CachedMenuItem {
-    std::string title;
+    std::string section;
+    std::string folder;
+    std::string rom;
     std::string path;
 };
 
 class MenuCache {
+private:
+    std::unordered_map<std::string, std::vector<CachedMenuItem>> inMemoryCache;
+
 public:
     MenuCache() = default;
     
