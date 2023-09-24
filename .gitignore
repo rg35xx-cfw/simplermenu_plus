@@ -7,6 +7,7 @@ obj/
 
 # MacOS
 ._*
+.DS_Store
 
 # ROMs and BIOS
 resources/roms/

@@ -20,6 +20,7 @@
 #include "FileManager.h"
 #include "MenuCache.h"
 #include "Menu.h"
+#include "HelperUtils.h"
 
 namespace pt = boost::property_tree;
 
@@ -41,6 +42,8 @@ private:
 
     Configuration& cfg = Configuration::getInstance();
     Theme& theme = Theme::getInstance();
+
+    HelperUtils helper;
 
     enum MenuLevel {
         MENU_SECTION,
@@ -133,46 +136,5 @@ public:
 
     void run();
 
-    // FIXME, these need to be moved to render utils class or similar type of helper class.
-    std::string getPathWithoutExtension(const std::string& fullPath) {
-        size_t dotPos = fullPath.find_last_of(".");
-        size_t slashPos = fullPath.find_last_of("/\\");
-
-        if (dotPos == std::string::npos || (slashPos != std::string::npos && dotPos < slashPos)) {
-            // Return the original path if there's no dot after the last slash.
-            return fullPath;
-        }
-
-        return fullPath.substr(0, dotPos);
-    }
-
-    std::string getFilenameWithoutExtension(const std::string& fullPath) {
-        size_t dotPos = fullPath.find_last_of(".");
-        size_t slashPos = fullPath.find_last_of("/\\");
-
-        if (slashPos == std::string::npos) { // No slashes found
-            return (dotPos == std::string::npos) ? fullPath : fullPath.substr(0, dotPos);
-        }
-
-        std::string filenameWithExtension = fullPath.substr(slashPos + 1);
-
-        if (dotPos == std::string::npos || dotPos < slashPos) { // No dots after the last slash
-            return filenameWithExtension;
-        }
-
-        return filenameWithExtension.substr(0, filenameWithExtension.find_last_of("."));
-    }
-
-    void print_list() {
-        for (const auto& section : menu.getSections()) {
-            std::cout << "Section: " << section.getTitle() << std::endl;
-            for (const auto& folder : section.getFolders()) {
-                std::cout << "  System: " << folder.getTitle() << std::endl;
-                for (const auto& rom : folder.getRoms()) {
-                    std::cout << "  System: " << folder.getTitle() <<  " -> Rom: " << rom.getTitle() << std::endl;
-                }
-            }
-        }
-    }
-
+    void print_list();
 };

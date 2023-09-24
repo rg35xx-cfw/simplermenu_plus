@@ -10,7 +10,6 @@
 
 #include "RenderComponent.h"
 
-
 std::unordered_map<std::string, SDL_Surface*> RenderComponent::thumbnailCache;
 
 RenderComponent::RenderComponent() {
@@ -26,12 +25,62 @@ void RenderComponent::drawSection(const std::string& name, const std::string& pa
 
     setBackground(path);
 
+    if (theme.getValue("GENERAL.display_section_group_name") == "1") {
+        SDL_Color white = {255, 255, 255};
+
+        // Remove extension from section and transform to uppercase
+        std::filesystem::path ss(name);
+        std::string sectionName(ss.stem().string()); 
+        transform(sectionName.begin(), sectionName.end(), sectionName.begin(), ::toupper);
+    
+        int sectionFontSize = 96;
+        if(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) == 320) {
+            sectionFontSize = 48;
+        }
+    
+        TTF_Font* titleFont = TTF_OpenFont(theme.getValue("GENERAL.font", true).c_str(), sectionFontSize);  // Adjust font path and size as necessary
+        if (!titleFont) {
+            // Handle error
+            std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
+            return;
+        }       
+        SDL_Surface* sectionNameSurface = TTF_RenderText_Blended(titleFont, sectionName.c_str(), {255,255,255});
+        TTF_CloseFont(titleFont);   
+
+        SDL_Rect dstRect;
+        dstRect.x = (screen->w - sectionNameSurface->w) / 2;
+        dstRect.y = (screen->h - sectionNameSurface->h) / 2;
+        dstRect.w = sectionNameSurface->w;
+        dstRect.h = sectionNameSurface->h;
+
+        // Create a semi-transparent surface for the background
+        SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, cfg.getIntValue(SettingId::SCREEN_WIDTH), dstRect.h, 32, 0, 0, 0, 0);
+
+        // Enable blending for the surface
+        SDL_SetAlpha(transparentBg, SDL_SRCALPHA, 127);
+
+        SDL_FillRect(transparentBg, NULL, SDL_MapRGBA(transparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
+
+        SDL_Rect fadeRect = {0, Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT) / 2 - sectionNameSurface->h / 2,
+                                Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH),
+                                Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT) / 2 + sectionNameSurface->h / 2};
+
+        // Render the semi-transparent background
+        SDL_BlitSurface(transparentBg, NULL, screen, &fadeRect);
+
+        // Render the text on top of the semi-transparent background
+        SDL_BlitSurface(sectionNameSurface, NULL, screen, &dstRect);
+
+        SDL_FreeSurface(sectionNameSurface);
+        SDL_FreeSurface(transparentBg); // Don't forget to free the surface when done
+    }
+
     // Decide on the x, y positions, colors, and other styling details
-    renderText(name, 50, 50, {255, 255, 255}); // White color, for example
-    renderText("Folders: " + std::to_string(numSystems), 50, 150, {150, 150, 150}); // More gray for meta info, for example
+    // Disable folder count displat for now, needs to be linked to a theme setting 
+    // renderText("Folders: " + std::to_string(numSystems), 50, 150, {150, 150, 150}); // More gray for meta info, for example
 }
 
-void RenderComponent::drawSystem(const std::string& name, const std::string& path, int numRoms) {
+void RenderComponent::drawFolder(const std::string& name, const std::string& path, int numRoms) {
     clearScreen();
 
     std::string backgroundPath = Configuration::getInstance().getThemePath() + theme.getValue(name + ".logo");
@@ -55,7 +104,7 @@ void RenderComponent::drawSystem(const std::string& name, const std::string& pat
 }
 
 void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
-    clearScreen();
+    //clearScreen();
     int startY = 50;
     int stepY = 30; // spacing between ROM names
 
@@ -67,19 +116,33 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
 
     setBackground(backgroundPath);
 
+    // TODO: add page logic
     for (int i = 0; i < romData.size(); i++) {
         SDL_Color color = (i == currentRomIndex) ? SDL_Color{255, 0, 0} : SDL_Color{255, 255, 255}; // Red for selected, White for others
         renderText(romData[i].first, 50, startY, color); // Render ROM name
-        renderText(romData[i].second, 250, startY, color); // Render ROM path
-        loadThumbnail(romData[i].second);
+        // Debug path info, disabled by default
+        //renderText(romData[i].second, 250, startY, color); // Render ROM path
         startY += stepY;
     }
+
+    loadThumbnail(romData[currentRomIndex].second);
+
+    Uint16 x = theme.getIntValue("GENERAL.art_x"); 
+    Uint16 y = theme.getIntValue("GENERAL.art_y"); 
+    Uint16 w = theme.getIntValue("GENERAL.art_max_w"); 
+    Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
+    SDL_Rect destRect = {x, y, w, h};
+    SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
+
 }
 
 void RenderComponent::loadThumbnail(const std::string& romPath) {
 
-    std::string thumbnailPath = "/userdata/roms/neogeo/media/images/viewpoin.png";
-    SDL_Surface* thumbnail = nullptr;
+    std::filesystem::path path(romPath);
+    std::string romNameWithoutExtension = path.stem().string();
+    std::string basePath = path.parent_path().string();
+    std::string thumbnailPath = basePath + "/media/images/" + romNameWithoutExtension + ".png";
+
     SDL_Surface* tmpThumbnail = nullptr;
 
     // If thumbnail is already in cache, set it and return
@@ -121,11 +184,12 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
         thumbnailCache[thumbnailPath] = tmpThumbnail;
         thumbnail = tmpThumbnail;
     }
-    Uint16 x = 100;//theme.getIntValue("GENERAL.art_x"); 
-    Uint16 y = 40;//theme.getIntValue("GENERAL.art_y"); 
-    Uint16 w = 320;//theme.getIntValue("GENERAL.art_max_w"); 
-    Uint16 h = 240;//theme.getIntValue("GENERAL.art_max_h"); 
-    SDL_Rect destRect = {x, y, w, h};
-    SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
 }
 
+void RenderComponent::printFPS(int fps) {
+    // Display FPS page number / total_pages at the bottom
+    std::string fpsText = "FPS: " + std::to_string(fps);
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
+    SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
+    SDL_BlitSurface(textSurface, NULL, screen, &destRect);
+}

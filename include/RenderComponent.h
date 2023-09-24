@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Configuration.h"
 #include "Theme.h"
+#include "HelperUtils.h"
 
 class RenderComponent {
 private:
@@ -16,6 +17,8 @@ private:
     SDL_Surface* background;
     Configuration& cfg = Configuration::getInstance();
     Theme& theme = Theme::getInstance();
+    HelperUtils helper;
+    SDL_Surface* thumbnail = nullptr;
 
     static std::unordered_map<std::string, SDL_Surface*> thumbnailCache;
 
@@ -66,16 +69,9 @@ public:
     }
 
     void drawSection(const std::string& name, const std::string& path, int numSystems);
-    void drawSystem(const std::string& name, const std::string& path, int numRoms);
+    void drawFolder(const std::string& name, const std::string& path, int numRoms);
     void drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex);
     void loadThumbnail(const std::string& romPath);
-
-    void printFPS(int fps) {
-        // Display FPS page number / total_pages at the bottom
-        std::string fpsText = "FPS: " + std::to_string(fps);
-        SDL_Surface* textSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
-        SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
-        SDL_BlitSurface(textSurface, NULL, screen, &destRect);
-    }
+    void printFPS(int fps);
 
 };
