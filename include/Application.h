@@ -137,6 +137,8 @@ public:
 
     void handleKeyPress(SDLKey key);
 
+    void handleJoystickEvents(SDL_Event& event);
+
     void run();
 
     void print_list();

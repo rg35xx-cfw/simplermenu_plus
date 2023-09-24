@@ -159,6 +159,10 @@ void Application::handleKeyPress(SDLKey key) {
     }
 }
 
+void Application::handleJoystickEvents(SDL_Event& event) {
+    // TODO
+}
+
 void Application::run() {
     bool isRunning = true;
     SDL_Event event;
@@ -169,10 +173,6 @@ void Application::run() {
     //Uint32 msgDelay = 0;
 
     Uint32 frameStart = 0;
-
-    // print_list();
-
-    //Uint32 currentTime = SDL_GetTicks();
 
     while (isRunning) {
         int screenRefresh = 30;
@@ -203,6 +203,7 @@ void Application::run() {
                 case SDL_JOYBUTTONDOWN:
                 case SDL_JOYBUTTONUP:
                 case SDL_JOYHATMOTION:
+                    handleJoystickEvents(event);
                     break;
                 case SDL_KEYUP:
                     break;
