@@ -19,7 +19,7 @@
 
 Application* Application::instance = nullptr;
 
-Application::Application() {
+Application::Application() : controlMapping(ControlMapping::getInstance()) {
     setupCache();
     populateMenu(menu);
 
@@ -115,44 +115,44 @@ void Application::drawCurrentState() {
 void Application::handleKeyPress(SDLKey key) {
     switch (currentMenuLevel) {
         case MENU_SECTION:
-            if (key == 13) { // ENTER
+            if (key == controlMapping.getControl("KEY_A")) { // ENTER
                 currentMenuLevel = MENU_FOLDER;
                 currentFolderIndex = 0;
-            } else if (key == 273) { // UP
+            } else if (key == controlMapping.getControl("KEY_UP")) { // UP
                 if (currentSectionIndex > 0) currentSectionIndex--;
                 else currentSectionIndex = menu.getSections().size() - 1;
-            } else if (key == 274) { // DOWN
+            } else if (key == controlMapping.getControl("KEY_DOWN")) { // DOWN
                 currentSectionIndex = (currentSectionIndex + 1) % menu.getSections().size();
             }
             break;
             
         case MENU_FOLDER:
-            if (key == 13) { // ENTER
+            if (key == controlMapping.getControl("KEY_A")) { // KEY_A/ENTER
                 currentMenuLevel = MENU_ROM;
                 currentRomIndex = 0;
-            } else if (key == 27) { // ESC
+            } else if (key == controlMapping.getControl("KEY_B")) { // KEY_B/ESC
                 currentMenuLevel = MENU_SECTION;
-            } else if (key == 273) { // UP
+            } else if (key == controlMapping.getControl("KEY_UP")) { // UP
                 const Section& section = menu.getSections()[currentSectionIndex];
                 if (currentFolderIndex > 0) currentFolderIndex--;
                 else currentFolderIndex = section.getFolders().size() - 1;
-            } else if (key == 274) { // DOWN
+            } else if (key == controlMapping.getControl("KEY_DOWN")) { // DOWN
                 const Section& section = menu.getSections()[currentSectionIndex];
                 currentFolderIndex = (currentFolderIndex + 1) % section.getFolders().size();
             }
             break;
             
         case MENU_ROM:
-            if (key == 27) { // ESC
+            if (key == controlMapping.getControl("KEY_B")) { // ESC
                 currentMenuLevel = MENU_FOLDER;
-            } else if (key == 273) { // UP
+            } else if (key == controlMapping.getControl("KEY_UP")) { // UP
                 const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
                 if (currentRomIndex > 0) currentRomIndex--;
                 else currentRomIndex = folder.getRoms().size() - 1;
-            } else if (key == 274) { // DOWN
+            } else if (key == controlMapping.getControl("KEY_DOWN")) { // DOWN
                 const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
                 currentRomIndex = (currentRomIndex + 1) % folder.getRoms().size();
-            } else if (key == 13) { // ENTER
+            } else if (key == controlMapping.getControl("KEY_A")) { // ENTER
                 std::cout << "execute rom" << std::endl;
             }
             break;

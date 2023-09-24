@@ -18,6 +18,7 @@
 #include "RenderComponent.h"
 #include "Configuration.h"
 #include "FileManager.h"
+#include "ControlMapping.h"
 #include "MenuCache.h"
 #include "Menu.h"
 #include "HelperUtils.h"
@@ -42,6 +43,8 @@ private:
 
     Configuration& cfg = Configuration::getInstance();
     Theme& theme = Theme::getInstance();
+
+    ControlMapping& controlMapping;
 
     HelperUtils helper;
 
