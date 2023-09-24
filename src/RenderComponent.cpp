@@ -7,13 +7,17 @@
 #include <SDL/SDL_gfxPrimitives.h>
 #include <SDL/SDL_rotozoom.h>
 #include <SDL/SDL_image.h>
+#include <fstream>
 
 #include "RenderComponent.h"
 
 std::unordered_map<std::string, SDL_Surface*> RenderComponent::thumbnailCache;
 
+std::unordered_map<std::string, std::string> RenderComponent::aliasMap;
+
 RenderComponent::RenderComponent() {
     // Implementation
+    loadAliases();
 }
 
 RenderComponent::~RenderComponent() {
@@ -81,13 +85,16 @@ void RenderComponent::drawSection(const std::string& name, const std::string& pa
 }
 
 void RenderComponent::drawFolder(const std::string& name, const std::string& path, int numRoms) {
-    clearScreen();
+    // clearScreen();
 
     std::string backgroundPath = Configuration::getInstance().getThemePath() + theme.getValue(name + ".logo");
 
     if(theme.getValue(name + ".logo") != "NOT FOUND") {
         // std::cout << "background path: " << backgroundPath << std::endl;
         setBackground(backgroundPath);
+
+    } else {
+        clearScreen();
     }
 
     // As before, determine x, y positions and styles
@@ -105,8 +112,8 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
 
 void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
     //clearScreen();
-    int startY = 50;
-    int stepY = 30; // spacing between ROM names
+    // int startY = 50;
+    // int stepY = 30; // spacing between ROM names
 
     std::string backgroundPath = Configuration::getInstance().getValue(SettingId::THEME_PATH) + 
                                  std::to_string(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH)) + "x" +
@@ -116,10 +123,16 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
 
     setBackground(backgroundPath);
 
+    // Set rom list starting position and item separation
+    int startX = theme.getIntValue("GENERAL.game_list_x");
+    int startY = theme.getIntValue("GENERAL.game_list_y");
+    int stepY = theme.getIntValue("GENERAL.items_separation");
+
     // TODO: add page logic
     for (int i = 0; i < romData.size(); i++) {
-        SDL_Color color = (i == currentRomIndex) ? SDL_Color{255, 0, 0} : SDL_Color{255, 255, 255}; // Red for selected, White for others
-        renderText(romData[i].first, 50, startY, color); // Render ROM name
+        SDL_Color color = (i == currentRomIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        std::string alias = getAlias(romData[i].first);
+        renderText(alias, startX, startY, color); // Render ROM name
         // Debug path info, disabled by default
         //renderText(romData[i].second, 250, startY, color); // Render ROM path
         startY += stepY;
@@ -189,7 +202,49 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
 void RenderComponent::printFPS(int fps) {
     // Display FPS page number / total_pages at the bottom
     std::string fpsText = "FPS: " + std::to_string(fps);
-    SDL_Surface* textSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
+
+    SDL_Surface* rawTextSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
+    if (!rawTextSurface) {
+        return;
+    }
+
+    SDL_Surface* textSurface = SDL_DisplayFormatAlpha(rawTextSurface);
+    SDL_FreeSurface(rawTextSurface);
+
+    if(!textSurface) {
+        return;
+    }
+
     SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
     SDL_BlitSurface(textSurface, NULL, screen, &destRect);
+
+    SDL_FreeSurface(textSurface);
+}
+
+void RenderComponent::loadAliases() {
+    std::ifstream infile(Configuration::getInstance().getValue(SettingId::ALIAS_PATH));
+    std::string line;
+    while (std::getline(infile, line)) {
+        size_t pos = line.find('=');
+        if (pos != std::string::npos) {
+            std::string filename = line.substr(0, pos);
+            std::string alias = line.substr(pos + 1);
+            aliasMap[filename] = alias;
+        }
+    }
+}
+
+std::string RenderComponent::getAlias(const std::string& title) {
+    std::string displayTitle = title;
+    std::filesystem::path romPath(title);
+    std::string filenameWithoutExt = romPath.stem().string();
+    // Check if the rom name exists in the alias map
+    if (aliasMap.find(filenameWithoutExt) != aliasMap.end()) {
+        displayTitle = aliasMap[filenameWithoutExt];
+    } else {
+        // If no alias is available, remove the file extension
+        displayTitle = filenameWithoutExt;
+    }
+    
+    return displayTitle;
 }

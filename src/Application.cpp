@@ -175,7 +175,7 @@ void Application::run() {
     Uint32 frameStart = 0;
 
     while (isRunning) {
-        int screenRefresh = 30;
+        int screenRefresh = Configuration::getInstance().getIntValue(SettingId::SCREEN_REFRESH);
         
         int frameDelay = 1000 / screenRefresh;
 

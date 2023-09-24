@@ -20,32 +20,58 @@ private:
     HelperUtils helper;
     SDL_Surface* thumbnail = nullptr;
 
+    std::string currentBackgroundPath;
+
     static std::unordered_map<std::string, SDL_Surface*> thumbnailCache;
+    static std::unordered_map<std::string, std::string> aliasMap;
 
     RenderComponent(); // Constructor is private now.
     ~RenderComponent(); // If needed
 
     // Common method to render text on screen
     void renderText(const std::string& text, int x, int y, SDL_Color color) {
-        SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
+        SDL_Surface* rawTextSurface = TTF_RenderText_Blended(font, text.c_str(), color);
+        if (!rawTextSurface) {
+            // Handle the error, e.g., print an error message
+            return;
+        }
+
+        // Convert the surface to the display format while preserving alpha
+        SDL_Surface* textSurface = SDL_DisplayFormatAlpha(rawTextSurface);
+        SDL_FreeSurface(rawTextSurface);  // Free the original surface
+
+        if (!textSurface) {
+            // Handle the error, e.g., print an error message
+            return;
+        }
+
         SDL_Rect position = {x, y, 0, 0};  // Assuming width and height are determined by the textSurface
         SDL_BlitSurface(textSurface, NULL, screen, &position);
-        SDL_FreeSurface(textSurface);
+
+        SDL_FreeSurface(textSurface);  // Free the converted surface
     }
 
     void setBackground(const std::string& backgroundPath) {
         SDL_Surface* loadedSurface = IMG_Load(backgroundPath.c_str());
-        if(loadedSurface) {
-            background = SDL_DisplayFormat(loadedSurface);
-            SDL_FreeSurface(loadedSurface);
-            SDL_BlitSurface(background, NULL, screen, NULL);
-        } else {
+        if (!loadedSurface) {
             std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+            return;
         }
+
+        // Free the old background surface if it exists
+        if (background) {
+            SDL_FreeSurface(background);
+        }
+
+        background = SDL_DisplayFormat(loadedSurface);
+        SDL_FreeSurface(loadedSurface);
+
         if (!background) {
-            std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+            std::cerr << "Failed to convert background format: " << IMG_GetError() << std::endl;
+            return;
         }
-        SDL_FreeSurface(background);
+
+        SDL_BlitSurface(background, NULL, screen, NULL);
     }
 
     void clearScreen() {
@@ -73,5 +99,6 @@ public:
     void drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex);
     void loadThumbnail(const std::string& romPath);
     void printFPS(int fps);
-
+    void loadAliases();
+    std::string getAlias(const std::string& title);
 };

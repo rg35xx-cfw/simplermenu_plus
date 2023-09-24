@@ -1,5 +1,3 @@
-#pragma once
-
 #include <HelperUtils.h>
 
 std::string HelperUtils::getPathWithoutExtension(const std::string& fullPath) {
