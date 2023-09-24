@@ -129,15 +129,50 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     int stepY = theme.getIntValue("GENERAL.items_separation");
 
     // TODO: add page logic
-    for (int i = 0; i < romData.size(); i++) {
+    // for (int i = 0; i < romData.size(); i++) {
+    for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
         SDL_Color color = (i == currentRomIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
         std::string alias = getAlias(romData[i].first);
-        renderText(alias, startX, startY, color); // Render ROM name
+
+////
+        // Determine text width
+        SDL_Surface* textSurface = TTF_RenderText_Blended(font, alias.c_str(), color);
+        int titleWidth = textSurface->w;
+
+        // TODO replace clipWidth the correct width based on theme.ini settings
+        int clipWidth = theme.getIntValue("GENERAL.game_list_w");
+
+        // // Create the scrolling view for titles that are too wide
+        // if (i == currentRomIndex && SDL_GetTicks() - selectTime > SCROLL_TIMEOUT) {
+        //     if (scrollPixelPosition < titleWidth - clipWidth) {
+        //         scrollPixelPosition += 1;  // Increment by 1 pixel. Adjust for faster scrolling.
+        //         if (scrollPixelPosition == titleWidth - clipWidth) {
+        //             // Record the time when scrolling completes
+        //             scrollEndTime = SDL_GetTicks();
+        //         }
+        //     } else if (SDL_GetTicks() - scrollEndTime > END_SCROLL_PAUSE) {
+        //         // Reset the scroll position after the timeout period has elapsed
+        //         scrollPixelPosition = 0;
+        //         selectTime = SDL_GetTicks();
+        //     }
+        // }
+
+        //SDL_Rect destRect = {static_cast<Sint16>(x - scrollPixelPosition), static_cast<Sint16>(y), 0, 0};  // Adjust x position by scrollPixelPosition
+        SDL_Rect clipRect = {startX, startY, clipWidth, static_cast<Uint16>(textSurface->h)}; // Ensure text doesn't spill over the intended area
+
+        SDL_SetClipRect(screen, &clipRect);
+        SDL_BlitSurface(textSurface, nullptr, screen, &clipRect);
+        SDL_SetClipRect(screen, NULL);  // Reset the clip rect
+////
+
+        //renderText(alias, startX, startY, color); // Render ROM name
         // Debug path info, disabled by default
         //renderText(romData[i].second, 250, startY, color); // Render ROM path
         startY += stepY;
     }
 
+
+    // Load Thumbnail
     loadThumbnail(romData[currentRomIndex].second);
 
     Uint16 x = theme.getIntValue("GENERAL.art_x"); 
