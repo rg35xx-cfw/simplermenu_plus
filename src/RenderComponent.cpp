@@ -15,7 +15,13 @@ std::unordered_map<std::string, SDL_Surface*> RenderComponent::thumbnailCache;
 
 std::unordered_map<std::string, std::string> RenderComponent::aliasMap;
 
-RenderComponent::RenderComponent() {
+RenderComponent::RenderComponent(Configuration& cfg) 
+    : cfg(cfg), 
+      theme(cfg.get("MENU.themeName"), cfg.getInt("MENU.screenWidth"), cfg.getInt("MENU.screenHeight")) {
+
+    screenHeight = cfg.getInt("MENU.screenHeight");
+    screenWidth = cfg.getInt("MENU.screenWidth");
+
     // Implementation
     loadAliases();
 }
@@ -24,8 +30,17 @@ RenderComponent::~RenderComponent() {
     // Implementation
 }
 
-void RenderComponent::drawSection(const std::string& name, const std::string& path, int numSystems) {
+void RenderComponent::drawSection(const std::string& name, int numSystems) {
     clearScreen();
+
+    std::string path = 
+                cfg.get("MENU.themePath") + 
+                std::to_string(cfg.getInt("MENU.screenWidth")) + "x" +
+                std::to_string(cfg.getInt("MENU.screenHeight")) + "/" +
+                cfg.get("MENU.themeName") + "/" +
+                theme.getValue("GENERAL.section_groups_folder") +
+                helper.getFilenameWithoutExtension(name) + ".png";
+
 
     setBackground(path);
 
@@ -38,7 +53,7 @@ void RenderComponent::drawSection(const std::string& name, const std::string& pa
         transform(sectionName.begin(), sectionName.end(), sectionName.begin(), ::toupper);
     
         int sectionFontSize = 96;
-        if(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH) == 320) {
+        if(screenWidth == 320) {
             sectionFontSize = 48;
         }
     
@@ -58,16 +73,16 @@ void RenderComponent::drawSection(const std::string& name, const std::string& pa
         dstRect.h = sectionNameSurface->h;
 
         // Create a semi-transparent surface for the background
-        SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, cfg.getIntValue(SettingId::SCREEN_WIDTH), dstRect.h, 32, 0, 0, 0, 0);
+        SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, screenWidth, dstRect.h, 32, 0, 0, 0, 0);
 
         // Enable blending for the surface
         SDL_SetAlpha(transparentBg, SDL_SRCALPHA, 127);
 
         SDL_FillRect(transparentBg, NULL, SDL_MapRGBA(transparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
 
-        SDL_Rect fadeRect = {0, Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT) / 2 - sectionNameSurface->h / 2,
-                                Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH),
-                                Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT) / 2 + sectionNameSurface->h / 2};
+        SDL_Rect fadeRect = {0, screenHeight / 2 - sectionNameSurface->h / 2,
+                                screenWidth,
+                                screenHeight / 2 + sectionNameSurface->h / 2};
 
         // Render the semi-transparent background
         SDL_BlitSurface(transparentBg, NULL, screen, &fadeRect);
@@ -87,7 +102,7 @@ void RenderComponent::drawSection(const std::string& name, const std::string& pa
 void RenderComponent::drawFolder(const std::string& name, const std::string& path, int numRoms) {
     // clearScreen();
 
-    std::string backgroundPath = Configuration::getInstance().getThemePath() + theme.getValue(name + ".logo");
+    std::string backgroundPath = cfg.getThemePath() + theme.getValue(name + ".logo");
 
     if(theme.getValue(name + ".logo") != "NOT FOUND") {
         // std::cout << "background path: " << backgroundPath << std::endl;
@@ -115,10 +130,10 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     // int startY = 50;
     // int stepY = 30; // spacing between ROM names
 
-    std::string backgroundPath = Configuration::getInstance().getValue(SettingId::THEME_PATH) + 
-                                 std::to_string(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH)) + "x" +
-                                 std::to_string(Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
-                                 Configuration::getInstance().getValue(SettingId::THEME_NAME) + "/" +
+    std::string backgroundPath = cfg.get("MENU.themePath") + 
+                                 std::to_string(screenWidth) + "x" +
+                                 std::to_string(screenHeight) + "/" +
+                                 cfg.get("MENU.themeName") + "/" +
                                  theme.getValue("DEFAULT.background");
 
     setBackground(backgroundPath);
@@ -175,8 +190,8 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     // Load Thumbnail
     loadThumbnail(romData[currentRomIndex].second);
 
-    Uint16 x = theme.getIntValue("GENERAL.art_x"); 
-    Uint16 y = theme.getIntValue("GENERAL.art_y"); 
+    Sint16 x = theme.getIntValue("GENERAL.art_x"); 
+    Sint16 y = theme.getIntValue("GENERAL.art_y"); 
     Uint16 w = theme.getIntValue("GENERAL.art_max_w"); 
     Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
     SDL_Rect destRect = {x, y, w, h};
@@ -257,7 +272,7 @@ void RenderComponent::printFPS(int fps) {
 }
 
 void RenderComponent::loadAliases() {
-    std::ifstream infile(Configuration::getInstance().getValue(SettingId::ALIAS_PATH));
+    std::ifstream infile(cfg.get("MENU.aliasPath"));
     std::string line;
     while (std::getline(infile, line)) {
         size_t pos = line.find('=');
@@ -282,4 +297,11 @@ std::string RenderComponent::getAlias(const std::string& title) {
     }
     
     return displayTitle;
+}
+
+void RenderComponent::update() {
+    if (SDL_Flip(screen) == -1) {
+        std::cerr << "SDL_Flip failed: " << SDL_GetError() << std::endl;
+        return;  // or handle the error as appropriate
+    }
 }

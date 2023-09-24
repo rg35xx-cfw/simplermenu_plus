@@ -7,13 +7,11 @@
 class ControlMapping {
 private:
     std::unordered_map<std::string, int> controls;
-
-    // Constructor to initialize the mapping from config
-    ControlMapping();
+    Configuration cfg;
 
 public:
-    // Static method to get the instance
-    static ControlMapping& getInstance();
+    // Constructor to initialize the mapping from config
+    ControlMapping(Configuration& cfg);
 
     // Get the SDL key value for a given control name
     int getControl(const std::string& controlName) const;

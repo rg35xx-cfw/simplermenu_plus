@@ -17,45 +17,16 @@
 
 #include "Application.h"
 
-Application* Application::instance = nullptr;
 
-Application::Application() : controlMapping(ControlMapping::getInstance()) {
+Application::Application() 
+    : cfg("/userdata/system/simplermenu_plus/config.ini"),
+      controlMapping(cfg),
+      renderComponent(cfg) {
+
     setupCache();
     populateMenu(menu);
 
-    instance = this;
-
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        // Handle error
-        exit(1);
-    }
-
-    screen = SDL_SetVideoMode(
-        Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH),
-        Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT),
-        Configuration::getInstance().getIntValue(SettingId::SCREEN_DEPTH),
-        SDL_HWSURFACE | SDL_DOUBLEBUF);
-
-    if (!screen) {
-        std::cerr << "Unable to set video mode: " << SDL_GetError() << std::endl;
-        SDL_Quit();
-        exit(1);
-    }
-
-    if (TTF_Init() == -1) {
-        std::cerr << "Unable to initialize TTF: " << TTF_GetError() << std::endl;
-        SDL_Quit();
-        exit(1);
-    }
-
-    font = TTF_OpenFont(
-    theme.getValue("GENERAL.font", true).c_str(),
-    theme.getIntValue("GENERAL.font_size"));
-    TTF_SetFontHinting(font, TTF_HINTING_NORMAL);  // or TTF_HINTING_LIGHT, TTF_HINTING_MONO, TTF_HINTING_NONE
-    TTF_SetFontKerning(font, 1); // 1 to enable, 0 to disable
-
-    // Enable keyboard repeat (only for keys, not for buttons)
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+    renderComponent.initialize();
 
     // Initialize joystick
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
@@ -73,8 +44,6 @@ Application::Application() : controlMapping(ControlMapping::getInstance()) {
             std::cout << "Number of Buttons: " << SDL_JoystickNumButtons(joystick) << std::endl;
         }
     }
-
-    renderComponent.initialize(screen, font);
 }
 
 void Application::drawCurrentState() {
@@ -84,14 +53,8 @@ void Application::drawCurrentState() {
         {
             std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
 
-            std::string sectionBackgroundPath = Configuration::getInstance().getValue(SettingId::THEME_PATH) + 
-                                 std::to_string(Configuration::getInstance().getIntValue(SettingId::SCREEN_WIDTH)) + "x" +
-                                 std::to_string(Configuration::getInstance().getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
-                                 Configuration::getInstance().getValue(SettingId::THEME_NAME) + "/" +
-                                 theme.getValue("GENERAL.section_groups_folder") + helper.getFilenameWithoutExtension(sectionName) + ".png";
-
             int numberOfFolders = menu.getSections()[currentSectionIndex].getFolders().size();
-            renderComponent.drawSection(sectionName, sectionBackgroundPath, numberOfFolders);
+            renderComponent.drawSection(sectionName, numberOfFolders);
             break;
         }
         case MENU_FOLDER:
@@ -175,9 +138,9 @@ void Application::run() {
     Uint32 frameStart = 0;
 
     while (isRunning) {
-        int screenRefresh = Configuration::getInstance().getIntValue(SettingId::SCREEN_REFRESH);
+        int screenRefresh = cfg.getInt("SYSTEM.screenRefresh");
         
-        int frameDelay = 1000 / screenRefresh;
+        Uint32 frameDelay = 1000 / screenRefresh;
 
         // Wait if last frame was drawn too fast
         if (SDL_GetTicks() - frameStart < frameDelay) {
@@ -221,10 +184,7 @@ void Application::run() {
 
         renderComponent.printFPS(fps);
 
-        if (SDL_Flip(screen) == -1) {
-            std::cerr << "SDL_Flip failed: " << SDL_GetError() << std::endl;
-            return;  // or handle the error as appropriate
-        }
+        renderComponent.update();
 
         frameCount++;
     }

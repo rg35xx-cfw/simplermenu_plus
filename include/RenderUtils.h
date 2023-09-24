@@ -10,13 +10,12 @@
 
 class RenderUtils {
 private:
+    Theme theme;
     TTF_Font* m_font;
     std::string m_fontPath;
     int m_fontSize;
     TTF_Font* generalFont;
     TTF_Font* textFont;
-    Theme& theme = Theme::getInstance();
-    
 
     static RenderUtils* instance;
 
@@ -26,7 +25,9 @@ public:
     static const int RIGHT = 2;
 
     // Default constructor
-    RenderUtils() {
+    RenderUtils(Theme& theme)
+        : theme(theme) {
+        
         instance = this;
         
         generalFont = TTF_OpenFont(theme.getValue("GENERAL.font", true).c_str(),theme.getIntValue("GENERAL.font_size"));
@@ -45,10 +46,11 @@ public:
     }
 
     // Constructor to initialize with a font
-    RenderUtils(TTF_Font* font) : m_font(font) {}
+    RenderUtils(Theme& theme, TTF_Font* font) : theme(theme), m_font(font) {}
 
     // Constructor to initialize with font path and size
-    RenderUtils(std::string fontPath, int fontSize) : m_fontPath(fontPath), m_fontSize(fontSize) {
+    RenderUtils(Theme& theme, std::string fontPath, int fontSize) 
+        : theme(theme), m_fontPath(fontPath), m_fontSize(fontSize) {
         m_font = TTF_OpenFont(fontPath.c_str(), fontSize);
         if (!m_font) {
             // Handle font loading error appropriately
@@ -56,9 +58,16 @@ public:
         }
     }
 
+    static RenderUtils* getInstance(Theme& theme) {
+        if (!instance) {
+            instance = new RenderUtils(theme);
+        }
+        return instance;
+    }
+
     static RenderUtils* getInstance() {
         if (!instance) {
-            instance = new RenderUtils();
+            std::cerr << "RenderUtils instance still doesn't exist!" << std::endl;;
         }
         return instance;
     }

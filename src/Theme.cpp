@@ -5,16 +5,14 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/algorithm/string.hpp>
 
-Theme::Theme() {
+Theme::Theme(std::string name, int screenWidth, int screenHeight) {
     // Load values from .ini file using Boost.PropertyTree
     boost::property_tree::ptree pt;
 
-    Configuration& cfg = Configuration::getInstance();
-
     baseThemePath = "/userdata/system/.simplemenu/themes/" + 
-                    std::to_string(cfg.getIntValue(SettingId::SCREEN_WIDTH)) + "x" + 
-                    std::to_string(cfg.getIntValue(SettingId::SCREEN_HEIGHT)) + "/" +
-                    cfg.getValue(SettingId::THEME_NAME) + "/";
+                    std::to_string(screenWidth) + "x" + 
+                    std::to_string(screenHeight) + "/" +
+                    name + "/";
 
     boost::property_tree::ini_parser::read_ini(baseThemePath + "theme.ini", pt);
 
@@ -24,11 +22,6 @@ Theme::Theme() {
             configValues[full_key] = key_value.second.get_value<std::string>();
         }
     }
-}
-
-Theme& Theme::getInstance() {
-    static Theme instance; // Guaranteed to be destroyed and instantiated on first use.
-    return instance;
 }
 
 void Theme::setValue(const std::string& key, const std::string& value) {

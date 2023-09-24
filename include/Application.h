@@ -31,20 +31,15 @@ class RenderComponent;
 class Application {
 private:
     Menu menu;
-    //Configuration cfg = Configuration::getInstance();
     std::vector<CachedMenuItem> allCachedItems;
 
-    RenderComponent& renderComponent = RenderComponent::getInstance();
-
-    SDL_Surface* screen;
     TTF_Font* font;
     SDL_Joystick *joystick = nullptr;
-    static Application* instance;
 
-    Configuration& cfg = Configuration::getInstance();
-    Theme& theme = Theme::getInstance();
+    Configuration cfg;
 
-    ControlMapping& controlMapping;
+    ControlMapping controlMapping;
+    RenderComponent renderComponent;
 
     HelperUtils helper;
 
@@ -61,7 +56,7 @@ private:
     int currentRomIndex = 0;
 
     void setupCache() {
-        FileManager fileManager;
+        FileManager fileManager(cfg);
         MenuCache menuCache;
 
         // Load section groups from the section_groups folder
@@ -74,7 +69,8 @@ private:
         }
 
         for (const auto& sectionGroupFile : sectionGroups) {
-            auto consoleDataMap = Configuration::getInstance().parseIniFile("/userdata/system/.simplemenu/section_groups/" + sectionGroupFile);
+            auto consoleDataMap = cfg.parseIniFile(
+                "/userdata/system/.simplemenu/section_groups/" + sectionGroupFile);
 
             for (const auto& [consoleName, data] : consoleDataMap) {
                 if (!menuCache.cacheExists(cacheFilePath)) {
@@ -125,13 +121,6 @@ private:
 
 public:
     Application();
-
-    static Application* getInstance() {
-        if (!instance) {
-            instance = new Application();
-        }
-        return instance;
-    }
 
     void drawCurrentState();
 
