@@ -146,6 +146,8 @@ public:
         lastFolder = "";
         lastRom = -1;
         selectTime = SDL_GetTicks();
+        scrollPixelPosition = 0;
+        scrollEndTime = 0;
     }
 
     void initialize() {
@@ -174,8 +176,8 @@ public:
         }
 
         font = TTF_OpenFont(
-        theme.getValue("GENERAL.font", true).c_str(),
-        theme.getIntValue("GENERAL.font_size"));
+            theme.getValue("GENERAL.font", true).c_str(),
+            theme.getIntValue("GENERAL.font_size"));
         TTF_SetFontHinting(font, TTF_HINTING_NORMAL);  // or TTF_HINTING_LIGHT, TTF_HINTING_MONO, TTF_HINTING_NONE
         TTF_SetFontKerning(font, 1); // 1 to enable, 0 to disable
 

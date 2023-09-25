@@ -31,6 +31,21 @@ RenderComponent::RenderComponent(Configuration& cfg)
 }
 
 RenderComponent::~RenderComponent() {
+    if(background) {
+        SDL_FreeSurface(background);
+    }
+    if(thumbnail) {
+        SDL_FreeSurface(thumbnail);
+    }
+    if(tmpThumbnail) {
+        SDL_FreeSurface(tmpThumbnail);
+    }
+    if(font) {
+        TTF_CloseFont(font);
+    }
+    if(screen) {
+        SDL_FreeSurface(screen);
+    }
     // Implementation
 }
 
@@ -146,7 +161,6 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-
     // Set rom list starting position and item separation
     int startX = theme.getIntValue("GENERAL.game_list_x");
     int startY = theme.getIntValue("GENERAL.game_list_y");
@@ -193,6 +207,7 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
         }
 
         SDL_SetClipRect(screen, NULL);  // Reset the clip rect
+        SDL_FreeSurface(textSurface);
 
         if (i == currentRomIndex) {
             // Add Rom title 
@@ -234,7 +249,6 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     }
 
     // Load Thumbnail
-
     if(thumbnail == nullptr) {
         loadThumbnail(romData[currentRomIndex].second);
     }
@@ -300,7 +314,7 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
 void RenderComponent::printFPS(int fps) {
     // Display FPS page number / total_pages at the bottom
 
-/*
+
     std::string fpsText = "FPS: " + std::to_string(fps);
 
     SDL_Surface* rawTextSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
@@ -319,13 +333,6 @@ void RenderComponent::printFPS(int fps) {
     SDL_BlitSurface(textSurface, NULL, screen, &destRect);
 
     SDL_FreeSurface(textSurface);
-*/
-    // Display FPS page number / total_pages at the bottom
-    std::string fpsText = "FPS: " + std::to_string(fps);
-    SDL_Surface* textSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
-    SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
-    SDL_BlitSurface(textSurface, NULL, screen, &destRect);
-
 }
 
 void RenderComponent::loadAliases() {
