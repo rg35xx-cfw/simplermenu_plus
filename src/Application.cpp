@@ -70,7 +70,7 @@ void Application::drawCurrentState() {
             for (const Rom& rom : menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()) {
                 romData.push_back({rom.getTitle(), rom.getPath()});
             }
-            renderComponent.drawRomList(romData, currentRomIndex);
+            renderComponent.drawRomList(menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle(), romData, currentRomIndex);
             break;
     }
 }

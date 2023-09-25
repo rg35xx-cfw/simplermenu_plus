@@ -189,7 +189,7 @@ public:
 
     void drawSection(const std::string& name, int numSystems);
     void drawFolder(const std::string& name, const std::string& path, int numRoms);
-    void drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex);
+    void drawRomList(const std::string& folderName, const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex);
     void loadThumbnail(const std::string& romPath);
     void printFPS(int fps);
     void loadAliases();

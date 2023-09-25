@@ -132,6 +132,7 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
     	SDL_BlitSurface(background, NULL, screen, NULL);
     } else {
         clearScreen();
+        renderText(name, cfg.getInt("MENU.screenWidth") / 2 , cfg.getInt("MENU.screenHeight") / 2 , {255, 255, 255}, 1); 
     }
 
     // As before, determine x, y positions and styles
@@ -147,7 +148,7 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
 
 }
 
-void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
+void RenderComponent::drawRomList(const std::string& folderName, const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
 
     std::string backgroundPath = cfg.get("MENU.themePath") + 
                                  std::to_string(screenWidth) + "x" +
@@ -261,6 +262,9 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
     SDL_Rect destRect = {x, y, w, h};
     SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
+
+    // Add Folder Title
+    renderText(folderName, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment")); 
 }
 
 void RenderComponent::loadThumbnail(const std::string& romPath) {
