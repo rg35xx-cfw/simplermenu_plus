@@ -166,9 +166,17 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     int startY = theme.getIntValue("GENERAL.game_list_y");
     int stepY = theme.getIntValue("GENERAL.items_separation");
 
-    // TODO: add page logic
-    // for (int i = 0; i < romData.size(); i++) {
-    for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
+    int itemsPerPage = theme.getIntValue("GENERAL.items");
+
+    // Calculate number of pages FIXME: move that to the constructor
+    int total_pages = (romData.size() + itemsPerPage - 1)/ itemsPerPage;
+
+    int currentPage = currentRomIndex / itemsPerPage;
+    int startIndex = currentPage * itemsPerPage;
+    int endIndex = std::min<int>(startIndex + itemsPerPage, romData.size());
+
+    // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
+    for (int i = startIndex; i < endIndex; i++) {
         SDL_Color color = (i == currentRomIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
         std::string alias = getAlias(romData[i].first);
 
@@ -230,13 +238,7 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
             }
         }
 
-        int itemsPerPage = 10;
-        int total_pages;
 
-        // Calculate number of pages FIXME: move that to the constructor
-        total_pages = (romData.size() + itemsPerPage - 1)/ itemsPerPage;
-
-        int currentPage = currentRomIndex / itemsPerPage;
 
         // Display pagination page number / total_pages at the bottom
         std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
@@ -249,8 +251,9 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     }
 
     // Load Thumbnail
-    if(thumbnail == nullptr) {
+    if(thumbnail == nullptr || lastRom != currentRomIndex) {
         loadThumbnail(romData[currentRomIndex].second);
+        lastRom = currentRomIndex;
     }
     Sint16 x = theme.getIntValue("GENERAL.art_x"); 
     Sint16 y = theme.getIntValue("GENERAL.art_y"); 
@@ -258,8 +261,6 @@ void RenderComponent::drawRomList(const std::vector<std::pair<std::string, std::
     Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
     SDL_Rect destRect = {x, y, w, h};
     SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
-
-
 }
 
 void RenderComponent::loadThumbnail(const std::string& romPath) {

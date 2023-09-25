@@ -126,9 +126,9 @@ public:
 
     void handleCommand(ControlMap cmd);
 
-    //void handleJoystickEvents(SDL_Event& event);
-
     void run();
 
     void print_list();
+
+    void launchRom();
 };

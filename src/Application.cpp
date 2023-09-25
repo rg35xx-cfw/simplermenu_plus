@@ -121,15 +121,12 @@ void Application::handleCommand(ControlMap cmd) {
                 currentRomIndex = (currentRomIndex + 1) % folder.getRoms().size();
             } else if (cmd == CMD_ENTER) { // ENTER
                 std::cout << "execute rom" << std::endl;
+                launchRom();
                 renderComponent.resetValues();
             }
             break;
     }
 }
-
-// void Application::handleJoystickEvents(SDL_Event& event) {
-//     // TODO
-// }
 
 void Application::run() {
     bool isRunning = true;
@@ -202,4 +199,35 @@ void Application::print_list() {
             }
         }
     }
+}
+
+void Application::launchRom() {
+
+    std::string romName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()[currentRomIndex].getTitle();
+    std::string romPath = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()[currentRomIndex].getPath();
+    std::string folderName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle();
+    std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
+    std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
+
+    std::string execLauncher = "test_launcher";
+    // Launch emulator
+    std::string command = execLauncher + " '" + romPath + "'";
+    std::cout << "Executing: " << command << std::endl;
+
+    setenv("SDL_NOMOUSE", "1", 1);
+
+    pid_t pid = fork();
+    if (pid == 0) {
+            execlp("launcher.sh","launcher.sh", execLauncher.c_str(), romPath.c_str());
+            exit(1);
+    } else if (pid > 0) {
+            SDL_Quit();
+            exit(0);
+    } else {
+            std::cerr << "Fork failed" << std::endl;
+    }
+
+    // Exit the application to free all resources
+    SDL_Quit();
+    exit(0);
 }
