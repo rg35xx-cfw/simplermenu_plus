@@ -75,56 +75,61 @@ void Application::drawCurrentState() {
     }
 }
 
-void Application::handleKeyPress(SDLKey key) {
+void Application::handleCommand(ControlMap cmd) {
     switch (currentMenuLevel) {
         case MENU_SECTION:
-            if (key == controlMapping.getControl("KEY_A")) { // ENTER
+            if (cmd == CMD_ENTER) { // ENTER
                 currentMenuLevel = MENU_FOLDER;
                 currentFolderIndex = 0;
-            } else if (key == controlMapping.getControl("KEY_UP")) { // UP
+                renderComponent.resetValues();
+            } else if (cmd == CMD_UP) { // UP
                 if (currentSectionIndex > 0) currentSectionIndex--;
                 else currentSectionIndex = menu.getSections().size() - 1;
-            } else if (key == controlMapping.getControl("KEY_DOWN")) { // DOWN
+            } else if (cmd == CMD_DOWN) { // DOWN
                 currentSectionIndex = (currentSectionIndex + 1) % menu.getSections().size();
             }
             break;
             
         case MENU_FOLDER:
-            if (key == controlMapping.getControl("KEY_A")) { // KEY_A/ENTER
+            if (cmd == CMD_ENTER) { // KEY_A/ENTER
                 currentMenuLevel = MENU_ROM;
                 currentRomIndex = 0;
-            } else if (key == controlMapping.getControl("KEY_B")) { // KEY_B/ESC
+                renderComponent.resetValues();
+            } else if (cmd == CMD_BACK) { // KEY_B/ESC
                 currentMenuLevel = MENU_SECTION;
-            } else if (key == controlMapping.getControl("KEY_UP")) { // UP
+                renderComponent.resetValues();
+            } else if (cmd == CMD_UP) { // UP
                 const Section& section = menu.getSections()[currentSectionIndex];
                 if (currentFolderIndex > 0) currentFolderIndex--;
                 else currentFolderIndex = section.getFolders().size() - 1;
-            } else if (key == controlMapping.getControl("KEY_DOWN")) { // DOWN
+            } else if (cmd == CMD_DOWN) { // DOWN
                 const Section& section = menu.getSections()[currentSectionIndex];
                 currentFolderIndex = (currentFolderIndex + 1) % section.getFolders().size();
             }
             break;
             
         case MENU_ROM:
-            if (key == controlMapping.getControl("KEY_B")) { // ESC
+            if (cmd == CMD_BACK) { // ESC
                 currentMenuLevel = MENU_FOLDER;
-            } else if (key == controlMapping.getControl("KEY_UP")) { // UP
+                renderComponent.resetValues();
+            } else if (cmd == CMD_UP) { // UP
                 const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
                 if (currentRomIndex > 0) currentRomIndex--;
                 else currentRomIndex = folder.getRoms().size() - 1;
-            } else if (key == controlMapping.getControl("KEY_DOWN")) { // DOWN
+            } else if (cmd == CMD_DOWN) { // DOWN
                 const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
                 currentRomIndex = (currentRomIndex + 1) % folder.getRoms().size();
-            } else if (key == controlMapping.getControl("KEY_A")) { // ENTER
+            } else if (cmd == CMD_ENTER) { // ENTER
                 std::cout << "execute rom" << std::endl;
+                renderComponent.resetValues();
             }
             break;
     }
 }
 
-void Application::handleJoystickEvents(SDL_Event& event) {
-    // TODO
-}
+// void Application::handleJoystickEvents(SDL_Event& event) {
+//     // TODO
+// }
 
 void Application::run() {
     bool isRunning = true;
@@ -133,7 +138,6 @@ void Application::run() {
     int fps = 0;
     int frameCount = 0;
     Uint32 fpsTimer = 0;
-    //Uint32 msgDelay = 0;
 
     Uint32 frameStart = 0;
 
@@ -160,13 +164,11 @@ void Application::run() {
                     isRunning = false;
                     break;
                 case SDL_KEYDOWN:
-                    handleKeyPress(event.key.keysym.sym);
-                    break;
                 case SDL_JOYAXISMOTION:
                 case SDL_JOYBUTTONDOWN:
                 case SDL_JOYBUTTONUP:
                 case SDL_JOYHATMOTION:
-                    handleJoystickEvents(event);
+                    handleCommand(controlMapping.convertCommand(event));
                     break;
                 case SDL_KEYUP:
                     break;

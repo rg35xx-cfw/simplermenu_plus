@@ -124,9 +124,9 @@ public:
 
     void drawCurrentState();
 
-    void handleKeyPress(SDLKey key);
+    void handleCommand(ControlMap cmd);
 
-    void handleJoystickEvents(SDL_Event& event);
+    //void handleJoystickEvents(SDL_Event& event);
 
     void run();
 

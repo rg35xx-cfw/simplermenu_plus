@@ -14,11 +14,26 @@ class RenderComponent {
 private:
     SDL_Surface* screen;
     TTF_Font* font;
-    SDL_Surface* background;
     Configuration cfg;
     Theme theme;
     HelperUtils helper;
     SDL_Surface* thumbnail = nullptr;
+    SDL_Surface* tmpThumbnail = nullptr;
+    SDL_Surface* background = nullptr;
+    SDL_Surface* currentBackground = nullptr;
+
+    std::string lastSection;
+    std::string lastFolder;
+    int lastRom = -1;
+
+    // Text scroll
+    int scrollPixelPosition = 0;
+    Uint32 scrollEndTime = 0;
+    Uint32 selectTime = 0;
+    int titleWidth = 0;
+    static const Uint32 SCROLL_TIMEOUT = 2000;
+    static const Uint32 SCROLL_SPEED = 600;
+    static const Uint32 END_SCROLL_PAUSE = 3000;
 
     int screenHeight;
     int screenWidth;
@@ -29,7 +44,7 @@ private:
     static std::unordered_map<std::string, std::string> aliasMap;
 
     // Common method to render text on screen
-    void renderText(const std::string& text, Sint16 x, Sint16 y, SDL_Color color) {
+    void renderText(const std::string& text, Sint16 x, Sint16 y, SDL_Color color, int align = 0) {
         SDL_Surface* rawTextSurface = TTF_RenderText_Blended(font, text.c_str(), color);
         if (!rawTextSurface) {
             // Handle the error, e.g., print an error message
@@ -45,13 +60,32 @@ private:
             return;
         }
 
+        SDL_Rect destRect;
+
+        switch(align) {
+            case 1:
+                destRect.x = x - textSurface->w / 2;
+                destRect.y = y - textSurface->h / 2;
+                break;
+            case 2:
+                destRect.x = x - textSurface->w;
+                destRect.y = y - textSurface->h / 2;
+                break;
+            case 0:
+            default:
+                destRect.x = x;
+                destRect.y = y - textSurface->h / 2;
+                break;
+        }
+
+
         SDL_Rect position = {x, y, 0, 0};  // Assuming width and height are determined by the textSurface
-        SDL_BlitSurface(textSurface, NULL, screen, &position);
+        SDL_BlitSurface(textSurface, NULL, screen, &destRect);
 
         SDL_FreeSurface(textSurface);  // Free the converted surface
     }
 
-    void setBackground(const std::string& backgroundPath) {
+    void old_setBackground(const std::string& backgroundPath) {
         SDL_Surface* loadedSurface = IMG_Load(backgroundPath.c_str());
         if (!loadedSurface) {
             std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
@@ -60,7 +94,8 @@ private:
 
         // Free the old background surface if it exists
         if (background) {
-            SDL_FreeSurface(background);
+            //SDL_FreeSurface(background);
+	    background = nullptr;
         }
 
         background = SDL_DisplayFormat(loadedSurface);
@@ -74,6 +109,29 @@ private:
         SDL_BlitSurface(background, NULL, screen, NULL);
     }
 
+    void setBackground(const std::string& backgroundPath) {
+        if (background) {
+            SDL_FreeSurface(background);
+            background = nullptr;
+        }
+
+        SDL_Surface* loadedSurface = IMG_Load(backgroundPath.c_str());
+        if(loadedSurface) {
+            background = SDL_DisplayFormat(loadedSurface);
+            SDL_FreeSurface(loadedSurface);
+            SDL_BlitSurface(background, NULL, screen, NULL);
+        } else {
+            std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+        }
+        if (!background) {
+            std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
+        }
+
+        currentBackground = background;
+    }
+
+
+
     void clearScreen() {
         SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
     }
@@ -82,6 +140,13 @@ public:
 
     RenderComponent(Configuration& cfg);
     ~RenderComponent(); // If needed
+
+    void resetValues() {
+        lastSection = "";
+        lastFolder = "";
+        lastRom = -1;
+        selectTime = SDL_GetTicks();
+    }
 
     void initialize() {
 

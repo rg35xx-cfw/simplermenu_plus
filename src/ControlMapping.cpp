@@ -42,3 +42,54 @@ int ControlMapping::getControl(const std::string& controlName) const {
         return -1;  // Return -1 if the control name is not found
     }
 }
+
+ControlMap ControlMapping::convertCommand(const SDL_Event& event) {
+    if (event.type == SDL_KEYDOWN) {
+        if (event.key.keysym.sym == getControl("KEY_A")) return CMD_ENTER;
+        if (event.key.keysym.sym == getControl("KEY_B")) return CMD_BACK;
+        if (event.key.keysym.sym == getControl("KEY_UP")) return CMD_UP;
+        if (event.key.keysym.sym == getControl("KEY_DOWN")) return CMD_DOWN;
+        if (event.key.keysym.sym == getControl("KEY_LEFT")) return CMD_LEFT;
+        if (event.key.keysym.sym == getControl("KEY_RIGHT")) return CMD_RIGHT;
+        if (event.key.keysym.sym == getControl("KEY_START")) return CMD_SYS_SETTINGS;
+        if (event.key.keysym.sym == getControl("KEY_SELECT")) return CMD_ROM_SETTINGS;
+    }
+    if (event.type == SDL_JOYBUTTONDOWN) {
+        if (event.jbutton.button == getControl("BTN_A")) return CMD_ENTER;
+        if (event.jbutton.button == getControl("BTN_B")) return CMD_BACK;
+        if (event.jbutton.button == getControl("BTN_UP")) return CMD_UP;
+        if (event.jbutton.button == getControl("BTN_DOWN")) return CMD_DOWN;
+        if (event.jbutton.button == getControl("BTN_LEFT")) return CMD_LEFT;
+        if (event.jbutton.button == getControl("BTN_RIGHT")) return CMD_RIGHT;
+        if (event.jbutton.button == getControl("BTN_START")) return CMD_SYS_SETTINGS;
+        if (event.jbutton.button == getControl("BTN_SELECT")) return CMD_ROM_SETTINGS;
+    } else if (event.type == SDL_JOYAXISMOTION) {
+        // axis mappings
+        int axis = event.jaxis.axis;
+        int value = event.jaxis.value;
+        //std::cout << "Joystick AXIS " << axis << " - value: " << value << std::endl;
+        if (axis == 0) {
+            if (value < 258) {
+                return CMD_DOWN;
+            } else if (value > 258) {
+                return CMD_UP;
+            } else if (value == 258) {
+                std::cout << "AXIS U/D ZERO\n" << std::endl;
+            }
+        } else if (axis == 1) {
+            if (value < 258) {
+                return CMD_RIGHT;
+            } else if (value > 258) {
+                return CMD_LEFT;
+            } else if (value == 258) {
+                std::cout << "AXIS L/R ZERO\n" << std::endl;
+            }
+        }
+    } else if (event.type == SDL_JOYHATMOTION) {
+        // joystick HAT0, etc.
+        if (event.jhat.value == SDL_HAT_UP) return CMD_UP;
+    }
+
+    return CMD_NONE; 
+}
+
