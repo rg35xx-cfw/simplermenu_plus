@@ -66,12 +66,20 @@ void Application::drawCurrentState() {
             break;
         }
         case MENU_ROM:
+        {
             std::vector<std::pair<std::string, std::string>> romData;
             for (const Rom& rom : menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()) {
                 romData.push_back({rom.getTitle(), rom.getPath()});
             }
             renderComponent.drawRomList(menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle(), romData, currentRomIndex);
             break;
+        }
+        case SYSTEM_SETTINGS:
+        {
+            std::vector<SettingsMenuItem> settings = loadMenuFromJSON("/userdata/system/simplermenu_plus/systemMenu.json");
+            renderComponent.drawSystemSettings(menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle(), settings, currentRomIndex);
+            break;
+        }
     }
 }
 
@@ -123,8 +131,38 @@ void Application::handleCommand(ControlMap cmd) {
                 std::cout << "execute rom" << std::endl;
                 launchRom();
                 renderComponent.resetValues();
+            } else if (cmd == ROM_SETTINGS) {
+                currentMenuLevel = ROM_SETTINGS;
+                renderComponent.resetValues();
             }
             break;
+        case SYSTEM_SETTINGS:
+            if (cmd == CMD_BACK) { // ESC
+                currentMenuLevel = MENU_FOLDER;
+                renderComponent.resetValues();
+            } else if (cmd == CMD_UP) { // UP
+                const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
+                if (currentRomIndex > 0) currentRomIndex--;
+                else currentRomIndex = folder.getRoms().size() - 1;
+            } else if (cmd == CMD_DOWN) { // DOWN
+                const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
+                currentRomIndex = (currentRomIndex + 1) % folder.getRoms().size();
+            } else if (cmd == CMD_ENTER) { // ENTER
+                std::cout << "execute rom" << std::endl;
+                launchRom();
+                renderComponent.resetValues();
+            }
+            break;
+        case ROM_SETTINGS:
+            if (cmd == CMD_BACK) { // ESC
+                currentMenuLevel = MENU_ROM;
+                renderComponent.resetValues();
+            }
+    }
+
+    if (cmd == CMD_SYS_SETTINGS) {
+        currentMenuLevel = SYSTEM_SETTINGS;
+        renderComponent.resetValues();
     }
 }
 

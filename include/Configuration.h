@@ -15,6 +15,17 @@ struct ConsoleData {
     std::vector<std::string> romDirs;
 };
 
+struct SettingsMenuItem {
+    std::string id;
+    std::string type;
+    std::string title;
+    std::vector<std::string> options; // Empty for menu items that don't have options
+
+    // Constructor
+    SettingsMenuItem(const std::string& id, const std::string& type, 
+             const std::string& title, const std::vector<std::string>& options = {})
+        : id(id), type(type), title(title), options(options) {}
+};
 
 class Configuration {
 private:
@@ -22,69 +33,6 @@ private:
     std::string configIniFilepath;
 
     boost::property_tree::ptree mainPt;
-
-    // TODO should this be constant?
-    // std::unordered_map<SettingId, std::string> idToStr {
-    //     // Menu main settings
-    //     {SettingId::SCREEN_WIDTH, "MENU.screenWidth"},
-    //     {SettingId::SCREEN_HEIGHT, "MENU.screenHeight"},
-    //     {SettingId::SCREEN_DEPTH, "MENU.screenDepth"},
-    //     {SettingId::HOME_PATH, "MENU.homePath"},
-    //     {SettingId::ROMS_PATH, "MENU.romsPath"},
-    //     {SettingId::THEME_PATH, "MENU.themePath"},
-    //     {SettingId::ALIAS_PATH, "MENU.aliasPath"},
-    //     {SettingId::THEME_NAME, "MENU.themeName"},
-    //     {SettingId::SYSTEM_MENU_JSON, "MENU.systemMenuJSON"},
-    //     {SettingId::EXCLUDED_EXTENSIONS, "MENU.excludedExtensions"},
-
-    //     // System settings
-    //     {SettingId::VOLUME, "SYSTEM.volume"}, 
-    //     {SettingId::BRIGHTNESS, "SYSTEM.brightness"}, 
-    //     {SettingId::SCREEN_REFRESH, "SYSTEM.screenRefresh"},
-    //     {SettingId::SHOW_FPS, "SYSTEM.showFPS"},
-    //     {SettingId::OVERCLOCK, "SYSTEM.overclock"},
-    //     {SettingId::THEME, "SYSTEM.theme"},
-    //     {SettingId::USB_MODE, "SYSTEM.usbMode"},
-    //     {SettingId::WIFI, "SYSTEM.wifi"},
-    //     {SettingId::SETTINGS_PER_PAGE, "SYSTEM.itemsPerPage"},
-    //     {SettingId::QUIT, "SYSTEM.quit"},
-    //     {SettingId::SAVE, "SYSTEM.save"},
-    //     {SettingId::RESTART, "SYSTEM.restart"},
-    //     {SettingId::ROTATION, "SYSTEM.rotation"},
-
-    //     // Control Settings
-    //     {SettingId::KEY_A, "CONTROLS.KEY_A"}, 
-    //     {SettingId::KEY_B, "CONTROLS.KEY_B"}, 
-    //     {SettingId::KEY_X, "CONTROLS.KEY_X"}, 
-    //     {SettingId::KEY_Y, "CONTROLS.KEY_Y"}, 
-    //     {SettingId::KEY_L1, "CONTROLS.KEY_L1"}, 
-    //     {SettingId::KEY_L2, "CONTROLS.KEY_L2"}, 
-    //     {SettingId::KEY_R1, "CONTROLS.KEY_R1"}, 
-    //     {SettingId::KEY_R2, "CONTROLS.KEY_R2"}, 
-    //     {SettingId::KEY_UP, "CONTROLS.KEY_UP"}, 
-    //     {SettingId::KEY_DOWN, "CONTROLS.KEY_DOWN"}, 
-    //     {SettingId::KEY_LEFT, "CONTROLS.KEY_LEFT"}, 
-    //     {SettingId::KEY_RIGHT, "CONTROLS.KEY_RIGHT"}, 
-    //     {SettingId::KEY_START, "CONTROLS.KEY_START"}, 
-    //     {SettingId::KEY_SELECT, "CONTROLS.KEY_SELECT"}, 
-    //     {SettingId::BTN_A, "CONTROLS.BTN_A"}, 
-    //     {SettingId::BTN_B, "CONTROLS.BTN_B"}, 
-    //     {SettingId::BTN_X, "CONTROLS.BTN_X"}, 
-    //     {SettingId::BTN_Y, "CONTROLS.BTN_Y"}, 
-    //     {SettingId::BTN_L1, "CONTROLS.BTN_L1"}, 
-    //     {SettingId::BTN_L2, "CONTROLS.BTN_L2"}, 
-    //     {SettingId::BTN_R1, "CONTROLS.BTN_R1"}, 
-    //     {SettingId::BTN_R2, "CONTROLS.BTN_R2"}, 
-    //     {SettingId::BTN_UP, "CONTROLS.BTN_UP"}, 
-    //     {SettingId::BTN_DOWN, "CONTROLS.BTN_DOWN"}, 
-    //     {SettingId::BTN_LEFT, "CONTROLS.BTN_LEFT"}, 
-    //     {SettingId::BTN_RIGHT, "CONTROLS.BTN_RIGHT"}, 
-    //     {SettingId::BTN_START, "CONTROLS.BTN_START"}, 
-    //     {SettingId::BTN_SELECT, "CONTROLS.BTN_SELECT"}, 
-
-
-
-    // };
 
 public:
 

@@ -46,7 +46,9 @@ private:
     enum MenuLevel {
         MENU_SECTION,
         MENU_FOLDER,
-        MENU_ROM
+        MENU_ROM,
+        SYSTEM_SETTINGS,
+        ROM_SETTINGS
     };
 
     MenuLevel currentMenuLevel = MENU_SECTION;
@@ -90,7 +92,6 @@ private:
         }
     }
 
-
     void populateMenu(Menu& menu) {
         // Loop through the cached items and populate the Menu structure
         for (const auto& cachedItem : allCachedItems) {
@@ -118,6 +119,40 @@ private:
         }
     }
 
+    std::vector<SettingsMenuItem> loadMenuFromJSON(const std::string& jsonPath) {
+        // Create a root
+        pt::ptree root;
+
+        // Load the JSON file into the property tree
+        try {
+            pt::read_json(jsonPath, root);
+        } catch (const pt::json_parser::json_parser_error& e) {
+            std::cerr << "Failed to parse " << jsonPath << ": " << e.what() << std::endl;
+            return {}; // Return empty vector on error
+        }
+
+        std::vector<SettingsMenuItem> menuItems;
+
+        // Iterate over the menu items
+        for (const auto& jsonItem : root.get_child("SystemMenu")) {
+            std::string id = jsonItem.second.get<std::string>("id");
+            std::string type = jsonItem.second.get<std::string>("type");
+            std::string title = jsonItem.second.get<std::string>("title");
+            std::vector<std::string> options;
+
+            // Check if the "options" field exists
+            if (jsonItem.second.count("options")) {
+                pt::ptree const& children = jsonItem.second.get_child("options");
+                for (const auto& child : children) {
+                    options.push_back(child.second.data());
+                }
+            }
+
+            menuItems.emplace_back(id, type, title, options);
+        }
+
+        return menuItems;
+    }
 
 public:
     Application();
