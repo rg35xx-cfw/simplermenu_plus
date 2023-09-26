@@ -88,6 +88,7 @@ void RenderComponent::drawSection(const std::string& name, int numSystems) {
         SDL_Surface* sectionNameSurface = TTF_RenderText_Blended(titleFont, sectionName.c_str(), {255,255,255});
         TTF_CloseFont(titleFont);   
 
+        // Add section title with translucent background
         SDL_Rect dstRect;
         dstRect.x = (screen->w - sectionNameSurface->w) / 2;
         dstRect.y = (screen->h - sectionNameSurface->h) / 2;
@@ -95,25 +96,32 @@ void RenderComponent::drawSection(const std::string& name, int numSystems) {
         dstRect.h = sectionNameSurface->h;
 
         // Create a semi-transparent surface for the background
-        SDL_Surface* transparentBg = SDL_CreateRGBSurface(0, screenWidth, dstRect.h, 32, 0, 0, 0, 0);
+        SDL_Surface* rawTransparentBg = SDL_CreateRGBSurface(0, screenWidth, dstRect.h, 32, 0, 0, 0, 0);
 
         // Enable blending for the surface
-        SDL_SetAlpha(transparentBg, SDL_SRCALPHA, 127);
+        SDL_SetAlpha(rawTransparentBg, SDL_SRCALPHA, 127);
 
-        SDL_FillRect(transparentBg, NULL, SDL_MapRGBA(transparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
+        SDL_FillRect(rawTransparentBg, NULL, SDL_MapRGBA(rawTransparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
+
+        SDL_Surface* transparentBg = SDL_DisplayFormatAlpha(rawTransparentBg);
 
         SDL_Rect fadeRect = {0, screenHeight / 2 - sectionNameSurface->h / 2,
-                                screenWidth,
-                                screenHeight / 2 + sectionNameSurface->h / 2};
+                            screenWidth,
+                            screenHeight / 2 + sectionNameSurface->h / 2};
 
         // Render the semi-transparent background
         SDL_BlitSurface(transparentBg, NULL, screen, &fadeRect);
 
-        // Render the text on top of the semi-transparent background
-        SDL_BlitSurface(sectionNameSurface, NULL, screen, &dstRect);
+        SDL_Surface* convertedFolderNameSurface = SDL_DisplayFormatAlpha(sectionNameSurface);
 
+        // Render the text on top of the semi-transparent background
+        SDL_BlitSurface(convertedFolderNameSurface, NULL, screen, &dstRect);
+
+        // Free surfaces
         SDL_FreeSurface(sectionNameSurface);
-        SDL_FreeSurface(transparentBg); // Don't forget to free the surface when done
+        SDL_FreeSurface(rawTransparentBg);
+        SDL_FreeSurface(transparentBg);
+        SDL_FreeSurface(convertedFolderNameSurface);
     }
 
     // Decide on the x, y positions, colors, and other styling details
@@ -268,6 +276,7 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
 }
 
 void RenderComponent::loadThumbnail(const std::string& romPath) {
+    //std::cout << "loadThumbnail called for " << romPath << std::endl;
 
     std::filesystem::path path(romPath);
     std::string romNameWithoutExtension = path.stem().string();
@@ -277,43 +286,52 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
     // If thumbnail is already in cache, set it and return
     if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
         thumbnail = thumbnailCache[thumbnailPath];
+        //std::cout << "loadThumbnail found in cache, returning" << std::endl;
         return;
     }
 
-    // If thumbnail exists, proceed with loading and caching
-    if (std::filesystem::exists(thumbnailPath)) { 
-        tmpThumbnail = IMG_Load(thumbnailPath.c_str());
-
-        int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
-        int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
-
-        // Check if the thumbnail needs to be resized
-        if (tmpThumbnail->w != thumbnailWidth || tmpThumbnail->h != thumbnailHeight) {
-            double scaleX = (double)thumbnailWidth / tmpThumbnail->w;
-            double scaleY = (double)thumbnailHeight / tmpThumbnail->h;
-            double scale = std::min(scaleX, scaleY);
-
-            SDL_Surface* resizedThumbnail = zoomSurface(tmpThumbnail, scale, scale, SMOOTHING_ON);
-            
-            // Free the original loaded thumbnail as it's no longer needed
-            if (tmpThumbnail) {
-                SDL_FreeSurface(tmpThumbnail);
-                tmpThumbnail = nullptr;
-            }
-
-            tmpThumbnail = resizedThumbnail;
-        }
-
-        // Before caching the new thumbnail, free any existing surface associated with that thumbnailPath
-        if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end() && thumbnailCache[thumbnailPath]) {
-            SDL_FreeSurface(thumbnailCache[thumbnailPath]);
-            thumbnailCache[thumbnailPath] = nullptr;
-        }
-
-        // Cache and set the thumbnail
-        thumbnailCache[thumbnailPath] = tmpThumbnail;
-        thumbnail = tmpThumbnail;
+    // If the thumbnail doesn't exist, simply return
+    if (!std::filesystem::exists(thumbnailPath)) {
+        return;
     }
+
+    tmpThumbnail = IMG_Load(thumbnailPath.c_str());
+
+    int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
+    int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
+
+    // Check if the thumbnail needs to be resized
+    if (tmpThumbnail->w != thumbnailWidth || tmpThumbnail->h != thumbnailHeight) {
+        double scaleX = (double)thumbnailWidth / tmpThumbnail->w;
+        double scaleY = (double)thumbnailHeight / tmpThumbnail->h;
+        double scale = std::min(scaleX, scaleY);
+
+        SDL_Surface* resizedThumbnail = zoomSurface(tmpThumbnail, scale, scale, SMOOTHING_ON);
+
+        if (tmpThumbnail) {
+            SDL_FreeSurface(tmpThumbnail);
+        }
+
+        SDL_Surface* loadedSurface = resizedThumbnail;
+        if (loadedSurface) {
+            tmpThumbnail = SDL_DisplayFormat(loadedSurface);
+            SDL_FreeSurface(loadedSurface);
+        } else {
+            std::cerr << "Failed to load thumbnail: " << IMG_GetError() << std::endl;
+        }
+
+        // // Free the original loaded thumbnail as it's no longer needed
+        // SDL_FreeSurface(tmpThumbnail);
+        // tmpThumbnail = resizedThumbnail;
+    }
+
+    if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
+        thumbnailCache.erase(thumbnailPath);
+    }
+
+    // Cache and set the thumbnail
+    thumbnailCache[thumbnailPath] = tmpThumbnail;
+    thumbnail = tmpThumbnail;
 }
 
 void RenderComponent::printFPS(int fps) {
