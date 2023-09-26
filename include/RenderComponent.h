@@ -120,7 +120,6 @@ private:
         if(loadedSurface) {
             background = SDL_DisplayFormat(loadedSurface);
             SDL_FreeSurface(loadedSurface);
-            SDL_BlitSurface(background, NULL, screen, NULL);
         } else {
             std::cerr << "Failed to load background: " << IMG_GetError() << std::endl;
         }
@@ -130,8 +129,6 @@ private:
 
         currentBackground = background;
     }
-
-
 
     void clearScreen() {
         SDL_FillRect(screen, nullptr, SDL_MapRGB(screen->format, 0, 0, 0));  // Filling with black
@@ -162,8 +159,11 @@ public:
             cfg.getInt("MENU.screenWidth"),
             cfg.getInt("MENU.screenHeight"),
             cfg.getInt("MENU.screenDepth"),
+#ifndef TRIPLE_BUFFER
             SDL_HWSURFACE | SDL_DOUBLEBUF);
-
+#else
+            SDL_HWSURFACE | SDL_TRIPLEBUF);
+#endif
         if (!screen) {
             std::cerr << "Unable to set video mode: " << SDL_GetError() << std::endl;
             SDL_Quit();
@@ -184,7 +184,8 @@ public:
 
         // Enable keyboard repeat (only for keys, not for buttons)
         SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-            
+
+        SDL_ShowCursor(SDL_DISABLE);
     }
 
     void drawSection(const std::string& name, int numSystems);

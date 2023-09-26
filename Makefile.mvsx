@@ -13,7 +13,7 @@ CFLAGS = -fdata-sections -ffunction-sections -fPIC -flto -Wall
 LIBS += -lSDL -lSDL_image -lSDL_ttf -lSDL_gfx -lz -lpthread -lm # -lasound
 
 # You can use Ofast too but it can be more prone to bugs, careful.
-CFLAGS += -O3 -Iinclude/
+CFLAGS += -O3 -Iinclude/ -DTRIPLE_BUFFER=1
 LDFLAGS = -Wl,--start-group $(LIBS) -Wl,--end-group -Wl,--as-needed -Wl,--gc-sections -flto
 
 DEBUG = YES

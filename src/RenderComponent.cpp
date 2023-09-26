@@ -65,7 +65,6 @@ void RenderComponent::drawSection(const std::string& name, int numSystems) {
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-
     if (theme.getValue("GENERAL.display_section_group_name") == "1") {
         SDL_Color white = {255, 255, 255};
 
