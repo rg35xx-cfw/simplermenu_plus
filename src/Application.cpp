@@ -77,7 +77,7 @@ void Application::drawCurrentState() {
         case SYSTEM_SETTINGS:
         {
             std::vector<SettingsMenuItem> settings = loadMenuFromJSON("/userdata/system/simplermenu_plus/systemMenu.json");
-            renderComponent.drawSystemSettings(menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle(), settings, currentRomIndex);
+            renderComponent.drawSystemSettings(menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle(), settings, currentSettingsIndex);
             break;
         }
     }
@@ -141,17 +141,11 @@ void Application::handleCommand(ControlMap cmd) {
                 currentMenuLevel = MENU_FOLDER;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
-                if (currentRomIndex > 0) currentRomIndex--;
-                else currentRomIndex = folder.getRoms().size() - 1;
+                if (currentSettingsIndex > 0) currentSettingsIndex--;
+                else currentSettingsIndex = cfg.getSectionSize("SYSTEM") - 2;
             } else if (cmd == CMD_DOWN) { // DOWN
-                const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
-                currentRomIndex = (currentRomIndex + 1) % folder.getRoms().size();
-            } else if (cmd == CMD_ENTER) { // ENTER
-                std::cout << "execute rom" << std::endl;
-                launchRom();
-                renderComponent.resetValues();
-            }
+                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize("SYSTEM") -1);
+            } 
             break;
         case ROM_SETTINGS:
             if (cmd == CMD_BACK) { // ESC

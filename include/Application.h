@@ -56,6 +56,7 @@ private:
     int currentSectionIndex = 0;
     int currentFolderIndex = 0;
     int currentRomIndex = 0;
+    int currentSettingsIndex = 0;
 
     bool isButtonHeld;
     SDL_Event lastHeldEvent;

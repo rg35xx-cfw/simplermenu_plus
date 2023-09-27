@@ -50,4 +50,8 @@ public:
     std::map<std::string, ConsoleData> parseIniFile(const std::string& iniPath);
 
     void saveConfigIni();
+
+    int getSectionSize(std::string section) {
+        return mainPt.get_child(section).size();
+    }
 };
