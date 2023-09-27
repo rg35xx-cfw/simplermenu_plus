@@ -57,6 +57,11 @@ private:
     int currentFolderIndex = 0;
     int currentRomIndex = 0;
 
+    bool isButtonHeld;
+    SDL_Event lastHeldEvent;
+    unsigned int repeatStartTime;
+    unsigned int repeatInterval;
+
     void setupCache() {
         FileManager fileManager(cfg);
         MenuCache menuCache;

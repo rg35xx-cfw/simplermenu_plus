@@ -201,13 +201,23 @@ void Application::run() {
                 case SDL_KEYDOWN:
                 case SDL_JOYAXISMOTION:
                 case SDL_JOYBUTTONDOWN:
-                case SDL_JOYBUTTONUP:
                 case SDL_JOYHATMOTION:
+                    isButtonHeld = true;
+                    lastHeldEvent = event;
+                    repeatStartTime = SDL_GetTicks() + 500;
+                    repeatInterval = 100;
                     handleCommand(controlMapping.convertCommand(event));
                     break;
+                case SDL_JOYBUTTONUP:
                 case SDL_KEYUP:
+                    isButtonHeld = false;
                     break;
             }
+        }
+
+        if (isButtonHeld && SDL_GetTicks() > repeatStartTime) {
+            handleCommand(controlMapping.convertCommand(lastHeldEvent));
+            repeatStartTime = SDL_GetTicks() + repeatInterval;
         }
 
         // Handle FPS information
@@ -247,7 +257,22 @@ void Application::launchRom() {
     std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
     std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
 
-    std::string execLauncher = "test_launcher";
+    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get("MENU.homePath") + ".simplemenu/section_groups/" + sectionName);
+
+    std::string execLauncher;
+
+    // Check if the parentTitle exists in the consoleDataMap
+    if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
+        // Access the ConsoleData for the parentTitle
+        ConsoleData consoleData = consoleDataMap[folderName];
+
+        // Check if the execs vector is not empty
+        if (!consoleData.execs.empty()) {
+            // Retrieve the first exec string
+            execLauncher = consoleData.execs.front();
+        }
+    }
+
     // Launch emulator
     std::string command = execLauncher + " '" + romPath + "'";
     std::cout << "Executing: " << command << std::endl;
@@ -256,7 +281,7 @@ void Application::launchRom() {
 
     pid_t pid = fork();
     if (pid == 0) {
-            execlp("launcher.sh","launcher.sh", execLauncher.c_str(), romPath.c_str());
+            execlp("sh","sh", execLauncher.c_str(), romPath.c_str());
             exit(1);
     } else if (pid > 0) {
             SDL_Quit();
