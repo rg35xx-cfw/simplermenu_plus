@@ -251,7 +251,7 @@ void Application::launchRom() {
     std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
     std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
 
-    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get("MENU.homePath") + ".simplemenu/section_groups/" + sectionName);
+    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get("GLOBAL.homePath") + ".simplemenu/section_groups/" + sectionName);
 
     std::string execLauncher;
 

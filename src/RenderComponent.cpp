@@ -17,10 +17,10 @@ std::unordered_map<std::string, std::string> RenderComponent::aliasMap;
 
 RenderComponent::RenderComponent(Configuration& cfg) 
     : cfg(cfg), 
-      theme(cfg.get("MENU.themeName"), cfg.getInt("MENU.screenWidth"), cfg.getInt("MENU.screenHeight")) {
+      theme(cfg.get("GLOBAL.themeName"), cfg.getInt("GLOBAL.screenWidth"), cfg.getInt("GLOBAL.screenHeight")) {
 
-    screenHeight = cfg.getInt("MENU.screenHeight");
-    screenWidth = cfg.getInt("MENU.screenWidth");
+    screenHeight = cfg.getInt("GLOBAL.screenHeight");
+    screenWidth = cfg.getInt("GLOBAL.screenWidth");
 
     lastSection = "";
     lastFolder = "";
@@ -52,10 +52,10 @@ RenderComponent::~RenderComponent() {
 void RenderComponent::drawSection(const std::string& name, int numSystems) {
 
     std::string backgroundPath = 
-                cfg.get("MENU.themePath") + 
-                std::to_string(cfg.getInt("MENU.screenWidth")) + "x" +
-                std::to_string(cfg.getInt("MENU.screenHeight")) + "/" +
-                cfg.get("MENU.themeName") + "/" +
+                cfg.get("GLOBAL.themePath") + 
+                std::to_string(cfg.getInt("GLOBAL.screenWidth")) + "x" +
+                std::to_string(cfg.getInt("GLOBAL.screenHeight")) + "/" +
+                cfg.get("GLOBAL.themeName") + "/" +
                 theme.getValue("GENERAL.section_groups_folder") +
                 helper.getFilenameWithoutExtension(name) + ".png";
 
@@ -139,7 +139,7 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
     	SDL_BlitSurface(background, NULL, screen, NULL);
     } else {
         clearScreen();
-        renderText(name, cfg.getInt("MENU.screenWidth") / 2 , cfg.getInt("MENU.screenHeight") / 2 , {255, 255, 255}, 1); 
+        renderText(name, cfg.getInt("GLOBAL.screenWidth") / 2 , cfg.getInt("GLOBAL.screenHeight") / 2 , {255, 255, 255}, 1); 
     }
 
     // As before, determine x, y positions and styles
@@ -157,10 +157,10 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
 
 void RenderComponent::drawRomList(const std::string& folderName, const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
 
-    std::string backgroundPath = cfg.get("MENU.themePath") + 
+    std::string backgroundPath = cfg.get("GLOBAL.themePath") + 
                                  std::to_string(screenWidth) + "x" +
                                  std::to_string(screenHeight) + "/" +
-                                 cfg.get("MENU.themeName") + "/" +
+                                 cfg.get("GLOBAL.themeName") + "/" +
                                  theme.getValue("DEFAULT.background");
 
 	if (background == nullptr || lastRom == -1) {
@@ -276,9 +276,9 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
 
 void RenderComponent::drawSystemSettings(const std::string& folderName, const std::vector<SettingsMenuItem>& settingsData, int currentSettingIndex) {
 
-    std::string backgroundPath = cfg.get("MENU.homePath") + ".simplemenu/resources/settings.png";
+    std::string backgroundPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/settings.png";
 
-    std::string settingsFontPath = cfg.get("MENU.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    std::string settingsFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
     int settingsFontSize = 32;
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
@@ -424,7 +424,7 @@ void RenderComponent::printFPS(int fps) {
 }
 
 void RenderComponent::loadAliases() {
-    std::ifstream infile(cfg.get("MENU.aliasPath"));
+    std::ifstream infile(cfg.get("GLOBAL.aliasPath"));
     std::string line;
     while (std::getline(infile, line)) {
         size_t pos = line.find('=');

@@ -156,9 +156,9 @@ public:
         }
 
         screen = SDL_SetVideoMode(
-            cfg.getInt("MENU.screenWidth"),
-            cfg.getInt("MENU.screenHeight"),
-            cfg.getInt("MENU.screenDepth"),
+            cfg.getInt("GLOBAL.screenWidth"),
+            cfg.getInt("GLOBAL.screenHeight"),
+            cfg.getInt("GLOBAL.screenDepth"),
 #ifndef TRIPLE_BUFFER
             SDL_HWSURFACE | SDL_DOUBLEBUF);
 #else

@@ -26,7 +26,7 @@ std::vector<std::string> FileManager::getFolders(const std::string& path) {
 std::vector<std::string> FileManager::getFiles(const std::string& folder) {
     std::vector<std::string> files;
     std::set<std::string> excludedExtensions = 
-        cfg.getList("MENU.excludedExtensions");
+        cfg.getList("GLOBAL.excludedExtensions");
 
     try {
         for (const auto& entry : std::filesystem::directory_iterator(folder)) {

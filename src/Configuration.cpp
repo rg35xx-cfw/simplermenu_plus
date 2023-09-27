@@ -67,12 +67,12 @@ std::string Configuration::getThemePath() const {
 
     // TODO Do we really need to convert to int and then again to string?
     std::string themePath = 
-        get("MENU.themePath") 
-        + std::to_string(getInt("MENU.screenWidth")) 
+        get("GLOBAL.themePath") 
+        + std::to_string(getInt("GLOBAL.screenWidth")) 
         + "x" 
-        + std::to_string(getInt("MENU.screenHeight")) 
+        + std::to_string(getInt("GLOBAL.screenHeight")) 
         + "/" 
-        + get("MENU.themeName") 
+        + get("GLOBAL.themeName") 
         + "/";
 
     return themePath;
