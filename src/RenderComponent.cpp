@@ -274,12 +274,11 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     renderText(folderName, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment")); 
 }
 
-void RenderComponent::drawSystemSettings(const std::string& folderName, const std::vector<SettingsMenuItem>& settingsData, int currentSettingIndex) {
+void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 
     std::string backgroundPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/settings.png";
-
     std::string settingsFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
-    int settingsFontSize = 32;
+    int settingsFontSize = 32;//FIXME: size needs to be dynamic
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
 
@@ -288,25 +287,35 @@ void RenderComponent::drawSystemSettings(const std::string& folderName, const st
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
+    std::string titleFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/akashi.ttf";
+    int titleFontSize = 64;//FIXME: size needs to be dynamic
+
+    TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
+
+    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, "SETTINGS", {255,255,255});
+    SDL_Rect titlePos = {screenWidth / 2 - titleSurface->w /2 , 5, 0,0};
+    SDL_BlitSurface(titleSurface, nullptr, screen, &titlePos);
+
     // Set rom list starting position and item separation
+    // FIXME: these values need to be dynamic depending on the resolution
     int startX = 10;
     int startY = 92;
     int stepY = 46;
     int itemsPerPage = 8;
 
     // Calculate number of pages FIXME: move that to the constructor
-    int total_pages = (settingsData.size() + itemsPerPage - 1)/ itemsPerPage;
+    int total_pages = (cfg.getSectionSize("SYSTEM") + itemsPerPage - 1)/ itemsPerPage;
 
     int currentPage = currentSettingIndex / itemsPerPage;
     int startIndex = currentPage * itemsPerPage;
-    int endIndex = std::min<int>(startIndex + itemsPerPage, settingsData.size());
+    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize("SYSTEM") );//settingsData.size());
 
     // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
     for (int i = startIndex; i < endIndex; i++) {
         SDL_Color color = (i == currentSettingIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
 
         // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, settingsData[i].title.c_str(), color);
+        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex("SYSTEM", i).c_str(), color);
         int titleWidth = textSurface->w;
 
         int clipWidth = (int)screenWidth*0.8;
@@ -327,16 +336,91 @@ void RenderComponent::drawSystemSettings(const std::string& folderName, const st
         renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
 
        // Render the value to the right of the title
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.get(settingsData[i].id).c_str(), color);
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex("SYSTEM", i).c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};
         SDL_BlitSurface(valueSurface, nullptr, screen, &valueDestRect);
         SDL_FreeSurface(valueSurface);
 
+        startY += stepY;
+    }
+    TTF_CloseFont(titleFont);
+    TTF_CloseFont(setttingsFont);
+}
+
+void RenderComponent::drawRomSettings(int currentSettingIndex) {
+    std::string backgroundPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/settings.png";
+    std::string settingsFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    int settingsFontSize = 32; //FIXME: size needs to be dynamic
+
+    TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
+
+	if (background == nullptr || lastRom == -1) {
+        setBackground(backgroundPath);
+    }
+    SDL_BlitSurface(background, NULL, screen, NULL);
+
+    std::string titleFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/akashi.ttf";
+    int titleFontSize = 64; //FIXME: size needs to be dynamic
+
+    TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
+
+    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, "ROM SETTINGS", {255,255,255});
+    SDL_Rect titlePos = {screenWidth / 2 - titleSurface->w /2 , 5, 0,0};
+    SDL_BlitSurface(titleSurface, nullptr, screen, &titlePos);
+
+
+    // Set rom list starting position and item separation
+    // FIXME: these values need to be dynamic depending on the resolution
+    int startX = 10;
+    int startY = 92;
+    int stepY = 46;
+    int itemsPerPage = 8;
+
+    // Calculate number of pages FIXME: move that to the constructor
+    int total_pages = (cfg.getSectionSize("GAME") + itemsPerPage - 1)/ itemsPerPage;
+
+    int currentPage = currentSettingIndex / itemsPerPage;
+    int startIndex = currentPage * itemsPerPage;
+    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize("GAME") );//settingsData.size());
+
+    // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
+    for (int i = startIndex; i < endIndex; i++) {
+        SDL_Color color = (i == currentSettingIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+
+        // Determine text width
+        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex("GAME", i).c_str(), color);
+        int titleWidth = textSurface->w;
+
+        int clipWidth = (int)screenWidth*0.8;
+
+        SDL_Rect clipRect = {startX, startY, clipWidth, static_cast<Uint16>(textSurface->h)}; // Ensure text doesn't spill over the intended area
+
+        SDL_SetClipRect(screen, &clipRect);
+        SDL_BlitSurface(textSurface, nullptr, screen, &clipRect);
+
+        SDL_SetClipRect(screen, NULL);  // Reset the clip rect
+        SDL_FreeSurface(textSurface);
+
+        // Display pagination page number / total_pages at the bottom
+        std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
+        int x = theme.getIntValue("GENERAL.text2_x");
+        int y = theme.getIntValue("GENERAL.text2_y");
+
+        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
+
+       // Render the value to the right of the title
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex("GAME", i).c_str(), color);
+
+        // Position the value surface to the right of the title
+        SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};
+        SDL_BlitSurface(valueSurface, nullptr, screen, &valueDestRect);
+        SDL_FreeSurface(valueSurface);
 
         startY += stepY;
     }
+    TTF_CloseFont(titleFont);
     TTF_CloseFont(setttingsFont);
 }
 

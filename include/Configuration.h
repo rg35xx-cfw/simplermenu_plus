@@ -54,4 +54,33 @@ public:
     int getSectionSize(std::string section) {
         return mainPt.get_child(section).size();
     }
+
+    boost::property_tree::ptree getSection(const std::string& section) {
+        return mainPt.get_child(section);
+    }
+
+    std::string getKeyByIndex(const std::string& sectionName, std::size_t index) {
+        auto section = mainPt.get_child(sectionName);
+        std::size_t currentIndex = 0;
+        for (const auto& kv : section) {
+            if (currentIndex == index) {
+                return kv.first;
+            }
+            ++currentIndex;
+        }
+        throw std::out_of_range("Index out of range");
+    }
+
+    std::string getValueByIndex(const std::string& sectionName, std::size_t index) {
+        auto section = mainPt.get_child(sectionName);
+        std::size_t currentIndex = 0;
+        for (const auto& kv : section) {
+            if (currentIndex == index) {
+                return kv.second.get_value<std::string>();
+            }
+            ++currentIndex;
+        }
+        throw std::out_of_range("Index out of range");
+    }
+
 };
