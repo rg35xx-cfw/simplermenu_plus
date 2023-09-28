@@ -146,9 +146,9 @@ void Application::handleCommand(ControlMap cmd) {
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentSettingsIndex > 0) currentSettingsIndex--;
-                else currentSettingsIndex = cfg.getSectionSize("SYSTEM") - 2;
+                else currentSettingsIndex = cfg.getSectionSize("SYSTEM") - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize("SYSTEM") -1);
+                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize("SYSTEM"));
             } 
             break;
         case ROM_SETTINGS:
@@ -157,9 +157,9 @@ void Application::handleCommand(ControlMap cmd) {
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentRomSettingsIndex > 0) currentRomSettingsIndex--;
-                else currentRomSettingsIndex = cfg.getSectionSize("GAME") - 2;
+                else currentRomSettingsIndex = cfg.getSectionSize("GAME") - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentRomSettingsIndex = (currentRomSettingsIndex + 1) % (cfg.getSectionSize("GAME") -1);
+                currentRomSettingsIndex = (currentRomSettingsIndex + 1) % (cfg.getSectionSize("GAME"));
             } 
             break;
     }
