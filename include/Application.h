@@ -38,6 +38,7 @@ private:
     SDL_Joystick *joystick = nullptr;
 
     Configuration cfg;
+    Settings settings;
 
     ControlMapping controlMapping;
     RenderComponent renderComponent;

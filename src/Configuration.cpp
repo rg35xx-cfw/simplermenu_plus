@@ -9,8 +9,9 @@
 // CONFIG.INI
 ////////
 
-const std::string Configuration::GAME = std::string("GAME");
+const std::string Configuration::GLOBAL = std::string("GLOBAL");
 const std::string Configuration::SYSTEM = std::string("SYSTEM");
+const std::string Configuration::GAME = std::string("GAME");
 
 // CONFIG . GLOBAL section
 const std::string Configuration::ALIAS_PATH = std::string("GLOBAL.aliasPath");
@@ -23,7 +24,15 @@ const std::string Configuration::SCREEN_DEPTH = std::string("GLOBAL.screenDepth"
 
 
 // CONFIG . SYSTEM section
+const std::string Configuration::VOLUME = std::string("SYSTEM.volume");
+const std::string Configuration::BRIGHTNESS = std::string("SYSTEM.brightness");
 const std::string Configuration::SCREEN_REFRESH = std::string("SYSTEM.screenRefresh");
+const std::string Configuration::SHOW_FPS = std::string("SYSTEM.showFPS");
+const std::string Configuration::OVERCLOCK = std::string("SYSTEM.overclock");
+const std::string Configuration::THEME = std::string("SYSTEM.theme");
+const std::string Configuration::USB_MODE = std::string("SYSTEM.usbMode");
+const std::string Configuration::WIFI = std::string("SYSTEM.wifi");
+const std::string Configuration::ROTATION = std::string("SYSTEM.rotation");
 
 /////////
 // THEME.INI

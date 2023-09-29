@@ -21,7 +21,8 @@
 Application::Application() 
     : cfg("/userdata/system/simplermenu_plus/config.ini"),
       controlMapping(cfg),
-      renderComponent(cfg) {
+      renderComponent(cfg),
+      settings(cfg) {
 
     setupCache();
     populateMenu(menu);
@@ -173,49 +174,22 @@ void Application::handleCommand(ControlMap cmd) {
     }
 
     if(currentMenuLevel == SYSTEM_SETTINGS) {
-        std::string currentKey = cfg.getKeyByIndex(Configuration::SYSTEM, currentSettingsIndex);
-        std::string currentValue = cfg.get(Configuration::SYSTEM + "." + currentKey);
-
-        if (cmd == CMD_LEFT || cmd == CMD_RIGHT) {
-            // Handle integer values
-            if (isInteger(currentValue)) { 
-                int intValue = std::stoi(currentValue);
-                if (cmd == CMD_LEFT) {
-                    intValue-=5; // Decrease value
-                } else {
-                    intValue+=5; // Increase value
-                }
-                currentValue = std::to_string(intValue);
-            }
-
-            // Handle list values
-            std::set<std::string> values = cfg.getList(Configuration::SYSTEM + "." + currentKey);
-            if (currentValue.find(",") != std::string::npos) {
-                auto it = values.find(currentValue);
-                if (cmd == CMD_LEFT) {
-                    if (it == values.begin()) {
-                        it = std::prev(values.end());
-                    } else {
-                        it = std::prev(it);
-                    }
-                } else if (cmd == CMD_RIGHT) {
-                    it = std::next(it);
-                    if (it == values.end()) {
-                        it = values.begin();
-                    }
-                }
-                currentValue = *it;
-            }
-
-            // Handle boolean values
-            if (currentValue == "true" || currentValue == "false") {
-                bool boolValue = (currentValue == "true");
-                currentValue  = boolValue ? "false" : "true";
-            }
-            
-            // Notify observers of the change
-            notifySettingsChange(Configuration::SYSTEM + "." + currentKey, currentValue);
+        if (cmd == CMD_UP) {
+            settings.navigateUp();
+        } else if (cmd == CMD_DOWN) {
+            settings.navigateDown();
+        } else if (cmd == CMD_LEFT) {
+            settings.navigateLeft();
+        } else if (cmd == CMD_RIGHT) {
+            settings.navigateRight();
+        } else if (cmd == CMD_ENTER) {
+            settings.navigateEnter();
         }
+
+        std::string currentKey = settings.getCurrentKey();
+        std::string currentValue = settings.getCurrentValue();
+
+        notifySettingsChange(currentKey, currentValue);
     }
 }
 

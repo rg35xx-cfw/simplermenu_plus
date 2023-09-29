@@ -42,8 +42,9 @@ public:
     // CONFIG.INI
     ////////
 
-    static const std::string GAME;
+    static const std::string GLOBAL;
     static const std::string SYSTEM;
+    static const std::string GAME;
 
     // CONFIG . GLOBAL section
     static const std::string ALIAS_PATH;
@@ -55,7 +56,15 @@ public:
     static const std::string SCREEN_DEPTH;
 
     // CONFIG . SYSTEM section
+    static const std::string VOLUME;
+    static const std::string BRIGHTNESS;
     static const std::string SCREEN_REFRESH;
+    static const std::string SHOW_FPS;
+    static const std::string OVERCLOCK;
+    static const std::string THEME;
+    static const std::string USB_MODE;
+    static const std::string WIFI;
+    static const std::string ROTATION;
 
     /////////
     // THEME.INI
@@ -67,9 +76,6 @@ public:
     static const std::string THEME_BACKGROUND;
 
     // THEME . GENERAL section
-    
-    
-
     static const std::string ART_X;
     static const std::string ART_Y;
     static const std::string ART_MAX_W;
