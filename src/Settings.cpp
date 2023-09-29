@@ -7,7 +7,8 @@ Settings::Settings(Configuration& cfg) : cfg(cfg) {
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
-        Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION
+        Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
+        Configuration::SAVE_SETTINGS, Configuration::RESTART, Configuration::QUIT
     };
 
     initializeSettings();
@@ -63,7 +64,7 @@ void Settings::navigateLeft() {
 
 void Settings::navigateRight() {
     std::cout << "navigate Right" << std::endl;
-        if (settingsMap[currentKey].enabled) {
+    if (settingsMap[currentKey].enabled) {
         if (currentKey == Configuration::BRIGHTNESS) {
             updateBrightness(false); // true for left direction
         } else if (currentKey == Configuration::VOLUME) {
@@ -82,6 +83,15 @@ void Settings::navigateRight() {
 
 void Settings::navigateEnter() {
     std::cout << "navigate Enter" << std::endl;
+    if (settingsMap[currentKey].enabled) {
+        if (currentKey == Configuration::SAVE_SETTINGS) {
+            saveSettings();
+        } else if (currentKey == Configuration::RESTART) {
+            restartApplication();
+        } else if (currentKey == Configuration::QUIT) {
+            quitApplication();
+        }
+    }
 
 }
 
@@ -184,5 +194,17 @@ void Settings::updateShowFPS() {
     updateBoolSetting();
 
     std::cout << "UPDATING FPS SHOW" << std::endl;
+}
+
+void Settings::saveSettings() {
+    std::cout << "SAVING SETTINGS..." << std::endl;
+}
+
+void Settings::restartApplication() {
+    std::cout << "RESTART..." << std::endl;
+}
+
+void Settings::quitApplication() {
+    std::cout << "QUIT..." << std::endl;
 }
 

@@ -65,6 +65,9 @@ public:
     void updateTheme(bool increase);
     void updateOverclock(bool increase);
     void updateShowFPS();
+    void saveSettings();
+    void restartApplication();
+    void quitApplication();
 
     std::string getCurrentKey() {
         return currentKey;
