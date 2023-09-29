@@ -46,7 +46,26 @@ void Settings::navigateLeft() {
     std::cout << "navigate Left" << std::endl;
     if (settingsMap[currentKey].enabled) {
         if (currentKey == Configuration::BRIGHTNESS) {
-            updateBrightness(true); // true for left direction
+            updateBrightness(false); // false for left/decrease direction
+        } else if (currentKey == Configuration::VOLUME) {
+            updateVolume(false);
+        } else if (currentKey == Configuration::SCREEN_REFRESH) {
+            updateScreenRefresh(false);
+        } else if (currentKey == Configuration::THEME) {
+            updateTheme(false);
+        } else if (currentKey == Configuration::OVERCLOCK) {
+            updateOverclock(false);
+        } else if (currentKey == Configuration::SHOW_FPS) {
+            updateShowFPS();
+        }   
+    }
+}
+
+void Settings::navigateRight() {
+    std::cout << "navigate Right" << std::endl;
+    if (settingsMap[currentKey].enabled) {
+        if (currentKey == Configuration::BRIGHTNESS) {
+            updateBrightness(true); // true for right/increase direction
         } else if (currentKey == Configuration::VOLUME) {
             updateVolume(true);
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
@@ -60,25 +79,6 @@ void Settings::navigateLeft() {
         }    
     }
 
-}
-
-void Settings::navigateRight() {
-    std::cout << "navigate Right" << std::endl;
-    if (settingsMap[currentKey].enabled) {
-        if (currentKey == Configuration::BRIGHTNESS) {
-            updateBrightness(false); // true for left direction
-        } else if (currentKey == Configuration::VOLUME) {
-            updateVolume(false);
-        } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            updateScreenRefresh(false);
-        } else if (currentKey == Configuration::THEME) {
-            updateTheme(false);
-        } else if (currentKey == Configuration::OVERCLOCK) {
-            updateOverclock(false);
-        } else if (currentKey == Configuration::SHOW_FPS) {
-            updateShowFPS();
-        }   
-    }
 }
 
 void Settings::navigateEnter() {
@@ -117,45 +117,45 @@ std::vector<std::string> Settings::getEnabledKeys() {
     return enabledKeys;
 }
 
-void Settings::updateBrightness(bool isLeft) {
+void Settings::updateBrightness(bool increase) {
     int currentValue = std::stoi(settingsMap[Configuration::BRIGHTNESS].value);
-    if (isLeft) {
-        currentValue -= 10; // decrease brightness by 10 units
+    if (increase) {
+        currentValue += 10; // decrease brightness by 10 units
     } else {
-        currentValue += 10; // increase brightness by 10 units
+        currentValue -= 10; // increase brightness by 10 units
     }
     settingsMap[Configuration::BRIGHTNESS].value = std::to_string(currentValue);
     std::cout << "brightness: " << settingsMap[Configuration::BRIGHTNESS].value << std::endl;
     // FIXME: add boundaries (e.g. min: 0, max: 100)
 }
 
-void Settings::updateVolume(bool isLeft) {
+void Settings::updateVolume(bool increase) {
     int currentValue = std::stoi(settingsMap[Configuration::VOLUME].value);
-    if (isLeft) {
-        currentValue -= 5; // decrease volume by 5 units
+    if (increase) {
+        currentValue += 5; // decrease volume by 5 units
     } else {
-        currentValue += 5; // increase volume by 5 units
+        currentValue -= 5; // increase volume by 5 units
     }
     settingsMap[Configuration::VOLUME].value = std::to_string(currentValue);
     // FIXME: add boundaries (e.g. min: 0, max: 100)
 }
 
-void Settings::updateScreenRefresh(bool isLeft) {
+void Settings::updateScreenRefresh(bool increase) {
     int currentValue = std::stoi(settingsMap[Configuration::SCREEN_REFRESH].value);
-    if (isLeft) {
-        currentValue -= 5; // decrease Screen Refresh by 5 units
+    if (increase) {
+        currentValue += 5; // decrease Screen Refresh by 5 units
     } else {
-        currentValue += 5; // increase Screen Refresh by 5 units
+        currentValue -= 5; // increase Screen Refresh by 5 units
     }
     settingsMap[Configuration::SCREEN_REFRESH].value = std::to_string(currentValue);
     // FIXME: add boundaries (e.g. min: 0, max: 100)
 }
 
-void Settings::updateListSetting(bool isLeft) {
+void Settings::updateListSetting(bool increase) {
     std::set<std::string> values = cfg.getList(currentKey);
     auto it = values.find(currentValue);
     
-    if (isLeft) {
+    if (increase) {
     if (it == values.begin()) {
             it = std::prev(values.end());
         } else {
@@ -171,14 +171,14 @@ void Settings::updateListSetting(bool isLeft) {
     settingsMap[currentKey].value = currentValue;
 }
 
-void Settings::updateTheme(bool isLeft) {
-    updateListSetting(isLeft);
+void Settings::updateTheme(bool increase) {
+    updateListSetting(increase);
 
     std::cout << "UPDATING THEME" << std::endl;
 }
 
-void Settings::updateOverclock(bool isLeft) {
-    updateListSetting(isLeft);
+void Settings::updateOverclock(bool increase) {
+    updateListSetting(increase);
 
     std::cout << "UPDATING OVERCLOCK" << std::endl;
 }
@@ -194,6 +194,22 @@ void Settings::updateShowFPS() {
     updateBoolSetting();
 
     std::cout << "UPDATING FPS SHOW" << std::endl;
+}
+
+void Settings::updateUSBMode(bool increase) {
+    updateListSetting(increase);
+
+    std::cout << "UPDATING USB MODE" << std::endl;
+}
+
+void Settings::updateWifi() {
+    updateBoolSetting();
+    std::cout << "UPDATING Wifi" << std::endl;
+}
+
+void Settings::updateRotation() {
+    updateBoolSetting();
+    std::cout << "UPDATING Rotation" << std::endl;
 }
 
 void Settings::saveSettings() {

@@ -68,6 +68,9 @@ public:
     void saveSettings();
     void restartApplication();
     void quitApplication();
+    void updateUSBMode(bool increase);
+    void updateWifi();
+    void updateRotation();
 
     std::string getCurrentKey() {
         return currentKey;
