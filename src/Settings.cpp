@@ -50,7 +50,13 @@ void Settings::navigateLeft() {
             updateVolume(true);
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
             updateScreenRefresh(true);
-        }
+        } else if (currentKey == Configuration::THEME) {
+            updateTheme(true);
+        } else if (currentKey == Configuration::OVERCLOCK) {
+            updateOverclock(true);
+        } else if (currentKey == Configuration::SHOW_FPS) {
+            updateShowFPS();
+        }    
     }
 
 }
@@ -64,7 +70,13 @@ void Settings::navigateRight() {
             updateVolume(false);
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
             updateScreenRefresh(false);
-        }
+        } else if (currentKey == Configuration::THEME) {
+            updateTheme(false);
+        } else if (currentKey == Configuration::OVERCLOCK) {
+            updateOverclock(false);
+        } else if (currentKey == Configuration::SHOW_FPS) {
+            updateShowFPS();
+        }   
     }
 }
 
@@ -91,6 +103,7 @@ std::vector<std::string> Settings::getEnabledKeys() {
             enabledKeys.push_back(key);
         }
     }
+
     return enabledKeys;
 }
 
@@ -126,5 +139,50 @@ void Settings::updateScreenRefresh(bool isLeft) {
     }
     settingsMap[Configuration::SCREEN_REFRESH].value = std::to_string(currentValue);
     // FIXME: add boundaries (e.g. min: 0, max: 100)
-
 }
+
+void Settings::updateListSetting(bool isLeft) {
+    std::set<std::string> values = cfg.getList(currentKey);
+    auto it = values.find(currentValue);
+    
+    if (isLeft) {
+    if (it == values.begin()) {
+            it = std::prev(values.end());
+        } else {
+            --it;
+        }
+    } else {
+        ++it;
+        if (it == values.end()) {
+            it = values.begin();
+        }
+    }
+    currentValue = *it;
+    settingsMap[currentKey].value = currentValue;
+}
+
+void Settings::updateTheme(bool isLeft) {
+    updateListSetting(isLeft);
+
+    std::cout << "UPDATING THEME" << std::endl;
+}
+
+void Settings::updateOverclock(bool isLeft) {
+    updateListSetting(isLeft);
+
+    std::cout << "UPDATING OVERCLOCK" << std::endl;
+}
+
+void Settings::updateBoolSetting() {
+    bool value = settingsMap[currentKey].value == "true"; 
+    value = !value; // Toggle the value
+    currentValue = value ? "true" : "false";
+    settingsMap[currentKey].value = currentValue;
+}
+
+void Settings::updateShowFPS() {
+    updateBoolSetting();
+
+    std::cout << "UPDATING FPS SHOW" << std::endl;
+}
+

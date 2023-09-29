@@ -65,6 +65,9 @@ public:
     static const std::string USB_MODE;
     static const std::string WIFI;
     static const std::string ROTATION;
+    static const std::string SAVE_SETTINGS;
+    static const std::string RESTART;
+    static const std::string QUIT;
 
     /////////
     // THEME.INI

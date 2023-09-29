@@ -56,9 +56,15 @@ public:
     void navigateRight();
     void navigateEnter();
 
+    void updateListSetting(bool increase);
+    void updateBoolSetting();
+
     void updateVolume(bool increase);
     void updateBrightness(bool increase);
     void updateScreenRefresh(bool increase);
+    void updateTheme(bool increase);
+    void updateOverclock(bool increase);
+    void updateShowFPS();
 
     std::string getCurrentKey() {
         return currentKey;

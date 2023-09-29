@@ -492,26 +492,27 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
 
 void RenderComponent::printFPS(int fps) {
     // Display FPS page number / total_pages at the bottom
+    if(cfg.getBool(Configuration::SHOW_FPS)) {
 
+        std::string fpsText = "FPS: " + std::to_string(fps);
 
-    std::string fpsText = "FPS: " + std::to_string(fps);
+        SDL_Surface* rawTextSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
+        if (!rawTextSurface) {
+            return;
+        }
 
-    SDL_Surface* rawTextSurface = TTF_RenderText_Blended(font, fpsText.c_str(), {255,255,0});
-    if (!rawTextSurface) {
-        return;
+        SDL_Surface* textSurface = SDL_DisplayFormatAlpha(rawTextSurface);
+        SDL_FreeSurface(rawTextSurface);
+
+        if(!textSurface) {
+            return;
+        }
+
+        SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
+        SDL_BlitSurface(textSurface, NULL, screen, &destRect);
+
+        SDL_FreeSurface(textSurface);
     }
-
-    SDL_Surface* textSurface = SDL_DisplayFormatAlpha(rawTextSurface);
-    SDL_FreeSurface(rawTextSurface);
-
-    if(!textSurface) {
-        return;
-    }
-
-    SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
-    SDL_BlitSurface(textSurface, NULL, screen, &destRect);
-
-    SDL_FreeSurface(textSurface);
 }
 
 void RenderComponent::loadAliases() {
