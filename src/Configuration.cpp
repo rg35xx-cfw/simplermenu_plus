@@ -14,8 +14,6 @@ Configuration::Configuration(const std::string& configIniFilepath)
 
 void Configuration::set(const std::string& id, const std::string& value) {
     mainPt.put(id, value);
-        
-    notifySettingsChange(id, value);
 }
 
 std::string Configuration::get(const std::string& id) const {

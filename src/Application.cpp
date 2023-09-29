@@ -45,8 +45,8 @@ Application::Application()
         }
     }
 
-    cfg.attach(this);
-
+    attach(this);
+    
 }
 
 void Application::drawCurrentState() {
@@ -152,10 +152,6 @@ void Application::handleCommand(ControlMap cmd) {
                 else currentSettingsIndex = cfg.getSectionSize("SYSTEM") - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
                 currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize("SYSTEM"));
-            } else if (cmd == CMD_LEFT) {
-                currentSettingsValue--;
-            } else if (cmd == CMD_RIGHT) {
-                currentSettingsValue++;
             }
             break;
         case ROM_SETTINGS:
@@ -218,7 +214,7 @@ void Application::handleCommand(ControlMap cmd) {
             }
             
             // Notify observers of the change
-            cfg.notifySettingsChange("SYSTEM." + currentKey, currentValue);
+            notifySettingsChange("SYSTEM." + currentKey, currentValue);
         }
     }
 }

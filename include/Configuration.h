@@ -28,14 +28,13 @@ struct SettingsMenuItem {
         : id(id), type(type), title(title), options(options) {}
 };
 
-class Configuration : public ISettingsSubject {
+// class Configuration : public ISettingsSubject {
+class Configuration {
 private:
 
     std::string configIniFilepath;
 
     boost::property_tree::ptree mainPt;
-
-    std::vector<ISettingsObserver*> observers;
 
 public:
 
@@ -85,28 +84,5 @@ public:
         }
         throw std::out_of_range("Index out of range");
     }
-
-        void attach(ISettingsObserver *observer) override {
-        observers.push_back(observer);
-    }
-
-    void detach(ISettingsObserver *observer) override {
-        observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-    }
-
-    // void notifySettingsChange() override {
-    //     for (ISettingsObserver *observer : observers) {
-    //         // For simplicity, we're notifying all observers about all changes.
-    //         // You can make this more fine-grained by specifying the key and value that changed.
-    //         observer->settingsChanged("", ""); 
-    //     }
-    // }
-
-    void notifySettingsChange(const std::string &key, const std::string &value) override{
-        for (ISettingsObserver *observer : observers) {
-            observer->settingsChanged(key, value); 
-        }
-    }
-
 
 };
