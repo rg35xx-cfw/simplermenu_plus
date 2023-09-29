@@ -177,7 +177,7 @@ void Application::handleCommand(ControlMap cmd) {
         std::string currentValue = cfg.get(Configuration::SYSTEM + "." + currentKey);
 
         if (cmd == CMD_LEFT || cmd == CMD_RIGHT) {
-                        // Handle integer values
+            // Handle integer values
             if (isInteger(currentValue)) { 
                 int intValue = std::stoi(currentValue);
                 if (cmd == CMD_LEFT) {
@@ -185,12 +185,12 @@ void Application::handleCommand(ControlMap cmd) {
                 } else {
                     intValue+=5; // Increase value
                 }
-                cfg.set(Configuration::SYSTEM + "." + currentKey, std::to_string(intValue));
+                currentValue = std::to_string(intValue);
             }
 
             // Handle list values
             std::set<std::string> values = cfg.getList(Configuration::SYSTEM + "." + currentKey);
-            if (!values.empty()) {
+            if (currentValue.find(",") != std::string::npos) {
                 auto it = values.find(currentValue);
                 if (cmd == CMD_LEFT) {
                     if (it == values.begin()) {
@@ -204,13 +204,13 @@ void Application::handleCommand(ControlMap cmd) {
                         it = values.begin();
                     }
                 }
-                cfg.set(Configuration::SYSTEM + "." + currentKey, *it);
+                currentValue = *it;
             }
 
             // Handle boolean values
             if (currentValue == "true" || currentValue == "false") {
                 bool boolValue = (currentValue == "true");
-                cfg.set(Configuration::SYSTEM + "." + currentKey, boolValue ? "false" : "true");
+                currentValue  = boolValue ? "false" : "true";
             }
             
             // Notify observers of the change
