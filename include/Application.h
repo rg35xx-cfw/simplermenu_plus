@@ -148,8 +148,9 @@ public:
 
     void settingsChanged(const std::string &key, const std::string &value) override {
         std::cout << "key: " << key << " value: " << value << std::endl;
-        // Handle the setting change here. 
-        // For example, update the UI or perform some other action based on the changed setting.
+
+        // Update key/value
+        cfg.set(key,value);
     }
 
     bool isInteger(const std::string &s);

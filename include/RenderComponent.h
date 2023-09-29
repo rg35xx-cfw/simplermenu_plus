@@ -15,7 +15,7 @@ class RenderComponent {
 private:
     SDL_Surface* screen;
     TTF_Font* font;
-    Configuration cfg;
+    Configuration& cfg;
     Theme theme;
     HelperUtils helper;
     SDL_Surface* thumbnail = nullptr;
