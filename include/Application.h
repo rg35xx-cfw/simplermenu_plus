@@ -28,7 +28,7 @@ namespace pt = boost::property_tree;
 class Configuration;
 class RenderComponent;
 
-class Application {
+class Application : public ISettingsObserver {
 private:
     Menu menu;
     std::vector<CachedMenuItem> allCachedItems;
@@ -58,6 +58,7 @@ private:
     int currentRomIndex = 0;
     int currentSettingsIndex = 0;
     int currentRomSettingsIndex = 0;
+    int currentSettingsValue = 0;
 
     bool isButtonHeld;
     SDL_Event lastHeldEvent;
@@ -126,43 +127,11 @@ private:
         }
     }
 
-    std::vector<SettingsMenuItem> loadMenuFromJSON(const std::string& jsonPath) {
-        // Create a root
-        pt::ptree root;
-
-        // Load the JSON file into the property tree
-        try {
-            pt::read_json(jsonPath, root);
-        } catch (const pt::json_parser::json_parser_error& e) {
-            std::cerr << "Failed to parse " << jsonPath << ": " << e.what() << std::endl;
-            return {}; // Return empty vector on error
-        }
-
-        std::vector<SettingsMenuItem> menuItems;
-
-        // Iterate over the menu items
-        for (const auto& jsonItem : root.get_child("SystemMenu")) {
-            std::string id = jsonItem.second.get<std::string>("id");
-            std::string type = jsonItem.second.get<std::string>("type");
-            std::string title = jsonItem.second.get<std::string>("title");
-            std::vector<std::string> options;
-
-            // Check if the "options" field exists
-            if (jsonItem.second.count("options")) {
-                pt::ptree const& children = jsonItem.second.get_child("options");
-                for (const auto& child : children) {
-                    options.push_back(child.second.data());
-                }
-            }
-
-            menuItems.emplace_back(id, type, title, options);
-        }
-
-        return menuItems;
-    }
-
 public:
     Application();
+    ~Application() {
+        cfg.detach(this);
+    }
 
     void drawCurrentState();
 
@@ -173,4 +142,12 @@ public:
     void print_list();
 
     void launchRom();
+
+    void settingsChanged(const std::string &key, const std::string &value) override {
+        std::cout << "key: " << key << " value: " << value << std::endl;
+        // Handle the setting change here. 
+        // For example, update the UI or perform some other action based on the changed setting.
+    }
+
+    bool isInteger(const std::string &s);
 };

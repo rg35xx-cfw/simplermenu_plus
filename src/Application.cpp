@@ -44,6 +44,9 @@ Application::Application()
             std::cout << "Number of Buttons: " << SDL_JoystickNumButtons(joystick) << std::endl;
         }
     }
+
+    cfg.attach(this);
+
 }
 
 void Application::drawCurrentState() {
@@ -149,7 +152,11 @@ void Application::handleCommand(ControlMap cmd) {
                 else currentSettingsIndex = cfg.getSectionSize("SYSTEM") - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
                 currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize("SYSTEM"));
-            } 
+            } else if (cmd == CMD_LEFT) {
+                currentSettingsValue--;
+            } else if (cmd == CMD_RIGHT) {
+                currentSettingsValue++;
+            }
             break;
         case ROM_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
@@ -168,6 +175,56 @@ void Application::handleCommand(ControlMap cmd) {
         currentMenuLevel = SYSTEM_SETTINGS;
         renderComponent.resetValues();
     }
+
+    if(currentMenuLevel == SYSTEM_SETTINGS) {
+        std::string currentKey = cfg.getKeyByIndex("SYSTEM", currentSettingsIndex);
+        std::string currentValue = cfg.get("SYSTEM." + currentKey);
+
+        if (cmd == CMD_LEFT || cmd == CMD_RIGHT) {
+                        // Handle integer values
+            if (isInteger(currentValue)) { 
+                int intValue = std::stoi(currentValue);
+                if (cmd == CMD_LEFT) {
+                    intValue-=5; // Decrease value
+                } else {
+                    intValue+=5; // Increase value
+                }
+                cfg.set("SYSTEM." + currentKey, std::to_string(intValue));
+            }
+
+            // Handle list values
+            std::set<std::string> values = cfg.getList("SYSTEM." + currentKey);
+            if (!values.empty()) {
+                auto it = values.find(currentValue);
+                if (cmd == CMD_LEFT) {
+                    if (it == values.begin()) {
+                        it = std::prev(values.end());
+                    } else {
+                        it = std::prev(it);
+                    }
+                } else if (cmd == CMD_RIGHT) {
+                    it = std::next(it);
+                    if (it == values.end()) {
+                        it = values.begin();
+                    }
+                }
+                cfg.set("SYSTEM." + currentKey, *it);
+            }
+
+            // Handle boolean values
+            if (currentValue == "true" || currentValue == "false") {
+                bool boolValue = (currentValue == "true");
+                cfg.set("SYSTEM." + currentKey, boolValue ? "false" : "true");
+            }
+            
+            // Notify observers of the change
+            cfg.notifySettingsChange("SYSTEM." + currentKey, currentValue);
+        }
+    }
+}
+
+bool Application::isInteger(const std::string &s) {
+    return !s.empty() && std::find_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }) == s.end();
 }
 
 void Application::run() {
