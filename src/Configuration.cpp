@@ -5,6 +5,9 @@
 #include <boost/algorithm/string.hpp>
 
 
+const std::string Configuration::SEL_ITEM_FONT_COLOR = std::string("DEFAULT.selected_item_font_color");
+const std::string Configuration::ITEMS_FONT_COLOR = std::string("DEFAULT.items_font_color");
+
 Configuration::Configuration(const std::string& configIniFilepath) 
     : configIniFilepath(configIniFilepath) {
 

@@ -10,6 +10,7 @@
 #include <fstream>
 
 #include "RenderComponent.h"
+#include "Configuration.h"
 
 std::unordered_map<std::string, SDL_Surface*> RenderComponent::thumbnailCache;
 
@@ -185,7 +186,9 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
 
     // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
     for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentRomIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        SDL_Color color = (i == currentRomIndex) ? 
+            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
+            theme.getColor(Configuration::ITEMS_FONT_COLOR);
         std::string alias = getAlias(romData[i].first);
 
         // Determine text width
@@ -312,7 +315,9 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 
     // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
     for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentSettingIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        SDL_Color color = (i == currentSettingIndex) ? 
+            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
+            theme.getColor(Configuration::ITEMS_FONT_COLOR);
 
         // Determine text width
         SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex("SYSTEM", i).c_str(), color);
@@ -387,7 +392,9 @@ void RenderComponent::drawRomSettings(int currentSettingIndex) {
 
     // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
     for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentSettingIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        SDL_Color color = (i == currentSettingIndex) ? 
+            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
+            theme.getColor(Configuration::ITEMS_FONT_COLOR);
 
         // Determine text width
         SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex("GAME", i).c_str(), color);

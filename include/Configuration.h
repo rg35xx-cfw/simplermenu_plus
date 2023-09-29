@@ -38,6 +38,10 @@ private:
 
 public:
 
+    static const std::string SEL_ITEM_FONT_COLOR;
+    static const std::string ITEMS_FONT_COLOR;
+
+
     Configuration(const std::string& configIniFilepath);
 
     void set(const std::string& id, const std::string& value);
