@@ -156,9 +156,9 @@ public:
         }
 
         screen = SDL_SetVideoMode(
-            cfg.getInt("GLOBAL.screenWidth"),
-            cfg.getInt("GLOBAL.screenHeight"),
-            cfg.getInt("GLOBAL.screenDepth"),
+            cfg.getInt(Configuration::SCREEN_WIDTH),
+            cfg.getInt(Configuration::SCREEN_HEIGHT),
+            cfg.getInt(Configuration::SCREEN_DEPTH),
 #ifndef TRIPLE_BUFFER
             SDL_HWSURFACE | SDL_DOUBLEBUF);
 #else
@@ -177,7 +177,7 @@ public:
         }
 
         font = TTF_OpenFont(
-            theme.getValue("GENERAL.font", true).c_str(),
+            theme.getValue(Configuration::THEME_FONT, true).c_str(),
             theme.getIntValue("GENERAL.font_size"));
         TTF_SetFontHinting(font, TTF_HINTING_NORMAL);  // or TTF_HINTING_LIGHT, TTF_HINTING_MONO, TTF_HINTING_NONE
         TTF_SetFontKerning(font, 1); // 1 to enable, 0 to disable

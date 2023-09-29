@@ -10,6 +10,7 @@
 #include <fstream>
 
 #include "RenderComponent.h"
+#include "Configuration.h"
 
 std::unordered_map<std::string, SDL_Surface*> RenderComponent::thumbnailCache;
 
@@ -17,10 +18,10 @@ std::unordered_map<std::string, std::string> RenderComponent::aliasMap;
 
 RenderComponent::RenderComponent(Configuration& cfg) 
     : cfg(cfg), 
-      theme(cfg.get("GLOBAL.themeName"), cfg.getInt("GLOBAL.screenWidth"), cfg.getInt("GLOBAL.screenHeight")) {
+      theme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)) {
 
-    screenHeight = cfg.getInt("GLOBAL.screenHeight");
-    screenWidth = cfg.getInt("GLOBAL.screenWidth");
+    screenHeight = cfg.getInt(Configuration::SCREEN_HEIGHT);
+    screenWidth = cfg.getInt(Configuration::SCREEN_WIDTH);
 
     lastSection = "";
     lastFolder = "";
@@ -52,10 +53,10 @@ RenderComponent::~RenderComponent() {
 void RenderComponent::drawSection(const std::string& name, int numSystems) {
 
     std::string backgroundPath = 
-                cfg.get("GLOBAL.themePath") + 
-                std::to_string(cfg.getInt("GLOBAL.screenWidth")) + "x" +
-                std::to_string(cfg.getInt("GLOBAL.screenHeight")) + "/" +
-                cfg.get("GLOBAL.themeName") + "/" +
+                cfg.get(Configuration::THEME_PATH) + 
+                std::to_string(cfg.getInt(Configuration::SCREEN_WIDTH)) + "x" +
+                std::to_string(cfg.getInt(Configuration::SCREEN_HEIGHT)) + "/" +
+                cfg.get(Configuration::THEME_NAME) + "/" +
                 theme.getValue("GENERAL.section_groups_folder") +
                 helper.getFilenameWithoutExtension(name) + ".png";
 
@@ -78,7 +79,7 @@ void RenderComponent::drawSection(const std::string& name, int numSystems) {
             sectionFontSize = 48;
         }
     
-        TTF_Font* titleFont = TTF_OpenFont(theme.getValue("GENERAL.font", true).c_str(), sectionFontSize);  // Adjust font path and size as necessary
+        TTF_Font* titleFont = TTF_OpenFont(theme.getValue(Configuration::THEME_FONT, true).c_str(), sectionFontSize);  // Adjust font path and size as necessary
         if (!titleFont) {
             // Handle error
             std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
@@ -139,29 +140,29 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
     	SDL_BlitSurface(background, NULL, screen, NULL);
     } else {
         clearScreen();
-        renderText(name, cfg.getInt("GLOBAL.screenWidth") / 2 , cfg.getInt("GLOBAL.screenHeight") / 2 , {255, 255, 255}, 1); 
+        renderText(name, cfg.getInt(Configuration::SCREEN_WIDTH) / 2 , cfg.getInt(Configuration::SCREEN_HEIGHT) / 2 , {255, 255, 255}, 1); 
     }
 
     // As before, determine x, y positions and styles
     //renderText(name, 50, 50, {255, 255, 255}); 
     //renderText(path, 50, 100, {200, 200, 200}); 
 
-    if(theme.getIntValue("GENERAL.display_game_count") == 1 ) {
-        int x = theme.getIntValue("GENERAL.game_count_x");
-        int y = theme.getIntValue("GENERAL.game_count_y");
-        SDL_Color color = theme.getColor("GENERAL.game_count_font_color");
-        renderText(std::to_string(numRoms) + " GAMES", x, y, color, theme.getIntValue("GENERAL.game_count_alignment"));
+    if(theme.getIntValue(Configuration::DISPLAY_GAME_COUNT) == 1 ) {
+        int x = theme.getIntValue(Configuration::GAME_COUNT_X);
+        int y = theme.getIntValue(Configuration::GAME_COUNT_Y);
+        SDL_Color color = theme.getColor(Configuration::GAME_COUNT_FONT_COLOR);
+        renderText(std::to_string(numRoms) + " GAMES", x, y, color, theme.getIntValue(Configuration::GAME_COUNT_ALIGNMENT));
     }
 
 }
 
 void RenderComponent::drawRomList(const std::string& folderName, const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex) {
 
-    std::string backgroundPath = cfg.get("GLOBAL.themePath") + 
+    std::string backgroundPath = cfg.get(Configuration::THEME_PATH) + 
                                  std::to_string(screenWidth) + "x" +
                                  std::to_string(screenHeight) + "/" +
-                                 cfg.get("GLOBAL.themeName") + "/" +
-                                 theme.getValue("DEFAULT.background");
+                                 cfg.get(Configuration::THEME_NAME) + "/" +
+                                 theme.getValue(Configuration::THEME_BACKGROUND);
 
 	if (background == nullptr || lastRom == -1) {
         setBackground(backgroundPath);
@@ -170,11 +171,11 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     SDL_BlitSurface(background, NULL, screen, NULL);
 
     // Set rom list starting position and item separation
-    int startX = theme.getIntValue("GENERAL.game_list_x");
-    int startY = theme.getIntValue("GENERAL.game_list_y");
-    int stepY = theme.getIntValue("GENERAL.items_separation");
+    int startX = theme.getIntValue(Configuration::GAME_LIST_X);
+    int startY = theme.getIntValue(Configuration::GAME_LIST_Y);
+    int stepY = theme.getIntValue(Configuration::ITEMS_SEPARATION);
 
-    int itemsPerPage = theme.getIntValue("GENERAL.items");
+    int itemsPerPage = theme.getIntValue(Configuration::ITEMS);
 
     // Calculate number of pages FIXME: move that to the constructor
     int total_pages = (romData.size() + itemsPerPage - 1)/ itemsPerPage;
@@ -183,9 +184,11 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     int startIndex = currentPage * itemsPerPage;
     int endIndex = std::min<int>(startIndex + itemsPerPage, romData.size());
 
-    // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
+    // for (int i = 0; i < theme.getIntValue(Configuration::ITEMS); i++) {
     for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentRomIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        SDL_Color color = (i == currentRomIndex) ? 
+            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
+            theme.getColor(Configuration::ITEMS_FONT_COLOR);
         std::string alias = getAlias(romData[i].first);
 
         // Determine text width
@@ -227,17 +230,17 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
 
         if (i == currentRomIndex) {
             // Add Rom title 
-            int x = theme.getIntValue("GENERAL.art_x") + theme.getIntValue("GENERAL.art_max_w")/2;
-            int y = theme.getIntValue("GENERAL.art_y") +
-                    theme.getIntValue("GENERAL.art_max_h") +
-                    theme.getIntValue("GENERAL.art_text_distance_from_picture") +
-                    theme.getIntValue("GENERAL.art_text_line_separation");
+            int x = theme.getIntValue(Configuration::ART_X) + theme.getIntValue(Configuration::ART_MAX_W)/2;
+            int y = theme.getIntValue(Configuration::ART_Y) +
+                    theme.getIntValue(Configuration::ART_MAX_H) +
+                    theme.getIntValue(Configuration::ART_TXT_DIST_FROM_PIC) +
+                    theme.getIntValue(Configuration::ART_TXT_DIST_FROM_PIC);
         
             if(alias.find("/") != std::string::npos) {
                 size_t position = alias.find("/");
                 std::string firstLine = alias.substr(0, position - 1);
                 std::string secondLine = alias.substr(position + 2);
-                int separation = theme.getIntValue("GENERAL.art_text_line_separation") / 2;
+                int separation = theme.getIntValue(Configuration::ART_TXT_DIST_FROM_PIC) / 2;
 
                 renderText(firstLine, x, y - separation, {255, 255, 255},1);
                 renderText(secondLine, x, y + separation, {255, 255, 255},1);
@@ -250,10 +253,10 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
 
         // Display pagination page number / total_pages at the bottom
         std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
-        int x = theme.getIntValue("GENERAL.text2_x");
-        int y = theme.getIntValue("GENERAL.text2_y");
+        int x = theme.getIntValue(Configuration::TEXT2_X);
+        int y = theme.getIntValue(Configuration::TEXT2_Y);
 
-        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
+        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT));
 
         startY += stepY;
     }
@@ -263,21 +266,21 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
         loadThumbnail(romData[currentRomIndex].second);
         lastRom = currentRomIndex;
     }
-    Sint16 x = theme.getIntValue("GENERAL.art_x"); 
-    Sint16 y = theme.getIntValue("GENERAL.art_y"); 
-    Uint16 w = theme.getIntValue("GENERAL.art_max_w"); 
-    Uint16 h = theme.getIntValue("GENERAL.art_max_h"); 
+    Sint16 x = theme.getIntValue(Configuration::ART_X); 
+    Sint16 y = theme.getIntValue(Configuration::ART_Y); 
+    Uint16 w = theme.getIntValue(Configuration::ART_MAX_W); 
+    Uint16 h = theme.getIntValue(Configuration::ART_MAX_H); 
     SDL_Rect destRect = {x, y, w, h};
     SDL_BlitSurface(thumbnail, nullptr, screen, &destRect);
 
     // Add Folder Title
-    renderText(folderName, theme.getIntValue("GENERAL.text1_x"), theme.getIntValue("GENERAL.text1_y"), {255, 255, 255}, theme.getIntValue("GENERAL.text1_alignment")); 
+    renderText(folderName, theme.getIntValue(Configuration::TEXT1_X), theme.getIntValue(Configuration::TEXT1_Y), {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT)); 
 }
 
 void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 
-    std::string backgroundPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/settings.png";
-    std::string settingsFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
+    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
     int settingsFontSize = 32;//FIXME: size needs to be dynamic
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
@@ -287,7 +290,7 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-    std::string titleFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/akashi.ttf";
+    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/akashi.ttf";
     int titleFontSize = 64;//FIXME: size needs to be dynamic
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
@@ -304,18 +307,20 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
     int itemsPerPage = 8;
 
     // Calculate number of pages FIXME: move that to the constructor
-    int total_pages = (cfg.getSectionSize("SYSTEM") + itemsPerPage - 1)/ itemsPerPage;
+    int total_pages = (cfg.getSectionSize(Configuration::SYSTEM) + itemsPerPage - 1)/ itemsPerPage;
 
     int currentPage = currentSettingIndex / itemsPerPage;
     int startIndex = currentPage * itemsPerPage;
-    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize("SYSTEM") );//settingsData.size());
+    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::SYSTEM) );//settingsData.size());
 
-    // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
+    // for (int i = 0; i < theme.getIntValue(Configuration::ITEMS); i++) {
     for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentSettingIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        SDL_Color color = (i == currentSettingIndex) ? 
+            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
+            theme.getColor(Configuration::ITEMS_FONT_COLOR);
 
         // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex("SYSTEM", i).c_str(), color);
+        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex(Configuration::SYSTEM, i).c_str(), color);
         int titleWidth = textSurface->w;
 
         int clipWidth = (int)screenWidth*0.8;
@@ -330,13 +335,13 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 
         // Display pagination page number / total_pages at the bottom
         std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
-        int x = theme.getIntValue("GENERAL.text2_x");
-        int y = theme.getIntValue("GENERAL.text2_y");
+        int x = theme.getIntValue(Configuration::TEXT2_X);
+        int y = theme.getIntValue(Configuration::TEXT2_Y);
 
-        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
+        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT));
 
        // Render the value to the right of the title
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex("SYSTEM", i).c_str(), color);
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex(Configuration::SYSTEM, i).c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};
@@ -350,8 +355,8 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 }
 
 void RenderComponent::drawRomSettings(int currentSettingIndex) {
-    std::string backgroundPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/settings.png";
-    std::string settingsFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/Akrobat-Bold.ttf";
+    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
+    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
     int settingsFontSize = 32; //FIXME: size needs to be dynamic
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
@@ -361,7 +366,7 @@ void RenderComponent::drawRomSettings(int currentSettingIndex) {
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-    std::string titleFontPath = cfg.get("GLOBAL.homePath") + ".simplemenu/resources/akashi.ttf";
+    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/akashi.ttf";
     int titleFontSize = 64; //FIXME: size needs to be dynamic
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
@@ -379,18 +384,20 @@ void RenderComponent::drawRomSettings(int currentSettingIndex) {
     int itemsPerPage = 8;
 
     // Calculate number of pages FIXME: move that to the constructor
-    int total_pages = (cfg.getSectionSize("GAME") + itemsPerPage - 1)/ itemsPerPage;
+    int total_pages = (cfg.getSectionSize(Configuration::GAME) + itemsPerPage - 1)/ itemsPerPage;
 
     int currentPage = currentSettingIndex / itemsPerPage;
     int startIndex = currentPage * itemsPerPage;
-    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize("GAME") );//settingsData.size());
+    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::GAME) );//settingsData.size());
 
-    // for (int i = 0; i < theme.getIntValue("GENERAL.items"); i++) {
+    // for (int i = 0; i < theme.getIntValue(Configuration::ITEMS); i++) {
     for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentSettingIndex) ? theme.getColor("DEFAULT.selected_item_font_color"):theme.getColor("DEFAULT.items_font_color");
+        SDL_Color color = (i == currentSettingIndex) ? 
+            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
+            theme.getColor(Configuration::ITEMS_FONT_COLOR);
 
         // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex("GAME", i).c_str(), color);
+        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex(Configuration::GAME, i).c_str(), color);
         int titleWidth = textSurface->w;
 
         int clipWidth = (int)screenWidth*0.8;
@@ -405,13 +412,13 @@ void RenderComponent::drawRomSettings(int currentSettingIndex) {
 
         // Display pagination page number / total_pages at the bottom
         std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
-        int x = theme.getIntValue("GENERAL.text2_x");
-        int y = theme.getIntValue("GENERAL.text2_y");
+        int x = theme.getIntValue(Configuration::TEXT2_X);
+        int y = theme.getIntValue(Configuration::TEXT2_Y);
 
-        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue("GENERAL.text2_alignment"));
+        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT));
 
        // Render the value to the right of the title
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex("GAME", i).c_str(), color);
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex(Configuration::GAME, i).c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};
@@ -446,8 +453,8 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
 
     tmpThumbnail = IMG_Load(thumbnailPath.c_str());
 
-    int thumbnailWidth = theme.getIntValue("GENERAL.art_max_w");
-    int thumbnailHeight = theme.getIntValue("GENERAL.art_max_h");
+    int thumbnailWidth = theme.getIntValue(Configuration::ART_MAX_W);
+    int thumbnailHeight = theme.getIntValue(Configuration::ART_MAX_H);
 
     // Check if the thumbnail needs to be resized
     if (tmpThumbnail->w != thumbnailWidth || tmpThumbnail->h != thumbnailHeight) {
@@ -508,7 +515,7 @@ void RenderComponent::printFPS(int fps) {
 }
 
 void RenderComponent::loadAliases() {
-    std::ifstream infile(cfg.get("GLOBAL.aliasPath"));
+    std::ifstream infile(cfg.get(Configuration::ALIAS_PATH));
     std::string line;
     while (std::getline(infile, line)) {
         size_t pos = line.find('=');
