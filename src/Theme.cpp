@@ -90,7 +90,7 @@ SDL_Color Theme::getColor(const std::string& key) const {
 std::string Theme::getThemePath() const {
 
 
-    std::string themePath = getValue("GLOBAL.themePath") + std::to_string(getIntValue("GLOBAL.screenWidth")) +
-                            "x" + std::to_string(getIntValue("GLOBAL.screenHeight")) + "/" + getValue("GLOBAL.themeName") + "/";
+    std::string themePath = getValue(Configuration::THEME_PATH) + std::to_string(getIntValue(Configuration::SCREEN_WIDTH)) +
+                            "x" + std::to_string(getIntValue(Configuration::SCREEN_HEIGHT)) + "/" + getValue(Configuration::THEME_NAME) + "/";
     return themePath;
 }

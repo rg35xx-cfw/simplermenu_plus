@@ -149,9 +149,9 @@ void Application::handleCommand(ControlMap cmd) {
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentSettingsIndex > 0) currentSettingsIndex--;
-                else currentSettingsIndex = cfg.getSectionSize("SYSTEM") - 1;
+                else currentSettingsIndex = cfg.getSectionSize(Configuration::SYSTEM) - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize("SYSTEM"));
+                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize(Configuration::SYSTEM));
             }
             break;
         case ROM_SETTINGS:
@@ -160,9 +160,9 @@ void Application::handleCommand(ControlMap cmd) {
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentRomSettingsIndex > 0) currentRomSettingsIndex--;
-                else currentRomSettingsIndex = cfg.getSectionSize("GAME") - 1;
+                else currentRomSettingsIndex = cfg.getSectionSize(Configuration::GAME) - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentRomSettingsIndex = (currentRomSettingsIndex + 1) % (cfg.getSectionSize("GAME"));
+                currentRomSettingsIndex = (currentRomSettingsIndex + 1) % (cfg.getSectionSize(Configuration::GAME));
             } 
             break;
     }
@@ -173,8 +173,8 @@ void Application::handleCommand(ControlMap cmd) {
     }
 
     if(currentMenuLevel == SYSTEM_SETTINGS) {
-        std::string currentKey = cfg.getKeyByIndex("SYSTEM", currentSettingsIndex);
-        std::string currentValue = cfg.get("SYSTEM." + currentKey);
+        std::string currentKey = cfg.getKeyByIndex(Configuration::SYSTEM, currentSettingsIndex);
+        std::string currentValue = cfg.get(Configuration::SYSTEM + "." + currentKey);
 
         if (cmd == CMD_LEFT || cmd == CMD_RIGHT) {
                         // Handle integer values
@@ -185,11 +185,11 @@ void Application::handleCommand(ControlMap cmd) {
                 } else {
                     intValue+=5; // Increase value
                 }
-                cfg.set("SYSTEM." + currentKey, std::to_string(intValue));
+                cfg.set(Configuration::SYSTEM + "." + currentKey, std::to_string(intValue));
             }
 
             // Handle list values
-            std::set<std::string> values = cfg.getList("SYSTEM." + currentKey);
+            std::set<std::string> values = cfg.getList(Configuration::SYSTEM + "." + currentKey);
             if (!values.empty()) {
                 auto it = values.find(currentValue);
                 if (cmd == CMD_LEFT) {
@@ -204,17 +204,17 @@ void Application::handleCommand(ControlMap cmd) {
                         it = values.begin();
                     }
                 }
-                cfg.set("SYSTEM." + currentKey, *it);
+                cfg.set(Configuration::SYSTEM + "." + currentKey, *it);
             }
 
             // Handle boolean values
             if (currentValue == "true" || currentValue == "false") {
                 bool boolValue = (currentValue == "true");
-                cfg.set("SYSTEM." + currentKey, boolValue ? "false" : "true");
+                cfg.set(Configuration::SYSTEM + "." + currentKey, boolValue ? "false" : "true");
             }
             
             // Notify observers of the change
-            notifySettingsChange("SYSTEM." + currentKey, currentValue);
+            notifySettingsChange(Configuration::SYSTEM + "." + currentKey, currentValue);
         }
     }
 }
@@ -234,7 +234,7 @@ void Application::run() {
     Uint32 frameStart = 0;
 
     while (isRunning) {
-        int screenRefresh = cfg.getInt("SYSTEM.screenRefresh");
+        int screenRefresh = cfg.getInt(Configuration::SCREEN_REFRESH);
         
         Uint32 frameDelay = 1000 / screenRefresh;
 
@@ -314,7 +314,7 @@ void Application::launchRom() {
     std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
     std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
 
-    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get("GLOBAL.homePath") + ".simplemenu/section_groups/" + sectionName);
+    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
 
     std::string execLauncher;
 

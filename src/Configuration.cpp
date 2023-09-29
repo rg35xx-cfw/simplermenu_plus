@@ -5,8 +5,60 @@
 #include <boost/algorithm/string.hpp>
 
 
+/////////
+// CONFIG.INI
+////////
+
+const std::string Configuration::GAME = std::string("GAME");
+const std::string Configuration::SYSTEM = std::string("SYSTEM");
+
+// CONFIG . GLOBAL section
+const std::string Configuration::ALIAS_PATH = std::string("GLOBAL.aliasPath");
+const std::string Configuration::HOME_PATH = std::string("GLOBAL.homePath");
+const std::string Configuration::THEME_NAME = std::string("GLOBAL.themeName");
+const std::string Configuration::THEME_PATH = std::string("GLOBAL.themePath");
+const std::string Configuration::SCREEN_WIDTH = std::string("GLOBAL.screenWidth");
+const std::string Configuration::SCREEN_HEIGHT = std::string("GLOBAL.screenHeight");
+const std::string Configuration::SCREEN_DEPTH = std::string("GLOBAL.screenDepth");
+
+
+// CONFIG . SYSTEM section
+const std::string Configuration::SCREEN_REFRESH = std::string("SYSTEM.screenRefresh");
+
+/////////
+// THEME.INI
+/////////
+
+// THEME . DEFAULT section
 const std::string Configuration::SEL_ITEM_FONT_COLOR = std::string("DEFAULT.selected_item_font_color");
 const std::string Configuration::ITEMS_FONT_COLOR = std::string("DEFAULT.items_font_color");
+const std::string Configuration::THEME_BACKGROUND = std::string("DEFAULT.background");
+
+// THEME . GENERAL section
+const std::string Configuration::ART_X = std::string("GENERAL.art_x");
+const std::string Configuration::ART_Y = std::string("GENERAL.art_y");
+const std::string Configuration::ART_MAX_W = std::string("GENERAL.art_max_w");
+const std::string Configuration::ART_MAX_H = std::string("GENERAL.art_max_h");
+const std::string Configuration::ART_TXT_DIST_FROM_PIC = std::string("GENERAL.art_text_distance_from_picture");
+const std::string Configuration::ART_TXT_LINE_SEP = std::string("GENERAL.art_text_line_separation");
+const std::string Configuration::DISPLAY_GAME_COUNT = std::string("GENERAL.display_game_count");
+const std::string Configuration::GAME_COUNT_ALIGNMENT = std::string("GENERAL.game_count_alignment");
+const std::string Configuration::GAME_COUNT_FONT_COLOR = std::string("GENERAL.game_count_font_color");
+const std::string Configuration::GAME_COUNT_X = std::string("GENERAL.game_count_x");
+const std::string Configuration::GAME_COUNT_Y = std::string("GENERAL.game_count_y");
+const std::string Configuration::GAME_LIST_X = std::string("GENERAL.game_list_x");
+const std::string Configuration::GAME_LIST_Y = std::string("GENERAL.game_list_y");
+const std::string Configuration::ITEMS = std::string("GENERAL.items");
+const std::string Configuration::ITEMS_SEPARATION = std::string("GENERAL.items_separation");
+const std::string Configuration::TEXT1_X= std::string("GENERAL.text1_x");
+const std::string Configuration::TEXT1_Y= std::string("GENERAL.text1_y");
+const std::string Configuration::TEXT1_ALIGNMENT= std::string("GENERAL.text1_alignment");
+const std::string Configuration::TEXT2_X= std::string("GENERAL.text2_x");
+const std::string Configuration::TEXT2_Y = std::string("GENERAL.text2_y");
+const std::string Configuration::TEXT2_ALIGNMENT = std::string("GENERAL.text2_alignment");
+const std::string Configuration::THEME_FONT = std::string("GENERAL.font");
+
+
 
 Configuration::Configuration(const std::string& configIniFilepath) 
     : configIniFilepath(configIniFilepath) {
@@ -70,12 +122,12 @@ std::string Configuration::getThemePath() const {
 
     // TODO Do we really need to convert to int and then again to string?
     std::string themePath = 
-        get("GLOBAL.themePath") 
-        + std::to_string(getInt("GLOBAL.screenWidth")) 
+        get(Configuration::THEME_PATH) 
+        + std::to_string(getInt(Configuration::SCREEN_WIDTH)) 
         + "x" 
-        + std::to_string(getInt("GLOBAL.screenHeight")) 
+        + std::to_string(getInt(Configuration::SCREEN_HEIGHT)) 
         + "/" 
-        + get("GLOBAL.themeName") 
+        + get(Configuration::THEME_NAME) 
         + "/";
 
     return themePath;

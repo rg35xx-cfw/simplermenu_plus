@@ -30,7 +30,7 @@ public:
         
         instance = this;
         
-        generalFont = TTF_OpenFont(theme.getValue("GENERAL.font", true).c_str(),theme.getIntValue("GENERAL.font_size"));
+        generalFont = TTF_OpenFont(theme.getValue(Configuration::THEME_FONT, true).c_str(),theme.getIntValue("GENERAL.font_size"));
         if (!generalFont) {
             // Handle font loading error appropriately
             std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;

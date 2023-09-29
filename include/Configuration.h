@@ -38,8 +38,60 @@ private:
 
 public:
 
+    /////////
+    // CONFIG.INI
+    ////////
+
+    static const std::string GAME;
+    static const std::string SYSTEM;
+
+    // CONFIG . GLOBAL section
+    static const std::string ALIAS_PATH;
+    static const std::string HOME_PATH;
+    static const std::string THEME_NAME;
+    static const std::string THEME_PATH;
+    static const std::string SCREEN_WIDTH;
+    static const std::string SCREEN_HEIGHT;
+    static const std::string SCREEN_DEPTH;
+
+    // CONFIG . SYSTEM section
+    static const std::string SCREEN_REFRESH;
+
+    /////////
+    // THEME.INI
+    /////////
+
+    // THEME . DEFAULT section
     static const std::string SEL_ITEM_FONT_COLOR;
     static const std::string ITEMS_FONT_COLOR;
+    static const std::string THEME_BACKGROUND;
+
+    // THEME . GENERAL section
+    
+    
+
+    static const std::string ART_X;
+    static const std::string ART_Y;
+    static const std::string ART_MAX_W;
+    static const std::string ART_MAX_H;
+    static const std::string ART_TXT_DIST_FROM_PIC;
+    static const std::string ART_TXT_LINE_SEP;
+    static const std::string DISPLAY_GAME_COUNT;
+    static const std::string GAME_COUNT_FONT_COLOR;
+    static const std::string GAME_COUNT_X;
+    static const std::string GAME_COUNT_Y;
+    static const std::string GAME_COUNT_ALIGNMENT;
+    static const std::string GAME_LIST_X;
+    static const std::string GAME_LIST_Y;
+    static const std::string ITEMS;
+    static const std::string ITEMS_SEPARATION;
+    static const std::string TEXT1_X;
+    static const std::string TEXT1_Y;
+    static const std::string TEXT1_ALIGNMENT;
+    static const std::string TEXT2_X;
+    static const std::string TEXT2_Y;
+    static const std::string TEXT2_ALIGNMENT;
+    static const std::string THEME_FONT;
 
 
     Configuration(const std::string& configIniFilepath);
