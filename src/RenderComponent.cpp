@@ -340,8 +340,13 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 
         renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT));
 
-       // Render the value to the right of the title
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex(Configuration::SYSTEM, i).c_str(), color);
+        // Render the value to the right of the title
+        // FIXME: replace with proper string once i18n is implemented
+        std::string settingsValue = cfg.getValueByIndex(Configuration::SYSTEM, i);
+        if (settingsValue == "INTERNAL") { 
+            settingsValue = ". . .";
+        } 
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, settingsValue.c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};

@@ -8,7 +8,7 @@ CC = g++
 LINKER   = g++
 CFLAGS = -fdata-sections -ffunction-sections -fPIC -flto -Wall
 #-Ofast
-LIBS += -lSDL -lSDL_image -lSDL_ttf -lSDL_gfx -lz -lpthread -lm # -lasound
+LIBS += -lSDL -lSDL_image -lSDL_ttf -lSDL_gfx -lz -lpthread -lm -lboost_locale# -lasound
 
 # You can use Ofast too but it can be more prone to bugs, careful.
 CFLAGS += -g -Iinclude/

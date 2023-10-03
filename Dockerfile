@@ -13,7 +13,7 @@ RUN  apt-get update \
 		# libasound2-dev \
 		git vim gcc gdb cmake clang net-tools build-essential \
 		libsdl1.2-dev libsdl-ttf2.0-dev libsdl-image1.2-dev libsdl-gfx1.2-dev \ 
-		libboost-all-dev strace valgrind meld locales \
+		libboost-all-dev strace valgrind meld locales nlohmann-json3-dev \
 		# libasound2-dev \
  	&& rm -rf /var/lib/apt/lists/*
 

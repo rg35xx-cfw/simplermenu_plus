@@ -39,6 +39,7 @@ private:
 
     Configuration cfg;
     Settings settings;
+    Settings romSettings;
 
     ControlMapping controlMapping;
     RenderComponent renderComponent;

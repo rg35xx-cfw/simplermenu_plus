@@ -29,13 +29,22 @@ const std::string Configuration::BRIGHTNESS = std::string("SYSTEM.brightness");
 const std::string Configuration::SCREEN_REFRESH = std::string("SYSTEM.screenRefresh");
 const std::string Configuration::SHOW_FPS = std::string("SYSTEM.showFPS");
 const std::string Configuration::OVERCLOCK = std::string("SYSTEM.overclock");
+const std::string Configuration::OVERCLOCK_VALUES = std::string("GLOBAL.overclockValues");
 const std::string Configuration::THEME = std::string("SYSTEM.theme");
 const std::string Configuration::USB_MODE = std::string("SYSTEM.usbMode");
+const std::string Configuration::USB_MODE_VALUES = std::string("GLOBAL.usbModeValues");
 const std::string Configuration::WIFI = std::string("SYSTEM.wifi");
 const std::string Configuration::ROTATION = std::string("SYSTEM.rotation");
+const std::string Configuration::UPDATE_CACHES = std::string("SYSTEM.updateCaches");
 const std::string Configuration::SAVE_SETTINGS = std::string("SYSTEM.saveSettings");
 const std::string Configuration::RESTART = std::string("SYSTEM.restart");
 const std::string Configuration::QUIT = std::string("SYSTEM.quit");
+
+// CONFIG . GAME section
+const std::string Configuration::ROM_OVERCLOCK = std::string("GAME.romOverclock");
+const std::string Configuration::ROM_AUTOSTART = std::string("GAME.romAutostart");
+const std::string Configuration::CORE_OVERRIDE = std::string("GAME.coreOverride");
+
 
 /////////
 // THEME.INI

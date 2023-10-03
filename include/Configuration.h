@@ -60,14 +60,22 @@ public:
     static const std::string BRIGHTNESS;
     static const std::string SCREEN_REFRESH;
     static const std::string SHOW_FPS;
+    static const std::string OVERCLOCK_VALUES;
     static const std::string OVERCLOCK;
     static const std::string THEME;
+    static const std::string USB_MODE_VALUES;
     static const std::string USB_MODE;
     static const std::string WIFI;
     static const std::string ROTATION;
+    static const std::string UPDATE_CACHES;
     static const std::string SAVE_SETTINGS;
     static const std::string RESTART;
     static const std::string QUIT;
+
+    // CONFIG . GAME section
+    static const std::string ROM_OVERCLOCK;
+    static const std::string ROM_AUTOSTART;
+    static const std::string CORE_OVERRIDE;
 
     /////////
     // THEME.INI

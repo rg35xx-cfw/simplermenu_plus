@@ -1,4 +1,5 @@
 #include <iostream>
+#include <SDL/SDL.h>
 
 #include "Settings.h"
 #include "Configuration.h"
@@ -8,7 +9,10 @@ Settings::Settings(Configuration& cfg) : cfg(cfg) {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
         Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
-        Configuration::SAVE_SETTINGS, Configuration::RESTART, Configuration::QUIT
+        Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
+        Configuration::QUIT,
+        // ROM SETTINGS
+        Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
     };
 
     initializeSettings();
@@ -155,8 +159,8 @@ void Settings::updateListSetting(bool increase) {
     std::set<std::string> values = cfg.getList(currentKey);
     auto it = values.find(currentValue);
     
-    if (increase) {
-    if (it == values.begin()) {
+    if (!increase) {
+        if (it == values.begin()) {
             it = std::prev(values.end());
         } else {
             --it;
@@ -168,7 +172,6 @@ void Settings::updateListSetting(bool increase) {
         }
     }
     currentValue = *it;
-    settingsMap[currentKey].value = currentValue;
 }
 
 void Settings::updateTheme(bool increase) {
@@ -178,7 +181,12 @@ void Settings::updateTheme(bool increase) {
 }
 
 void Settings::updateOverclock(bool increase) {
+    // currentValue = cfg.get(Configuration::OVERCLOCK);
+    currentKey = Configuration::OVERCLOCK_VALUES;
     updateListSetting(increase);
+
+    currentKey = Configuration::OVERCLOCK;
+    settingsMap[Configuration::OVERCLOCK].value = currentValue;
 
     std::cout << "UPDATING OVERCLOCK" << std::endl;
 }
@@ -200,6 +208,7 @@ void Settings::updateUSBMode(bool increase) {
     updateListSetting(increase);
 
     std::cout << "UPDATING USB MODE" << std::endl;
+    
 }
 
 void Settings::updateWifi() {
@@ -222,5 +231,7 @@ void Settings::restartApplication() {
 
 void Settings::quitApplication() {
     std::cout << "QUIT..." << std::endl;
+    SDL_Quit();
+    exit(0);
 }
 

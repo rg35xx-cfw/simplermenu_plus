@@ -22,7 +22,8 @@ Application::Application()
     : cfg("/userdata/system/simplermenu_plus/config.ini"),
       controlMapping(cfg),
       renderComponent(cfg),
-      settings(cfg) {
+      settings(cfg),
+      romSettings(cfg) {
 
     setupCache();
     populateMenu(menu);
@@ -188,6 +189,25 @@ void Application::handleCommand(ControlMap cmd) {
 
         std::string currentKey = settings.getCurrentKey();
         std::string currentValue = settings.getCurrentValue();
+
+        notifySettingsChange(currentKey, currentValue);
+    }
+
+    if(currentMenuLevel == ROM_SETTINGS) {
+        if (cmd == CMD_UP) {
+            romSettings.navigateUp();
+        } else if (cmd == CMD_DOWN) {
+            romSettings.navigateDown();
+        } else if (cmd == CMD_LEFT) {
+            romSettings.navigateLeft();
+        } else if (cmd == CMD_RIGHT) {
+            romSettings.navigateRight();
+        } else if (cmd == CMD_ENTER) {
+            romSettings.navigateEnter();
+        }
+
+        std::string currentKey = romSettings.getCurrentKey();
+        std::string currentValue = romSettings.getCurrentValue();
 
         notifySettingsChange(currentKey, currentValue);
     }

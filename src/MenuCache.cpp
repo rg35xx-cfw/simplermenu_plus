@@ -1,15 +1,20 @@
 #include "MenuCache.h"
 #include <fstream>
+#include <iostream>
+#include <boost/locale.hpp>
 
 void MenuCache::saveToCache(const std::string& filePath, const std::vector<CachedMenuItem>& data) {
     boost::property_tree::ptree root;
-    
+    boost::locale::generator gen;
+    std::locale locale = gen.generate("C.utf-8");
+
     for (const auto& item : data) {
+
         pt::ptree itemNode;
-        itemNode.put("section", item.section);
-        itemNode.put("folder", item.folder);
-        itemNode.put("rom", item.rom);
-        itemNode.put("path", item.path);
+        itemNode.put("section", boost::locale::conv::to_utf<char>(item.section, locale));
+        itemNode.put("folder", boost::locale::conv::to_utf<char>(item.folder, locale));
+        itemNode.put("rom", boost::locale::conv::to_utf<char>(item.rom, locale));
+        itemNode.put("path", boost::locale::conv::to_utf<char>(item.path, locale));
 
         root.push_back(std::make_pair(item.rom, itemNode));
     }
