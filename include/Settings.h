@@ -4,6 +4,9 @@
 #include <map>
 #include <vector>
 
+#include "I18n.h"
+
+
 class Configuration;
 
 class ISettingsObserver {
@@ -29,8 +32,14 @@ public:
         bool enabled;
     };
 
+    struct I18nSetting {
+        std::string title;
+        std::string value;
+    };
+
 private:
     Configuration& cfg;
+    I18n& i18n;
     std::string currentKey;
     std::string currentValue;
 
@@ -43,7 +52,7 @@ private:
     std::vector<std::string> enabledKeys;
 
 public:
-    Settings(Configuration& cfg);
+    Settings(Configuration& cfg, I18n& i18n);
     // ~Settings();
 
     void initializeSettings();
@@ -55,6 +64,8 @@ public:
     void navigateLeft();
     void navigateRight();
     void navigateEnter();
+
+    std::vector<I18nSetting> getSystemSettings();
 
     void updateListSetting(bool increase);
     void updateBoolSetting();
@@ -71,6 +82,8 @@ public:
     void updateUSBMode(bool increase);
     void updateWifi();
     void updateRotation();
+    
+
 
     std::string getCurrentKey() {
         return currentKey;

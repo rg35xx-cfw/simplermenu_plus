@@ -1,10 +1,12 @@
 #include <iostream>
 #include <SDL/SDL.h>
 
-#include "Settings.h"
 #include "Configuration.h"
+#include "I18n.h"
+#include "Settings.h"
+#include "Exception.h"
 
-Settings::Settings(Configuration& cfg) : cfg(cfg) {
+Settings::Settings(Configuration& cfg, I18n& i18n) : cfg(cfg), i18n(i18n) {
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
@@ -99,11 +101,33 @@ void Settings::navigateEnter() {
 
 }
 
+std::vector<Settings::I18nSetting> Settings::getSystemSettings() {
+    
+    std::vector<I18nSetting> i18nSettings;
+    
+    for (const auto& key : enabledKeys) {
+        
+        size_t pos = key.find_last_of(".");
+        
+        if (pos != std::string::npos) {
+            i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                    settingsMap[key].value
+                                    });
+        } else {
+            throw ItemNotFoundException("Setting key format unknown: " 
+                + key);
+        }
+    }
+
+    return i18nSettings;
+}
+
+
 void Settings::initializeSettings() {
     for (const auto& key : defaultKeys) {
         std::string value = cfg.get(key);
         if (!value.empty()) {
-            settingsMap[key] = {key, cfg.get(key), true}; // enabled
+            settingsMap[key] = {key, value, true}; // enabled
         } else {
             settingsMap[key] = {key, "", false}; // disabled
         }

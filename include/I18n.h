@@ -7,7 +7,6 @@
 #include <set>
 #include <vector>
 #include <memory>
-#include "Settings.h"
 
 
 class I18n {

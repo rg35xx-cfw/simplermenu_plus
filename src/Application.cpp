@@ -20,11 +20,11 @@
 
 Application::Application() 
     : cfg("/userdata/system/simplermenu_plus/config.ini"),
+      i18n("/userdata/system/simplermenu_plus/i18n.ini"),
       controlMapping(cfg),
       renderComponent(cfg),
-      settings(cfg),
-      romSettings(cfg),
-      i18n("/userdata/system/simplermenu_plus/i18n.ini") {
+      settings(cfg, i18n), 
+      romSettings(cfg, i18n) {
 
     setupCache();
     populateMenu(menu);
@@ -38,12 +38,32 @@ Application::Application()
 
     std::cout << "Current lang: " << i18n.getLang() << std::endl;
     std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    std::cout << "Available settings: [ ";
+    std::vector<Settings::I18nSetting> settingList = settings.getSystemSettings();
+    for (const auto& setting : settingList) {
+        std::cout << setting.title << ":" << setting.value << ", ";
+    }
+    std::cout << "]" << std::endl;
+
     i18n.setLang("SPANISH");
     std::cout << "Current lang: " << i18n.getLang() << std::endl;
     std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    std::cout << "Available settings: [ ";
+    settingList = settings.getSystemSettings();
+    for (const auto& setting : settingList) {
+        std::cout << setting.title << ":" << setting.value << ", ";
+    }
+    std::cout << "]" << std::endl;
+
     i18n.setLang("ENGLISH");
     std::cout << "Current lang: " << i18n.getLang() << std::endl;
     std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    std::cout << "Available settings: [ ";
+    settingList = settings.getSystemSettings();
+    for (const auto& setting : settingList) {
+        std::cout << setting.title << ":" << setting.value << ", ";
+    }
+    std::cout << "]" << std::endl;
 
     renderComponent.initialize();
 
