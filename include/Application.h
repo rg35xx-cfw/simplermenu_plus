@@ -23,6 +23,7 @@
 #include "Menu.h"
 #include "HelperUtils.h"
 #include "Settings.h"
+#include "I18n.h"
 
 namespace pt = boost::property_tree;
 
@@ -38,6 +39,7 @@ private:
     SDL_Joystick *joystick = nullptr;
 
     Configuration cfg;
+    I18n i18n;
     Settings settings;
     Settings romSettings;
 

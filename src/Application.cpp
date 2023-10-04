@@ -23,10 +23,27 @@ Application::Application()
       controlMapping(cfg),
       renderComponent(cfg),
       settings(cfg),
-      romSettings(cfg) {
+      romSettings(cfg),
+      i18n("/userdata/system/simplermenu_plus/i18n.ini") {
 
     setupCache();
     populateMenu(menu);
+
+    std::cout << "Available languages: [ ";
+    std::set<std::string> langs = i18n.getLanguages();
+    std::copy(langs.begin(),
+              langs.end(),
+              std::ostream_iterator<std::string>(std::cout, " "));
+    std::cout << "]" << std::endl;
+
+    std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    i18n.setLang("SPANISH");
+    std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    i18n.setLang("ENGLISH");
+    std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
 
     renderComponent.initialize();
 

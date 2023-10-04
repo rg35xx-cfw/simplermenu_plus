@@ -20,6 +20,12 @@ public:
         : SimplerMenuException(what_arg) { }
 };
 
+class ItemNotFoundException : public SimplerMenuException {
+public:
+    ItemNotFoundException(const std::string& what_arg) 
+        : SimplerMenuException(what_arg) { }
+};
+
 class ValueConversionException : public SimplerMenuException {
 public:
     ValueConversionException(const std::string& what_arg) 
