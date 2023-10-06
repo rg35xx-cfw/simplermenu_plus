@@ -11,6 +11,7 @@ Settings::Settings(Configuration& cfg, I18n& i18n) : cfg(cfg), i18n(i18n) {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
         Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
+        Configuration::LANGUAGE,
         Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
         Configuration::QUIT,
         // ROM SETTINGS
@@ -63,6 +64,8 @@ void Settings::navigateLeft() {
             updateOverclock(false);
         } else if (currentKey == Configuration::SHOW_FPS) {
             updateShowFPS();
+        } else if (currentKey == Configuration::LANGUAGE) {
+            updateLanguage(false);
         }   
     }
 }
@@ -82,7 +85,9 @@ void Settings::navigateRight() {
             updateOverclock(true);
         } else if (currentKey == Configuration::SHOW_FPS) {
             updateShowFPS();
-        }    
+        } else if (currentKey == Configuration::LANGUAGE) {
+            updateLanguage(true);
+        }
     }
 
 }
@@ -110,9 +115,14 @@ std::vector<Settings::I18nSetting> Settings::getSystemSettings() {
         size_t pos = key.find_last_of(".");
         
         if (pos != std::string::npos) {
-            i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
-                                    settingsMap[key].value
-                                    });
+            try {
+                i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                        settingsMap[key].value
+                                        });
+            } catch (boost::property_tree::ptree_bad_path e) {
+                throw ItemNotFoundException("Language translation not found for " 
+                + key + " in " + i18n.getLang());
+            }
         } else {
             throw ItemNotFoundException("Setting key format unknown: " 
                 + key);
@@ -179,8 +189,7 @@ void Settings::updateScreenRefresh(bool increase) {
     // FIXME: add boundaries (e.g. min: 0, max: 100)
 }
 
-void Settings::updateListSetting(bool increase) {
-    std::set<std::string> values = cfg.getList(currentKey);
+void Settings::updateListSetting(const std::set<std::string>& values, bool increase) {
     auto it = values.find(currentValue);
     
     if (!increase) {
@@ -199,17 +208,23 @@ void Settings::updateListSetting(bool increase) {
 }
 
 void Settings::updateTheme(bool increase) {
-    updateListSetting(increase);
+    updateListSetting(cfg.getList(currentKey), increase);
 
     std::cout << "UPDATING THEME" << std::endl;
 }
 
+void Settings::updateLanguage(bool increase) {
+    updateListSetting(i18n.getLanguages(), increase);
+
+    std::cout << "UPDATING LANGUAGE" << std::endl;
+
+    settingsMap[currentKey].value = currentValue;
+}
+
 void Settings::updateOverclock(bool increase) {
     // currentValue = cfg.get(Configuration::OVERCLOCK);
-    currentKey = Configuration::OVERCLOCK_VALUES;
-    updateListSetting(increase);
+    updateListSetting(cfg.getList(Configuration::OVERCLOCK_VALUES), increase);
 
-    currentKey = Configuration::OVERCLOCK;
     settingsMap[Configuration::OVERCLOCK].value = currentValue;
 
     std::cout << "UPDATING OVERCLOCK" << std::endl;
@@ -229,7 +244,7 @@ void Settings::updateShowFPS() {
 }
 
 void Settings::updateUSBMode(bool increase) {
-    updateListSetting(increase);
+    updateListSetting(cfg.getList(currentKey), increase);
 
     std::cout << "UPDATING USB MODE" << std::endl;
     

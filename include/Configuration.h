@@ -67,6 +67,7 @@ public:
     static const std::string USB_MODE;
     static const std::string WIFI;
     static const std::string ROTATION;
+    static const std::string LANGUAGE;
     static const std::string UPDATE_CACHES;
     static const std::string SAVE_SETTINGS;
     static const std::string RESTART;

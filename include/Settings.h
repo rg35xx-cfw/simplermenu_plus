@@ -67,13 +67,14 @@ public:
 
     std::vector<I18nSetting> getSystemSettings();
 
-    void updateListSetting(bool increase);
+    void updateListSetting(const std::set<std::string>& values, bool increase);
     void updateBoolSetting();
 
     void updateVolume(bool increase);
     void updateBrightness(bool increase);
     void updateScreenRefresh(bool increase);
     void updateTheme(bool increase);
+    void updateLanguage(bool increase);
     void updateOverclock(bool increase);
     void updateShowFPS();
     void saveSettings();
