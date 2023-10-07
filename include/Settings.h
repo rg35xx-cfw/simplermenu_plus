@@ -14,6 +14,7 @@ class ISettingsObserver {
   virtual ~ISettingsObserver(){};
   virtual void settingsChanged(const std::string &key, 
                                const std::string &value) = 0;
+  virtual std::string getName() = 0;
 };
 
 class ISettingsSubject {
@@ -22,9 +23,10 @@ class ISettingsSubject {
   virtual void attach(ISettingsObserver *observer) = 0;
   virtual void detach(ISettingsObserver *observer) = 0;
   virtual void notifySettingsChange(const std::string &key, const std::string &value) = 0;
+  virtual std::string getName() = 0;
 };
 
-class Settings {
+class Settings : public ISettingsSubject {
 public: 
     struct Setting {
         std::string key;
@@ -51,8 +53,10 @@ private:
     int currentIndex;
     std::vector<std::string> enabledKeys;
 
+    std::vector<ISettingsObserver *> observers;
+
 public:
-    Settings(Configuration& cfg, I18n& i18n);
+    Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer);
     // ~Settings();
 
     void initializeSettings();
@@ -83,8 +87,15 @@ public:
     void updateUSBMode(bool increase);
     void updateWifi();
     void updateRotation();
-    
 
+    /**
+     * ISettingsSubject methods
+    */
+    void attach(ISettingsObserver *observer) override;
+    void detach(ISettingsObserver *observer) override;
+    void notifySettingsChange(const std::string &key, const std::string &value) override;
+    std::string getName() override;
+    
 
     std::string getCurrentKey() {
         return currentKey;

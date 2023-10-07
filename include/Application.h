@@ -48,8 +48,6 @@ private:
 
     HelperUtils helper;
 
-    std::vector<ISettingsObserver*> observers;
-
     enum MenuLevel {
         MENU_SECTION,
         MENU_FOLDER,
@@ -136,9 +134,7 @@ private:
 
 public:
     Application();
-    ~Application() {
-        detach(this);
-    }
+    // ~Application();
 
     void drawCurrentState();
 
@@ -150,28 +146,12 @@ public:
 
     void launchRom();
 
-    void settingsChanged(const std::string &key, const std::string &value) override {
-        std::cout << "key: " << key << " value: " << value << std::endl;
-
-        // Update key/value
-        cfg.set(key,value);
-    }
-
     bool isInteger(const std::string &s);
 
-
-    void attach(ISettingsObserver *observer) {
-        observers.push_back(observer);
-    }
-
-    void detach(ISettingsObserver *observer) {
-        observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-    }
-
-    void notifySettingsChange(const std::string &key, const std::string &value) {
-        for (ISettingsObserver *observer : observers) {
-            observer->settingsChanged(key, value); 
-        }
-    }
+    /**
+     * ISettingsObserver methods
+    */
+    void settingsChanged(const std::string &key, const std::string &value) override;
+    std::string getName() override;
 
 };

@@ -23,8 +23,8 @@ Application::Application()
       i18n("/userdata/system/simplermenu_plus/i18n.ini"),
       controlMapping(cfg),
       renderComponent(cfg),
-      settings(cfg, i18n), 
-      romSettings(cfg, i18n) {
+      settings(cfg, i18n, this), 
+      romSettings(cfg, i18n, this) {
 
     setupCache();
     populateMenu(menu);
@@ -83,8 +83,6 @@ Application::Application()
             std::cout << "Number of Buttons: " << SDL_JoystickNumButtons(joystick) << std::endl;
         }
     }
-
-    attach(this);
     
 }
 
@@ -227,7 +225,6 @@ void Application::handleCommand(ControlMap cmd) {
         std::string currentKey = settings.getCurrentKey();
         std::string currentValue = settings.getCurrentValue();
 
-        notifySettingsChange(currentKey, currentValue);
     }
 
     if(currentMenuLevel == ROM_SETTINGS) {
@@ -246,7 +243,6 @@ void Application::handleCommand(ControlMap cmd) {
         std::string currentKey = romSettings.getCurrentKey();
         std::string currentValue = romSettings.getCurrentValue();
 
-        notifySettingsChange(currentKey, currentValue);
     }
 }
 
@@ -382,3 +378,17 @@ void Application::launchRom() {
     SDL_Quit();
     exit(0);
 }
+
+/////////////////
+// SettingsObserver methods
+
+void Application::settingsChanged(const std::string& key, const std::string& value) {
+    std::cout << key << " changed to " << value << std::endl;
+}
+
+std::string Application::getName() {
+    return "Application::" + std::to_string((unsigned long long)(void**)this);
+}
+
+//
+/////////////////

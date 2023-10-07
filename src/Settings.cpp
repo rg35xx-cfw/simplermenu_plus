@@ -6,7 +6,9 @@
 #include "Settings.h"
 #include "Exception.h"
 
-Settings::Settings(Configuration& cfg, I18n& i18n) : cfg(cfg), i18n(i18n) {
+Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer) 
+    : cfg(cfg), i18n(i18n) {
+    
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
@@ -17,6 +19,8 @@ Settings::Settings(Configuration& cfg, I18n& i18n) : cfg(cfg), i18n(i18n) {
         // ROM SETTINGS
         Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
     };
+
+    attach(observer);
 
     initializeSettings();
 
@@ -68,6 +72,7 @@ void Settings::navigateLeft() {
             updateLanguage(false);
         }   
     }
+    notifySettingsChange(currentKey, currentValue);
 }
 
 void Settings::navigateRight() {
@@ -89,7 +94,7 @@ void Settings::navigateRight() {
             updateLanguage(true);
         }
     }
-
+    notifySettingsChange(currentKey, currentValue);
 }
 
 void Settings::navigateEnter() {
@@ -274,3 +279,30 @@ void Settings::quitApplication() {
     exit(0);
 }
 
+
+////////////
+// Methods to manage SETTINGS OBSERVERS
+
+void Settings::attach(ISettingsObserver *observer) {
+    observers.push_back(observer);
+    std::cout << "Observer added to " << getName() << " object: " << observer->getName() << "\n";
+}
+
+void Settings::detach(ISettingsObserver *observer) {
+    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
+}
+
+void Settings::notifySettingsChange(const std::string &key, const std::string &value) {
+    for (ISettingsObserver *observer : observers) {
+        observer->settingsChanged(key, value);
+        std::cout << "Observer " << observer->getName() << " notified by " 
+                  << getName() << std::endl;
+    }
+}
+
+std::string Settings::getName() {
+    return "Settings::" + std::to_string((unsigned long long)(void**)this);
+}
+
+//
+/////////////
