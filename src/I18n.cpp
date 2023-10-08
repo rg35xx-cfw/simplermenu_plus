@@ -20,7 +20,8 @@ I18n::I18n(const std::string& i18nFilepath)
 
     // Get languages list
     for (const auto& section : this->mainPt) {
-        languages.insert(section.first);
+        std::string normalizedLang = boost::algorithm::to_upper_copy(section.first);
+        languages.insert(normalizedLang);
     }
 
     // Set default language
@@ -32,8 +33,9 @@ std::string I18n::getLang() const {
 }
 
 void I18n::setLang(const std::string& newLang) {
-    if (languages.find(newLang) != languages.end()) {
-        lang = newLang;
+    std::string normalizedLang = boost::algorithm::to_upper_copy(newLang);
+    if (languages.find(normalizedLang) != languages.end()) {
+        lang = normalizedLang;
     } else {
         throw ItemNotFoundException("Language unknown: " + newLang);
     }

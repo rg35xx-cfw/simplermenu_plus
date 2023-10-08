@@ -277,7 +277,7 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     renderText(folderName, theme.getIntValue(Configuration::TEXT1_X), theme.getIntValue(Configuration::TEXT1_Y), {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT)); 
 }
 
-void RenderComponent::drawSystemSettings(int currentSettingIndex) {
+void RenderComponent::drawSystemSettings(std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
 
     std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
     std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
@@ -320,7 +320,12 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
             theme.getColor(Configuration::ITEMS_FONT_COLOR);
 
         // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex(Configuration::SYSTEM, i).c_str(), color);
+        SDL_Surface* textSurface = TTF_RenderText_Blended(
+            setttingsFont, 
+            // cfg.getKeyByIndex(Configuration::SYSTEM, i).c_str(), 
+            settingList[i].title.c_str(),
+            color);
+
         int titleWidth = textSurface->w;
 
         int clipWidth = (int)screenWidth*0.8;
@@ -342,7 +347,7 @@ void RenderComponent::drawSystemSettings(int currentSettingIndex) {
 
         // Render the value to the right of the title
         // FIXME: replace with proper string once i18n is implemented
-        std::string settingsValue = cfg.getValueByIndex(Configuration::SYSTEM, i);
+        std::string settingsValue = settingList[i].value; //cfg.getValueByIndex(Configuration::SYSTEM, i);
         if (settingsValue == "INTERNAL") { 
             settingsValue = ". . .";
         } 

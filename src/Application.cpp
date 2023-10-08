@@ -19,8 +19,8 @@
 
 
 Application::Application() 
-    : cfg("/userdata/system/simplermenu_plus/config.ini"),
-      i18n("/userdata/system/simplermenu_plus/i18n.ini"),
+    : i18n("/userdata/system/simplermenu_plus/i18n.ini"),
+      cfg("/userdata/system/simplermenu_plus/config.ini"),
       controlMapping(cfg),
       renderComponent(cfg),
       settings(cfg, i18n, this), 
@@ -29,41 +29,41 @@ Application::Application()
     setupCache();
     populateMenu(menu);
 
-    std::cout << "Available languages: [ ";
-    std::set<std::string> langs = i18n.getLanguages();
-    std::copy(langs.begin(),
-              langs.end(),
-              std::ostream_iterator<std::string>(std::cout, " "));
-    std::cout << "]" << std::endl;
+    // std::cout << "Available languages: [ ";
+    // std::set<std::string> langs = i18n.getLanguages();
+    // std::copy(langs.begin(),
+    //           langs.end(),
+    //           std::ostream_iterator<std::string>(std::cout, " "));
+    // std::cout << "]" << std::endl;
 
-    std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    std::cout << "Available settings: [ ";
-    std::vector<Settings::I18nSetting> settingList = settings.getSystemSettings();
-    for (const auto& setting : settingList) {
-        std::cout << setting.title << ":" << setting.value << ", ";
-    }
-    std::cout << "]" << std::endl;
+    // std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    // std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    // std::cout << "Available settings: [ ";
+    // std::vector<Settings::I18nSetting> settingList = settings.getSystemSettings();
+    // for (const auto& setting : settingList) {
+    //     std::cout << setting.title << ":" << setting.value << ", ";
+    // }
+    // std::cout << "]" << std::endl;
 
-    i18n.setLang("SPANISH");
-    std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    std::cout << "Available settings: [ ";
-    settingList = settings.getSystemSettings();
-    for (const auto& setting : settingList) {
-        std::cout << setting.title << ":" << setting.value << ", ";
-    }
-    std::cout << "]" << std::endl;
+    // i18n.setLang("SPANISH");
+    // std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    // std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    // std::cout << "Available settings: [ ";
+    // settingList = settings.getSystemSettings();
+    // for (const auto& setting : settingList) {
+    //     std::cout << setting.title << ":" << setting.value << ", ";
+    // }
+    // std::cout << "]" << std::endl;
 
-    i18n.setLang("ENGLISH");
-    std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    std::cout << "Available settings: [ ";
-    settingList = settings.getSystemSettings();
-    for (const auto& setting : settingList) {
-        std::cout << setting.title << ":" << setting.value << ", ";
-    }
-    std::cout << "]" << std::endl;
+    // i18n.setLang("ENGLISH");
+    // std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    // std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    // std::cout << "Available settings: [ ";
+    // settingList = settings.getSystemSettings();
+    // for (const auto& setting : settingList) {
+    //     std::cout << setting.title << ":" << setting.value << ", ";
+    // }
+    // std::cout << "]" << std::endl;
 
     renderComponent.initialize();
 
@@ -116,7 +116,7 @@ void Application::drawCurrentState() {
         }
         case SYSTEM_SETTINGS:
         {
-            renderComponent.drawSystemSettings(currentSettingsIndex);
+            renderComponent.drawSystemSettings(settings.getSystemSettings(), currentSettingsIndex);
             break;
         }
         case ROM_SETTINGS:
@@ -384,6 +384,10 @@ void Application::launchRom() {
 
 void Application::settingsChanged(const std::string& key, const std::string& value) {
     std::cout << key << " changed to " << value << std::endl;
+    if (key == Configuration::LANGUAGE) {
+        i18n.setLang(value);
+    }
+    cfg.set(key, value);
 }
 
 std::string Application::getName() {

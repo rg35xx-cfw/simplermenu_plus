@@ -1,6 +1,8 @@
 #include <iostream>
 #include <SDL/SDL.h>
 
+#include <boost/algorithm/string.hpp>
+
 #include "Configuration.h"
 #include "I18n.h"
 #include "Settings.h"
@@ -143,6 +145,7 @@ void Settings::initializeSettings() {
         std::string value = cfg.get(key);
         if (!value.empty()) {
             settingsMap[key] = {key, value, true}; // enabled
+            notifySettingsChange(key, value);
         } else {
             settingsMap[key] = {key, "", false}; // disabled
         }
@@ -219,9 +222,13 @@ void Settings::updateTheme(bool increase) {
 }
 
 void Settings::updateLanguage(bool increase) {
+    // First we need to normalize the value
+    currentValue = boost::algorithm::to_upper_copy(settingsMap[currentKey].value);
+    std::cout << "CURRENT LANGUAGE " << currentValue << std::endl;
+
     updateListSetting(i18n.getLanguages(), increase);
 
-    std::cout << "UPDATING LANGUAGE" << std::endl;
+    std::cout << "UPDATING LANGUAGE TO " << currentValue << std::endl;
 
     settingsMap[currentKey].value = currentValue;
 }
