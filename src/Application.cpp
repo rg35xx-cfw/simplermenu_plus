@@ -21,8 +21,9 @@
 Application::Application() 
     : i18n("/userdata/system/simplermenu_plus/i18n.ini"),
       cfg("/userdata/system/simplermenu_plus/config.ini"),
+      theme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
-      renderComponent(cfg),
+      renderComponent(cfg, theme),
       settings(cfg, i18n, this, SettingsType::SYSTEM), 
       romSettings(cfg, i18n, this, SettingsType::ROM) {
 
@@ -65,7 +66,10 @@ Application::Application()
     // }
     // std::cout << "]" << std::endl;
 
+    theme.loadTheme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
+
     renderComponent.initialize();
+
 
     // Initialize joystick
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
@@ -387,6 +391,8 @@ void Application::settingsChanged(const std::string& key, const std::string& val
     std::cout << key << " changed to " << value << std::endl;
     if (key == Configuration::LANGUAGE) {
         i18n.setLang(value);
+    } else if (key == Configuration::THEME) {
+        theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
     }
     cfg.set(key, value);
 }

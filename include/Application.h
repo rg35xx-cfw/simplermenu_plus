@@ -17,6 +17,7 @@
 
 #include "RenderComponent.h"
 #include "Configuration.h"
+#include "Theme.h"
 #include "FileManager.h"
 #include "ControlMapping.h"
 #include "MenuCache.h"
@@ -39,6 +40,7 @@ private:
     SDL_Joystick *joystick = nullptr;
 
     Configuration cfg;
+    Theme theme;
     I18n i18n;
     Settings settings;
     Settings romSettings;

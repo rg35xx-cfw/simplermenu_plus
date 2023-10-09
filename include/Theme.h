@@ -14,6 +14,7 @@ private:
 public:
     Theme(std::string name, int screenWidth, int screenHeight);
 
+    void loadTheme(const std::string& themeName, int screenWidth, int screenHeight);
     void setValue(const std::string& key, const std::string& value);
     std::string getValue(const std::string& key, bool relative = false) const;
     bool getBoolValue(const std::string& key) const;

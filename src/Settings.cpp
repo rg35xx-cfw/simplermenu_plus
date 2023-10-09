@@ -5,6 +5,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "Configuration.h"
+#include "Theme.h"
 #include "I18n.h"
 #include "Settings.h"
 #include "Exception.h"
@@ -276,6 +277,8 @@ void Settings::updateTheme(bool increase) {
     updateListSetting(themeFolders, increase);
 
     settingsMap[Configuration::THEME].value = currentValue;
+
+    cfg.set(Configuration::THEME_NAME, currentValue);
 
     std::cout << "UPDATING THEME" << std::endl;
 }

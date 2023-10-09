@@ -16,9 +16,8 @@ std::unordered_map<std::string, SDL_Surface*> RenderComponent::thumbnailCache;
 
 std::unordered_map<std::string, std::string> RenderComponent::aliasMap;
 
-RenderComponent::RenderComponent(Configuration& cfg) 
-    : cfg(cfg), 
-      theme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)) {
+RenderComponent::RenderComponent(Configuration& cfg, Theme& theme) 
+    : cfg(cfg), theme(theme) {
 
     screenHeight = cfg.getInt(Configuration::SCREEN_HEIGHT);
     screenWidth = cfg.getInt(Configuration::SCREEN_WIDTH);

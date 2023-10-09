@@ -16,7 +16,7 @@ private:
     SDL_Surface* screen;
     TTF_Font* font;
     Configuration& cfg;
-    Theme theme;
+    Theme& theme;
     HelperUtils helper;
     SDL_Surface* thumbnail = nullptr;
     SDL_Surface* tmpThumbnail = nullptr;
@@ -136,7 +136,7 @@ private:
 
 public:
 
-    RenderComponent(Configuration& cfg);
+    RenderComponent(Configuration& cfg, Theme& theme);
     ~RenderComponent(); // If needed
 
     void resetValues() {

@@ -6,13 +6,17 @@
 #include <boost/algorithm/string.hpp>
 
 Theme::Theme(std::string name, int screenWidth, int screenHeight) {
+    loadTheme(name, screenWidth, screenHeight);
+}
+
+void Theme::loadTheme(const std::string& themeName, int screenWidth, int screenHeight) {
     // Load values from .ini file using Boost.PropertyTree
     boost::property_tree::ptree pt;
 
     baseThemePath = "/userdata/system/.simplemenu/themes/" + 
                     std::to_string(screenWidth) + "x" + 
                     std::to_string(screenHeight) + "/" +
-                    name + "/";
+                    themeName + "/";
 
     boost::property_tree::ini_parser::read_ini(baseThemePath + "theme.ini", pt);
 
