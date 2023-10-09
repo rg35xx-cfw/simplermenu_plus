@@ -23,8 +23,8 @@ Application::Application()
       cfg("/userdata/system/simplermenu_plus/config.ini"),
       controlMapping(cfg),
       renderComponent(cfg),
-      settings(cfg, i18n, this), 
-      romSettings(cfg, i18n, this) {
+      settings(cfg, i18n, this, SettingsType::SYSTEM), 
+      romSettings(cfg, i18n, this, SettingsType::ROM) {
 
     setupCache();
     populateMenu(menu);
@@ -121,7 +121,7 @@ void Application::drawCurrentState() {
         }
         case ROM_SETTINGS:
         {
-            renderComponent.drawRomSettings(currentRomSettingsIndex);
+            renderComponent.drawRomSettings(romSettings.getRomSettings(), currentRomSettingsIndex);
             break;            
         }
     }
@@ -189,6 +189,7 @@ void Application::handleCommand(ControlMap cmd) {
                 else currentSettingsIndex = cfg.getSectionSize(Configuration::SYSTEM) - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
                 currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize(Configuration::SYSTEM));
+                std::cout << "currentSettingsIndex: " << currentSettingsIndex << std::endl;
             }
             break;
         case ROM_SETTINGS:

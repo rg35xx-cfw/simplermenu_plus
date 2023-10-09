@@ -26,6 +26,11 @@ class ISettingsSubject {
   virtual std::string getName() = 0;
 };
 
+enum class SettingsType {
+    SYSTEM,
+    ROM
+};
+
 class Settings : public ISettingsSubject {
 public: 
     struct Setting {
@@ -55,8 +60,10 @@ private:
 
     std::vector<ISettingsObserver *> observers;
 
+    std::set<std::string> themeFolders;
+
 public:
-    Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer);
+    Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer, SettingsType type);
     // ~Settings();
 
     void initializeSettings();
@@ -70,6 +77,7 @@ public:
     void navigateEnter();
 
     std::vector<I18nSetting> getSystemSettings();
+    std::vector<I18nSetting> getRomSettings();
 
     void updateListSetting(const std::set<std::string>& values, bool increase);
     void updateBoolSetting();
@@ -78,13 +86,13 @@ public:
     void updateBrightness(bool increase);
     void updateScreenRefresh(bool increase);
     void updateTheme(bool increase);
+    void updateUSBMode(bool increase);
     void updateLanguage(bool increase);
     void updateOverclock(bool increase);
     void updateShowFPS();
     void saveSettings();
     void restartApplication();
     void quitApplication();
-    void updateUSBMode(bool increase);
     void updateWifi();
     void updateRotation();
 

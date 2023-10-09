@@ -364,7 +364,7 @@ void RenderComponent::drawSystemSettings(std::vector<Settings::I18nSetting> sett
     TTF_CloseFont(setttingsFont);
 }
 
-void RenderComponent::drawRomSettings(int currentSettingIndex) {
+void RenderComponent::drawRomSettings(std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
     std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
     std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
     int settingsFontSize = 32; //FIXME: size needs to be dynamic
@@ -407,7 +407,7 @@ void RenderComponent::drawRomSettings(int currentSettingIndex) {
             theme.getColor(Configuration::ITEMS_FONT_COLOR);
 
         // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, cfg.getKeyByIndex(Configuration::GAME, i).c_str(), color);
+        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, settingList[i].title.c_str(), color);
         int titleWidth = textSurface->w;
 
         int clipWidth = (int)screenWidth*0.8;
@@ -428,7 +428,7 @@ void RenderComponent::drawRomSettings(int currentSettingIndex) {
         renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT));
 
        // Render the value to the right of the title
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, cfg.getValueByIndex(Configuration::GAME, i).c_str(), color);
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, settingList[i].value.c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};

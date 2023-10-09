@@ -1,4 +1,5 @@
 #include <iostream>
+#include <filesystem>
 #include <SDL/SDL.h>
 
 #include <boost/algorithm/string.hpp>
@@ -8,19 +9,23 @@
 #include "Settings.h"
 #include "Exception.h"
 
-Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer) 
+Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer, SettingsType type) 
     : cfg(cfg), i18n(i18n) {
     
-    defaultKeys = {
-        Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
-        Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
-        Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
-        Configuration::LANGUAGE,
-        Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
-        Configuration::QUIT,
-        // ROM SETTINGS
-        Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
-    };
+    if (type == SettingsType::SYSTEM) {
+        defaultKeys = {
+            Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
+            Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
+            Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
+            Configuration::LANGUAGE,
+            Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
+            Configuration::QUIT
+        };
+    } else if (type == SettingsType::ROM) {
+        defaultKeys = {
+            Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
+        };
+    }
 
     attach(observer);
 
@@ -66,6 +71,8 @@ void Settings::navigateLeft() {
             updateScreenRefresh(false);
         } else if (currentKey == Configuration::THEME) {
             updateTheme(false);
+        } else if (currentKey == Configuration::USB_MODE) {
+            updateUSBMode(false);
         } else if (currentKey == Configuration::OVERCLOCK) {
             updateOverclock(false);
         } else if (currentKey == Configuration::SHOW_FPS) {
@@ -88,6 +95,8 @@ void Settings::navigateRight() {
             updateScreenRefresh(true);
         } else if (currentKey == Configuration::THEME) {
             updateTheme(true);
+        } else if (currentKey == Configuration::USB_MODE) {
+            updateUSBMode(false);
         } else if (currentKey == Configuration::OVERCLOCK) {
             updateOverclock(true);
         } else if (currentKey == Configuration::SHOW_FPS) {
@@ -119,20 +128,52 @@ std::vector<Settings::I18nSetting> Settings::getSystemSettings() {
     
     for (const auto& key : enabledKeys) {
         
-        size_t pos = key.find_last_of(".");
-        
-        if (pos != std::string::npos) {
-            try {
-                i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
-                                        settingsMap[key].value
-                                        });
-            } catch (boost::property_tree::ptree_bad_path e) {
-                throw ItemNotFoundException("Language translation not found for " 
-                + key + " in " + i18n.getLang());
+        if (key.find("SYSTEM.") == 0) {
+
+            size_t pos = key.find_last_of(".");
+            
+            if (pos != std::string::npos) {
+                try {
+                    i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                            settingsMap[key].value
+                                            });
+                } catch (boost::property_tree::ptree_bad_path e) {
+                    throw ItemNotFoundException("Language translation not found for " 
+                    + key + " in " + i18n.getLang());
+                }
+            } else {
+                throw ItemNotFoundException("Setting key format unknown: " 
+                    + key);
             }
-        } else {
-            throw ItemNotFoundException("Setting key format unknown: " 
-                + key);
+        }
+    }
+
+    return i18nSettings;
+}
+
+std::vector<Settings::I18nSetting> Settings::getRomSettings() {
+    
+    std::vector<I18nSetting> i18nSettings;
+    
+    for (const auto& key : enabledKeys) {
+
+        if (key.find("GAME.") == 0) {
+        
+            size_t pos = key.find_last_of(".");
+            
+            if (pos != std::string::npos) {
+                try {
+                    i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                            settingsMap[key].value
+                                            });
+                } catch (boost::property_tree::ptree_bad_path e) {
+                    throw ItemNotFoundException("Language translation not found for " 
+                    + key + " in " + i18n.getLang());
+                }
+            } else {
+                throw ItemNotFoundException("Setting key format unknown: " 
+                    + key);
+            }
         }
     }
 
@@ -141,6 +182,22 @@ std::vector<Settings::I18nSetting> Settings::getSystemSettings() {
 
 
 void Settings::initializeSettings() {
+
+    std::string themePath = 
+        cfg.get(Configuration::THEME_PATH) 
+        + cfg.get(Configuration::SCREEN_WIDTH) + "x" 
+        + cfg.get(Configuration::SCREEN_HEIGHT) + "/";
+
+    for (const auto& entry : std::filesystem::directory_iterator(themePath)) {
+        if (entry.is_directory()) {
+                themeFolders.insert(entry.path().filename().string());
+        }
+    }
+    
+    for (const auto& theme: themeFolders) {
+        std::cout << "theme: " << theme << std::endl;
+    }
+
     for (const auto& key : defaultKeys) {
         std::string value = cfg.get(key);
         if (!value.empty()) {
@@ -216,9 +273,19 @@ void Settings::updateListSetting(const std::set<std::string>& values, bool incre
 }
 
 void Settings::updateTheme(bool increase) {
-    updateListSetting(cfg.getList(currentKey), increase);
+    updateListSetting(themeFolders, increase);
+
+    settingsMap[Configuration::THEME].value = currentValue;
 
     std::cout << "UPDATING THEME" << std::endl;
+}
+
+void Settings::updateUSBMode(bool increase) {
+    updateListSetting(cfg.getList(Configuration::USB_MODE_VALUES), increase);
+
+    settingsMap[Configuration::USB_MODE].value = currentValue;
+
+    std::cout << "UPDATING USB MODE" << std::endl;
 }
 
 void Settings::updateLanguage(bool increase) {
@@ -253,13 +320,6 @@ void Settings::updateShowFPS() {
     updateBoolSetting();
 
     std::cout << "UPDATING FPS SHOW" << std::endl;
-}
-
-void Settings::updateUSBMode(bool increase) {
-    updateListSetting(cfg.getList(currentKey), increase);
-
-    std::cout << "UPDATING USB MODE" << std::endl;
-    
 }
 
 void Settings::updateWifi() {
