@@ -55,7 +55,7 @@ void RenderComponent::drawSection(const std::string& name, int numSystems) {
                 cfg.get(Configuration::THEME_PATH) + 
                 std::to_string(cfg.getInt(Configuration::SCREEN_WIDTH)) + "x" +
                 std::to_string(cfg.getInt(Configuration::SCREEN_HEIGHT)) + "/" +
-                cfg.get(Configuration::THEME_NAME) + "/" +
+                cfg.get(Configuration::THEME) + "/" +
                 theme.getValue("GENERAL.section_groups_folder") +
                 helper.getFilenameWithoutExtension(name) + ".png";
 
@@ -160,7 +160,7 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     std::string backgroundPath = cfg.get(Configuration::THEME_PATH) + 
                                  std::to_string(screenWidth) + "x" +
                                  std::to_string(screenHeight) + "/" +
-                                 cfg.get(Configuration::THEME_NAME) + "/" +
+                                 cfg.get(Configuration::THEME) + "/" +
                                  theme.getValue(Configuration::THEME_BACKGROUND);
 
 	if (background == nullptr || lastRom == -1) {

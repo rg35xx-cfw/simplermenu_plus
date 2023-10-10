@@ -146,6 +146,8 @@ public:
 
     void print_list();
 
+    std::vector<std::string> getCores();
+
     void launchRom();
 
     bool isInteger(const std::string &s);

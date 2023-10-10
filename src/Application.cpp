@@ -21,7 +21,7 @@
 Application::Application() 
     : i18n("/userdata/system/simplermenu_plus/i18n.ini"),
       cfg("/userdata/system/simplermenu_plus/config.ini"),
-      theme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
+      theme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
       romSettings(cfg, i18n, this),
@@ -67,7 +67,7 @@ Application::Application()
     }
     std::cout << "]" << std::endl;
 
-    theme.loadTheme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
+    theme.loadTheme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
 
     renderComponent.initialize();
 
@@ -337,6 +337,29 @@ void Application::print_list() {
             }
         }
     }
+}
+
+std::vector<std::string> Application::getCores() {
+
+    std::string folderName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle();
+    std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
+
+    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
+
+    std::vector<std::string> cores;
+
+    // Check if the parentTitle exists in the consoleDataMap
+    if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
+        // Access the ConsoleData for the parentTitle
+        ConsoleData consoleData = consoleDataMap[folderName];
+
+        // Check if the execs vector is not empty
+        if (!consoleData.execs.empty()) {
+            cores = consoleData.execs;
+        }
+    }
+
+    return cores;
 }
 
 void Application::launchRom() {

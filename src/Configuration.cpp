@@ -16,7 +16,6 @@ const std::string Configuration::GAME = std::string("GAME");
 // CONFIG . GLOBAL section
 const std::string Configuration::ALIAS_PATH = std::string("GLOBAL.aliasPath");
 const std::string Configuration::HOME_PATH = std::string("GLOBAL.homePath");
-const std::string Configuration::THEME_NAME = std::string("GLOBAL.themeName");
 const std::string Configuration::THEME_PATH = std::string("GLOBAL.themePath");
 const std::string Configuration::SCREEN_WIDTH = std::string("GLOBAL.screenWidth");
 const std::string Configuration::SCREEN_HEIGHT = std::string("GLOBAL.screenHeight");
@@ -149,7 +148,7 @@ std::string Configuration::getThemePath() const {
         + "x" 
         + std::to_string(getInt(Configuration::SCREEN_HEIGHT)) 
         + "/" 
-        + get(Configuration::THEME_NAME) 
+        + get(Configuration::THEME) 
         + "/";
 
     return themePath;

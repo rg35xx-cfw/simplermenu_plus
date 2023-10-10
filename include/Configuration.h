@@ -48,7 +48,6 @@ public:
     // CONFIG . GLOBAL section
     static const std::string ALIAS_PATH;
     static const std::string HOME_PATH;
-    static const std::string THEME_NAME;
     static const std::string THEME_PATH;
     static const std::string SCREEN_WIDTH;
     static const std::string SCREEN_HEIGHT;

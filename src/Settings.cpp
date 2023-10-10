@@ -65,7 +65,9 @@ void Settings::navigateLeft() {
             updateShowFPS();
         } else if (currentKey == Configuration::LANGUAGE) {
             updateLanguage(false);
-        }   
+        } else if (currentKey == Configuration::CORE_OVERRIDE) {
+            updateCoreOverride(false);
+        }  
     }
     notifySettingsChange(currentKey, currentValue);
 }
@@ -89,7 +91,9 @@ void Settings::navigateRight() {
             updateShowFPS();
         } else if (currentKey == Configuration::LANGUAGE) {
             updateLanguage(true);
-        }
+        } else if (currentKey == Configuration::CORE_OVERRIDE) {
+            updateCoreOverride(true);
+        }  
     }
     notifySettingsChange(currentKey, currentValue);
 }
@@ -260,10 +264,11 @@ void Settings::updateListSetting(const std::set<std::string>& values, bool incre
 
 void Settings::updateTheme(bool increase) {
     updateListSetting(themeFolders, increase);
+    
+    cfg.set(Configuration::THEME, currentValue);
 
     settingsMap[Configuration::THEME].value = currentValue;
 
-    cfg.set(Configuration::THEME_NAME, currentValue);
 
     std::cout << "UPDATING THEME" << std::endl;
 }
@@ -334,6 +339,13 @@ void Settings::quitApplication() {
     exit(0);
 }
 
+void Settings::updateCoreOverride(bool increase) {
+    updateListSetting(cores, increase);
+
+    settingsMap[Configuration::CORE_OVERRIDE].value = currentValue;
+
+    std::cout << "UPDATING CORE OVERRIDE" << std::endl;
+}
 
 ////////////
 // Methods to manage SETTINGS OBSERVERS

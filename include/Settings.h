@@ -46,6 +46,7 @@ private:
     std::vector<ISettingsObserver *> observers;
 
     std::set<std::string> themeFolders;
+     std::set<std::string> cores;
 
 protected:
     Configuration& cfg;
@@ -88,6 +89,7 @@ public:
     void quitApplication();
     void updateWifi();
     void updateRotation();
+    void updateCoreOverride(bool increase);
 
     /**
      * ISettingsSubject methods
@@ -141,6 +143,8 @@ public:
         attach(observer);
 
         initializeSettings();
+
+
 
         enabledKeys = getEnabledKeys();
     }

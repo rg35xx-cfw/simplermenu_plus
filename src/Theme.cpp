@@ -95,6 +95,6 @@ std::string Theme::getThemePath() const {
 
 
     std::string themePath = getValue(Configuration::THEME_PATH) + std::to_string(getIntValue(Configuration::SCREEN_WIDTH)) +
-                            "x" + std::to_string(getIntValue(Configuration::SCREEN_HEIGHT)) + "/" + getValue(Configuration::THEME_NAME) + "/";
+                            "x" + std::to_string(getIntValue(Configuration::SCREEN_HEIGHT)) + "/" + getValue(Configuration::THEME) + "/";
     return themePath;
 }
