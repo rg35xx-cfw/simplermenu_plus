@@ -42,8 +42,8 @@ private:
     Configuration cfg;
     Theme theme;
     I18n i18n;
-    Settings settings;
-    Settings romSettings;
+    SystemSettings systemSettings;
+    RomSettings romSettings;
 
     ControlMapping controlMapping;
     RenderComponent renderComponent;

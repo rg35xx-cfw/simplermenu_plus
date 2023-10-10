@@ -3,9 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
-
 #include "I18n.h"
-
 
 class Configuration;
 
@@ -26,11 +24,6 @@ class ISettingsSubject {
   virtual std::string getName() = 0;
 };
 
-enum class SettingsType {
-    SYSTEM,
-    ROM
-};
-
 class Settings : public ISettingsSubject {
 public: 
     struct Setting {
@@ -45,39 +38,39 @@ public:
     };
 
 private:
-    Configuration& cfg;
-    I18n& i18n;
     std::string currentKey;
     std::string currentValue;
 
-    // Define default settings with their keys
-    std::vector<std::string> defaultKeys;
-
-    std::map<std::string, Setting> settingsMap;
-
     int currentIndex;
-    std::vector<std::string> enabledKeys;
 
     std::vector<ISettingsObserver *> observers;
 
     std::set<std::string> themeFolders;
 
-public:
-    Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer, SettingsType type);
-    // ~Settings();
+protected:
+    Configuration& cfg;
+    I18n& i18n;
 
-    void initializeSettings();
+    std::vector<std::string> enabledKeys;
+
+    std::map<std::string, Setting> settingsMap;
 
     std::vector<std::string> getEnabledKeys();
+
+public:
+    Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer);
+    // ~Settings();
+
+    // Define default settings with their keys
+    std::vector<std::string> defaultKeys;
+
+    void initializeSettings();
 
     void navigateUp();
     void navigateDown();
     void navigateLeft();
     void navigateRight();
     void navigateEnter();
-
-    std::vector<I18nSetting> getSystemSettings();
-    std::vector<I18nSetting> getRomSettings();
 
     void updateListSetting(const std::set<std::string>& values, bool increase);
     void updateBoolSetting();
@@ -112,3 +105,46 @@ public:
         return settingsMap[currentKey].value;
     };
 };
+
+class RomSettings : public Settings {
+public:
+    RomSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
+        : Settings(cfg, i18n, observer) {
+        defaultKeys = {
+            Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
+        };    
+
+        attach(observer);
+
+        initializeSettings();
+
+        enabledKeys = getEnabledKeys();
+    }
+
+    std::vector<Settings::I18nSetting> getRomSettings();
+
+};
+
+class SystemSettings : public Settings {
+public:
+    SystemSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
+        : Settings(cfg, i18n, observer) {
+        defaultKeys = {
+            Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
+            Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
+            Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
+            Configuration::LANGUAGE,
+            Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
+            Configuration::QUIT
+        };
+
+        attach(observer);
+
+        initializeSettings();
+
+        enabledKeys = getEnabledKeys();
+    }
+
+    std::vector<Settings::I18nSetting> getSystemSettings();
+};
+

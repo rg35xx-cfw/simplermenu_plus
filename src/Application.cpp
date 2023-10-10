@@ -24,8 +24,9 @@ Application::Application()
       theme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
-      settings(cfg, i18n, this, SettingsType::SYSTEM), 
-      romSettings(cfg, i18n, this, SettingsType::ROM) {
+      romSettings(cfg, i18n, this),
+      systemSettings(cfg, i18n, this)
+ {
 
     setupCache();
     populateMenu(menu);
@@ -120,7 +121,7 @@ void Application::drawCurrentState() {
         }
         case SYSTEM_SETTINGS:
         {
-            renderComponent.drawSystemSettings(settings.getSystemSettings(), currentSettingsIndex);
+            renderComponent.drawSystemSettings(systemSettings.getSystemSettings(), currentSettingsIndex);
             break;
         }
         case ROM_SETTINGS:
@@ -216,19 +217,19 @@ void Application::handleCommand(ControlMap cmd) {
 
     if(currentMenuLevel == SYSTEM_SETTINGS) {
         if (cmd == CMD_UP) {
-            settings.navigateUp();
+            systemSettings.navigateUp();
         } else if (cmd == CMD_DOWN) {
-            settings.navigateDown();
+            systemSettings.navigateDown();
         } else if (cmd == CMD_LEFT) {
-            settings.navigateLeft();
+            systemSettings.navigateLeft();
         } else if (cmd == CMD_RIGHT) {
-            settings.navigateRight();
+            systemSettings.navigateRight();
         } else if (cmd == CMD_ENTER) {
-            settings.navigateEnter();
+            systemSettings.navigateEnter();
         }
 
-        std::string currentKey = settings.getCurrentKey();
-        std::string currentValue = settings.getCurrentValue();
+        std::string currentKey = systemSettings.getCurrentKey();
+        std::string currentValue = systemSettings.getCurrentValue();
 
     }
 

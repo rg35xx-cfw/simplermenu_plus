@@ -10,24 +10,9 @@
 #include "Settings.h"
 #include "Exception.h"
 
-Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer, SettingsType type) 
+Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer) 
     : cfg(cfg), i18n(i18n) {
     
-    if (type == SettingsType::SYSTEM) {
-        defaultKeys = {
-            Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
-            Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
-            Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
-            Configuration::LANGUAGE,
-            Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
-            Configuration::QUIT
-        };
-    } else if (type == SettingsType::ROM) {
-        defaultKeys = {
-            Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
-        };
-    }
-
     attach(observer);
 
     initializeSettings();
@@ -123,7 +108,7 @@ void Settings::navigateEnter() {
 
 }
 
-std::vector<Settings::I18nSetting> Settings::getSystemSettings() {
+std::vector<Settings::I18nSetting> SystemSettings::getSystemSettings() {
     
     std::vector<I18nSetting> i18nSettings;
     
@@ -152,7 +137,7 @@ std::vector<Settings::I18nSetting> Settings::getSystemSettings() {
     return i18nSettings;
 }
 
-std::vector<Settings::I18nSetting> Settings::getRomSettings() {
+std::vector<Settings::I18nSetting> RomSettings::getRomSettings() {
     
     std::vector<I18nSetting> i18nSettings;
     

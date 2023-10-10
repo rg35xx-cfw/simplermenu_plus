@@ -10,6 +10,7 @@
 #include "Configuration.h"
 #include "Theme.h"
 #include "HelperUtils.h"
+#include "Settings.h"
 
 class RenderComponent {
 private:
