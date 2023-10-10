@@ -394,7 +394,7 @@ void Application::launchRom() {
 
     pid_t pid = fork();
     if (pid == 0) {
-            execlp("sh","sh", execLauncher.c_str(), romPath.c_str());
+            execlp("launcher.sh","launcher.sh", execLauncher.c_str(), romPath.c_str(), NULL);
             exit(1);
     } else if (pid > 0) {
             SDL_Quit();

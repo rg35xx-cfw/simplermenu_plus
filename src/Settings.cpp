@@ -291,7 +291,6 @@ void Settings::updateLanguage(bool increase) {
 }
 
 void Settings::updateOverclock(bool increase) {
-    // currentValue = cfg.get(Configuration::OVERCLOCK);
     updateListSetting(cfg.getList(Configuration::OVERCLOCK_VALUES), increase);
 
     settingsMap[Configuration::OVERCLOCK].value = currentValue;
