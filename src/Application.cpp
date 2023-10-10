@@ -31,41 +31,41 @@ Application::Application()
     setupCache();
     populateMenu(menu);
 
-    // std::cout << "Available languages: [ ";
-    // std::set<std::string> langs = i18n.getLanguages();
-    // std::copy(langs.begin(),
-    //           langs.end(),
-    //           std::ostream_iterator<std::string>(std::cout, " "));
-    // std::cout << "]" << std::endl;
+    std::cout << "Available languages: [ ";
+    std::set<std::string> langs = i18n.getLanguages();
+    std::copy(langs.begin(),
+              langs.end(),
+              std::ostream_iterator<std::string>(std::cout, " "));
+    std::cout << "]" << std::endl;
 
-    // std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    // std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    // std::cout << "Available settings: [ ";
-    // std::vector<Settings::I18nSetting> settingList = settings.getSystemSettings();
-    // for (const auto& setting : settingList) {
-    //     std::cout << setting.title << ":" << setting.value << ", ";
-    // }
-    // std::cout << "]" << std::endl;
+    std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    std::cout << "Available settings: [ ";
+    std::vector<Settings::I18nSetting> settingList = systemSettings.getSystemSettings();
+    for (const auto& setting : settingList) {
+        std::cout << setting.title << ":" << setting.value << ", ";
+    }
+    std::cout << "]" << std::endl;
 
-    // i18n.setLang("SPANISH");
-    // std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    // std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    // std::cout << "Available settings: [ ";
-    // settingList = settings.getSystemSettings();
-    // for (const auto& setting : settingList) {
-    //     std::cout << setting.title << ":" << setting.value << ", ";
-    // }
-    // std::cout << "]" << std::endl;
+    i18n.setLang("SPANISH");
+    std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    std::cout << "Available settings: [ ";
+    settingList = systemSettings.getSystemSettings();
+    for (const auto& setting : settingList) {
+        std::cout << setting.title << ":" << setting.value << ", ";
+    }
+    std::cout << "]" << std::endl;
 
-    // i18n.setLang("ENGLISH");
-    // std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    // std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    // std::cout << "Available settings: [ ";
-    // settingList = settings.getSystemSettings();
-    // for (const auto& setting : settingList) {
-    //     std::cout << setting.title << ":" << setting.value << ", ";
-    // }
-    // std::cout << "]" << std::endl;
+    i18n.setLang("ENGLISH");
+    std::cout << "Current lang: " << i18n.getLang() << std::endl;
+    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
+    std::cout << "Available settings: [ ";
+    settingList = systemSettings.getSystemSettings();
+    for (const auto& setting : settingList) {
+        std::cout << setting.title << ":" << setting.value << ", ";
+    }
+    std::cout << "]" << std::endl;
 
     theme.loadTheme(cfg.get(Configuration::THEME_NAME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
 
@@ -121,12 +121,12 @@ void Application::drawCurrentState() {
         }
         case SYSTEM_SETTINGS:
         {
-            renderComponent.drawSystemSettings(systemSettings.getSystemSettings(), currentSettingsIndex);
+            renderComponent.drawSystemSettings(i18n.get(I18n::SYSTEM_SETTINGS), systemSettings.getSystemSettings(), currentSettingsIndex);
             break;
         }
         case ROM_SETTINGS:
         {
-            renderComponent.drawRomSettings(romSettings.getRomSettings(), currentRomSettingsIndex);
+            renderComponent.drawRomSettings(i18n.get(I18n::ROM_SETTINGS), romSettings.getRomSettings(), currentRomSettingsIndex);
             break;            
         }
     }

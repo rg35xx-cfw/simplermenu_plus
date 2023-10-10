@@ -276,7 +276,7 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     renderText(folderName, theme.getIntValue(Configuration::TEXT1_X), theme.getIntValue(Configuration::TEXT1_Y), {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT)); 
 }
 
-void RenderComponent::drawSystemSettings(std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
+void RenderComponent::drawSystemSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
 
     std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
     std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
@@ -294,7 +294,7 @@ void RenderComponent::drawSystemSettings(std::vector<Settings::I18nSetting> sett
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
 
-    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, "SETTINGS", {255,255,255});
+    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, settingsTitle.c_str(), {255,255,255});
     SDL_Rect titlePos = {screenWidth / 2 - titleSurface->w /2 , 5, 0,0};
     SDL_BlitSurface(titleSurface, nullptr, screen, &titlePos);
 
@@ -363,7 +363,7 @@ void RenderComponent::drawSystemSettings(std::vector<Settings::I18nSetting> sett
     TTF_CloseFont(setttingsFont);
 }
 
-void RenderComponent::drawRomSettings(std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
+void RenderComponent::drawRomSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
     std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
     std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
     int settingsFontSize = 32; //FIXME: size needs to be dynamic
@@ -380,7 +380,7 @@ void RenderComponent::drawRomSettings(std::vector<Settings::I18nSetting> setting
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
 
-    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, "ROM SETTINGS", {255,255,255});
+    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, settingsTitle.c_str(), {255,255,255});
     SDL_Rect titlePos = {screenWidth / 2 - titleSurface->w /2 , 5, 0,0};
     SDL_BlitSurface(titleSurface, nullptr, screen, &titlePos);
 

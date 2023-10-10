@@ -28,6 +28,7 @@ public:
 
     static const std::string SYSTEM_SETTINGS;
     
+    static const std::string ROM_SETTINGS;
 
     I18n(const std::string& i18nFilepath);
 
