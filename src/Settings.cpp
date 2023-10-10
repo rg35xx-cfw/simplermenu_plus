@@ -265,10 +265,7 @@ void Settings::updateListSetting(const std::set<std::string>& values, bool incre
 void Settings::updateTheme(bool increase) {
     updateListSetting(themeFolders, increase);
     
-    cfg.set(Configuration::THEME, currentValue);
-
     settingsMap[Configuration::THEME].value = currentValue;
-
 
     std::cout << "UPDATING THEME" << std::endl;
 }
