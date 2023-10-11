@@ -166,9 +166,11 @@ void Application::handleCommand(ControlMap cmd) {
                 const Section& section = menu.getSections()[currentSectionIndex];
                 if (currentFolderIndex > 0) currentFolderIndex--;
                 else currentFolderIndex = section.getFolders().size() - 1;
+                folderSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
             } else if (cmd == CMD_DOWN) { // DOWN
                 const Section& section = menu.getSections()[currentSectionIndex];
                 currentFolderIndex = (currentFolderIndex + 1) % section.getFolders().size();
+                folderSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
             } else if (cmd == CMD_ROM_SETTINGS) {
                 currentMenuLevel = FOLDER_SETTINGS;
                 renderComponent.resetValues();
