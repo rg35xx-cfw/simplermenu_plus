@@ -144,6 +144,7 @@ void Application::handleCommand(ControlMap cmd) {
                 currentMenuLevel = MENU_FOLDER;
                 currentFolderIndex = 0;
                 renderComponent.resetValues();
+                folderSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
             } else if (cmd == CMD_UP) { // UP
                 if (currentSectionIndex > 0) currentSectionIndex--;
                 else currentSectionIndex = menu.getSections().size() - 1;
@@ -195,6 +196,18 @@ void Application::handleCommand(ControlMap cmd) {
             }
             break;
         case SYSTEM_SETTINGS:
+            if (cmd == CMD_BACK) { // ESC
+                currentMenuLevel = MENU_FOLDER;
+                renderComponent.resetValues();
+            } else if (cmd == CMD_UP) { // UP
+                if (currentSettingsIndex > 0) currentSettingsIndex--;
+                else currentSettingsIndex = cfg.getSectionSize(Configuration::SYSTEM) - 1;
+            } else if (cmd == CMD_DOWN) { // DOWN
+                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize(Configuration::SYSTEM));
+                std::cout << "currentSettingsIndex: " << currentSettingsIndex << std::endl;
+            }
+            break;
+        case FOLDER_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
                 currentMenuLevel = MENU_FOLDER;
                 renderComponent.resetValues();
