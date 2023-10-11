@@ -71,7 +71,6 @@ Application::Application()
 
     renderComponent.initialize();
 
-
     // Initialize joystick
     if (SDL_Init(SDL_INIT_JOYSTICK) < 0) {
         std::cerr << "Failed to initialize SDL joystick subsystem: " << SDL_GetError() << std::endl;
@@ -152,6 +151,7 @@ void Application::handleCommand(ControlMap cmd) {
                 currentMenuLevel = MENU_ROM;
                 currentRomIndex = 0;
                 renderComponent.resetValues();
+                romSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
             } else if (cmd == CMD_BACK) { // KEY_B/ESC
                 currentMenuLevel = MENU_SECTION;
                 renderComponent.resetValues();
@@ -372,19 +372,25 @@ void Application::launchRom() {
 
     std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
 
-    std::string execLauncher;
+    // We are using the last selected core for a given system, by default it's the first available core only another 
+    // core has been selected in rom settings -> core override
+    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + ".simplemenu/launchers/" + cfg.get(Configuration::CORE_OVERRIDE);
 
+    std::vector<std::string> cores = getCores();
+
+/*
     // Check if the parentTitle exists in the consoleDataMap
     if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
         // Access the ConsoleData for the parentTitle
         ConsoleData consoleData = consoleDataMap[folderName];
 
         // Check if the execs vector is not empty
-        if (!consoleData.execs.empty()) {
+        //if (!consoleData.execs.empty()) {
             // Retrieve the first exec string
-            execLauncher = consoleData.execs.front();
-        }
+            execLauncher = cores[1];//consoleData.execs.front();
+        //}
     }
+*/
 
     // Launch emulator
     std::string command = execLauncher + " '" + romPath + "'";

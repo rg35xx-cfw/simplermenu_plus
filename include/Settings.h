@@ -46,7 +46,6 @@ private:
     std::vector<ISettingsObserver *> observers;
 
     std::set<std::string> themeFolders;
-     std::set<std::string> cores;
 
 protected:
     Configuration& cfg;
@@ -57,6 +56,8 @@ protected:
     std::map<std::string, Setting> settingsMap;
 
     std::vector<std::string> getEnabledKeys();
+
+    std::set<std::string> cores;
 
 public:
     Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer);
@@ -125,6 +126,32 @@ public:
 
     std::vector<Settings::I18nSetting> getRomSettings();
 
+public:
+    void getCores(std::string sectionName, std::string folderName) {
+
+        std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
+
+        cores.clear();
+
+        // Check if the parentTitle exists in the consoleDataMap
+        if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
+            // Access the ConsoleData for the parentTitle
+            ConsoleData consoleData = consoleDataMap[folderName];
+
+            // Check if the execs vector is not empty
+            if (!consoleData.execs.empty()) {
+                for(auto exec: consoleData.execs) {
+                    cores.insert(exec.substr(exec.find_last_of("/\\") + 1));
+                }
+            }
+        }
+
+        // By default we select the first core from the list
+        // TODO: need to add the logic to override a core/launcher per rom
+        std::string currentCore = *cores.begin();
+        settingsMap[Configuration::CORE_OVERRIDE] = {Configuration::CORE_OVERRIDE, currentCore, true};
+        notifySettingsChange(Configuration::CORE_OVERRIDE, currentCore);
+    }
 };
 
 class SystemSettings : public Settings {
@@ -143,8 +170,6 @@ public:
         attach(observer);
 
         initializeSettings();
-
-
 
         enabledKeys = getEnabledKeys();
     }
