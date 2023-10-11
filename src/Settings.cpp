@@ -12,16 +12,6 @@
 
 Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer) 
     : cfg(cfg), i18n(i18n) {
-    
-    attach(observer);
-
-    initializeSettings();
-
-    enabledKeys = getEnabledKeys();
-    currentIndex = 0;
-    if(!enabledKeys.empty()) {
-        currentKey = enabledKeys[currentIndex];
-    }
 }
 
 void Settings::navigateUp() {
@@ -60,13 +50,15 @@ void Settings::navigateLeft() {
         } else if (currentKey == Configuration::USB_MODE) {
             updateUSBMode(false);
         } else if (currentKey == Configuration::OVERCLOCK) {
-            updateOverclock(false);
+            updateOverclock(true);
         } else if (currentKey == Configuration::SHOW_FPS) {
             updateShowFPS();
         } else if (currentKey == Configuration::LANGUAGE) {
             updateLanguage(false);
         } else if (currentKey == Configuration::CORE_OVERRIDE) {
             updateCoreOverride(false);
+        } else if (currentKey == Configuration::CORE_SELECTION) {
+            updateCoreSelection(false);
         }  
     }
     notifySettingsChange(currentKey, currentValue);
@@ -86,14 +78,16 @@ void Settings::navigateRight() {
         } else if (currentKey == Configuration::USB_MODE) {
             updateUSBMode(false);
         } else if (currentKey == Configuration::OVERCLOCK) {
-            updateOverclock(true);
+            updateOverclock(false);
         } else if (currentKey == Configuration::SHOW_FPS) {
             updateShowFPS();
         } else if (currentKey == Configuration::LANGUAGE) {
             updateLanguage(true);
         } else if (currentKey == Configuration::CORE_OVERRIDE) {
             updateCoreOverride(true);
-        }  
+        } else if (currentKey == Configuration::CORE_SELECTION) {
+            updateCoreSelection(true);
+        }     
     }
     notifySettingsChange(currentKey, currentValue);
 }
@@ -225,6 +219,12 @@ void Settings::initializeSettings() {
         } else {
             settingsMap[key] = {key, "", false}; // disabled
         }
+    }
+
+    enabledKeys = getEnabledKeys();
+    currentIndex = 0;
+    if(!enabledKeys.empty()) {
+        currentKey = enabledKeys[currentIndex];
     }
 }
 
@@ -362,6 +362,14 @@ void Settings::quitApplication() {
     std::cout << "QUIT..." << std::endl;
     SDL_Quit();
     exit(0);
+}
+
+void Settings::updateCoreSelection(bool increase) {
+    updateListSetting(cores, increase);
+
+    settingsMap[Configuration::CORE_SELECTION].value = currentValue;
+
+    std::cout << "UPDATING CORE SELECTION" << std::endl;
 }
 
 void Settings::updateCoreOverride(bool increase) {

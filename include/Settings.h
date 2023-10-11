@@ -90,6 +90,7 @@ public:
     void quitApplication();
     void updateWifi();
     void updateRotation();
+    void updateCoreSelection(bool increase);
     void updateCoreOverride(bool increase);
 
     /**

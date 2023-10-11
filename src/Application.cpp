@@ -212,11 +212,11 @@ void Application::handleCommand(ControlMap cmd) {
                 currentMenuLevel = MENU_FOLDER;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                if (currentSettingsIndex > 0) currentSettingsIndex--;
-                else currentSettingsIndex = cfg.getSectionSize(Configuration::SYSTEM) - 1;
+                if (currentFolderIndex > 0) currentFolderIndex--;
+                else currentFolderIndex = cfg.getSectionSize(Configuration::FOLDER) - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentSettingsIndex = (currentSettingsIndex + 1) % (cfg.getSectionSize(Configuration::SYSTEM));
-                std::cout << "currentSettingsIndex: " << currentSettingsIndex << std::endl;
+                currentFolderIndex = (currentFolderIndex + 1) % (cfg.getSectionSize(Configuration::FOLDER));
+                std::cout << "currentSettingsIndex: " << currentFolderIndex << std::endl;
             }
             break;
         case ROM_SETTINGS:
@@ -252,6 +252,24 @@ void Application::handleCommand(ControlMap cmd) {
 
         std::string currentKey = systemSettings.getCurrentKey();
         std::string currentValue = systemSettings.getCurrentValue();
+
+    }
+
+    if(currentMenuLevel == FOLDER_SETTINGS) {
+        if (cmd == CMD_UP) {
+            folderSettings.navigateUp();
+        } else if (cmd == CMD_DOWN) {
+            folderSettings.navigateDown();
+        } else if (cmd == CMD_LEFT) {
+            folderSettings.navigateLeft();
+        } else if (cmd == CMD_RIGHT) {
+            folderSettings.navigateRight();
+        } else if (cmd == CMD_ENTER) {
+            folderSettings.navigateEnter();
+        }
+
+        std::string currentKey = folderSettings.getCurrentKey();
+        std::string currentValue = folderSettings.getCurrentValue();
 
     }
 
