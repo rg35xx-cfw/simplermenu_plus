@@ -348,29 +348,6 @@ void Application::print_list() {
     }
 }
 
-std::vector<std::string> Application::getCores() {
-
-    std::string folderName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle();
-    std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
-
-    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
-
-    std::vector<std::string> cores;
-
-    // Check if the parentTitle exists in the consoleDataMap
-    if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
-        // Access the ConsoleData for the parentTitle
-        ConsoleData consoleData = consoleDataMap[folderName];
-
-        // Check if the execs vector is not empty
-        if (!consoleData.execs.empty()) {
-            cores = consoleData.execs;
-        }
-    }
-
-    return cores;
-}
-
 void Application::launchRom() {
 
     std::string romName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()[currentRomIndex].getTitle();
@@ -384,22 +361,6 @@ void Application::launchRom() {
     // We are using the last selected core for a given system, by default it's the first available core only another 
     // core has been selected in rom settings -> core override
     std::string execLauncher = cfg.get(Configuration::HOME_PATH) + ".simplemenu/launchers/" + cfg.get(Configuration::CORE_OVERRIDE);
-
-    std::vector<std::string> cores = getCores();
-
-/*
-    // Check if the parentTitle exists in the consoleDataMap
-    if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
-        // Access the ConsoleData for the parentTitle
-        ConsoleData consoleData = consoleDataMap[folderName];
-
-        // Check if the execs vector is not empty
-        //if (!consoleData.execs.empty()) {
-            // Retrieve the first exec string
-            execLauncher = cores[1];//consoleData.execs.front();
-        //}
-    }
-*/
 
     // Launch emulator
     std::string command = execLauncher + " '" + romPath + "'";
