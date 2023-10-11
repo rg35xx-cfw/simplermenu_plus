@@ -43,6 +43,7 @@ public:
 
     static const std::string GLOBAL;
     static const std::string SYSTEM;
+    static const std::string FOLDER;
     static const std::string GAME;
 
     // CONFIG . GLOBAL section
@@ -70,6 +71,9 @@ public:
     static const std::string SAVE_SETTINGS;
     static const std::string RESTART;
     static const std::string QUIT;
+
+    // CONFIG . FOLDER section
+    static const std::string CORE_SELECTION;
 
     // CONFIG . GAME section
     static const std::string ROM_OVERCLOCK;

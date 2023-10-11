@@ -24,8 +24,9 @@ Application::Application()
       theme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
-      romSettings(cfg, i18n, this),
-      systemSettings(cfg, i18n, this)
+      systemSettings(cfg, i18n, this),
+      folderSettings(cfg, i18n, this),
+      romSettings(cfg, i18n, this)
  {
 
     setupCache();
@@ -123,6 +124,11 @@ void Application::drawCurrentState() {
             renderComponent.drawSystemSettings(i18n.get(I18n::SYSTEM_SETTINGS), systemSettings.getSystemSettings(), currentSettingsIndex);
             break;
         }
+        case FOLDER_SETTINGS:
+        {
+            renderComponent.drawFolderSettings(i18n.get(I18n::FOLDER_SETTINGS), folderSettings.getFolderSettings(), currentFolderSettingsIndex);
+            break;
+        }
         case ROM_SETTINGS:
         {
             renderComponent.drawRomSettings(i18n.get(I18n::ROM_SETTINGS), romSettings.getRomSettings(), currentRomSettingsIndex);
@@ -162,6 +168,9 @@ void Application::handleCommand(ControlMap cmd) {
             } else if (cmd == CMD_DOWN) { // DOWN
                 const Section& section = menu.getSections()[currentSectionIndex];
                 currentFolderIndex = (currentFolderIndex + 1) % section.getFolders().size();
+            } else if (cmd == CMD_ROM_SETTINGS) {
+                currentMenuLevel = FOLDER_SETTINGS;
+                renderComponent.resetValues();
             }
             break;
             

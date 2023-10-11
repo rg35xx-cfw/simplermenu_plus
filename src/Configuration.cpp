@@ -11,6 +11,7 @@
 
 const std::string Configuration::GLOBAL = std::string("GLOBAL");
 const std::string Configuration::SYSTEM = std::string("SYSTEM");
+const std::string Configuration::FOLDER = std::string("FOLDER");
 const std::string Configuration::GAME = std::string("GAME");
 
 // CONFIG . GLOBAL section
@@ -39,6 +40,9 @@ const std::string Configuration::UPDATE_CACHES = std::string("SYSTEM.updateCache
 const std::string Configuration::SAVE_SETTINGS = std::string("SYSTEM.saveSettings");
 const std::string Configuration::RESTART = std::string("SYSTEM.restart");
 const std::string Configuration::QUIT = std::string("SYSTEM.quit");
+
+// CONFIG . FOLDER section
+const std::string Configuration::CORE_SELECTION = std::string("FOLDER.coreSelection");
 
 // CONFIG . GAME section
 const std::string Configuration::ROM_OVERCLOCK = std::string("GAME.romOverclock");

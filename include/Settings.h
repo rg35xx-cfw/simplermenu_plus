@@ -109,6 +109,47 @@ public:
     };
 };
 
+class SystemSettings : public Settings {
+public:
+    SystemSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
+        : Settings(cfg, i18n, observer) {
+        defaultKeys = {
+            Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
+            Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
+            Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
+            Configuration::LANGUAGE,
+            Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
+            Configuration::QUIT
+        };
+
+        attach(observer);
+
+        initializeSettings();
+
+        enabledKeys = getEnabledKeys();
+    }
+
+    std::vector<Settings::I18nSetting> getSystemSettings();
+};
+
+class FolderSettings : public Settings {
+public:
+    FolderSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
+        : Settings(cfg, i18n, observer) {
+        defaultKeys = {
+            Configuration::CORE_SELECTION
+        };
+
+        attach(observer);
+
+        initializeSettings();
+
+        enabledKeys = getEnabledKeys();
+    }
+
+    std::vector<Settings::I18nSetting> getFolderSettings();
+};
+
 class RomSettings : public Settings {
 public:
     RomSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
@@ -154,26 +195,4 @@ public:
     }
 };
 
-class SystemSettings : public Settings {
-public:
-    SystemSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
-        : Settings(cfg, i18n, observer) {
-        defaultKeys = {
-            Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
-            Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
-            Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
-            Configuration::LANGUAGE,
-            Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
-            Configuration::QUIT
-        };
-
-        attach(observer);
-
-        initializeSettings();
-
-        enabledKeys = getEnabledKeys();
-    }
-
-    std::vector<Settings::I18nSetting> getSystemSettings();
-};
 

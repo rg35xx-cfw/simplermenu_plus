@@ -193,6 +193,7 @@ public:
     void drawFolder(const std::string& name, const std::string& path, int numRoms);
     void drawRomList(const std::string& folderName, const std::vector<std::pair<std::string, std::string>>& romData, int currentRomIndex);
     void drawSystemSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex);
+    void drawFolderSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex);
     void drawRomSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex);
     void loadThumbnail(const std::string& romPath);
     void printFPS(int fps);

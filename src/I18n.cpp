@@ -10,6 +10,7 @@
 ////////
 
 const std::string I18n::SYSTEM_SETTINGS = std::string("systemSettings");
+const std::string I18n::FOLDER_SETTINGS = std::string("folderSettings");
 const std::string I18n::ROM_SETTINGS = std::string("romSettings");
 
 

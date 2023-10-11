@@ -27,6 +27,8 @@ public:
     ////////
 
     static const std::string SYSTEM_SETTINGS;
+
+    static const std::string FOLDER_SETTINGS;
     
     static const std::string ROM_SETTINGS;
 

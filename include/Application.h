@@ -43,6 +43,7 @@ private:
     Theme theme;
     I18n i18n;
     SystemSettings systemSettings;
+    FolderSettings folderSettings;
     RomSettings romSettings;
 
     ControlMapping controlMapping;
@@ -55,6 +56,7 @@ private:
         MENU_FOLDER,
         MENU_ROM,
         SYSTEM_SETTINGS,
+        FOLDER_SETTINGS,
         ROM_SETTINGS
     };
 
@@ -64,6 +66,7 @@ private:
     int currentFolderIndex = 0;
     int currentRomIndex = 0;
     int currentSettingsIndex = 0;
+    int currentFolderSettingsIndex = 0;
     int currentRomSettingsIndex = 0;
     int currentSettingsValue = 0;
 

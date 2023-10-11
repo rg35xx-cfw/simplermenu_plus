@@ -141,6 +141,35 @@ std::vector<Settings::I18nSetting> SystemSettings::getSystemSettings() {
     return i18nSettings;
 }
 
+std::vector<Settings::I18nSetting> FolderSettings::getFolderSettings() {
+    
+    std::vector<I18nSetting> i18nSettings;
+    
+    for (const auto& key : enabledKeys) {
+
+        if (key.find("FOLDER.") == 0) {
+        
+            size_t pos = key.find_last_of(".");
+            
+            if (pos != std::string::npos) {
+                try {
+                    i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                            settingsMap[key].value
+                                            });
+                } catch (boost::property_tree::ptree_bad_path e) {
+                    throw ItemNotFoundException("Language translation not found for " 
+                    + key + " in " + i18n.getLang());
+                }
+            } else {
+                throw ItemNotFoundException("Setting key format unknown: " 
+                    + key);
+            }
+        }
+    }
+
+    return i18nSettings;
+}
+
 std::vector<Settings::I18nSetting> RomSettings::getRomSettings() {
     
     std::vector<I18nSetting> i18nSettings;
