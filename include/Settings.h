@@ -4,27 +4,11 @@
 #include <map>
 #include <vector>
 #include "I18n.h"
+#include "IObservers.h"
 
 class Configuration;
 
-class ISettingsObserver {
- public:
-  virtual ~ISettingsObserver(){};
-  virtual void settingsChanged(const std::string &key, 
-                               const std::string &value) = 0;
-  virtual std::string getName() = 0;
-};
-
-class ISettingsSubject {
- public:
-  virtual ~ISettingsSubject(){};
-  virtual void attach(ISettingsObserver *observer) = 0;
-  virtual void detach(ISettingsObserver *observer) = 0;
-  virtual void notifySettingsChange(const std::string &key, const std::string &value) = 0;
-  virtual std::string getName() = 0;
-};
-
-class Settings : public ISettingsSubject {
+class Settings : public ISettingsSubject, public ILanguageObserver {
 public: 
     struct Setting {
         std::string key;
@@ -47,20 +31,33 @@ private:
 
     std::set<std::string> themeFolders;
 
+
 protected:
     Configuration& cfg;
     I18n& i18n;
+    std::vector<I18nSetting> i18nSettings;
+    bool settingsModified;
 
     std::vector<std::string> enabledKeys;
 
     std::map<std::string, Setting> settingsMap;
 
-    std::vector<std::string> getEnabledKeys();
-
     std::set<std::string> cores;
 
+    std::vector<std::string> getEnabledKeys();
+
+    void reloadI18nSettings();
+
+
+    /**
+     * ISettingsSubject methods
+     */
+    void notifySettingsChange(const std::string &key, const std::string &value) override;
+
+
 public:
-    Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer);
+    Settings(Configuration& cfg, I18n& i18n, 
+             ISettingsObserver *observer, ILanguageSubject *langSubject);
     // ~Settings();
 
     // Define default settings with their keys
@@ -93,62 +90,62 @@ public:
     void updateCoreSelection(bool increase);
     void updateCoreOverride(bool increase);
 
+    std::string getCurrentKey();
+    std::string getCurrentValue();
+
     /**
      * ISettingsSubject methods
     */
     void attach(ISettingsObserver *observer) override;
     void detach(ISettingsObserver *observer) override;
-    void notifySettingsChange(const std::string &key, const std::string &value) override;
-    std::string getName() override;
     
+    /**
+     * ILanguageObserver methods 
+     */
+    virtual void languageChanged() = 0;
 
-    std::string getCurrentKey() {
-        return currentKey;
-    };
-    std::string getCurrentValue() {
-        return settingsMap[currentKey].value;
-    };
+    /**
+     * ISettingsSubject and ILanguageObserver common methods
+     */
+    virtual std::string getName() = 0;
+    
 };
 
 class SystemSettings : public Settings {
 public:
-    SystemSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
-        : Settings(cfg, i18n, observer) {
-        defaultKeys = {
-            Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
-            Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
-            Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
-            Configuration::LANGUAGE,
-            Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
-            Configuration::QUIT
-        };
 
-        attach(observer);
-
-        initializeSettings();
-
-        enabledKeys = getEnabledKeys();
-    }
+    SystemSettings(Configuration& cfg, I18n& i18n, 
+                   ISettingsObserver *observer, ILanguageSubject *langSubject);
 
     std::vector<Settings::I18nSetting> getSystemSettings();
+
+    /**
+     * ISettingsSubject methods 
+     */
+    std::string getName() override;
+
+    /**
+     * ILanguageObserver methods
+     */
+    void languageChanged() override;
 };
 
 class FolderSettings : public Settings {
 public:
-    FolderSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
-        : Settings(cfg, i18n, observer) {
-        defaultKeys = {
-            Configuration::CORE_SELECTION
-        };
-
-        attach(observer);
-
-        initializeSettings();
-
-        enabledKeys = getEnabledKeys();
-    }
+    FolderSettings(Configuration& cfg, I18n& i18n, 
+                   ISettingsObserver *observer, ILanguageSubject *langSubject);
 
     std::vector<Settings::I18nSetting> getFolderSettings();
+
+    /**
+     * ILanguageObserver methods
+     */
+    void languageChanged() override;
+
+    /**
+     * ISettingsSubject methods 
+     */
+    std::string getName() override;
 
 public:
     void getCores(std::string sectionName, std::string folderName) {
@@ -180,20 +177,20 @@ public:
 
 class RomSettings : public Settings {
 public:
-    RomSettings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer)
-        : Settings(cfg, i18n, observer) {
-        defaultKeys = {
-            Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
-        };    
-
-        attach(observer);
-
-        initializeSettings();
-
-        enabledKeys = getEnabledKeys();
-    }
+    RomSettings(Configuration& cfg, I18n& i18n, 
+                ISettingsObserver *observer, ILanguageSubject *langSubject);
 
     std::vector<Settings::I18nSetting> getRomSettings();
+
+    /**
+     * ILanguageObserver methods
+     */
+    void languageChanged() override;
+
+    /**
+     * ISettingsSubject methods 
+     */
+    std::string getName() override;
 
 public:
     void getCores(std::string sectionName, std::string folderName) {

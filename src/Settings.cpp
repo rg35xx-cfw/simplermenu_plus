@@ -10,9 +10,76 @@
 #include "Settings.h"
 #include "Exception.h"
 
-Settings::Settings(Configuration& cfg, I18n& i18n, ISettingsObserver *observer) 
+Settings::Settings(Configuration& cfg, I18n& i18n, 
+                   ISettingsObserver *observer, ILanguageSubject *langSubject) 
     : cfg(cfg), i18n(i18n) {
 }
+
+SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
+                               ISettingsObserver *observer, 
+                               ILanguageSubject *langSubject)
+    : Settings(cfg, i18n, observer, langSubject) {
+    defaultKeys = {
+        Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
+        Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
+        Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
+        Configuration::LANGUAGE,
+        Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
+        Configuration::QUIT
+    };
+
+    // First attach observers in to let them know about initial values
+    // TODO should the observer attach itself instead?
+    attach(observer);
+    langSubject->attach(this);
+
+    // Now we can initialize the settings and the observers will receive
+    // the values
+    initializeSettings();
+
+    // enabledKeys = getEnabledKeys();
+}
+
+FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n, 
+                               ISettingsObserver *observer, 
+                               ILanguageSubject *langSubject)
+    : Settings(cfg, i18n, observer, langSubject) {
+    defaultKeys = {
+        Configuration::CORE_SELECTION
+    };
+
+    // First attach observers in to let them know about initial values
+    // TODO should the observer attach itself instead?
+    attach(observer);
+    langSubject->attach(this);
+
+    // Now we can initialize the settings and the observers will receive
+    // the values
+    initializeSettings();
+
+    // enabledKeys = getEnabledKeys();
+}
+
+ RomSettings::RomSettings(Configuration& cfg, I18n& i18n, 
+                          ISettingsObserver *observer, 
+                          ILanguageSubject *langSubject)
+        : Settings(cfg, i18n, observer, langSubject) {
+    defaultKeys = {
+        Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
+    };    
+
+    // First attach observers in to let them know about initial values
+    // TODO should the observer attach itself instead?
+    attach(observer);
+    langSubject->attach(this);
+
+    // Now we can initialize the settings and the observers will receive
+    // the values
+    initializeSettings();
+
+    // enabledKeys = getEnabledKeys();
+}
+
 
 void Settings::navigateUp() {
     std::cout << "navigate Up" << std::endl;
@@ -107,31 +174,6 @@ void Settings::navigateEnter() {
 }
 
 std::vector<Settings::I18nSetting> SystemSettings::getSystemSettings() {
-    
-    std::vector<I18nSetting> i18nSettings;
-    
-    for (const auto& key : enabledKeys) {
-        
-        if (key.find("SYSTEM.") == 0) {
-
-            size_t pos = key.find_last_of(".");
-            
-            if (pos != std::string::npos) {
-                try {
-                    i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
-                                            settingsMap[key].value
-                                            });
-                } catch (boost::property_tree::ptree_bad_path e) {
-                    throw ItemNotFoundException("Language translation not found for " 
-                    + key + " in " + i18n.getLang());
-                }
-            } else {
-                throw ItemNotFoundException("Setting key format unknown: " 
-                    + key);
-            }
-        }
-    }
-
     return i18nSettings;
 }
 
@@ -222,10 +264,16 @@ void Settings::initializeSettings() {
     }
 
     enabledKeys = getEnabledKeys();
+
     currentIndex = 0;
     if(!enabledKeys.empty()) {
         currentKey = enabledKeys[currentIndex];
     }
+
+    // First time we need to initialize the language manually
+    // as it needs the complete list of initialized settings
+    // to generate the internationalized version of them
+    languageChanged();
 }
 
 std::vector<std::string> Settings::getEnabledKeys() {
@@ -380,6 +428,14 @@ void Settings::updateCoreOverride(bool increase) {
     std::cout << "UPDATING CORE OVERRIDE" << std::endl;
 }
 
+std::string Settings::getCurrentKey() {
+    return currentKey;
+};
+
+std::string Settings::getCurrentValue() {
+    return settingsMap[currentKey].value;
+};
+
 ////////////
 // Methods to manage SETTINGS OBSERVERS
 
@@ -398,10 +454,73 @@ void Settings::notifySettingsChange(const std::string &key, const std::string &v
         std::cout << "Observer " << observer->getName() << " notified by " 
                   << getName() << std::endl;
     }
+    reloadI18nSettings();
 }
 
-std::string Settings::getName() {
-    return "Settings::" + std::to_string((unsigned long long)(void**)this);
+void Settings::reloadI18nSettings() {
+    i18nSettings.clear();
+
+    for (const auto& key : enabledKeys) {
+
+        std::cout << key << std::endl;
+        
+        if (key.find("SYSTEM.") == 0) {
+
+            size_t pos = key.find_last_of(".");
+            
+            if (pos != std::string::npos) {
+                try {
+                    i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                            settingsMap[key].value
+                                            });
+                } catch (boost::property_tree::ptree_bad_path e) {
+                    throw ItemNotFoundException("Language translation not found for " 
+                    + key + " in " + i18n.getLang());
+                }
+            } else {
+                throw ItemNotFoundException("Setting key format unknown: " 
+                    + key);
+            }
+        }
+    }
+}
+
+/////////
+// ILanguageObserver methods
+
+void SystemSettings::languageChanged() {
+    std::cout << "Reloading system settings labels due to language change" 
+            << std::endl;
+
+    reloadI18nSettings();    
+}
+
+void RomSettings::languageChanged() {
+
+    // TODO not implemented
+}
+
+void FolderSettings::languageChanged() {
+
+    // TODO not implemented
+
+}
+
+
+
+/////////////////
+// ISettingsObserver and ILanguageSubject common methods
+
+std::string SystemSettings::getName() {
+    return "SystemSettings::" + std::to_string((unsigned long long)(void**)this);
+}
+
+std::string RomSettings::getName() {
+    return "RomSettings::" + std::to_string((unsigned long long)(void**)this);
+}
+
+std::string FolderSettings::getName() {
+    return "FolderSettings::" + std::to_string((unsigned long long)(void**)this);
 }
 
 //

@@ -24,49 +24,13 @@ Application::Application()
       theme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
-      systemSettings(cfg, i18n, this),
-      folderSettings(cfg, i18n, this),
-      romSettings(cfg, i18n, this)
+      systemSettings(cfg, i18n, this, this),
+      folderSettings(cfg, i18n, this, this),
+      romSettings(cfg, i18n, this, this)
  {
 
     setupCache();
     populateMenu(menu);
-
-    std::cout << "Available languages: [ ";
-    std::set<std::string> langs = i18n.getLanguages();
-    std::copy(langs.begin(),
-              langs.end(),
-              std::ostream_iterator<std::string>(std::cout, " "));
-    std::cout << "]" << std::endl;
-
-    std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    std::cout << "Available settings: [ ";
-    std::vector<Settings::I18nSetting> settingList = systemSettings.getSystemSettings();
-    for (const auto& setting : settingList) {
-        std::cout << setting.title << ":" << setting.value << ", ";
-    }
-    std::cout << "]" << std::endl;
-
-    i18n.setLang("SPANISH");
-    std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    std::cout << "Available settings: [ ";
-    settingList = systemSettings.getSystemSettings();
-    for (const auto& setting : settingList) {
-        std::cout << setting.title << ":" << setting.value << ", ";
-    }
-    std::cout << "]" << std::endl;
-
-    i18n.setLang("ENGLISH");
-    std::cout << "Current lang: " << i18n.getLang() << std::endl;
-    std::cout << i18n.get(I18n::SYSTEM_SETTINGS) << std::endl;
-    std::cout << "Available settings: [ ";
-    settingList = systemSettings.getSystemSettings();
-    for (const auto& setting : settingList) {
-        std::cout << setting.title << ":" << setting.value << ", ";
-    }
-    std::cout << "]" << std::endl;
 
     theme.loadTheme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
 
@@ -418,17 +382,46 @@ void Application::launchRom() {
 }
 
 /////////////////
-// SettingsObserver methods
+// ISettingsObserver methods
 
 void Application::settingsChanged(const std::string& key, const std::string& value) {
     std::cout << key << " changed to " << value << std::endl;
     if (key == Configuration::LANGUAGE) {
         i18n.setLang(value);
+        notifyLanguageChange();
+
     } else if (key == Configuration::THEME) {
         theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
     }
     cfg.set(key, value);
 }
+
+/////////////////
+// ILanguageSubject methods
+
+void Application::attach(ILanguageObserver *observer) {
+    langObservers.push_back(observer);
+    std::cout << "Observer added to " << getName() 
+              << " object: " << observer->getName() << "\n";
+}
+
+void Application::detach(ILanguageObserver *observer) {
+    langObservers.erase(std::remove(langObservers.begin(), 
+                                    langObservers.end(), 
+                                    observer), 
+                        langObservers.end());
+}
+
+void Application::notifyLanguageChange() {
+    for (ILanguageObserver *observer : langObservers) {
+        observer->languageChanged();
+        std::cout << "Observer " << observer->getName() << " notified by " 
+                  << getName() << std::endl;
+    }
+}
+
+/////////////////
+// ISettingsObserver and ILanguageSubject common methods
 
 std::string Application::getName() {
     return "Application::" + std::to_string((unsigned long long)(void**)this);

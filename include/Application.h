@@ -31,7 +31,8 @@ namespace pt = boost::property_tree;
 class Configuration;
 class RenderComponent;
 
-class Application : public ISettingsObserver {
+
+class Application : public ISettingsObserver, public ILanguageSubject {
 private:
     Menu menu;
     std::vector<CachedMenuItem> allCachedItems;
@@ -50,6 +51,8 @@ private:
     RenderComponent renderComponent;
 
     HelperUtils helper;
+
+    std::vector<ILanguageObserver *> langObservers;
 
     enum MenuLevel {
         MENU_SECTION,
@@ -157,6 +160,17 @@ public:
      * ISettingsObserver methods
     */
     void settingsChanged(const std::string &key, const std::string &value) override;
+
+    /**
+     * ILanguageSubject methods
+     */
+    void attach(ILanguageObserver *observer) override;
+    void detach(ILanguageObserver *observer) override;
+    void notifyLanguageChange() override;
+
+    /**
+     * ISettingsObserver and ILanguageSubject common methods 
+     */
     std::string getName() override;
 
 };
