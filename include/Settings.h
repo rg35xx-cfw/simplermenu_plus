@@ -8,7 +8,7 @@
 
 class Configuration;
 
-class Settings : public ISettingsSubject, public ILanguageObserver {
+class Settings : public ISettingsSubject {
 public: 
     struct Setting {
         std::string key;
@@ -36,7 +36,6 @@ protected:
     Configuration& cfg;
     I18n& i18n;
     std::vector<I18nSetting> i18nSettings;
-    bool settingsModified;
 
     std::vector<std::string> enabledKeys;
 
@@ -48,7 +47,6 @@ protected:
 
     void reloadI18nSettings();
 
-
     /**
      * ISettingsSubject methods
      */
@@ -57,7 +55,7 @@ protected:
 
 public:
     Settings(Configuration& cfg, I18n& i18n, 
-             ISettingsObserver *observer, ILanguageSubject *langSubject);
+             ISettingsObserver *observer);
     // ~Settings();
 
     // Define default settings with their keys
@@ -99,10 +97,6 @@ public:
     void attach(ISettingsObserver *observer) override;
     void detach(ISettingsObserver *observer) override;
     
-    /**
-     * ILanguageObserver methods 
-     */
-    virtual void languageChanged() = 0;
 
     /**
      * ISettingsSubject and ILanguageObserver common methods
@@ -115,7 +109,7 @@ class SystemSettings : public Settings {
 public:
 
     SystemSettings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer, ILanguageSubject *langSubject);
+                   ISettingsObserver *observer);
 
     std::vector<Settings::I18nSetting> getSystemSettings();
 
@@ -124,13 +118,9 @@ public:
      */
     std::string getName() override;
 
-    /**
-     * ILanguageObserver methods
-     */
-    void languageChanged() override;
 };
 
-class FolderSettings : public Settings {
+class FolderSettings : public Settings, public ILanguageObserver {
 public:
     FolderSettings(Configuration& cfg, I18n& i18n, 
                    ISettingsObserver *observer, ILanguageSubject *langSubject);
@@ -175,7 +165,7 @@ public:
     }
 };
 
-class RomSettings : public Settings {
+class RomSettings : public Settings, public ILanguageObserver {
 public:
     RomSettings(Configuration& cfg, I18n& i18n, 
                 ISettingsObserver *observer, ILanguageSubject *langSubject);

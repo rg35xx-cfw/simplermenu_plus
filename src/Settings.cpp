@@ -11,14 +11,13 @@
 #include "Exception.h"
 
 Settings::Settings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer, ILanguageSubject *langSubject) 
+                   ISettingsObserver *observer) 
     : cfg(cfg), i18n(i18n) {
 }
 
 SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
-                               ISettingsObserver *observer, 
-                               ILanguageSubject *langSubject)
-    : Settings(cfg, i18n, observer, langSubject) {
+                               ISettingsObserver *observer)
+    : Settings(cfg, i18n, observer) {
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
@@ -31,7 +30,6 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
     // First attach observers in to let them know about initial values
     // TODO should the observer attach itself instead?
     attach(observer);
-    langSubject->attach(this);
 
     // Now we can initialize the settings and the observers will receive
     // the values
@@ -43,7 +41,7 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
 FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n, 
                                ISettingsObserver *observer, 
                                ILanguageSubject *langSubject)
-    : Settings(cfg, i18n, observer, langSubject) {
+    : Settings(cfg, i18n, observer) {
     defaultKeys = {
         Configuration::CORE_SELECTION
     };
@@ -63,7 +61,7 @@ FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
  RomSettings::RomSettings(Configuration& cfg, I18n& i18n, 
                           ISettingsObserver *observer, 
                           ILanguageSubject *langSubject)
-        : Settings(cfg, i18n, observer, langSubject) {
+        : Settings(cfg, i18n, observer) {
     defaultKeys = {
         Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
     };    
@@ -273,7 +271,7 @@ void Settings::initializeSettings() {
     // First time we need to initialize the language manually
     // as it needs the complete list of initialized settings
     // to generate the internationalized version of them
-    languageChanged();
+    reloadI18nSettings();
 }
 
 std::vector<std::string> Settings::getEnabledKeys() {
@@ -436,27 +434,6 @@ std::string Settings::getCurrentValue() {
     return settingsMap[currentKey].value;
 };
 
-////////////
-// Methods to manage SETTINGS OBSERVERS
-
-void Settings::attach(ISettingsObserver *observer) {
-    observers.push_back(observer);
-    std::cout << "Observer added to " << getName() << " object: " << observer->getName() << "\n";
-}
-
-void Settings::detach(ISettingsObserver *observer) {
-    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
-}
-
-void Settings::notifySettingsChange(const std::string &key, const std::string &value) {
-    for (ISettingsObserver *observer : observers) {
-        observer->settingsChanged(key, value);
-        std::cout << "Observer " << observer->getName() << " notified by " 
-                  << getName() << std::endl;
-    }
-    reloadI18nSettings();
-}
-
 void Settings::reloadI18nSettings() {
     i18nSettings.clear();
 
@@ -485,24 +462,49 @@ void Settings::reloadI18nSettings() {
     }
 }
 
+////////////
+// Methods to manage SETTINGS OBSERVERS
+
+void Settings::attach(ISettingsObserver *observer) {
+    observers.push_back(observer);
+    std::cout << "Observer added to " << getName() << " object: " << observer->getName() << "\n";
+}
+
+void Settings::detach(ISettingsObserver *observer) {
+    observers.erase(std::remove(observers.begin(), observers.end(), observer), observers.end());
+}
+
+void Settings::notifySettingsChange(const std::string &key, const std::string &value) {
+    for (ISettingsObserver *observer : observers) {
+        observer->settingsChanged(key, value);
+        std::cout << "Observer " << observer->getName() << " notified by " 
+                  << getName() << std::endl;
+    }
+
+    // TODO one possible improvement here is not to reload everything but
+    //      only the affected value, exception made of the Language System
+    //      setting that should trigger the reload call for the SystemSettings
+    //      class that doesn't implement the LanguageObserver
+    reloadI18nSettings();
+}
+
 /////////
 // ILanguageObserver methods
 
-void SystemSettings::languageChanged() {
-    std::cout << "Reloading system settings labels due to language change" 
-            << std::endl;
-
-    reloadI18nSettings();    
-}
-
 void RomSettings::languageChanged() {
 
-    // TODO not implemented
+   std::cout << "Reloading system settings labels due to language change" 
+            << std::endl;
+
+    reloadI18nSettings();
 }
 
 void FolderSettings::languageChanged() {
 
-    // TODO not implemented
+    std::cout << "Reloading system settings labels due to language change" 
+            << std::endl;
+
+    reloadI18nSettings();
 
 }
 
