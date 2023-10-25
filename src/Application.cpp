@@ -29,6 +29,13 @@ Application::Application()
       romSettings(cfg, i18n, this, this)
  {
 
+    attach(&folderSettings);
+    attach(&romSettings);
+
+    folderSettings.initializeSettings();
+    romSettings.initializeSettings();
+    systemSettings.initializeSettings();
+
     setupCache();
     populateMenu(menu);
 
@@ -401,7 +408,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
 
 void Application::attach(ILanguageObserver *observer) {
     langObservers.push_back(observer);
-    std::cout << "Observer added to " << getName() 
+    std::cout << "LangObserver added to " << getName() 
               << " object: " << observer->getName() << "\n";
 }
 
@@ -415,7 +422,7 @@ void Application::detach(ILanguageObserver *observer) {
 void Application::notifyLanguageChange() {
     for (ILanguageObserver *observer : langObservers) {
         observer->languageChanged();
-        std::cout << "Observer " << observer->getName() << " notified by " 
+        std::cout << "LangObserver " << observer->getName() << " notified by " 
                   << getName() << std::endl;
     }
 }

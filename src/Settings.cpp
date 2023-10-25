@@ -33,7 +33,7 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
 
     // Now we can initialize the settings and the observers will receive
     // the values
-    initializeSettings();
+    // initializeSettings();
 
     // enabledKeys = getEnabledKeys();
 }
@@ -49,11 +49,11 @@ FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
     // First attach observers in to let them know about initial values
     // TODO should the observer attach itself instead?
     attach(observer);
-    langSubject->attach(this);
+    // langSubject->attach(this);
 
     // Now we can initialize the settings and the observers will receive
     // the values
-    initializeSettings();
+    // initializeSettings();
 
     // enabledKeys = getEnabledKeys();
 }
@@ -69,11 +69,11 @@ FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
     // First attach observers in to let them know about initial values
     // TODO should the observer attach itself instead?
     attach(observer);
-    langSubject->attach(this);
+    // langSubject->attach(this);
 
     // Now we can initialize the settings and the observers will receive
     // the values
-    initializeSettings();
+    // initializeSettings();
 
     // enabledKeys = getEnabledKeys();
 }
@@ -488,7 +488,7 @@ void Settings::reloadI18nSettings() {
 
 void Settings::attach(ISettingsObserver *observer) {
     observers.push_back(observer);
-    std::cout << "Observer added to " << getName() << " object: " << observer->getName() << "\n";
+    std::cout << "SettingsObserver added to " << getName() << " object: " << observer->getName() << "\n";
 }
 
 void Settings::detach(ISettingsObserver *observer) {
@@ -498,7 +498,7 @@ void Settings::detach(ISettingsObserver *observer) {
 void Settings::notifySettingsChange(const std::string &key, const std::string &value) {
     for (ISettingsObserver *observer : observers) {
         observer->settingsChanged(key, value);
-        std::cout << "Observer " << observer->getName() << " notified by " 
+        std::cout << "SettingsObserver " << observer->getName() << " notified by " 
                   << getName() << std::endl;
     }
 
