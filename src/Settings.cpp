@@ -109,7 +109,8 @@ void Settings::navigateLeft() {
         } else if (currentKey == Configuration::VOLUME) {
             updateVolume(false);
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            updateScreenRefresh(false);
+            // updateScreenRefresh(false);
+            updateInt(false, currentKey, 5, 5, 100);
         } else if (currentKey == Configuration::THEME) {
             updateTheme(false);
         } else if (currentKey == Configuration::USB_MODE) {
@@ -137,7 +138,8 @@ void Settings::navigateRight() {
         } else if (currentKey == Configuration::VOLUME) {
             updateVolume(true);
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            updateScreenRefresh(true);
+            // updateScreenRefresh(true);
+            updateInt(true, currentKey, 5, 5, 100);
         } else if (currentKey == Configuration::THEME) {
             updateTheme(true);
         } else if (currentKey == Configuration::USB_MODE) {
@@ -309,14 +311,33 @@ void Settings::updateVolume(bool increase) {
 }
 
 void Settings::updateScreenRefresh(bool increase) {
-    int currentValue = std::stoi(settingsMap[Configuration::SCREEN_REFRESH].value);
+    int intValue = std::stoi(settingsMap[Configuration::SCREEN_REFRESH].value);
     if (increase) {
-        currentValue += 5; // decrease Screen Refresh by 5 units
+        intValue += 5; // decrease Screen Refresh by 5 units
     } else {
-        currentValue -= 5; // increase Screen Refresh by 5 units
+        intValue -= 5; // increase Screen Refresh by 5 units
     }
-    settingsMap[Configuration::SCREEN_REFRESH].value = std::to_string(currentValue);
     // FIXME: add boundaries (e.g. min: 0, max: 100)
+
+    currentValue = std::to_string(intValue);
+    settingsMap[Configuration::SCREEN_REFRESH].value = currentValue;
+    
+}
+
+void Settings::updateInt(bool increase, std::string setting, int delta,
+                         int min, int max) {
+    int intValue = std::stoi(settingsMap[setting].value);
+    if (increase) {
+        if (intValue + delta <= max) {
+            intValue += delta; 
+        }
+
+    } else if (!increase && intValue - delta >= min) {
+        intValue -= delta;
+    }
+
+    currentValue = std::to_string(intValue);
+    settingsMap[setting].value = currentValue;
 }
 
 void Settings::updateListSetting(const std::set<std::string>& values, bool increase) {

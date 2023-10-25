@@ -41,6 +41,9 @@ protected:
 
     std::map<std::string, Setting> settingsMap;
 
+    void updateInt(bool increase, std::string setting, int delta,
+                   int min, int max);
+    
     std::set<std::string> cores;
 
     std::vector<std::string> getEnabledKeys();
