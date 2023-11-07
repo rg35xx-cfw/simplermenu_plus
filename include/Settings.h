@@ -41,8 +41,12 @@ protected:
 
     std::map<std::string, Setting> settingsMap;
 
-    void updateInt(bool increase, std::string setting, int delta,
-                   int min, int max);
+    int minValue;
+    int maxValue;
+    int delta;
+
+    void updateInt(bool increase, std::string setting, 
+                   int min, int max, int inc);
     
     std::set<std::string> cores;
 
@@ -58,7 +62,8 @@ protected:
 
 public:
     Settings(Configuration& cfg, I18n& i18n, 
-             ISettingsObserver *observer);
+             ISettingsObserver *observer,
+             int minValue, int maxValue, int delta);
     // ~Settings();
 
     // Define default settings with their keys
@@ -75,9 +80,6 @@ public:
     void updateListSetting(const std::set<std::string>& values, bool increase);
     void updateBoolSetting();
 
-    void updateVolume(bool increase);
-    void updateBrightness(bool increase);
-    void updateScreenRefresh(bool increase);
     void updateTheme(bool increase);
     void updateUSBMode(bool increase);
     void updateLanguage(bool increase);
@@ -112,7 +114,8 @@ class SystemSettings : public Settings {
 public:
 
     SystemSettings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer);
+                   ISettingsObserver *observer,
+                   int minValue, int maxValue, int delta);
 
     std::vector<Settings::I18nSetting> getSystemSettings();
 
@@ -126,7 +129,8 @@ public:
 class FolderSettings : public Settings, public ILanguageObserver {
 public:
     FolderSettings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer, ILanguageSubject *langSubject);
+                   ISettingsObserver *observer, ILanguageSubject *langSubject,
+                   int minValue, int maxValue, int delta);
 
     std::vector<Settings::I18nSetting> getFolderSettings();
 
@@ -171,7 +175,8 @@ public:
 class RomSettings : public Settings, public ILanguageObserver {
 public:
     RomSettings(Configuration& cfg, I18n& i18n, 
-                ISettingsObserver *observer, ILanguageSubject *langSubject);
+                ISettingsObserver *observer, ILanguageSubject *langSubject,
+                int minValue, int maxValue, int delta);
 
     std::vector<Settings::I18nSetting> getRomSettings();
 

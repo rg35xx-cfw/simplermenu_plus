@@ -11,13 +11,16 @@
 #include "Exception.h"
 
 Settings::Settings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer) 
-    : cfg(cfg), i18n(i18n) {
+                   ISettingsObserver *observer,
+                   int minValue, int maxValue, int delta) 
+    : cfg(cfg), i18n(i18n), 
+      minValue(minValue), maxValue(maxValue), delta(delta) {
 }
 
 SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
-                               ISettingsObserver *observer)
-    : Settings(cfg, i18n, observer) {
+                               ISettingsObserver *observer,
+                               int minValue, int maxValue, int delta)
+    : Settings(cfg, i18n, observer, minValue, maxValue, delta) {
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
@@ -40,8 +43,9 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
 
 FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n, 
                                ISettingsObserver *observer, 
-                               ILanguageSubject *langSubject)
-    : Settings(cfg, i18n, observer) {
+                               ILanguageSubject *langSubject,
+                               int minValue, int maxValue, int delta)
+    : Settings(cfg, i18n, observer, minValue, maxValue, delta) {
     defaultKeys = {
         Configuration::CORE_SELECTION
     };
@@ -60,8 +64,9 @@ FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
 
  RomSettings::RomSettings(Configuration& cfg, I18n& i18n, 
                           ISettingsObserver *observer, 
-                          ILanguageSubject *langSubject)
-        : Settings(cfg, i18n, observer) {
+                          ILanguageSubject *langSubject,
+                          int minValue, int maxValue, int delta)
+        : Settings(cfg, i18n, observer, minValue, maxValue, delta) {
     defaultKeys = {
         Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
     };    
@@ -105,26 +110,35 @@ void Settings::navigateLeft() {
     std::cout << "navigate Left" << std::endl;
     if (settingsMap[currentKey].enabled) {
         if (currentKey == Configuration::BRIGHTNESS) {
-            updateBrightness(false); // false for left/decrease direction
+            updateInt(false, currentKey, minValue, maxValue, delta);
+        
         } else if (currentKey == Configuration::VOLUME) {
-            updateVolume(false);
+            updateInt(false, currentKey, minValue, maxValue, delta);
+        
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            // updateScreenRefresh(false);
-            updateInt(false, currentKey, 5, 5, 100);
+            updateInt(false, currentKey, minValue + delta, maxValue, delta);
+        
         } else if (currentKey == Configuration::THEME) {
             updateTheme(false);
+        
         } else if (currentKey == Configuration::USB_MODE) {
             updateUSBMode(false);
+        
         } else if (currentKey == Configuration::OVERCLOCK) {
             updateOverclock(true);
+        
         } else if (currentKey == Configuration::SHOW_FPS) {
             updateShowFPS();
+        
         } else if (currentKey == Configuration::LANGUAGE) {
             updateLanguage(false);
+        
         } else if (currentKey == Configuration::CORE_OVERRIDE) {
             updateCoreOverride(false);
+        
         } else if (currentKey == Configuration::CORE_SELECTION) {
             updateCoreSelection(false);
+        
         }  
     }
     notifySettingsChange(currentKey, currentValue);
@@ -134,26 +148,35 @@ void Settings::navigateRight() {
     std::cout << "navigate Right" << std::endl;
     if (settingsMap[currentKey].enabled) {
         if (currentKey == Configuration::BRIGHTNESS) {
-            updateBrightness(true); // true for right/increase direction
+            updateInt(true, currentKey, minValue, maxValue, delta);
+
         } else if (currentKey == Configuration::VOLUME) {
-            updateVolume(true);
+            updateInt(true, currentKey, minValue, maxValue, delta);
+
         } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            // updateScreenRefresh(true);
-            updateInt(true, currentKey, 5, 5, 100);
+            updateInt(true, currentKey, minValue + delta, maxValue, delta);
+
         } else if (currentKey == Configuration::THEME) {
             updateTheme(true);
+
         } else if (currentKey == Configuration::USB_MODE) {
             updateUSBMode(false);
+
         } else if (currentKey == Configuration::OVERCLOCK) {
             updateOverclock(false);
+
         } else if (currentKey == Configuration::SHOW_FPS) {
             updateShowFPS();
+
         } else if (currentKey == Configuration::LANGUAGE) {
             updateLanguage(true);
+
         } else if (currentKey == Configuration::CORE_OVERRIDE) {
             updateCoreOverride(true);
+
         } else if (currentKey == Configuration::CORE_SELECTION) {
             updateCoreSelection(true);
+            
         }     
     }
     notifySettingsChange(currentKey, currentValue);
@@ -287,53 +310,16 @@ std::vector<std::string> Settings::getEnabledKeys() {
     return enabledKeys;
 }
 
-void Settings::updateBrightness(bool increase) {
-    int currentValue = std::stoi(settingsMap[Configuration::BRIGHTNESS].value);
-    if (increase) {
-        currentValue += 10; // decrease brightness by 10 units
-    } else {
-        currentValue -= 10; // increase brightness by 10 units
-    }
-    settingsMap[Configuration::BRIGHTNESS].value = std::to_string(currentValue);
-    std::cout << "brightness: " << settingsMap[Configuration::BRIGHTNESS].value << std::endl;
-    // FIXME: add boundaries (e.g. min: 0, max: 100)
-}
-
-void Settings::updateVolume(bool increase) {
-    int currentValue = std::stoi(settingsMap[Configuration::VOLUME].value);
-    if (increase) {
-        currentValue += 5; // decrease volume by 5 units
-    } else {
-        currentValue -= 5; // increase volume by 5 units
-    }
-    settingsMap[Configuration::VOLUME].value = std::to_string(currentValue);
-    // FIXME: add boundaries (e.g. min: 0, max: 100)
-}
-
-void Settings::updateScreenRefresh(bool increase) {
-    int intValue = std::stoi(settingsMap[Configuration::SCREEN_REFRESH].value);
-    if (increase) {
-        intValue += 5; // decrease Screen Refresh by 5 units
-    } else {
-        intValue -= 5; // increase Screen Refresh by 5 units
-    }
-    // FIXME: add boundaries (e.g. min: 0, max: 100)
-
-    currentValue = std::to_string(intValue);
-    settingsMap[Configuration::SCREEN_REFRESH].value = currentValue;
-    
-}
-
-void Settings::updateInt(bool increase, std::string setting, int delta,
-                         int min, int max) {
+void Settings::updateInt(bool increase, std::string setting,
+                         int min, int max, int inc) {
     int intValue = std::stoi(settingsMap[setting].value);
     if (increase) {
-        if (intValue + delta <= max) {
-            intValue += delta; 
+        if (intValue + inc <= max) {
+            intValue += inc; 
         }
 
-    } else if (!increase && intValue - delta >= min) {
-        intValue -= delta;
+    } else if (!increase && intValue - inc >= min) {
+        intValue -= inc;
     }
 
     currentValue = std::to_string(intValue);
