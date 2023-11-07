@@ -24,11 +24,17 @@ Application::Application()
       theme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
-      systemSettings(cfg, i18n, this, 0, 100, 5),
-      folderSettings(cfg, i18n, this, this, 0, 100, 5),
-      romSettings(cfg, i18n, this, this, 0, 100, 5)
+      systemSettings(cfg, i18n, 0, 100, 5),
+      folderSettings(cfg, i18n, 0, 100, 5),
+      romSettings(cfg, i18n, 0, 100, 5)
  {
 
+    // Observe settings changes
+    systemSettings.attach(this);
+    folderSettings.attach(this);
+    romSettings.attach(this);
+
+    // Language observers
     attach(&folderSettings);
     attach(&romSettings);
 

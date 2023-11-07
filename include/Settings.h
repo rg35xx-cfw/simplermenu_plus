@@ -62,7 +62,6 @@ protected:
 
 public:
     Settings(Configuration& cfg, I18n& i18n, 
-             ISettingsObserver *observer,
              int minValue, int maxValue, int delta);
     // ~Settings();
 
@@ -114,7 +113,6 @@ class SystemSettings : public Settings {
 public:
 
     SystemSettings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer,
                    int minValue, int maxValue, int delta);
 
     std::vector<Settings::I18nSetting> getSystemSettings();
@@ -129,7 +127,6 @@ public:
 class FolderSettings : public Settings, public ILanguageObserver {
 public:
     FolderSettings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer, ILanguageSubject *langSubject,
                    int minValue, int maxValue, int delta);
 
     std::vector<Settings::I18nSetting> getFolderSettings();
@@ -175,7 +172,6 @@ public:
 class RomSettings : public Settings, public ILanguageObserver {
 public:
     RomSettings(Configuration& cfg, I18n& i18n, 
-                ISettingsObserver *observer, ILanguageSubject *langSubject,
                 int minValue, int maxValue, int delta);
 
     std::vector<Settings::I18nSetting> getRomSettings();

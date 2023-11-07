@@ -10,17 +10,15 @@
 #include "Settings.h"
 #include "Exception.h"
 
-Settings::Settings(Configuration& cfg, I18n& i18n, 
-                   ISettingsObserver *observer,
+Settings::Settings(Configuration& cfg, I18n& i18n,
                    int minValue, int maxValue, int delta) 
     : cfg(cfg), i18n(i18n), 
       minValue(minValue), maxValue(maxValue), delta(delta) {
 }
 
 SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
-                               ISettingsObserver *observer,
                                int minValue, int maxValue, int delta)
-    : Settings(cfg, i18n, observer, minValue, maxValue, delta) {
+    : Settings(cfg, i18n, minValue, maxValue, delta) {
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
@@ -30,57 +28,24 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
         Configuration::QUIT
     };
 
-    // First attach observers in to let them know about initial values
-    // TODO should the observer attach itself instead?
-    attach(observer);
-
-    // Now we can initialize the settings and the observers will receive
-    // the values
-    // initializeSettings();
-
-    // enabledKeys = getEnabledKeys();
 }
 
-FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n, 
-                               ISettingsObserver *observer, 
-                               ILanguageSubject *langSubject,
+FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
                                int minValue, int maxValue, int delta)
-    : Settings(cfg, i18n, observer, minValue, maxValue, delta) {
+    : Settings(cfg, i18n, minValue, maxValue, delta) {
     defaultKeys = {
         Configuration::CORE_SELECTION
     };
 
-    // First attach observers in to let them know about initial values
-    // TODO should the observer attach itself instead?
-    attach(observer);
-    // langSubject->attach(this);
-
-    // Now we can initialize the settings and the observers will receive
-    // the values
-    // initializeSettings();
-
-    // enabledKeys = getEnabledKeys();
 }
 
- RomSettings::RomSettings(Configuration& cfg, I18n& i18n, 
-                          ISettingsObserver *observer, 
-                          ILanguageSubject *langSubject,
+ RomSettings::RomSettings(Configuration& cfg, I18n& i18n,
                           int minValue, int maxValue, int delta)
-        : Settings(cfg, i18n, observer, minValue, maxValue, delta) {
+        : Settings(cfg, i18n, minValue, maxValue, delta) {
     defaultKeys = {
         Configuration::ROM_OVERCLOCK, Configuration::ROM_AUTOSTART, Configuration::CORE_OVERRIDE
     };    
 
-    // First attach observers in to let them know about initial values
-    // TODO should the observer attach itself instead?
-    attach(observer);
-    // langSubject->attach(this);
-
-    // Now we can initialize the settings and the observers will receive
-    // the values
-    // initializeSettings();
-
-    // enabledKeys = getEnabledKeys();
 }
 
 
@@ -176,7 +141,7 @@ void Settings::navigateRight() {
 
         } else if (currentKey == Configuration::CORE_SELECTION) {
             updateCoreSelection(true);
-            
+
         }     
     }
     notifySettingsChange(currentKey, currentValue);
