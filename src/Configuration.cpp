@@ -37,7 +37,6 @@ const std::string Configuration::WIFI = std::string("SYSTEM.wifi");
 const std::string Configuration::ROTATION = std::string("SYSTEM.rotation");
 const std::string Configuration::LANGUAGE = std::string("SYSTEM.language");
 const std::string Configuration::UPDATE_CACHES = std::string("SYSTEM.updateCaches");
-const std::string Configuration::SAVE_SETTINGS = std::string("SYSTEM.saveSettings");
 const std::string Configuration::RESTART = std::string("SYSTEM.restart");
 const std::string Configuration::QUIT = std::string("SYSTEM.quit");
 

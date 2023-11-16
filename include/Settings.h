@@ -84,7 +84,6 @@ public:
     void updateLanguage(bool increase);
     void updateOverclock(bool increase);
     void updateShowFPS();
-    void saveSettings();
     void restartApplication();
     void quitApplication();
     void updateWifi();

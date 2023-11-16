@@ -24,7 +24,7 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
         Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
         Configuration::LANGUAGE,
-        Configuration::UPDATE_CACHES, Configuration::SAVE_SETTINGS, Configuration::RESTART, 
+        Configuration::UPDATE_CACHES, Configuration::RESTART, 
         Configuration::QUIT
     };
 
@@ -149,10 +149,10 @@ void Settings::navigateRight() {
 
 void Settings::navigateEnter() {
     std::cout << "navigate Enter" << std::endl;
+    // TODO this should notify the observers that the current setting
+    //      has been changed
     if (settingsMap[currentKey].enabled) {
-        if (currentKey == Configuration::SAVE_SETTINGS) {
-            saveSettings();
-        } else if (currentKey == Configuration::RESTART) {
+        if (currentKey == Configuration::RESTART) {
             restartApplication();
         } else if (currentKey == Configuration::QUIT) {
             quitApplication();
@@ -366,10 +366,6 @@ void Settings::updateWifi() {
 void Settings::updateRotation() {
     updateBoolSetting();
     std::cout << "UPDATING Rotation" << std::endl;
-}
-
-void Settings::saveSettings() {
-    std::cout << "SAVING SETTINGS..." << std::endl;
 }
 
 void Settings::restartApplication() {

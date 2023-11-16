@@ -407,6 +407,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
         theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
     }
     cfg.set(key, value);
+    cfg.saveConfigIni();
 }
 
 /////////////////

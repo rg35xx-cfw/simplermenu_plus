@@ -68,7 +68,6 @@ public:
     static const std::string ROTATION;
     static const std::string LANGUAGE;
     static const std::string UPDATE_CACHES;
-    static const std::string SAVE_SETTINGS;
     static const std::string RESTART;
     static const std::string QUIT;
 
