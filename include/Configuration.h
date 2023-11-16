@@ -8,6 +8,8 @@
 #include <vector>
 #include <memory>
 
+#include "State.h"
+
 struct ConsoleData {
     std::string name;
     std::vector<std::string> execs;
@@ -32,6 +34,7 @@ class Configuration {
 private:
 
     std::string configIniFilepath;
+    std::string stateFilepath;
 
     boost::property_tree::ptree mainPt;
 
@@ -113,7 +116,8 @@ public:
     static const std::string THEME_FONT;
 
 
-    Configuration(const std::string& configIniFilepath);
+    Configuration(const std::string& configIniFilepath,
+                  const std::string& stateFilepath);
 
     void set(const std::string& id, const std::string& value);
 
@@ -127,6 +131,9 @@ public:
     std::map<std::string, ConsoleData> parseIniFile(const std::string& iniPath);
 
     void saveConfigIni();
+
+    State loadState();
+    void saveState(const State& state);
 
     int getSectionSize(std::string section) {
         return mainPt.get_child(section).size();

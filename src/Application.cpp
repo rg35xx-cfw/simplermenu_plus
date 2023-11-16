@@ -20,7 +20,8 @@
 
 Application::Application() 
     : i18n("/userdata/system/simplermenu_plus/i18n.ini"),
-      cfg("/userdata/system/simplermenu_plus/config.ini"),
+      cfg("/userdata/system/simplermenu_plus/config.ini", 
+          "/userdata/system/simplermenu_plus/.state"),
       theme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
@@ -70,30 +71,30 @@ Application::Application()
 
 void Application::drawCurrentState() {
     std::stringstream ss;
-    switch (currentMenuLevel) {
+    switch (state.currentMenuLevel) {
         case MENU_SECTION:
         {
-            std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
+            std::string sectionName = menu.getSections()[state.currentSectionIndex].getTitle();
 
-            int numberOfFolders = menu.getSections()[currentSectionIndex].getFolders().size();
+            int numberOfFolders = menu.getSections()[state.currentSectionIndex].getFolders().size();
             renderComponent.drawSection(sectionName, numberOfFolders);
             break;
         }
         case MENU_FOLDER:
         {
-            std::string folderName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle();
+            std::string folderName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle();
             std::string folderPath = "";
-            int numberOfRoms = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms().size();
+            int numberOfRoms = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms().size();
             renderComponent.drawFolder(folderName, folderPath, numberOfRoms);
             break;
         }
         case MENU_ROM:
         {
             std::vector<std::pair<std::string, std::string>> romData;
-            for (const Rom& rom : menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()) {
+            for (const Rom& rom : menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()) {
                 romData.push_back({rom.getTitle(), rom.getPath()});
             }
-            renderComponent.drawRomList(menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle(), romData, currentRomIndex);
+            renderComponent.drawRomList(menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle(), romData, state.currentRomIndex);
             break;
         }
         case SYSTEM_SETTINGS:
@@ -115,68 +116,68 @@ void Application::drawCurrentState() {
 }
 
 void Application::handleCommand(ControlMap cmd) {
-    switch (currentMenuLevel) {
-        case MENU_SECTION:
+    switch (state.currentMenuLevel) {
+        case MenuLevel::MENU_SECTION:
             if (cmd == CMD_ENTER) { // ENTER
-                currentMenuLevel = MENU_FOLDER;
-                currentFolderIndex = 0;
+                state.currentMenuLevel = MenuLevel::MENU_FOLDER;
+                state.currentFolderIndex = 0;
                 renderComponent.resetValues();
-                folderSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
+                folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
             } else if (cmd == CMD_UP) { // UP
-                if (currentSectionIndex > 0) currentSectionIndex--;
-                else currentSectionIndex = menu.getSections().size() - 1;
+                if (state.currentSectionIndex > 0) state.currentSectionIndex--;
+                else state.currentSectionIndex = menu.getSections().size() - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentSectionIndex = (currentSectionIndex + 1) % menu.getSections().size();
+                state.currentSectionIndex = (state.currentSectionIndex + 1) % menu.getSections().size();
             }
             break;
             
-        case MENU_FOLDER:
+        case MenuLevel::MENU_FOLDER:
             if (cmd == CMD_ENTER) { // KEY_A/ENTER
-                currentMenuLevel = MENU_ROM;
-                currentRomIndex = 0;
+                state.currentMenuLevel = MenuLevel::MENU_ROM;
+                state.currentRomIndex = 0;
                 renderComponent.resetValues();
-                romSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
+                romSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
             } else if (cmd == CMD_BACK) { // KEY_B/ESC
-                currentMenuLevel = MENU_SECTION;
+                state.currentMenuLevel = MenuLevel::MENU_SECTION;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                const Section& section = menu.getSections()[currentSectionIndex];
-                if (currentFolderIndex > 0) currentFolderIndex--;
-                else currentFolderIndex = section.getFolders().size() - 1;
-                folderSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
+                const Section& section = menu.getSections()[state.currentSectionIndex];
+                if (state.currentFolderIndex > 0) state.currentFolderIndex--;
+                else state.currentFolderIndex = section.getFolders().size() - 1;
+                folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
             } else if (cmd == CMD_DOWN) { // DOWN
-                const Section& section = menu.getSections()[currentSectionIndex];
-                currentFolderIndex = (currentFolderIndex + 1) % section.getFolders().size();
-                folderSettings.getCores(menu.getSections()[currentSectionIndex].getTitle(), menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle() );
+                const Section& section = menu.getSections()[state.currentSectionIndex];
+                state.currentFolderIndex = (state.currentFolderIndex + 1) % section.getFolders().size();
+                folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
             } else if (cmd == CMD_ROM_SETTINGS) {
-                currentMenuLevel = FOLDER_SETTINGS;
+                state.currentMenuLevel = MenuLevel::FOLDER_SETTINGS;
                 renderComponent.resetValues();
             }
             break;
             
-        case MENU_ROM:
+        case MenuLevel::MENU_ROM:
             if (cmd == CMD_BACK) { // ESC
-                currentMenuLevel = MENU_FOLDER;
+                state.currentMenuLevel = MenuLevel::MENU_FOLDER;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
-                if (currentRomIndex > 0) currentRomIndex--;
-                else currentRomIndex = folder.getRoms().size() - 1;
+                const Folder& folder = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex];
+                if (state.currentRomIndex > 0) state.currentRomIndex--;
+                else state.currentRomIndex = folder.getRoms().size() - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                const Folder& folder = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex];
-                currentRomIndex = (currentRomIndex + 1) % folder.getRoms().size();
+                const Folder& folder = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex];
+                state.currentRomIndex = (state.currentRomIndex + 1) % folder.getRoms().size();
             } else if (cmd == CMD_ENTER) { // ENTER
                 std::cout << "execute rom" << std::endl;
                 launchRom();
                 renderComponent.resetValues();
             } else if (cmd == CMD_ROM_SETTINGS) {
-                currentMenuLevel = ROM_SETTINGS;
+                state.currentMenuLevel = MenuLevel::ROM_SETTINGS;
                 renderComponent.resetValues();
             }
             break;
         case SYSTEM_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
-                currentMenuLevel = MENU_FOLDER;
+                state.currentMenuLevel = MenuLevel::MENU_FOLDER;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentSettingsIndex > 0) currentSettingsIndex--;
@@ -188,19 +189,19 @@ void Application::handleCommand(ControlMap cmd) {
             break;
         case FOLDER_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
-                currentMenuLevel = MENU_FOLDER;
+                state.currentMenuLevel = MenuLevel::MENU_FOLDER;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                if (currentFolderIndex > 0) currentFolderIndex--;
-                else currentFolderIndex = cfg.getSectionSize(Configuration::FOLDER) - 1;
+                if (state.currentFolderIndex > 0) state.currentFolderIndex--;
+                else state.currentFolderIndex = cfg.getSectionSize(Configuration::FOLDER) - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                currentFolderIndex = (currentFolderIndex + 1) % (cfg.getSectionSize(Configuration::FOLDER));
-                std::cout << "currentSettingsIndex: " << currentFolderIndex << std::endl;
+                state.currentFolderIndex = (state.currentFolderIndex + 1) % (cfg.getSectionSize(Configuration::FOLDER));
+                std::cout << "currentSettingsIndex: " << state.currentFolderIndex << std::endl;
             }
             break;
         case ROM_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
-                currentMenuLevel = MENU_ROM;
+                state.currentMenuLevel = MenuLevel::MENU_ROM;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentRomSettingsIndex > 0) currentRomSettingsIndex--;
@@ -212,11 +213,11 @@ void Application::handleCommand(ControlMap cmd) {
     }
 
     if (cmd == CMD_SYS_SETTINGS) {
-        currentMenuLevel = SYSTEM_SETTINGS;
+        state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
         renderComponent.resetValues();
     }
 
-    if(currentMenuLevel == SYSTEM_SETTINGS) {
+    if(state.currentMenuLevel == MenuLevel::SYSTEM_SETTINGS) {
         if (cmd == CMD_UP) {
             systemSettings.navigateUp();
         } else if (cmd == CMD_DOWN) {
@@ -234,7 +235,7 @@ void Application::handleCommand(ControlMap cmd) {
 
     }
 
-    if(currentMenuLevel == FOLDER_SETTINGS) {
+    if(state.currentMenuLevel == FOLDER_SETTINGS) {
         if (cmd == CMD_UP) {
             folderSettings.navigateUp();
         } else if (cmd == CMD_DOWN) {
@@ -252,7 +253,7 @@ void Application::handleCommand(ControlMap cmd) {
 
     }
 
-    if(currentMenuLevel == ROM_SETTINGS) {
+    if(state.currentMenuLevel == ROM_SETTINGS) {
         if (cmd == CMD_UP) {
             romSettings.navigateUp();
         } else if (cmd == CMD_DOWN) {
@@ -360,10 +361,10 @@ void Application::print_list() {
 
 void Application::launchRom() {
 
-    std::string romName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()[currentRomIndex].getTitle();
-    std::string romPath = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getRoms()[currentRomIndex].getPath();
-    std::string folderName = menu.getSections()[currentSectionIndex].getFolders()[currentFolderIndex].getTitle();
-    std::string sectionName = menu.getSections()[currentSectionIndex].getTitle();
+    std::string romName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getTitle();
+    std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
+    std::string folderName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle();
+    std::string sectionName = menu.getSections()[state.currentSectionIndex].getTitle();
     std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
 
     std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);

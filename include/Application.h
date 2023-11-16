@@ -54,20 +54,18 @@ private:
 
     std::vector<ILanguageObserver *> langObservers;
 
-    enum MenuLevel {
-        MENU_SECTION,
-        MENU_FOLDER,
-        MENU_ROM,
-        SYSTEM_SETTINGS,
-        FOLDER_SETTINGS,
-        ROM_SETTINGS
+    // MenuLevel currentMenuLevel = MENU_SECTION;
+
+    State state = {
+        MenuLevel::MENU_SECTION, // currentMenuLevel
+        0, // currentSectionIndex
+        0, // currentFolderIndex
+        0 // currentRomIndex
     };
 
-    MenuLevel currentMenuLevel = MENU_SECTION;
-
-    int currentSectionIndex = 0;
-    int currentFolderIndex = 0;
-    int currentRomIndex = 0;
+    // int currentSectionIndex = 0;
+    // int currentFolderIndex = 0;
+    // int currentRomIndex = 0;
     int currentSettingsIndex = 0;
     int currentFolderSettingsIndex = 0;
     int currentRomSettingsIndex = 0;

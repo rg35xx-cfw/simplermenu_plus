@@ -84,8 +84,9 @@ const std::string Configuration::THEME_FONT = std::string("GENERAL.font");
 
 
 
-Configuration::Configuration(const std::string& configIniFilepath) 
-    : configIniFilepath(configIniFilepath) {
+Configuration::Configuration(const std::string& configIniFilepath, 
+                             const std::string& stateFilepath) 
+    : configIniFilepath(configIniFilepath), stateFilepath(stateFilepath) {
 
     // Load values from .ini file using Boost.PropertyTree
     boost::property_tree::ini_parser::read_ini(configIniFilepath, mainPt);
@@ -201,3 +202,8 @@ void Configuration::saveConfigIni() {
 
     std::cout << configIniFilepath << " written.\n";
 }
+
+State Configuration::loadState() {}
+
+
+void Configuration::saveState(const State& state) {}
