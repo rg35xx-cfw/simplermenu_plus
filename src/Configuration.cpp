@@ -2,6 +2,7 @@
 #include "Exception.h"
 #include <iostream>
 #include <boost/property_tree/ini_parser.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
 
 
@@ -203,7 +204,84 @@ void Configuration::saveConfigIni() {
     std::cout << configIniFilepath << " written.\n";
 }
 
-State Configuration::loadState() {}
+State Configuration::loadState() {
+
+    boost::property_tree::ptree statePt;
+    try {
+        boost::property_tree::json_parser::read_json(stateFilepath, statePt);
+    } catch (const boost::property_tree::json_parser_error& e) {
+        throw StateNotFoundException(
+            "Error loading state: " + std::string(e.what()));
+    }
+
+    State state;
+    std::string currentMenuLevelStr = 
+        statePt.get<std::string>("currentMenuLevel");
+
+    if (currentMenuLevelStr == "MENU_SECTION") {
+        state.currentMenuLevel = MenuLevel::MENU_SECTION;
+    } else if (currentMenuLevelStr == "MENU_FOLDER") {
+        state.currentMenuLevel = MenuLevel::MENU_FOLDER;
+    } else if (currentMenuLevelStr == "MENU_ROM") {
+        state.currentMenuLevel = MenuLevel::MENU_ROM;
+    } else if (currentMenuLevelStr == "SYSTEM_SETTINGS") {
+        state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
+    } else if (currentMenuLevelStr == "FOLDER_SETTINGS") {
+        state.currentMenuLevel = MenuLevel::FOLDER_SETTINGS;
+    } else if (currentMenuLevelStr == "ROM_SETTINGS") {
+        state.currentMenuLevel = MenuLevel::ROM_SETTINGS;
+    } else {
+        throw ValueConversionException(
+            "Error loading state: invalid currentMenuLevel value: " 
+            + currentMenuLevelStr);
+    }
+
+    state.currentSectionIndex = statePt.get<int>("currentSectionIndex");
+    state.currentFolderIndex = statePt.get<int>("currentFolderIndex");
+    state.currentRomIndex = statePt.get<int>("currentRomIndex");
+
+    std::cout << stateFilepath << " load.\n";
+
+    return state;
+}
 
 
-void Configuration::saveState(const State& state) {}
+void Configuration::saveState(const State& state) {
+    
+        boost::property_tree::ptree statePt;
+    
+        std::string currentMenuLevelStr;
+        switch (state.currentMenuLevel) {
+            case MenuLevel::MENU_SECTION:
+                currentMenuLevelStr = "MENU_SECTION";
+                break;
+            case MenuLevel::MENU_FOLDER:
+                currentMenuLevelStr = "MENU_FOLDER";
+                break;
+            case MenuLevel::MENU_ROM:
+                currentMenuLevelStr = "MENU_ROM";
+                break;
+            case MenuLevel::SYSTEM_SETTINGS:
+                currentMenuLevelStr = "SYSTEM_SETTINGS";
+                break;
+            case MenuLevel::FOLDER_SETTINGS:
+                currentMenuLevelStr = "FOLDER_SETTINGS";
+                break;
+            case MenuLevel::ROM_SETTINGS:
+                currentMenuLevelStr = "ROM_SETTINGS";
+                break;
+            default:
+                throw ValueConversionException(
+                    "Error saving state: invalid currentMenuLevel value: " 
+                    + std::to_string(state.currentMenuLevel));
+        }
+    
+        statePt.put("currentMenuLevel", currentMenuLevelStr);
+        statePt.put("currentSectionIndex", state.currentSectionIndex);
+        statePt.put("currentFolderIndex", state.currentFolderIndex);
+        statePt.put("currentRomIndex", state.currentRomIndex);
+    
+        boost::property_tree::json_parser::write_json(stateFilepath, statePt);
+    
+        std::cout << stateFilepath << " written.\n";
+}

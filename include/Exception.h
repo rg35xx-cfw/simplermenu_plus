@@ -38,3 +38,9 @@ public:
         : SimplerMenuException(what_arg) { }
 };
 
+class StateNotFoundException : public SimplerMenuException {
+public:
+    StateNotFoundException(const std::string& what_arg) 
+        : SimplerMenuException(what_arg) { }
+};
+

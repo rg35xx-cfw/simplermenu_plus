@@ -56,12 +56,7 @@ private:
 
     // MenuLevel currentMenuLevel = MENU_SECTION;
 
-    State state = {
-        MenuLevel::MENU_SECTION, // currentMenuLevel
-        0, // currentSectionIndex
-        0, // currentFolderIndex
-        0 // currentRomIndex
-    };
+    State state;
 
     // int currentSectionIndex = 0;
     // int currentFolderIndex = 0;

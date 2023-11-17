@@ -16,6 +16,7 @@
 #include <SDL/SDL_ttf.h>
 
 #include "Application.h"
+#include "Exception.h"
 
 
 Application::Application() 
@@ -45,6 +46,19 @@ Application::Application()
 
     setupCache();
     populateMenu(menu);
+
+    try {
+        state = cfg.loadState();
+
+    } catch (const StateNotFoundException& e) {
+        std::cout << "State not found, using default values" << std::endl;
+        state.currentMenuLevel = MenuLevel::MENU_SECTION;
+        state.currentSectionIndex = 0;
+        state.currentFolderIndex = 0;
+        state.currentRomIndex = 0;
+
+        cfg.saveState(state);
+    }
 
     theme.loadTheme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
 
