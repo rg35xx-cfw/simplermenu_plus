@@ -49,7 +49,6 @@ Application::Application()
 
     try {
         state = cfg.loadState();
-
     } catch (const StateNotFoundException& e) {
         std::cout << "State not found, using default values" << std::endl;
         state.currentMenuLevel = MenuLevel::MENU_SECTION;
@@ -191,7 +190,7 @@ void Application::handleCommand(ControlMap cmd) {
             break;
         case SYSTEM_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
-                state.currentMenuLevel = MenuLevel::MENU_FOLDER;
+                state = cfg.loadState();
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
                 if (currentSettingsIndex > 0) currentSettingsIndex--;
@@ -227,6 +226,7 @@ void Application::handleCommand(ControlMap cmd) {
     }
 
     if (cmd == CMD_SYS_SETTINGS) {
+        cfg.saveState(state);
         state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
         renderComponent.resetValues();
     }
@@ -375,6 +375,9 @@ void Application::print_list() {
 
 void Application::launchRom() {
 
+    // Save application state first
+    cfg.saveState(state);
+
     std::string romName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getTitle();
     std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
     std::string folderName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle();
@@ -420,6 +423,11 @@ void Application::settingsChanged(const std::string& key, const std::string& val
 
     } else if (key == Configuration::THEME) {
         theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
+    } else if (key == Configuration::QUIT) {
+        if(value != "INTERNAL") {
+            SDL_Quit();
+            exit(0);
+        }
     }
     cfg.set(key, value);
     cfg.saveConfigIni();

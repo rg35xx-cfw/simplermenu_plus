@@ -155,6 +155,7 @@ void Settings::navigateEnter() {
         if (currentKey == Configuration::RESTART) {
             restartApplication();
         } else if (currentKey == Configuration::QUIT) {
+
             quitApplication();
         }
     }
@@ -374,8 +375,7 @@ void Settings::restartApplication() {
 
 void Settings::quitApplication() {
     std::cout << "QUIT..." << std::endl;
-    SDL_Quit();
-    exit(0);
+    notifySettingsChange(Configuration::QUIT, "QUIT");
 }
 
 void Settings::updateCoreSelection(bool increase) {
