@@ -44,9 +44,6 @@ Application::Application()
     romSettings.initializeSettings();
     systemSettings.initializeSettings();
 
-    setupCache();
-    populateMenu(menu);
-
     try {
         state = cfg.loadState();
     } catch (const StateNotFoundException& e) {
@@ -58,6 +55,9 @@ Application::Application()
 
         cfg.saveState(state);
     }
+
+    setupCache();
+    populateMenu(menu);
 
     theme.loadTheme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
 
@@ -226,7 +226,9 @@ void Application::handleCommand(ControlMap cmd) {
     }
 
     if (cmd == CMD_SYS_SETTINGS) {
-        cfg.saveState(state);
+        if(state.currentMenuLevel != MenuLevel::SYSTEM_SETTINGS) {
+            cfg.saveState(state);
+        }
         state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
         renderComponent.resetValues();
     }
@@ -386,9 +388,23 @@ void Application::launchRom() {
 
     std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
 
+    std::string corePath = "";
+
+    for (const auto& item : allCachedItems) {
+        if (item.path == romPath) {
+            corePath = item.core;
+        }
+    }
+    if (corePath == "" || corePath == "default") {
+        std::cout << "corePath: " << corePath << std::endl;
+        corePath = cfg.get(Configuration::CORE_OVERRIDE);
+        std::cout << "corePath: " << corePath << std::endl;
+
+    }
+
     // We are using the last selected core for a given system, by default it's the first available core only another 
     // core has been selected in rom settings -> core override
-    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + ".simplemenu/launchers/" + cfg.get(Configuration::CORE_OVERRIDE);
+    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + ".simplemenu/launchers/" + corePath;
 
     // Launch emulator
     std::string command = execLauncher + " '" + romPath + "'";
@@ -423,7 +439,26 @@ void Application::settingsChanged(const std::string& key, const std::string& val
 
     } else if (key == Configuration::THEME) {
         theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
-    } else if (key == Configuration::QUIT) {
+    } else if (key == Configuration::CORE_OVERRIDE) {
+        std::cout << "Calling CORE OVERRIDE " << std::endl;
+        MenuCache menuCache;
+
+        std::string cacheFilePath = "/userdata/system/simplermenu_plus/caches/global_cache.json";
+
+        if (menuCache.cacheExists(cacheFilePath)) {
+            allCachedItems = menuCache.loadFromCache(cacheFilePath);
+        }
+        
+        if (state.currentMenuLevel == ROM_SETTINGS) {
+            std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
+
+            if (romPath != "") {
+                menuCache.updateCacheItem(cacheFilePath, romPath, value, allCachedItems);
+            }
+        }
+    } 
+    
+    else if (key == Configuration::QUIT) {
         if(value != "INTERNAL") {
             SDL_Quit();
             exit(0);

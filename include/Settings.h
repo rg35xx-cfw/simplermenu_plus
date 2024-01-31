@@ -162,9 +162,9 @@ public:
 
         // By default we select the first core from the list
         // TODO: need to add the logic to override a core/launcher per rom
-        std::string currentCore = *cores.begin();
-        settingsMap[Configuration::CORE_SELECTION] = {Configuration::CORE_SELECTION, currentCore, true};
-        notifySettingsChange(Configuration::CORE_SELECTION, currentCore);
+        // std::string currentCore = *cores.begin();
+        // settingsMap[Configuration::CORE_SELECTION] = {Configuration::CORE_SELECTION, currentCore, true};
+        // notifySettingsChange(Configuration::CORE_SELECTION, currentCore);
     }
 };
 
