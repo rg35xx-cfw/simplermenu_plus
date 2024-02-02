@@ -2,59 +2,59 @@
 {
     "SystemMenu": [
         {
-            "id": "SYSTEM.volume",
+            "id": "APPLICATION.volume",
             "type": "IntegerMenuItem",
             "title": "Volume"
         },
         {
-            "id": "SYSTEM.brightness",
+            "id": "APPLICATION.brightness",
             "type": "IntegerMenuItem",
             "title": "Brightness"
         },
         {
-            "id": "SYSTEM.screenRefresh",
+            "id": "APPLICATION.screenRefresh",
             "type": "IntegerMenuItem",
             "title": "Screen Refresh Rate"
         },
         {
-            "id": "SYSTEM.showFPS",
+            "id": "APPLICATION.showFPS",
             "type": "BooleanMenuItem",
             "title": "showFPS"
         },
         {
-            "id": "SYSTEM.overclock",
+            "id": "APPLICATION.overclock",
             "type": "MultiOptionMenuItem",
             "title": "Overclock",
             "options": ["840 MHz", "1008 MHz", "1296 MHz"]
         },
         {
-            "id": "SYSTEM.theme",
+            "id": "APPLICATION.theme",
             "type": "MultiOptionMenuItem",
             "title": "Theme",
             "options": ["Comicbook", "Simplermenu", "BigCody"]
         },
         {
-            "id": "SYSTEM.usbMode",
+            "id": "APPLICATION.usbMode",
             "type": "BooleanMenuItem",
             "title": "USB Mode"
         },
         {
-            "id": "SYSTEM.wifi",
+            "id": "APPLICATION.wifi",
             "type": "BooleanMenuItem",
             "title": "WIFI"
         },
         {
-            "id": "SYSTEM.rotation",
+            "id": "APPLICATION.rotation",
             "type": "BooleanMenuItem",
             "title": "Auto rotate"
         },
         {
-            "id": "SYSTEM.save",
+            "id": "APPLICATION.save",
             "type": "SimpleMenuItem",
             "title": "Save"
         },
         {
-            "id": "SYSTEM.quit",
+            "id": "APPLICATION.quit",
             "type": "SimpleMenuItem",
             "title": "Quit"
         }

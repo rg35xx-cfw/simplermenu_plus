@@ -276,7 +276,7 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
     renderText(folderName, theme.getIntValue(Configuration::TEXT1_X), theme.getIntValue(Configuration::TEXT1_Y), {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT)); 
 }
 
-void RenderComponent::drawSystemSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
+void RenderComponent::drawAppSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
 
     std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/settings.png";
     std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/resources/Akrobat-Bold.ttf";
@@ -306,11 +306,11 @@ void RenderComponent::drawSystemSettings(const std::string& settingsTitle, std::
     int itemsPerPage = 8;
 
     // Calculate number of pages FIXME: move that to the constructor
-    int total_pages = (cfg.getSectionSize(Configuration::SYSTEM) + itemsPerPage - 1)/ itemsPerPage;
+    int total_pages = (cfg.getSectionSize(Configuration::APPLICATION) + itemsPerPage - 1)/ itemsPerPage;
 
     int currentPage = currentSettingIndex / itemsPerPage;
     int startIndex = currentPage * itemsPerPage;
-    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::SYSTEM) );//settingsData.size());
+    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::APPLICATION) );//settingsData.size());
 
     // for (int i = 0; i < theme.getIntValue(Configuration::ITEMS); i++) {
     for (int i = startIndex; i < endIndex; i++) {
@@ -397,7 +397,7 @@ void RenderComponent::drawFolderSettings(const std::string& settingsTitle, std::
 
     int currentPage = currentSettingIndex / itemsPerPage;
     int startIndex = currentPage * itemsPerPage;
-    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::FOLDER) );
+    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::APPLICATION) );
 
     // for (int i = 0; i < theme.getIntValue(Configuration::ITEMS); i++) {
     for (int i = startIndex; i < endIndex; i++) {

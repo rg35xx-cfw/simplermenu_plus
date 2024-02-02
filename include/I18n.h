@@ -26,6 +26,8 @@ public:
     // I18N.INI
     ////////
 
+    static const std::string APP_SETTINGS;
+
     static const std::string SYSTEM_SETTINGS;
 
     static const std::string FOLDER_SETTINGS;

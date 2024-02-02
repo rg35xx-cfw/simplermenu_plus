@@ -2,8 +2,8 @@ enum MenuLevel {
     MENU_SECTION,
     MENU_FOLDER,
     MENU_ROM,
+    APP_SETTINGS,
     SYSTEM_SETTINGS,
-    FOLDER_SETTINGS,
     ROM_SETTINGS
 };
 

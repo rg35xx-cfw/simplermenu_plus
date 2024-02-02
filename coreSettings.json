@@ -1,0 +1,420 @@
+{
+    "ATARI LYNX": {
+        "cores": [
+            "handy_libretro",
+            "mednafen_lynx_libretro"
+        ],
+        "default_core": "handy_libretro"
+    },
+    "GAME & WATCH": {
+        "cores": [
+            "gw_libretro"
+        ],
+        "default_core": "gw_libretro"
+    },
+    "GAME BOY": {
+        "cores": [
+            "gambatte_libretro",
+            "gearboy_libretro"
+        ],
+        "default_core": "gambatte_libretro"
+    },
+    "GAME BOY ADVANCE": {
+        "cores": [
+            "mgba_libretro",
+            "gpsp_libretro",
+            "mednafen_gba_libretro",
+            "meteor_libretro",
+            "vba-m_libretro",
+            "vba_next_libretro"
+        ],
+        "default_core": "mgba_libretro"
+    },
+    "GAME BOY COLOR": {
+        "cores": [
+            "gambatte_libretro",
+            "gearboy_libretro"
+        ],
+        "default_core": "gambatte_libretro"
+    },
+    "GAME GEAR": {
+        "cores": [
+            "picodrive_libretro",
+            "genesis_plus_gx_libretro",
+            "gearsystem_libretro"
+        ],
+        "default_core": "picodrive_libretro"
+    },
+    "NEO GEO POCKET": {
+        "cores": [
+            "mednafen_ngp_libretro",
+            "race_libretro"
+        ],
+        "default_core": "mednafen_ngp_libretro"
+    },
+    "NINTENDO DS": {
+        "cores": [
+            "drastic_sa"
+        ],
+        "default_core": "drastic_sa"
+    },
+    "POKEMON MINI": {
+        "cores": [
+            "pokemini_libretro"
+        ],
+        "default_core": "pokemini_libretro"
+    },
+    "PSP": {
+        "cores": [
+            "ppsspp_libretro",
+            "ppsspp_sa"
+        ],
+        "default_core": "ppsspp_libretro"
+    },
+    "SUPERVISION": {
+        "cores": [
+            "potator_libretro"
+        ],
+        "default_core": "potator_libretro"
+    },
+    "WONDERSWAN": {
+        "cores": [
+            "mednafen_wswan_libretro"
+        ],
+        "default_core": "mednafen_wswan_libretro"
+    },
+    "AMIGA": {
+        "cores": [
+            "puae_libretro",
+            "uae4arm_libretro",
+            "puae2021_libretro"
+        ],
+        "default_core": "puae_libretro"
+    },
+    "AMSTRAD CPC": {
+        "cores": [
+            "cap32_libretro",
+            "crocods_libretro"
+        ],
+        "default_core": "cap32_libretro"
+    },
+    "ATARI ST": {
+        "cores": [
+            "hatari_libretro"
+        ],
+        "default_core": "hatari_libretro"
+    },
+    "COMMODORE 64": {
+        "cores": [
+            "vice_x64_libretro"
+        ],
+        "default_core": "vice_x64_libretro"
+    },
+    "DOOM": {
+        "cores": [
+            "prboom_libretro"
+        ],
+        "default_core": "prboom_libretro"
+    },
+    "DOS": {
+        "cores": [
+            "dosbox_pure_libretro"
+        ],
+        "default_core": "dosbox_pure_libretro"
+    },
+    "MSX": {
+        "cores": [
+            "bluemsx_libretro",
+            "fmsx_libretro"
+        ],
+        "default_core": "bluemsx_libretro"
+    },
+    "OPENBOR": {
+        "cores": [
+            "OpenBOR4432_sa",
+            "OpenBOR6412_sa",
+            "OpenBOR7142_sa"
+        ],
+        "default_core": "OpenBOR4432_sa"
+    },
+    "PC98": {
+        "cores": [
+            "nekop2_libretro",
+            "np2kai_libretro"
+        ],
+        "default_core": "nekop2_libretro"
+    },
+    "PICO-8": {
+        "cores": [
+            "fake08_libretro",
+            "retro8_libretro"
+        ],
+        "default_core": "fake08_libretro"
+    },
+    "QUAKE": {
+        "cores": [
+            "tyrquake_libretro"
+        ],
+        "default_core": "tyrquake_libretro"
+    },
+    "SCUMMVM": {
+        "cores": [
+            "scummvm_libretro"
+        ],
+        "default_core": "scummvm_libretro"
+    },
+    "TIC-80": {
+        "cores": [
+            "tic80_libretro"
+        ],
+        "default_core": "tic80_libretro"
+    },
+    "WOLF3D": {
+        "cores": [
+            "ecwolf_libretro"
+        ],
+        "default_core": "ecwolf_libretro"
+    },
+    "X68000": {
+        "cores": [
+            "px68k_libretro"
+        ],
+        "default_core": "px68k_libretro"
+    },
+    "ZX SPECTRUM": {
+        "cores": [
+            "fuse_libretro"
+        ],
+        "default_core": "fuse_libretro"
+    },
+    "ATARI 2600": {
+        "cores": [
+            "stella2014_libretro"
+        ],
+        "default_core": "stella2014_libretro"
+    },
+    "ATARI 5200": {
+        "cores": [
+            "a5200_libretro",
+            "atari800_libretro"
+        ],
+        "default_core": "a5200_libretro"
+    },
+    "ATARI 7800": {
+        "cores": [
+            "prosystem_libretro",
+            "stella2014_libretro"
+        ],
+        "default_core": "prosystem_libretro"
+    },
+    "DREAMCAST": {
+        "cores": [
+            "flycast_libretro",
+            "flycast_sa"
+        ],
+        "default_core": "flycast_libretro"
+    },
+    "FDS": {
+        "cores": [
+            "fceumm_libretro",
+            "nestopia_libretro"
+        ],
+        "default_core": "fceumm_libretro"
+    },
+    "INTELLIVISION": {
+        "cores": [
+            "freeintv_libretro"
+        ],
+        "default_core": "freeintv_libretro"
+    },
+    "MASTER SYSTEM": {
+        "cores": [
+            "picodrive_libretro",
+            "genesis_plus_gx_libretro",
+            "gearsystem_libretro"
+        ],
+        "default_core": "picodrive_libretro"
+    },
+    "MSU-1": {
+        "cores": [
+            "snes9x_libretro"
+        ],
+        "default_core": "snes9x_libretro"
+    },
+    "MSU-MD": {
+        "cores": [
+            "genesisplusgx_libretro"
+        ],
+        "default_core": "genesisplusgx_libretro"
+    },
+    "NEO GEO CD": {
+        "cores": [
+            "neocd_libretro"
+        ],
+        "default_core": "neocd_libretro"
+    },
+    "NES": {
+        "cores": [
+            "fceumm_libretro",
+            "nestopia_libretro",
+            "quicknes_libretro"
+        ],
+        "default_core": "fceumm_libretro"
+    },
+    "NINTENDO 64": {
+        "cores": [
+            "mupen64plus_rice_sa",
+            "parallel_n64_libretro",
+            "mupen64plus_glide64mk2_sa"
+        ],
+        "default_core": "mupen64plus_rice_sa"
+    },
+    "ODYSSEY2": {
+        "cores": [
+            "o2em_libretro"
+        ],
+        "default_core": "o2em_libretro"
+    },
+    "PC ENGINE": {
+        "cores": [
+            "pce_fast_libretro",
+            "mednafen_pce_fast_libretro",
+            "mednafen_supergrafx_libretro"
+        ],
+        "default_core": "pce_fast_libretro"
+    },
+    "PC ENGINE CD": {
+        "cores": [
+            "mednafen_pce_fast_libretro",
+            "mednafen_supergrafx_libretro"
+        ],
+        "default_core": "mednafen_pce_fast_libretro"
+    },
+    "PLAYSTATION": {
+        "cores": [
+            "pcsx_rearmed_libretro",
+            "pcsx_rearmed_libretro_old",
+            "pcsx_sa"
+        ],
+        "default_core": "pcsx_rearmed_libretro"
+    },
+    "SEGA 32X": {
+        "cores": [
+            "picodrive_libretro"
+        ],
+        "default_core": "picodrive_libretro"
+    },
+    "SEGA CD": {
+        "cores": [
+            "picodrive_libretro",
+            "genesis_plus_gx_libretro"
+        ],
+        "default_core": "picodrive_libretro"
+    },
+    "SEGA GENESIS": {
+        "cores": [
+            "picodrive_libretro",
+            "genesis_plus_gx_libretro"
+        ],
+        "default_core": "picodrive_libretro"
+    },
+    "SEGA SG-1000": {
+        "cores": [
+            "gearsystem_libretro",
+            "genesis_plus_gx_libretro"
+        ],
+        "default_core": "gearsystem_libretro"
+    },
+    "SGB": {
+        "cores": [
+            "mesen-s_libretro",
+            "mgba_libretro"
+        ],
+        "default_core": "mesen-s_libretro"
+    },
+    "SNES": {
+        "cores": [
+            "mednafen_supafaust_libretro",
+            "snes9x_libretro",
+            "bsnes_libretro",
+            "snes9x_next_libretro",
+            "quicknes_libretro"
+        ],
+        "default_core": "mednafen_supafaust_libretro"
+    },
+    "VIRTUAL BOY": {
+        "cores": [
+            "mednafen_vb_libretro"
+        ],
+        "default_core": "mednafen_vb_libretro"
+    },
+    "APPS": {
+        "cores": [
+            "#"
+        ],
+        "default_core": "#"
+    },
+    "GAMES": {
+        "cores": [
+            "#"
+        ],
+        "default_core": "#"
+    },
+    "CPS1": {
+        "cores": [
+            "fbalpha_libretro",
+            "fbneo_libretro"
+        ],
+        "default_core": "fbalpha_libretro"
+    },
+    "CPS2": {
+        "cores": [
+            "fbalpha_libretro",
+            "fbneo_libretro"
+        ],
+        "default_core": "fbalpha_libretro"
+    },
+    "CPS3": {
+        "cores": [
+            "fbalpha_libretro",
+            "fbneo_libretro"
+        ],
+        "default_core": "fbalpha_libretro"
+    },
+    "DAPHNE": {
+        "cores": [
+            "daphne_libretro"
+        ],
+        "default_core": "daphne_libretro"
+    },
+    "FINALBURN ALPHA": {
+        "cores": [
+            "fbalpha2012_libretro",
+            "fbalpha_libretro"
+        ],
+        "default_core": "fbalpha2012_libretro"
+    },
+    "FINALBURN NEO": {
+        "cores": [
+            "fbneo_libretro"
+        ],
+        "default_core": "fbneo_libretro"
+    },
+    "MAME": {
+        "cores": [
+            "mame2003_plus_libretro",
+            "fbneo_libretro",
+            "fbalpha_libretro",
+            "km_mame2003_xtreme_amped_libretro",
+            "mame2000_libretro",
+            "mame2010_libretro"
+        ],
+        "default_core": "mame2003_plus_libretro"
+    },
+    "NEO GEO": {
+        "cores": [
+            "fbneo_libretro"
+        ],
+        "default_core": "fbneo_libretro"
+    }
+}

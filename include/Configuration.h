@@ -45,8 +45,8 @@ public:
     ////////
 
     static const std::string GLOBAL;
+    static const std::string APPLICATION;
     static const std::string SYSTEM;
-    static const std::string FOLDER;
     static const std::string GAME;
 
     // CONFIG . GLOBAL section

@@ -43,8 +43,9 @@ private:
     Configuration cfg;
     Theme theme;
     I18n i18n;
+    
+    AppSettings appSettings;
     SystemSettings systemSettings;
-    FolderSettings folderSettings;
     RomSettings romSettings;
 
     ControlMapping controlMapping;

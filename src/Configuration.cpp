@@ -11,8 +11,8 @@
 ////////
 
 const std::string Configuration::GLOBAL = std::string("GLOBAL");
+const std::string Configuration::APPLICATION = std::string("APPLICATION");
 const std::string Configuration::SYSTEM = std::string("SYSTEM");
-const std::string Configuration::FOLDER = std::string("FOLDER");
 const std::string Configuration::GAME = std::string("GAME");
 
 // CONFIG . GLOBAL section
@@ -24,25 +24,25 @@ const std::string Configuration::SCREEN_HEIGHT = std::string("GLOBAL.screenHeigh
 const std::string Configuration::SCREEN_DEPTH = std::string("GLOBAL.screenDepth");
 
 
-// CONFIG . SYSTEM section
-const std::string Configuration::VOLUME = std::string("SYSTEM.volume");
-const std::string Configuration::BRIGHTNESS = std::string("SYSTEM.brightness");
-const std::string Configuration::SCREEN_REFRESH = std::string("SYSTEM.screenRefresh");
-const std::string Configuration::SHOW_FPS = std::string("SYSTEM.showFPS");
-const std::string Configuration::OVERCLOCK = std::string("SYSTEM.overclock");
+// CONFIG . APPLICATION section
+const std::string Configuration::VOLUME = std::string("APPLICATION.volume");
+const std::string Configuration::BRIGHTNESS = std::string("APPLICATION.brightness");
+const std::string Configuration::SCREEN_REFRESH = std::string("APPLICATION.screenRefresh");
+const std::string Configuration::SHOW_FPS = std::string("APPLICATION.showFPS");
+const std::string Configuration::OVERCLOCK = std::string("APPLICATION.overclock");
 const std::string Configuration::OVERCLOCK_VALUES = std::string("GLOBAL.overclockValues");
-const std::string Configuration::THEME = std::string("SYSTEM.theme");
-const std::string Configuration::USB_MODE = std::string("SYSTEM.usbMode");
+const std::string Configuration::THEME = std::string("APPLICATION.theme");
+const std::string Configuration::USB_MODE = std::string("APPLICATION.usbMode");
 const std::string Configuration::USB_MODE_VALUES = std::string("GLOBAL.usbModeValues");
-const std::string Configuration::WIFI = std::string("SYSTEM.wifi");
-const std::string Configuration::ROTATION = std::string("SYSTEM.rotation");
-const std::string Configuration::LANGUAGE = std::string("SYSTEM.language");
-const std::string Configuration::UPDATE_CACHES = std::string("SYSTEM.updateCaches");
-const std::string Configuration::RESTART = std::string("SYSTEM.restart");
-const std::string Configuration::QUIT = std::string("SYSTEM.quit");
+const std::string Configuration::WIFI = std::string("APPLICATION.wifi");
+const std::string Configuration::ROTATION = std::string("APPLICATION.rotation");
+const std::string Configuration::LANGUAGE = std::string("APPLICATION.language");
+const std::string Configuration::UPDATE_CACHES = std::string("APPLICATION.updateCaches");
+const std::string Configuration::RESTART = std::string("APPLICATION.restart");
+const std::string Configuration::QUIT = std::string("APPLICATION.quit");
 
 // CONFIG . FOLDER section
-const std::string Configuration::CORE_SELECTION = std::string("FOLDER.coreSelection");
+const std::string Configuration::CORE_SELECTION = std::string("SYSTEM.coreSelection");
 
 // CONFIG . GAME section
 const std::string Configuration::ROM_OVERCLOCK = std::string("GAME.romOverclock");
@@ -224,10 +224,10 @@ State Configuration::loadState() {
         state.currentMenuLevel = MenuLevel::MENU_FOLDER;
     } else if (currentMenuLevelStr == "MENU_ROM") {
         state.currentMenuLevel = MenuLevel::MENU_ROM;
+    } else if (currentMenuLevelStr == "APP_SETTINGS") {
+        state.currentMenuLevel = MenuLevel::APP_SETTINGS;
     } else if (currentMenuLevelStr == "SYSTEM_SETTINGS") {
         state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
-    } else if (currentMenuLevelStr == "FOLDER_SETTINGS") {
-        state.currentMenuLevel = MenuLevel::FOLDER_SETTINGS;
     } else if (currentMenuLevelStr == "ROM_SETTINGS") {
         state.currentMenuLevel = MenuLevel::ROM_SETTINGS;
     } else {
@@ -261,11 +261,11 @@ void Configuration::saveState(const State& state) {
             case MenuLevel::MENU_ROM:
                 currentMenuLevelStr = "MENU_ROM";
                 break;
+            case MenuLevel::APP_SETTINGS:
+                currentMenuLevelStr = "APP_SETTINGS";
+                break;
             case MenuLevel::SYSTEM_SETTINGS:
                 currentMenuLevelStr = "SYSTEM_SETTINGS";
-                break;
-            case MenuLevel::FOLDER_SETTINGS:
-                currentMenuLevelStr = "FOLDER_SETTINGS";
                 break;
             case MenuLevel::ROM_SETTINGS:
                 currentMenuLevelStr = "ROM_SETTINGS";

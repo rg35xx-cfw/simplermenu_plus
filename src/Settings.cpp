@@ -16,7 +16,7 @@ Settings::Settings(Configuration& cfg, I18n& i18n,
       minValue(minValue), maxValue(maxValue), delta(delta) {
 }
 
-SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
+AppSettings::AppSettings(Configuration& cfg, I18n& i18n, 
                                int minValue, int maxValue, int delta)
     : Settings(cfg, i18n, minValue, maxValue, delta) {
     defaultKeys = {
@@ -27,19 +27,15 @@ SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n,
         Configuration::UPDATE_CACHES, Configuration::RESTART, 
         Configuration::QUIT
     };
-
 }
 
-FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
+SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
                                int minValue, int maxValue, int delta)
     : Settings(cfg, i18n, minValue, maxValue, delta) {
-    defaultKeys = {
-        Configuration::CORE_SELECTION
-    };
-
+    generateCoreSettings();
 }
 
- RomSettings::RomSettings(Configuration& cfg, I18n& i18n,
+RomSettings::RomSettings(Configuration& cfg, I18n& i18n,
                           int minValue, int maxValue, int delta)
         : Settings(cfg, i18n, minValue, maxValue, delta) {
     defaultKeys = {
@@ -47,7 +43,6 @@ FolderSettings::FolderSettings(Configuration& cfg, I18n& i18n,
     };    
 
 }
-
 
 void Settings::navigateUp() {
     std::cout << "navigate Up" << std::endl;
@@ -71,108 +66,12 @@ void Settings::navigateDown() {
     }
 }
 
-void Settings::navigateLeft() {
-    std::cout << "navigate Left" << std::endl;
-    if (settingsMap[currentKey].enabled) {
-        if (currentKey == Configuration::BRIGHTNESS) {
-            updateInt(false, currentKey, minValue, maxValue, delta);
-        
-        } else if (currentKey == Configuration::VOLUME) {
-            updateInt(false, currentKey, minValue, maxValue, delta);
-        
-        } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            updateInt(false, currentKey, minValue + delta, maxValue, delta);
-        
-        } else if (currentKey == Configuration::THEME) {
-            updateTheme(false);
-        
-        } else if (currentKey == Configuration::USB_MODE) {
-            updateUSBMode(false);
-        
-        } else if (currentKey == Configuration::OVERCLOCK) {
-            updateOverclock(true);
-        
-        } else if (currentKey == Configuration::SHOW_FPS) {
-            updateShowFPS();
-        
-        } else if (currentKey == Configuration::LANGUAGE) {
-            updateLanguage(false);
-        
-        } else if (currentKey == Configuration::CORE_OVERRIDE) {
-            updateCoreOverride(false);
-        
-        } else if (currentKey == Configuration::CORE_SELECTION) {
-            updateCoreSelection(false);
-        
-        }  
-    }
-    notifySettingsChange(currentKey, currentValue);
-}
-
-void Settings::navigateRight() {
-    std::cout << "navigate Right" << std::endl;
-    if (settingsMap[currentKey].enabled) {
-        if (currentKey == Configuration::BRIGHTNESS) {
-            updateInt(true, currentKey, minValue, maxValue, delta);
-
-        } else if (currentKey == Configuration::VOLUME) {
-            updateInt(true, currentKey, minValue, maxValue, delta);
-
-        } else if (currentKey == Configuration::SCREEN_REFRESH) {
-            updateInt(true, currentKey, minValue + delta, maxValue, delta);
-
-        } else if (currentKey == Configuration::THEME) {
-            updateTheme(true);
-
-        } else if (currentKey == Configuration::USB_MODE) {
-            updateUSBMode(false);
-
-        } else if (currentKey == Configuration::OVERCLOCK) {
-            updateOverclock(false);
-
-        } else if (currentKey == Configuration::SHOW_FPS) {
-            updateShowFPS();
-
-        } else if (currentKey == Configuration::LANGUAGE) {
-            updateLanguage(true);
-
-        } else if (currentKey == Configuration::CORE_OVERRIDE) {
-            updateCoreOverride(true);
-
-        } else if (currentKey == Configuration::CORE_SELECTION) {
-            updateCoreSelection(true);
-
-        }     
-    }
-    notifySettingsChange(currentKey, currentValue);
-}
-
-void Settings::navigateEnter() {
-    std::cout << "navigate Enter" << std::endl;
-    // TODO this should notify the observers that the current setting
-    //      has been changed
-    if (settingsMap[currentKey].enabled) {
-        if (currentKey == Configuration::RESTART) {
-            restartApplication();
-        } else if (currentKey == Configuration::QUIT) {
-
-            quitApplication();
-        }
-    }
-
-}
-
-std::vector<Settings::I18nSetting> SystemSettings::getSystemSettings() {
-    return i18nSettings;
-}
-
-std::vector<Settings::I18nSetting> FolderSettings::getFolderSettings() {
-    
+std::vector<Settings::I18nSetting> AppSettings::getAppSettings() {
     std::vector<I18nSetting> i18nSettings;
-    
+
     for (const auto& key : enabledKeys) {
 
-        if (key.find("FOLDER.") == 0) {
+        if (key.find("APPLICATION.") == 0) {
         
             size_t pos = key.find_last_of(".");
             
@@ -191,7 +90,10 @@ std::vector<Settings::I18nSetting> FolderSettings::getFolderSettings() {
             }
         }
     }
+    return i18nSettings;
+}
 
+std::vector<Settings::I18nSetting> SystemSettings::getSystemSettings() {
     return i18nSettings;
 }
 
@@ -258,11 +160,6 @@ void Settings::initializeSettings() {
     if(!enabledKeys.empty()) {
         currentKey = enabledKeys[currentIndex];
     }
-
-    // First time we need to initialize the language manually
-    // as it needs the complete list of initialized settings
-    // to generate the internationalized version of them
-    reloadI18nSettings();
 }
 
 std::vector<std::string> Settings::getEnabledKeys() {
@@ -310,7 +207,7 @@ void Settings::updateListSetting(const std::set<std::string>& values, bool incre
     currentValue = *it;
 }
 
-void Settings::updateTheme(bool increase) {
+void AppSettings::updateTheme(bool increase) {
     updateListSetting(themeFolders, increase);
     
     settingsMap[Configuration::THEME].value = currentValue;
@@ -318,7 +215,7 @@ void Settings::updateTheme(bool increase) {
     std::cout << "UPDATING THEME" << std::endl;
 }
 
-void Settings::updateUSBMode(bool increase) {
+void AppSettings::updateUSBMode(bool increase) {
     updateListSetting(cfg.getList(Configuration::USB_MODE_VALUES), increase);
 
     settingsMap[Configuration::USB_MODE].value = currentValue;
@@ -326,7 +223,7 @@ void Settings::updateUSBMode(bool increase) {
     std::cout << "UPDATING USB MODE" << std::endl;
 }
 
-void Settings::updateLanguage(bool increase) {
+void AppSettings::updateLanguage(bool increase) {
     // First we need to normalize the value
     currentValue = boost::algorithm::to_upper_copy(settingsMap[currentKey].value);
     std::cout << "CURRENT LANGUAGE " << currentValue << std::endl;
@@ -338,7 +235,7 @@ void Settings::updateLanguage(bool increase) {
     settingsMap[currentKey].value = currentValue;
 }
 
-void Settings::updateOverclock(bool increase) {
+void AppSettings::updateOverclock(bool increase) {
     updateListSetting(cfg.getList(Configuration::OVERCLOCK_VALUES), increase);
 
     settingsMap[Configuration::OVERCLOCK].value = currentValue;
@@ -353,32 +250,48 @@ void Settings::updateBoolSetting() {
     settingsMap[currentKey].value = currentValue;
 }
 
-void Settings::updateShowFPS() {
+void AppSettings::updateShowFPS() {
     updateBoolSetting();
 
     std::cout << "UPDATING FPS SHOW" << std::endl;
 }
 
-void Settings::updateWifi() {
+void AppSettings::updateWifi() {
     updateBoolSetting();
     std::cout << "UPDATING Wifi" << std::endl;
 }
 
-void Settings::updateRotation() {
+void AppSettings::updateRotation() {
     updateBoolSetting();
     std::cout << "UPDATING Rotation" << std::endl;
 }
 
-void Settings::restartApplication() {
+void AppSettings::restartApplication() {
     std::cout << "RESTART..." << std::endl;
 }
 
-void Settings::quitApplication() {
+void AppSettings::quitApplication() {
     std::cout << "QUIT..." << std::endl;
     notifySettingsChange(Configuration::QUIT, "QUIT");
 }
 
-void Settings::updateCoreSelection(bool increase) {
+void RomSettings::updateRomOverclock(bool increase) {
+    updateInt(increase, Configuration::ROM_OVERCLOCK, minValue, maxValue, delta);
+
+    settingsMap[Configuration::ROM_OVERCLOCK].value = currentValue;
+
+    std::cout << "UPDATING ROM OVERCLOCK" << std::endl;
+}
+
+void RomSettings::updateAutoStart(bool increase) {
+    updateBoolSetting();
+
+    settingsMap[Configuration::ROM_AUTOSTART].value = currentValue;
+
+    std::cout << "UPDATING AUTO START" << std::endl;
+}
+
+void RomSettings::updateCoreSelection(bool increase) {
     updateListSetting(cores, increase);
 
     settingsMap[Configuration::CORE_SELECTION].value = currentValue;
@@ -386,7 +299,7 @@ void Settings::updateCoreSelection(bool increase) {
     std::cout << "UPDATING CORE SELECTION" << std::endl;
 }
 
-void Settings::updateCoreOverride(bool increase) {
+void RomSettings::updateCoreOverride(bool increase) {
     updateListSetting(cores, increase);
 
     settingsMap[Configuration::CORE_OVERRIDE].value = currentValue;
@@ -402,14 +315,14 @@ std::string Settings::getCurrentValue() {
     return settingsMap[currentKey].value;
 };
 
-void Settings::reloadI18nSettings() {
+void AppSettings::reloadI18nSettings() {
     i18nSettings.clear();
 
     for (const auto& key : enabledKeys) {
 
         std::cout << key << std::endl;
         
-        if (key.find("SYSTEM.") == 0) {
+        if (key.find("APPLICATION.") == 0) {
 
             size_t pos = key.find_last_of(".");
             
@@ -453,7 +366,7 @@ void Settings::notifySettingsChange(const std::string &key, const std::string &v
     //      only the affected value, exception made of the Language System
     //      setting that should trigger the reload call for the SystemSettings
     //      class that doesn't implement the LanguageObserver
-    reloadI18nSettings();
+    //reloadI18nSettings();
 }
 
 /////////
@@ -464,22 +377,15 @@ void RomSettings::languageChanged() {
    std::cout << "Reloading system settings labels due to language change" 
             << std::endl;
 
-    reloadI18nSettings();
+    //reloadI18nSettings();
 }
-
-void FolderSettings::languageChanged() {
-
-    std::cout << "Reloading system settings labels due to language change" 
-            << std::endl;
-
-    reloadI18nSettings();
-
-}
-
-
 
 /////////////////
 // ISettingsObserver and ILanguageSubject common methods
+
+std::string AppSettings::getName() {
+    return "AppSettings::" + std::to_string((unsigned long long)(void**)this);
+}
 
 std::string SystemSettings::getName() {
     return "SystemSettings::" + std::to_string((unsigned long long)(void**)this);
@@ -489,9 +395,6 @@ std::string RomSettings::getName() {
     return "RomSettings::" + std::to_string((unsigned long long)(void**)this);
 }
 
-std::string FolderSettings::getName() {
-    return "FolderSettings::" + std::to_string((unsigned long long)(void**)this);
-}
 
 //
 /////////////
