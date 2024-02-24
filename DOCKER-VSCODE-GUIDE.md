@@ -1,3 +1,12 @@
+# Install Dev Containers
+
+VSCode + Dev Containers is the preferred way to develop this project. Please look at [the official documentation](https://code.visualstudio.com/docs/devcontainers/tutorial) to learn how to install everything you need.
+
+Once installed, the environment is configured via [`devcontainer.json`](.devcontainer/devcontainer.json) file. When opening the workspace, VSCode will ask you to reopen it in a container. Click "Yes," and you should be ready to start coding after a while! (the first time will be slower because the container needs to be generated).
+
+
+# DEPRECATED (use only for reference)
+
 1. Build the image
     ```
     docker build -t simplermenu_plus .

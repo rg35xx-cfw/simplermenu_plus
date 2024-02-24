@@ -1,7 +1,7 @@
 # Software Name
 TARGET = simplermenu_plus
 
-CROSS_COMPILE = /opt/cdata/rg35xx/upstream/batocera.linux/buildroot/output/host/bin/arm-buildroot-linux-gnueabihf-
+CROSS_COMPILE = /opt/cdata/rg35xx/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/arm-buildroot-linux-gnueabihf-
 
 #CROSS_COMPILE = /opt/cdata/mvsx/batocera.linux/buildroot/output/host/bin/arm-buildroot-linux-gnueabihf-
 
