@@ -10,10 +10,14 @@ obj/
 .DS_Store
 
 # ROMs and BIOS
-resources/roms/
-resources/bios/
-resources/roms
-resources/bios
+resources/roms/*
+!resources/roms/.gitkeep
+resources/bios/*
+!resources/bios/.gitkeep
+
+# Caches
+caches/*
+!caches/.gitkeep
 
 # MISC
 state.txt
