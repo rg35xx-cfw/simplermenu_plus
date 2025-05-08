@@ -19,6 +19,7 @@ const std::string Configuration::GAME = std::string("GAME");
 const std::string Configuration::ALIAS_PATH = std::string("GLOBAL.aliasPath");
 const std::string Configuration::HOME_PATH = std::string("GLOBAL.homePath");
 const std::string Configuration::THEME_PATH = std::string("GLOBAL.themePath");
+const std::string Configuration::IMAGES_PATH = std::string("GLOBAL.imagesPath");
 const std::string Configuration::SCREEN_WIDTH = std::string("GLOBAL.screenWidth");
 const std::string Configuration::SCREEN_HEIGHT = std::string("GLOBAL.screenHeight");
 const std::string Configuration::SCREEN_DEPTH = std::string("GLOBAL.screenDepth");

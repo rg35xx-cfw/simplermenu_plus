@@ -523,7 +523,8 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
     std::filesystem::path path(romPath);
     std::string romNameWithoutExtension = path.stem().string();
     std::string basePath = path.parent_path().string();
-    std::string thumbnailPath = basePath + "/media/images/" + romNameWithoutExtension + ".png";
+    std::string imagesPath = cfg.get(Configuration::IMAGES_PATH);
+    std::string thumbnailPath = basePath + imagesPath + romNameWithoutExtension + ".png";
 
     // If thumbnail is already in cache, set it and return
     if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
