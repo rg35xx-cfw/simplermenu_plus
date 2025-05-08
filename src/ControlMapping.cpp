@@ -88,6 +88,9 @@ ControlMap ControlMapping::convertCommand(const SDL_Event& event) {
     } else if (event.type == SDL_JOYHATMOTION) {
         // joystick HAT0, etc.
         if (event.jhat.value == SDL_HAT_UP) return CMD_UP;
+        if (event.jhat.value == SDL_HAT_DOWN) return CMD_DOWN;
+        if (event.jhat.value == SDL_HAT_LEFT) return CMD_LEFT;
+        if (event.jhat.value == SDL_HAT_RIGHT) return CMD_RIGHT;
     }
 
     return CMD_NONE; 
