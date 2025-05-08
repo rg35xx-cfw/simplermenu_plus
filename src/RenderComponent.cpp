@@ -150,7 +150,7 @@ void RenderComponent::drawFolder(const std::string& name, const std::string& pat
         int x = theme.getIntValue(Configuration::GAME_COUNT_X);
         int y = theme.getIntValue(Configuration::GAME_COUNT_Y);
         SDL_Color color = theme.getColor(Configuration::GAME_COUNT_FONT_COLOR);
-        renderText(std::to_string(numRoms) + " GAMES", x, y, color, theme.getIntValue(Configuration::GAME_COUNT_ALIGNMENT));
+        renderText(std::to_string(numRoms) + (numRoms == 1 ? " GAME" : " GAMES"), x, y, color, theme.getIntValue(Configuration::GAME_COUNT_ALIGNMENT));
     }
 
 }
@@ -595,8 +595,8 @@ void RenderComponent::printFPS(int fps) {
             return;
         }
 
-        SDL_Rect destRect = {10, 10, 0, 0};  // Positon for page counter
-        SDL_BlitSurface(textSurface, NULL, screen, &destRect);
+        SDL_Rect destRect = {screenWidth - textSurface->w - 10, 10, 0, 0};  // Position for page counter
+	SDL_BlitSurface(textSurface, NULL, screen, &destRect);
 
         SDL_FreeSurface(textSurface);
     }
