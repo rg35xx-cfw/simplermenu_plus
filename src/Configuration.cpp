@@ -86,6 +86,23 @@ const std::string Configuration::TEXT2_ALIGNMENT = std::string("GENERAL.text2_al
 const std::string Configuration::THEME_FONT = std::string("GENERAL.font");
 
 
+/////////
+// <SECTION>.INI
+/////////
+
+const std::string Configuration::CONSOLES = std::string("CONSOLES");
+
+// <SECTION> . CONSOLES section
+const std::string Configuration::CONSOLES_LIST = std::string("CONSOLES.consoleList");
+
+// <SECTION> . <CONSOLE_NAME> section
+const std::string Configuration::CONSOLE_EXECS = std::string(".execs");
+const std::string Configuration::CONSOLE_ROM_DIRS = std::string(".romDirs");
+const std::string Configuration::CONSOLE_ROM_EXTS = std::string(".romExts");
+const std::string Configuration::CONSOLE_ALIAS_FILE = std::string(".aliasFile");
+
+
+
 
 Configuration::Configuration(const std::string& configIniFilepath, 
                              const std::string& stateFilepath) 
@@ -166,7 +183,7 @@ std::map<std::string, ConsoleData> Configuration::parseIniFile(const std::string
     boost::property_tree::read_ini(iniPath, pt);
 
     std::map<std::string, ConsoleData> consoleDataMap;
-    auto consoleList = pt.get<std::string>("CONSOLES.consoleList");
+    auto consoleList = pt.get<std::string>(Configuration::CONSOLES_LIST);
     std::stringstream ss(consoleList);
     std::string consoleName;
 
@@ -174,19 +191,24 @@ std::map<std::string, ConsoleData> Configuration::parseIniFile(const std::string
         ConsoleData data;
         data.name = consoleName;
         
-        std::string execs_str = pt.get<std::string>(consoleName + ".execs");
+        std::string execs_str = pt.get<std::string>(
+            consoleName + Configuration::CONSOLE_EXECS);
         std::stringstream ss(execs_str);
         std::string exec;
         while (std::getline(ss, exec, ',')) {
             data.execs.push_back(exec);
         }
-        std::string romExts_str = pt.get<std::string>(consoleName + ".romExts");
+
+        std::string romExts_str = pt.get<std::string>(
+            consoleName + Configuration::CONSOLE_ROM_EXTS);
         ss = std::stringstream(romExts_str);
         std::string romExt;
         while (std::getline(ss, romExt, ',')) {
             data.romExts.push_back(romExt);
         }
-        std::string romDirs_str = pt.get<std::string>(consoleName + ".romDirs");
+
+        std::string romDirs_str = pt.get<std::string>(
+            consoleName + Configuration::CONSOLE_ROM_DIRS);
         ss = std::stringstream(romDirs_str);
         std::string romDir;
         while (std::getline(ss, romDir, ',')) {

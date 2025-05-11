@@ -117,6 +117,21 @@ public:
     static const std::string TEXT2_ALIGNMENT;
     static const std::string THEME_FONT;
 
+    /////////
+    // <SECTION>.INI
+    /////////
+
+    static const std::string CONSOLES;
+
+    // <SECTION> . CONSOLES section
+    static const std::string CONSOLES_LIST;
+
+    // <SECTION> . <CONSOLE_NAME> section
+    static const std::string CONSOLE_EXECS;
+    static const std::string CONSOLE_ROM_DIRS;
+    static const std::string CONSOLE_ROM_EXTS;
+    static const std::string CONSOLE_ALIAS_FILE;
+
 
     Configuration(const std::string& configIniFilepath,
                   const std::string& stateFilepath);

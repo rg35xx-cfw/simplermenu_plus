@@ -437,7 +437,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
         std::cout << "Calling CORE OVERRIDE " << std::endl;
         MenuCache menuCache;
 
-        std::string cacheFilePath = "/userdata/system/simplermenu_plus/caches/global_cache.json";
+        std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
 
         if (menuCache.cacheExists(cacheFilePath)) {
             allCachedItems = menuCache.loadFromCache(cacheFilePath);
@@ -495,3 +495,89 @@ std::string Application::getName() {
 
 //
 /////////////////
+
+
+/////////////////
+// Private methods
+
+void Application::setupCache() {
+        MenuCache menuCache;
+
+        // Get the path to the cache file from config.ini file
+        std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
+
+        if (menuCache.cacheExists(cacheFilePath)) {
+            allCachedItems = menuCache.loadFromCache(cacheFilePath);
+
+        } else {
+            // get the path to the cache file by removing the filename
+            // from the cacheFilePath
+            std::filesystem::path cacheFilePathObj(cacheFilePath);
+            cacheFilePathObj.remove_filename();
+            // create the directories if they do not exist
+            std::filesystem::create_directories(cacheFilePathObj.string());
+
+            populateCache();
+
+            menuCache.saveToCache(cacheFilePath, allCachedItems);
+
+        }
+
+    }
+
+    void Application::populateCache() {
+
+        FileManager fileManager(cfg);
+
+        std::string sectGroupsPath = cfg.get(Configuration::HOME_PATH) 
+            + ".simplemenu/section_groups/";
+
+        // Load section groups from the section_groups folder
+        auto sectionGroups = fileManager.getFiles(sectGroupsPath);
+
+        for (const auto& sectionGroupFile : sectionGroups) {
+
+            auto consoleDataMap = cfg.parseIniFile(
+                sectGroupsPath + sectionGroupFile);
+
+            for (const auto& [consoleName, data] : consoleDataMap) {
+
+                for (const auto& romDir : data.romDirs) {
+
+                    auto files = fileManager.getFiles(romDir);
+                    for (const auto& file : files) {
+                        std::string romPath = romDir + file;
+                        allCachedItems.push_back({sectionGroupFile, consoleName, file, romPath});
+                    }
+
+                }
+            }
+        }
+    }
+
+    void Application::populateMenu(Menu& menu) {
+        // Loop through the cached items and populate the Menu structure
+        for (const auto& cachedItem : allCachedItems) {
+            // cachedItem should have members: section, system, filename, path.
+
+            // Check if the section already exists in the menu
+            Section* section = menu.getSectionByName(cachedItem.section);
+            if (!section) {
+                Section newSection(cachedItem.section);
+                menu.addSection(newSection);
+                section = menu.getSectionByName(cachedItem.section);
+            }
+
+            // Check if the Folder already exists in the section
+            Folder* folder = section->getFolderByName(cachedItem.folder);
+            if (!folder) {
+                Folder newFolder(cachedItem.folder);
+                section->addFolder(newFolder);
+                folder = section->getFolderByName(cachedItem.folder);
+            }
+
+            // Add the file to the folder
+            Rom rom(cachedItem.rom, cachedItem.path);
+            folder->addRom(rom);
+        }
+    }
