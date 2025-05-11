@@ -79,10 +79,20 @@ private:
         // Load section groups from the section_groups folder
         auto sectionGroups = fileManager.getFiles("/userdata/system/.simplemenu/section_groups/");
 
-        std::string cacheFilePath = "/userdata/system/simplermenu_plus/caches/global_cache.json";
+        // Get the path to the cache file from config.ini file
+        std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
 
         if (menuCache.cacheExists(cacheFilePath)) {
             allCachedItems = menuCache.loadFromCache(cacheFilePath);
+
+        } else {
+            // get the path to the cache file by removing the filename
+            // from the cacheFilePath
+            std::filesystem::path cacheFilePathObj(cacheFilePath);
+            cacheFilePathObj.remove_filename();
+            // create the directories if they do not exist
+            std::filesystem::create_directories(cacheFilePathObj.string());
+
         }
 
         for (const auto& sectionGroupFile : sectionGroups) {
