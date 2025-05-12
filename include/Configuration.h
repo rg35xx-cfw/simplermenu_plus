@@ -132,6 +132,15 @@ public:
     static const std::string CONSOLE_ROM_EXTS;
     static const std::string CONSOLE_ALIAS_FILE;
 
+    //////////
+    // Savestate.json
+    //////////
+    static const std::string CURRENT_MENU_LEVEL;
+    static const std::string CURRENT_SECTION_INDEX;
+    static const std::string CURRENT_FOLDER_INDEX;
+    static const std::string CURRENT_ROM_INDEX;
+    static const std::string LAUNCHER_CALLBACK;
+
 
     Configuration(const std::string& configIniFilepath,
                   const std::string& stateFilepath);

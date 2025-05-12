@@ -102,6 +102,14 @@ const std::string Configuration::CONSOLE_ROM_EXTS = std::string(".romExts");
 const std::string Configuration::CONSOLE_ALIAS_FILE = std::string(".aliasFile");
 
 
+//////////
+// Savestate.json
+//////////
+const std::string Configuration::CURRENT_MENU_LEVEL = std::string("currentMenuLevel");
+const std::string Configuration::CURRENT_SECTION_INDEX = std::string("currentSectionIndex");
+const std::string Configuration::CURRENT_FOLDER_INDEX = std::string("currentFolderIndex");
+const std::string Configuration::CURRENT_ROM_INDEX = std::string("currentRomIndex");
+const std::string Configuration::LAUNCHER_CALLBACK = std::string("launcherCallback");
 
 
 Configuration::Configuration(const std::string& configIniFilepath, 
@@ -240,7 +248,7 @@ State Configuration::loadState() {
 
     State state;
     std::string currentMenuLevelStr = 
-        statePt.get<std::string>("currentMenuLevel");
+        statePt.get<std::string>(Configuration::CURRENT_MENU_LEVEL);
 
     if (currentMenuLevelStr == "MENU_SECTION") {
         state.currentMenuLevel = MenuLevel::MENU_SECTION;
@@ -260,9 +268,10 @@ State Configuration::loadState() {
             + currentMenuLevelStr);
     }
 
-    state.currentSectionIndex = statePt.get<int>("currentSectionIndex");
-    state.currentFolderIndex = statePt.get<int>("currentFolderIndex");
-    state.currentRomIndex = statePt.get<int>("currentRomIndex");
+    state.currentSectionIndex = statePt.get<int>(Configuration::CURRENT_SECTION_INDEX);
+    state.currentFolderIndex = statePt.get<int>(Configuration::CURRENT_FOLDER_INDEX);
+    state.currentRomIndex = statePt.get<int>(Configuration::CURRENT_ROM_INDEX);
+    state.launcherCallback = statePt.get<bool>(Configuration::LAUNCHER_CALLBACK);
 
     std::cout << stateFilepath << " load.\n";
 
@@ -300,10 +309,11 @@ void Configuration::saveState(const State& state) {
                     + std::to_string(state.currentMenuLevel));
         }
     
-        statePt.put("currentMenuLevel", currentMenuLevelStr);
-        statePt.put("currentSectionIndex", state.currentSectionIndex);
-        statePt.put("currentFolderIndex", state.currentFolderIndex);
-        statePt.put("currentRomIndex", state.currentRomIndex);
+        statePt.put(Configuration::CURRENT_MENU_LEVEL, currentMenuLevelStr);
+        statePt.put(Configuration::CURRENT_SECTION_INDEX, state.currentSectionIndex);
+        statePt.put(Configuration::CURRENT_FOLDER_INDEX, state.currentFolderIndex);
+        statePt.put(Configuration::CURRENT_ROM_INDEX, state.currentRomIndex);
+        statePt.put(Configuration::LAUNCHER_CALLBACK, state.launcherCallback);
     
         boost::property_tree::json_parser::write_json(stateFilepath, statePt);
     

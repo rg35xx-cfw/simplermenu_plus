@@ -72,7 +72,7 @@ private:
     unsigned int repeatStartTime;
     unsigned int repeatInterval;
 
-    void setupCache();
+    void loadCache(bool force = false);
 
     void populateCache();
 

@@ -43,19 +43,54 @@ Application::Application()
     systemSettings.initializeSettings();
     appSettings.initializeSettings();
 
+    bool rebuildCache = false;
     try {
         state = cfg.loadState();
+        std::cout << "State loaded: " << state.currentMenuLevel << std::endl;
+        std::cout << "Section: " << state.currentSectionIndex << std::endl;
+        std::cout << "Folder: " << state.currentFolderIndex << std::endl;
+        std::cout << "Rom: " << state.currentRomIndex << std::endl;
+
+        // Restore cache if coming back from a launcher callback
+        if (!state.launcherCallback) {
+            std::cout << "Regular launch (no callback)" << std::endl;
+            rebuildCache = true;
+        }
+
     } catch (const StateNotFoundException& e) {
         std::cout << "State not found, using default values" << std::endl;
         state.currentMenuLevel = MenuLevel::MENU_SECTION;
         state.currentSectionIndex = 0;
         state.currentFolderIndex = 0;
         state.currentRomIndex = 0;
+        state.launcherCallback = false;
 
         cfg.saveState(state);
+
+        rebuildCache = true;
+        
     }
 
-    setupCache();
+    if (rebuildCache) {
+        // Initialize/Rebuild the cache - always create a new cache 
+        // from disk contents on startup
+        std::cout << "Rebuilding cache" << std::endl; 
+        loadCache(true);
+
+    } else {
+        std::cout << "Loading cache from disk" << std::endl;
+        loadCache(false);
+        
+    }
+
+    if (state.launcherCallback) {
+        // If we are coming from a launcher callback, we need to reset the state
+        std::cout << "Launcher callback processed" << std::endl;
+        state.launcherCallback = false;
+        cfg.saveState(state);
+        
+    }
+
     populateMenu(menu);
 
     theme.loadTheme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
@@ -371,7 +406,8 @@ void Application::print_list() {
 
 void Application::launchRom() {
 
-    // Save application state first
+    // Save application state first and mark it as a launcher callback
+    state.launcherCallback = true;
     cfg.saveState(state);
 
     std::string romName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getTitle();
@@ -500,84 +536,93 @@ std::string Application::getName() {
 /////////////////
 // Private methods
 
-void Application::setupCache() {
-        MenuCache menuCache;
+void Application::loadCache(bool force) {
+   
+    MenuCache menuCache;
 
-        // Get the path to the cache file from config.ini file
-        std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
+    // Get the path to the cache file from config.ini file
+    std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
 
-        if (menuCache.cacheExists(cacheFilePath)) {
-            allCachedItems = menuCache.loadFromCache(cacheFilePath);
+    if (force || !menuCache.cacheExists(cacheFilePath)) {
+        // Cache does not exist or force update is requested:
+        // Read all sections and create a new cache
 
-        } else {
-            // get the path to the cache file by removing the filename
-            // from the cacheFilePath
-            std::filesystem::path cacheFilePathObj(cacheFilePath);
-            cacheFilePathObj.remove_filename();
-            // create the directories if they do not exist
-            std::filesystem::create_directories(cacheFilePathObj.string());
+        std::cout << "Force cache update" << std::endl;
+        allCachedItems.clear();
+        
+        // get the path to the cache file by removing the filename
+        // from the cacheFilePath
+        std::filesystem::path cacheFilePathObj(cacheFilePath);
+        cacheFilePathObj.remove_filename();
+        // create the directories if they do not exist
+        std::filesystem::create_directories(cacheFilePathObj.string());
 
-            populateCache();
+        populateCache();
 
-            menuCache.saveToCache(cacheFilePath, allCachedItems);
+        menuCache.saveToCache(cacheFilePath, allCachedItems);
 
-        }
+    } else {
+
+        std::cout << "Cache exists, loading from cache file" << std::endl;
+        allCachedItems = menuCache.loadFromCache(cacheFilePath);
 
     }
 
-    void Application::populateCache() {
+}
 
-        FileManager fileManager(cfg);
+void Application::populateCache() {
 
-        std::string sectGroupsPath = cfg.get(Configuration::HOME_PATH) 
-            + ".simplemenu/section_groups/";
+    FileManager fileManager(cfg);
 
-        // Load section groups from the section_groups folder
-        auto sectionGroups = fileManager.getFiles(sectGroupsPath);
+    std::string sectGroupsPath = cfg.get(Configuration::HOME_PATH) 
+        + ".simplemenu/section_groups/";
 
-        for (const auto& sectionGroupFile : sectionGroups) {
+    // Load section groups from the section_groups folder
+    auto sectionGroups = fileManager.getFiles(sectGroupsPath);
 
-            auto consoleDataMap = cfg.parseIniFile(
-                sectGroupsPath + sectionGroupFile);
+    for (const auto& sectionGroupFile : sectionGroups) {
 
-            for (const auto& [consoleName, data] : consoleDataMap) {
+        auto consoleDataMap = cfg.parseIniFile(
+            sectGroupsPath + sectionGroupFile);
 
-                for (const auto& romDir : data.romDirs) {
+        for (const auto& [consoleName, data] : consoleDataMap) {
 
-                    auto files = fileManager.getFiles(romDir);
-                    for (const auto& file : files) {
-                        std::string romPath = romDir + file;
-                        allCachedItems.push_back({sectionGroupFile, consoleName, file, romPath});
-                    }
+            for (const auto& romDir : data.romDirs) {
 
+                auto files = fileManager.getFiles(romDir);
+                for (const auto& file : files) {
+                    std::string romPath = romDir + file;
+                    allCachedItems.push_back({sectionGroupFile, consoleName, file, romPath});
                 }
+
             }
         }
     }
+}
 
-    void Application::populateMenu(Menu& menu) {
-        // Loop through the cached items and populate the Menu structure
-        for (const auto& cachedItem : allCachedItems) {
-            // cachedItem should have members: section, system, filename, path.
+void Application::populateMenu(Menu& menu) {
+    // Loop through the cached items and populate the Menu structure
+    for (const auto& cachedItem : allCachedItems) {
+        // cachedItem should have members: section, system, filename, path.
 
-            // Check if the section already exists in the menu
-            Section* section = menu.getSectionByName(cachedItem.section);
-            if (!section) {
-                Section newSection(cachedItem.section);
-                menu.addSection(newSection);
-                section = menu.getSectionByName(cachedItem.section);
-            }
-
-            // Check if the Folder already exists in the section
-            Folder* folder = section->getFolderByName(cachedItem.folder);
-            if (!folder) {
-                Folder newFolder(cachedItem.folder);
-                section->addFolder(newFolder);
-                folder = section->getFolderByName(cachedItem.folder);
-            }
-
-            // Add the file to the folder
-            Rom rom(cachedItem.rom, cachedItem.path);
-            folder->addRom(rom);
+        // Check if the section already exists in the menu
+        Section* section = menu.getSectionByName(cachedItem.section);
+        if (!section) {
+            Section newSection(cachedItem.section);
+            menu.addSection(newSection);
+            section = menu.getSectionByName(cachedItem.section);
         }
+
+        // Check if the Folder already exists in the section
+        Folder* folder = section->getFolderByName(cachedItem.folder);
+        if (!folder) {
+            Folder newFolder(cachedItem.folder);
+            section->addFolder(newFolder);
+            folder = section->getFolderByName(cachedItem.folder);
+        }
+
+        // Add the file to the folder
+        Rom rom(cachedItem.rom, cachedItem.path);
+        folder->addRom(rom);
     }
+}

@@ -12,4 +12,5 @@ struct State {
     int currentSectionIndex;
     int currentFolderIndex;
     int currentRomIndex;
+    bool launcherCallback;
 };
