@@ -420,7 +420,7 @@ void Application::launchRom() {
 
     std::string corePath = "";
 
-    for (const auto& item : allCachedItems) {
+    for (const auto& item : menuCache.loadFromCache(cfg.get(Configuration::GLOBAL_CACHE))) {
         if (item.path == romPath) {
             corePath = item.core;
         }
@@ -471,19 +471,12 @@ void Application::settingsChanged(const std::string& key, const std::string& val
         theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
     } else if (key == Configuration::CORE_OVERRIDE) {
         std::cout << "Calling CORE OVERRIDE " << std::endl;
-        MenuCache menuCache;
-
-        std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
-
-        if (menuCache.cacheExists(cacheFilePath)) {
-            allCachedItems = menuCache.loadFromCache(cacheFilePath);
-        }
         
         if (state.currentMenuLevel == ROM_SETTINGS) {
             std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
 
             if (romPath != "") {
-                menuCache.updateCacheItem(cacheFilePath, romPath, value, allCachedItems);
+                menuCache.updateCacheItem(cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
             }
         }
     } 
@@ -538,17 +531,17 @@ std::string Application::getName() {
 
 void Application::loadCache(bool force) {
    
+    // Initialize menu cache field
     MenuCache menuCache;
 
     // Get the path to the cache file from config.ini file
-    std::string cacheFilePath = cfg.get(Configuration::CACHE_FILE_PATH);
+    std::string cacheFilePath = cfg.get(Configuration::GLOBAL_CACHE);
 
     if (force || !menuCache.cacheExists(cacheFilePath)) {
         // Cache does not exist or force update is requested:
         // Read all sections and create a new cache
 
         std::cout << "Force cache update" << std::endl;
-        allCachedItems.clear();
         
         // get the path to the cache file by removing the filename
         // from the cacheFilePath
@@ -557,20 +550,20 @@ void Application::loadCache(bool force) {
         // create the directories if they do not exist
         std::filesystem::create_directories(cacheFilePathObj.string());
 
-        populateCache();
-
-        menuCache.saveToCache(cacheFilePath, allCachedItems);
+        menuCache.saveToCache(cacheFilePath, populateCache());
 
     } else {
 
         std::cout << "Cache exists, loading from cache file" << std::endl;
-        allCachedItems = menuCache.loadFromCache(cacheFilePath);
+        // Ignore the return value as we are not using it here, just
+        // load the cache file contents into the in-memory cache
+        menuCache.loadFromCache(cacheFilePath);
 
     }
 
 }
 
-void Application::populateCache() {
+std::vector<CachedMenuItem> Application::populateCache() {
 
     FileManager fileManager(cfg);
 
@@ -579,6 +572,8 @@ void Application::populateCache() {
 
     // Load section groups from the section_groups folder
     auto sectionGroups = fileManager.getFiles(sectGroupsPath);
+
+    std::vector<CachedMenuItem> allCachedItems;
 
     for (const auto& sectionGroupFile : sectionGroups) {
 
@@ -598,11 +593,13 @@ void Application::populateCache() {
             }
         }
     }
+
+    return allCachedItems;
 }
 
 void Application::populateMenu(Menu& menu) {
     // Loop through the cached items and populate the Menu structure
-    for (const auto& cachedItem : allCachedItems) {
+    for (const auto& cachedItem : menuCache.loadFromCache(cfg.get(Configuration::GLOBAL_CACHE))) {
         // cachedItem should have members: section, system, filename, path.
 
         // Check if the section already exists in the menu

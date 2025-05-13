@@ -23,7 +23,7 @@ const std::string Configuration::IMAGES_PATH = std::string("GLOBAL.imagesPath");
 const std::string Configuration::SCREEN_WIDTH = std::string("GLOBAL.screenWidth");
 const std::string Configuration::SCREEN_HEIGHT = std::string("GLOBAL.screenHeight");
 const std::string Configuration::SCREEN_DEPTH = std::string("GLOBAL.screenDepth");
-const std::string Configuration::CACHE_FILE_PATH = std::string("GLOBAL.globalCacheJSON");
+const std::string Configuration::GLOBAL_CACHE = std::string("GLOBAL.globalCacheJSON");
 
 
 // CONFIG . APPLICATION section

@@ -57,7 +57,7 @@ public:
     static const std::string SCREEN_WIDTH;
     static const std::string SCREEN_HEIGHT;
     static const std::string SCREEN_DEPTH;
-    static const std::string CACHE_FILE_PATH;
+    static const std::string GLOBAL_CACHE;
 
     // CONFIG . SYSTEM section
     static const std::string VOLUME;

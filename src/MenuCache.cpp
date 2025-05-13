@@ -53,9 +53,9 @@ std::vector<CachedMenuItem> MenuCache::loadFromCache(const std::string& filePath
     return data;
 }
 
-bool MenuCache::updateCacheItem(const std::string& filePath, const std::string& itemPath, const std::string& newCore, const std::vector<CachedMenuItem>& data) {
+bool MenuCache::updateCacheItem(const std::string& filePath, const std::string& itemPath, const std::string& newCore) {
     // Copy of data to modify
-    std::vector<CachedMenuItem> updatedData = data;
+    std::vector<CachedMenuItem> updatedData = loadFromCache(filePath);
 
     // Find and update the item with the specified path
     bool itemFound = false;

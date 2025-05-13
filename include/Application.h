@@ -35,7 +35,7 @@ class RenderComponent;
 class Application : public ISettingsObserver, public ILanguageSubject {
 private:
     Menu menu;
-    std::vector<CachedMenuItem> allCachedItems;
+    MenuCache menuCache;
 
     TTF_Font* font;
     SDL_Joystick *joystick = nullptr;
@@ -74,7 +74,7 @@ private:
 
     void loadCache(bool force = false);
 
-    void populateCache();
+    std::vector<CachedMenuItem> populateCache();
 
     void populateMenu(Menu& menu);
 
