@@ -165,12 +165,17 @@ void Application::handleCommand(ControlMap cmd) {
                 state.currentFolderIndex = 0;
                 renderComponent.resetValues();
                 // folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
+            
             } else if (cmd == CMD_UP) { // UP
                 if (state.currentSectionIndex > 0) state.currentSectionIndex--;
                 else state.currentSectionIndex = menu.getSections().size() - 1;
+            
             } else if (cmd == CMD_DOWN) { // DOWN
                 state.currentSectionIndex = (state.currentSectionIndex + 1) % menu.getSections().size();
             }
+
+            cfg.saveState(state);
+
             break;
             
         case MenuLevel::MENU_FOLDER:
@@ -195,6 +200,12 @@ void Application::handleCommand(ControlMap cmd) {
                 state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
                 renderComponent.resetValues();
             }
+
+            // Save state after navigating, but not when entering the ROM settings
+            if (cmd != CMD_ROM_SETTINGS) {
+                cfg.saveState(state);
+            }
+
             break;
             
         case MenuLevel::MENU_ROM:
@@ -216,6 +227,13 @@ void Application::handleCommand(ControlMap cmd) {
                 state.currentMenuLevel = MenuLevel::ROM_SETTINGS;
                 renderComponent.resetValues();
             }
+
+            // Save state after navigating, but not when entering the ROM settings
+            // When launching a rom we should never get back here in any case
+            if (cmd != CMD_ROM_SETTINGS) {
+                cfg.saveState(state);
+            }
+
             break;
         case APP_SETTINGS:
             if (cmd == CMD_BACK) { // ESC
