@@ -280,8 +280,8 @@ void RenderComponent::drawRomList(const std::string& folderName, const std::vect
 
 void RenderComponent::drawAppSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
 
-    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "resources/settings.png";
-    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "resources/Akrobat-Bold.ttf";
+    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "assets/settings.png";
+    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "assets/Akrobat-Bold.ttf";
     int settingsFontSize = 32;//FIXME: size needs to be dynamic
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
@@ -291,7 +291,7 @@ void RenderComponent::drawAppSettings(const std::string& settingsTitle, std::vec
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "resources/akashi.ttf";
+    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "assets/akashi.ttf";
     int titleFontSize = 64;//FIXME: size needs to be dynamic
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
@@ -366,8 +366,8 @@ void RenderComponent::drawAppSettings(const std::string& settingsTitle, std::vec
 }
 
 void RenderComponent::drawFolderSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
-    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "resources/settings.png";
-    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "resources/Akrobat-Bold.ttf";
+    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "assets/settings.png";
+    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "assets/Akrobat-Bold.ttf";
     int settingsFontSize = 32; //FIXME: size needs to be dynamic
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
@@ -377,7 +377,7 @@ void RenderComponent::drawFolderSettings(const std::string& settingsTitle, std::
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "resources/akashi.ttf";
+    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "assets/akashi.ttf";
     int titleFontSize = 64; //FIXME: size needs to be dynamic
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
@@ -443,8 +443,8 @@ void RenderComponent::drawFolderSettings(const std::string& settingsTitle, std::
 }
 
 void RenderComponent::drawRomSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
-    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "resources/settings.png";
-    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "resources/Akrobat-Bold.ttf";
+    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "assets/settings.png";
+    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "assets/Akrobat-Bold.ttf";
     int settingsFontSize = 32; //FIXME: size needs to be dynamic
 
     TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
@@ -454,7 +454,7 @@ void RenderComponent::drawRomSettings(const std::string& settingsTitle, std::vec
     }
     SDL_BlitSurface(background, NULL, screen, NULL);
 
-    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "resources/akashi.ttf";
+    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "assets/akashi.ttf";
     int titleFontSize = 64; //FIXME: size needs to be dynamic
 
     TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
