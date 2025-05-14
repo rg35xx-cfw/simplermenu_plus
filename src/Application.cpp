@@ -20,10 +20,10 @@
 
 
 Application::Application() 
-    : i18n("/userdata/system/simplermenu_plus/i18n.ini"),
-      cfg("/userdata/system/simplermenu_plus/config.ini", 
-          "/userdata/system/simplermenu_plus/.state"),
-      theme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
+    : i18n("/userdata/system/configs/simplermenu_plus/i18n.ini"),
+      cfg("/userdata/system/configs/simplermenu_plus/config.ini", 
+          "/userdata/system/configs/simplermenu_plus/.state"),
+      theme(cfg.get(Configuration::HOME_PATH), cfg.get(Configuration::THEME_PATH), cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT)),
       controlMapping(cfg),
       renderComponent(cfg, theme),
       appSettings(cfg, i18n, 0, 100, 5),
@@ -93,7 +93,7 @@ Application::Application()
 
     populateMenu(menu);
 
-    theme.loadTheme(cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
+    theme.loadTheme(cfg.get(Configuration::HOME_PATH), cfg.get(Configuration::THEME_PATH), cfg.get(Configuration::THEME), cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
 
     renderComponent.initialize();
 
@@ -434,11 +434,11 @@ void Application::launchRom() {
     std::string sectionName = menu.getSections()[state.currentSectionIndex].getTitle();
     std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
 
-    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
+    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + "section_groups/" + sectionName);
 
     std::string corePath = "";
 
-    for (const auto& item : menuCache.loadFromCache(cfg.get(Configuration::GLOBAL_CACHE))) {
+    for (const auto& item : menuCache.loadFromCache(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE))) {
         if (item.path == romPath) {
             corePath = item.core;
         }
@@ -452,7 +452,7 @@ void Application::launchRom() {
 
     // We are using the last selected core for a given system, by default it's the first available core only another 
     // core has been selected in rom settings -> core override
-    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + ".simplemenu/launchers/" + corePath;
+    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + "launchers/" + corePath;
 
     // Launch emulator
     std::string command = execLauncher + " '" + romPath + "'";
@@ -486,7 +486,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
         notifyLanguageChange();
 
     } else if (key == Configuration::THEME) {
-        theme.loadTheme(value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
+        theme.loadTheme(cfg.get(Configuration::HOME_PATH), cfg.get(Configuration::THEME_PATH), value, cfg.getInt(Configuration::SCREEN_WIDTH), cfg.getInt(Configuration::SCREEN_HEIGHT));
     } else if (key == Configuration::CORE_OVERRIDE) {
         std::cout << "Calling CORE OVERRIDE " << std::endl;
         
@@ -494,7 +494,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
             std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
 
             if (romPath != "") {
-                menuCache.updateCacheItem(cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
+                menuCache.updateCacheItem(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
             }
         }
     } 
@@ -586,7 +586,7 @@ std::vector<CachedMenuItem> Application::populateCache() {
     FileManager fileManager(cfg);
 
     std::string sectGroupsPath = cfg.get(Configuration::HOME_PATH) 
-        + ".simplemenu/section_groups/";
+        + "section_groups/";
 
     // Load section groups from the section_groups folder
     auto sectionGroups = fileManager.getFiles(sectGroupsPath);
@@ -617,7 +617,7 @@ std::vector<CachedMenuItem> Application::populateCache() {
 
 void Application::populateMenu(Menu& menu) {
     // Loop through the cached items and populate the Menu structure
-    for (const auto& cachedItem : menuCache.loadFromCache(cfg.get(Configuration::GLOBAL_CACHE))) {
+    for (const auto& cachedItem : menuCache.loadFromCache(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE))) {
         // cachedItem should have members: section, system, filename, path.
 
         // Check if the section already exists in the menu

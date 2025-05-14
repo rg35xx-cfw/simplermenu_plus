@@ -16,14 +16,8 @@
 	//
 	"mounts": [
 		{
-			"source": "${localWorkspaceFolder}/resources/config/x86/.simplemenu", 
-			"target": "/userdata/system/.simplemenu", 
-			"type": "bind", 
-			"consistency": "cached"
-		},
-		{
-			"source": "${localWorkspaceFolder}/output/resources/menu.json",
-			"target": "/userdata/system/menu.json", 
+			"source": "${localWorkspaceFolder}/resources", 
+			"target": "/userdata/system/configs/simplermenu_plus", 
 			"type": "bind", 
 			"consistency": "cached"
 		},

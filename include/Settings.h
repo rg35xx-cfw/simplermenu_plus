@@ -227,7 +227,7 @@ public:
         namespace fs = boost::filesystem;
         namespace pt = boost::property_tree;
 
-        std::string sectionGroupsPath = cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/";
+        std::string sectionGroupsPath = cfg.get(Configuration::HOME_PATH) + "/section_groups/";
         pt::ptree root;
 
         // Iterate over all .ini files in the section_groups directory
@@ -335,7 +335,7 @@ public:
 public:
     void getCores(std::string sectionName, std::string folderName) {
 
-        std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + ".simplemenu/section_groups/" + sectionName);
+        std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + "/section_groups/" + sectionName);
 
         cores.clear();
 

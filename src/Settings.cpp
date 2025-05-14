@@ -130,9 +130,10 @@ std::vector<Settings::I18nSetting> RomSettings::getRomSettings() {
 void Settings::initializeSettings() {
 
     std::string themePath = 
-        cfg.get(Configuration::THEME_PATH) 
-        + cfg.get(Configuration::SCREEN_WIDTH) + "x" 
-        + cfg.get(Configuration::SCREEN_HEIGHT) + "/";
+        cfg.get(Configuration::HOME_PATH) +
+        cfg.get(Configuration::THEME_PATH) +
+        cfg.get(Configuration::SCREEN_WIDTH) + "x" +
+        cfg.get(Configuration::SCREEN_HEIGHT) + "/";
 
     for (const auto& entry : std::filesystem::directory_iterator(themePath)) {
         if (entry.is_directory()) {

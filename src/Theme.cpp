@@ -5,18 +5,15 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/algorithm/string.hpp>
 
-Theme::Theme(std::string name, int screenWidth, int screenHeight) {
-    loadTheme(name, screenWidth, screenHeight);
+Theme::Theme(std::string homePath, std::string themePath, std::string name, int screenWidth, int screenHeight) {
+    loadTheme(homePath, themePath, name, screenWidth, screenHeight);
 }
 
-void Theme::loadTheme(const std::string& themeName, int screenWidth, int screenHeight) {
+void Theme::loadTheme(const std::string& homePath, const std::string& themePath, const std::string& themeName, int screenWidth, int screenHeight) {
     // Load values from .ini file using Boost.PropertyTree
     boost::property_tree::ptree pt;
 
-    baseThemePath = "/userdata/system/.simplemenu/themes/" + 
-                    std::to_string(screenWidth) + "x" + 
-                    std::to_string(screenHeight) + "/" +
-                    themeName + "/";
+    baseThemePath = homePath + "/" + themePath + "/" + std::to_string(screenWidth) + "x" + std::to_string(screenHeight) + "/" + themeName + "/";
 
     boost::property_tree::ini_parser::read_ini(baseThemePath + "theme.ini", pt);
 
@@ -94,7 +91,13 @@ SDL_Color Theme::getColor(const std::string& key) const {
 std::string Theme::getThemePath() const {
 
 
-    std::string themePath = getValue(Configuration::THEME_PATH) + std::to_string(getIntValue(Configuration::SCREEN_WIDTH)) +
-                            "x" + std::to_string(getIntValue(Configuration::SCREEN_HEIGHT)) + "/" + getValue(Configuration::THEME) + "/";
+    // std::string themePath = cfg.getValue(Configuration::HOME_PATH) + "/" +
+    //                         cfg.getValue(Configuration::THEME_PATH) + "/" +
+    //                         std::to_string(cfg.getIntValue(Configuration::SCREEN_WIDTH)) + "x" +
+    //                         std::to_string(cfg.getIntValue(Configuration::SCREEN_HEIGHT)) + "/" +
+    //                         cfg.getValue(Configuration::THEME) + "/";
+
+    std::string themePath = getValue(Configuration::HOME_PATH) + "/" + getValue(Configuration::THEME_PATH) + std::to_string(getIntValue(Configuration::SCREEN_WIDTH)) +
+                             "x" + std::to_string(getIntValue(Configuration::SCREEN_HEIGHT)) + "/" + getValue(Configuration::THEME) + "/";
     return themePath;
 }
