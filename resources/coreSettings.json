@@ -324,7 +324,7 @@
     "AMSTRAD CPC": {
         "cores": [
             "cap32_libretro",
-            "crocods_libretro"
+            "crocods_libretroART"
         ],
         "default_core": "cap32_libretro"
     },

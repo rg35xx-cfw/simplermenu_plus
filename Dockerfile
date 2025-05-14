@@ -17,14 +17,14 @@ RUN apt-get update \
 		# libasound2-dev \
  	&& rm -rf /var/lib/apt/lists/*
 
-ADD https://github.com/rg35xx-cfw/Koriki/releases/download/koriki_batocera_rg35xx_sdk_20240208/arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz \
-	/opt/cdata/rg35xx/
-
-RUN cd /opt/cdata/rg35xx/ \
-	&& tar xfzv arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz \
-	&& rm -f arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz
-
-ENV PATH="${PATH}:/opt/cdata/rg35xx/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/"
+#ADD https://github.com/rg35xx-cfw/Koriki/releases/download/koriki_batocera_rg35xx_sdk_20240208/arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz \
+#	/opt/cdata/rg35xx/
+#
+#RUN cd /opt/cdata/rg35xx/ \
+#	&& tar xfzv arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz \
+#	&& rm -f arm-buildroot-linux-gnueabihf_sdk-buildroot.tar.gz
+#
+#ENV PATH="${PATH}:/opt/cdata/rg35xx/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/"
 
 RUN groupadd -g 1000 goody
 RUN useradd -d /userdata/system -s /bin/bash -m goody -u 1000 -g 1000

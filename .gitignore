@@ -14,10 +14,11 @@ resources/roms/*
 !resources/roms/.gitkeep
 resources/bios/*
 !resources/bios/.gitkeep
+resources/caches/*
+!resources/caches/.gitkeep
 
-# Caches
-caches/*
-!caches/.gitkeep
+# Ignore caches
+resources/caches/global_cache.json
 
 # MISC
 state.txt

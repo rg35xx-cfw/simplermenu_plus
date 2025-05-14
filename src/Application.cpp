@@ -553,7 +553,7 @@ void Application::loadCache(bool force) {
     MenuCache menuCache;
 
     // Get the path to the cache file from config.ini file
-    std::string cacheFilePath = cfg.get(Configuration::GLOBAL_CACHE);
+    std::string cacheFilePath = cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE);
 
     if (force || !menuCache.cacheExists(cacheFilePath)) {
         // Cache does not exist or force update is requested:
