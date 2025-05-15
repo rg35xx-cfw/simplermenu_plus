@@ -607,7 +607,7 @@ void RenderComponent::printFPS(int fps) {
 }
 
 void RenderComponent::loadAliases() {
-    std::ifstream infile(cfg.get(Configuration::ALIAS_PATH));
+    std::ifstream infile(cfg.get(Configuration::HOME_PATH) + cfg.get(Configuration::ALIAS_PATH));
     std::string line;
     while (std::getline(infile, line)) {
         size_t pos = line.find('=');
