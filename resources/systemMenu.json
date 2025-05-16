@@ -34,6 +34,11 @@
             "options": ["Comicbook", "Simplermenu", "BigCody"]
         },
         {
+            "id": "APPLICATION.thumnailType",
+            "type": "MultiOptionMenuItem",
+            "title": "Thumbnail Type"
+        },
+        {
             "id": "APPLICATION.usbMode",
             "type": "BooleanMenuItem",
             "title": "USB Mode"

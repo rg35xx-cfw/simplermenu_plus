@@ -53,6 +53,7 @@ public:
     static const std::string ALIAS_PATH;
     static const std::string HOME_PATH;
     static const std::string THEME_PATH;
+    static const std::string ROMS_PATH;
     static const std::string IMAGES_PATH;
     static const std::string SCREEN_WIDTH;
     static const std::string SCREEN_HEIGHT;
@@ -67,6 +68,8 @@ public:
     static const std::string OVERCLOCK_VALUES;
     static const std::string OVERCLOCK;
     static const std::string THEME;
+    static const std::string THUMBNAIL_TYPE;
+    static const std::string THUMBNAIL_TYPE_VALUES;
     static const std::string USB_MODE_VALUES;
     static const std::string USB_MODE;
     static const std::string WIFI;

@@ -123,6 +123,15 @@ public:
             } else if (currentKey == Configuration::THEME) {
                 updateTheme(false);
             
+            } else if (currentKey == Configuration::THUMBNAIL_TYPE) {
+                updateThumbnailType(false);
+            
+            } else if (currentKey == Configuration::WIFI) {
+                updateWifi();
+            
+            } else if (currentKey == Configuration::ROTATION) {
+                updateRotation();
+
             } else if (currentKey == Configuration::USB_MODE) {
                 updateUSBMode(false);
             
@@ -154,6 +163,15 @@ public:
 
             } else if (currentKey == Configuration::THEME) {
                 updateTheme(true);
+
+            } else if (currentKey == Configuration::THUMBNAIL_TYPE) {
+                updateThumbnailType(true);
+
+            } else if (currentKey == Configuration::WIFI) {
+                updateWifi();
+
+            } else if (currentKey == Configuration::ROTATION) {
+                updateRotation();
 
             } else if (currentKey == Configuration::USB_MODE) {
                 updateUSBMode(false);
@@ -188,6 +206,7 @@ public:
     }
 
     void updateTheme(bool increase);
+    void updateThumbnailType(bool increase);
     void updateUSBMode(bool increase);
     void updateLanguage(bool increase);
     void updateOverclock(bool increase);
@@ -299,9 +318,9 @@ public:
                 updateRomOverclock(false); 
             } else if (currentKey == Configuration::ROM_AUTOSTART) {
                 updateAutoStart(false);            
-            } else if (currentKey == Configuration::CORE_SELECTION) {
+            } /*else if (currentKey == Configuration::CORE_SELECTION) {
                 updateCoreSelection(false);
-            }  
+            }  */
         }
         notifySettingsChange(currentKey, currentValue);
     }
@@ -315,10 +334,9 @@ public:
                 updateRomOverclock(true); 
             } else if (currentKey == Configuration::ROM_AUTOSTART) {
                 updateAutoStart(true);         
-            } else if (currentKey == Configuration::CORE_SELECTION) {
+            } /*else if (currentKey == Configuration::CORE_SELECTION) {
                 updateCoreSelection(true);
-
-            }     
+            }  */
         }
         notifySettingsChange(currentKey, currentValue);
     }

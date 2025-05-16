@@ -591,6 +591,8 @@ std::vector<CachedMenuItem> Application::populateCache() {
     // Load section groups from the section_groups folder
     auto sectionGroups = fileManager.getFiles(sectGroupsPath);
 
+    std::string romsPath = cfg.get(Configuration::ROMS_PATH);
+
     std::vector<CachedMenuItem> allCachedItems;
 
     for (const auto& sectionGroupFile : sectionGroups) {
@@ -602,9 +604,9 @@ std::vector<CachedMenuItem> Application::populateCache() {
 
             for (const auto& romDir : data.romDirs) {
 
-                auto files = fileManager.getFiles(romDir);
+                auto files = fileManager.getFiles(romsPath + romDir);
                 for (const auto& file : files) {
-                    std::string romPath = romDir + file;
+                    std::string romPath = romsPath + romDir + file;
                     allCachedItems.push_back({sectionGroupFile, consoleName, file, romPath});
                 }
 

@@ -22,6 +22,7 @@ AppSettings::AppSettings(Configuration& cfg, I18n& i18n,
     defaultKeys = {
         Configuration::VOLUME, Configuration::BRIGHTNESS, Configuration::SCREEN_REFRESH,
         Configuration::SHOW_FPS, Configuration::OVERCLOCK, Configuration::THEME,
+        Configuration::THUMBNAIL_TYPE,
         Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
         Configuration::LANGUAGE,
         Configuration::UPDATE_CACHES, Configuration::RESTART, 
@@ -216,6 +217,14 @@ void AppSettings::updateTheme(bool increase) {
     std::cout << "UPDATING THEME" << std::endl;
 }
 
+void AppSettings::updateThumbnailType(bool increase) {
+    updateListSetting(cfg.getList(Configuration::THUMBNAIL_TYPE_VALUES), increase);
+
+    settingsMap[Configuration::THUMBNAIL_TYPE].value = currentValue;
+
+    std::cout << "UPDATING THUMBNAIL TYPE" << std::endl;
+}
+
 void AppSettings::updateUSBMode(bool increase) {
     updateListSetting(cfg.getList(Configuration::USB_MODE_VALUES), increase);
 
@@ -295,6 +304,8 @@ void RomSettings::updateAutoStart(bool increase) {
 void RomSettings::updateCoreSelection(bool increase) {
     updateListSetting(cores, increase);
 
+    std::cout << "***** current core: " << currentValue << std::endl;
+    std::cout << "***** previous value: " << settingsMap[Configuration::CORE_SELECTION].value << std::endl;
     settingsMap[Configuration::CORE_SELECTION].value = currentValue;
 
     std::cout << "UPDATING CORE SELECTION" << std::endl;
@@ -303,6 +314,9 @@ void RomSettings::updateCoreSelection(bool increase) {
 void RomSettings::updateCoreOverride(bool increase) {
     updateListSetting(cores, increase);
 
+    std::cout << "***** co current core: " << currentValue << std::endl;
+    std::cout << "***** co previous value: " << settingsMap[Configuration::CORE_OVERRIDE].value << std::endl;
+    
     settingsMap[Configuration::CORE_OVERRIDE].value = currentValue;
 
     std::cout << "UPDATING CORE OVERRIDE" << std::endl;

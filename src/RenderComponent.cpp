@@ -352,7 +352,7 @@ void RenderComponent::drawAppSettings(const std::string& settingsTitle, std::vec
         if (settingsValue == "INTERNAL") { 
             settingsValue = ". . .";
         } 
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, settingsValue.c_str(), color);
+        SDL_Surface* valueSurface = TTF_RenderText_Blended(setttingsFont, settingsValue.c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};
@@ -526,19 +526,22 @@ void RenderComponent::loadThumbnail(const std::string& romPath) {
     std::string romNameWithoutExtension = path.stem().string();
     std::string basePath = path.parent_path().string();
     std::string imagesPath = cfg.get(Configuration::IMAGES_PATH);
-    std::string thumbnailPath = basePath + imagesPath + romNameWithoutExtension + ".png";
+    std::string thumbnailType = cfg.get(Configuration::THUMBNAIL_TYPE);
+
+    std::string thumbnailExtension = thumbnailType == "default" ? ".png" : "-" + thumbnailType + ".png";
+    std::string thumbnailPath = basePath + imagesPath + romNameWithoutExtension + thumbnailExtension;
 
     // If thumbnail is already in cache, set it and return
     if (thumbnailCache.find(thumbnailPath) != thumbnailCache.end()) {
         thumbnail = thumbnailCache[thumbnailPath];
 
-
-        //std::cout << "loadThumbnail found in cache, returning" << std::endl;
+        // std::cout << "loadThumbnail found in cache, returning" << std::endl;
         return;
     }
 
     // If the thumbnail doesn't exist, simply return
     if (!std::filesystem::exists(thumbnailPath)) {
+        // std::cout << "Thumbnail not found: " << thumbnailPath << std::endl;
         return;
     }
 
