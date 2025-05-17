@@ -68,7 +68,7 @@ ControlMap ControlMapping::convertCommand(const SDL_Event& event) {
         int axis = event.jaxis.axis;
         int value = event.jaxis.value;
         //std::cout << "Joystick AXIS " << axis << " - value: " << value << std::endl;
-        if (axis == 0) {
+        if (axis == getControl("AXIS_UP")) {
             if (value < 258) {
                 return CMD_DOWN;
             } else if (value > 258) {
@@ -76,7 +76,7 @@ ControlMap ControlMapping::convertCommand(const SDL_Event& event) {
             } else if (value == 258) {
                 std::cout << "AXIS U/D ZERO\n" << std::endl;
             }
-        } else if (axis == 1) {
+        } else if (axis == getControl("AXIS_LEFT")) {
             if (value < 258) {
                 return CMD_RIGHT;
             } else if (value > 258) {
