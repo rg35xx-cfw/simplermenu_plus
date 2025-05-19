@@ -308,6 +308,8 @@ void RomSettings::updateCoreOverride(bool increase) {
 
     settingsMap[Configuration::CORE_OVERRIDE].value = currentValue;
 
+    notifySettingsChange(Configuration::CORE_OVERRIDE, currentValue);
+
     std::cout << "UPDATING CORE OVERRIDE" << std::endl;
 }
 

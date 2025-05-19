@@ -442,7 +442,9 @@ void Application::settingsChanged(const std::string& key, const std::string& val
 
             if (romPath != "") {
                 menuCache.updateCacheItem(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
+                cfg.updateSelectedExec(cfg.get(Configuration::HOME_PATH) + "systems.json", menu.getFolders()[state.currentFolderIndex].getTitle(), value);
             }
+
         }
     } 
     
