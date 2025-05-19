@@ -238,6 +238,11 @@ std::map<std::string, ConsoleData> Configuration::parseSystemsFile(const std::st
             }
         }
 
+        // selectedExec
+        if (sys.HasMember("selectedExec") && sys["selectedExec"].IsString()) {
+            data.selectedExec = sys["selectedExec"].GetString();
+        }
+
         // Optionally handle aliasFile, scaling, etc. if needed
 
         consoleDataMap[name] = data;
