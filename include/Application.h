@@ -55,13 +55,8 @@ private:
 
     std::vector<ILanguageObserver *> langObservers;
 
-    // MenuLevel currentMenuLevel = MENU_SECTION;
-
     State state;
 
-    // int currentSectionIndex = 0;
-    // int currentFolderIndex = 0;
-    // int currentRomIndex = 0;
     int currentSettingsIndex = 0;
     int currentFolderSettingsIndex = 0;
     int currentRomSettingsIndex = 0;

@@ -4,7 +4,11 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/algorithm/string.hpp>
-
+#include <rapidjson/document.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/prettywriter.h>
+#include <cstdio>
 
 /////////
 // CONFIG.INI
@@ -109,7 +113,6 @@ const std::string Configuration::CONSOLE_ALIAS_FILE = std::string(".aliasFile");
 // Savestate.json
 //////////
 const std::string Configuration::CURRENT_MENU_LEVEL = std::string("currentMenuLevel");
-const std::string Configuration::CURRENT_SECTION_INDEX = std::string("currentSectionIndex");
 const std::string Configuration::CURRENT_FOLDER_INDEX = std::string("currentFolderIndex");
 const std::string Configuration::CURRENT_ROM_INDEX = std::string("currentRomIndex");
 const std::string Configuration::LAUNCHER_CALLBACK = std::string("launcherCallback");
@@ -187,6 +190,91 @@ std::string Configuration::getThemePath() const {
     return themePath;
 }
 
+std::map<std::string, ConsoleData> Configuration::parseSystemsFile(const std::string& jsonPath) {
+    std::map<std::string, ConsoleData> consoleDataMap;
+
+    FILE* fp = fopen(jsonPath.c_str(), "r");
+    if (!fp) {
+        std::cerr << "Could not open systems file: " << jsonPath << std::endl;
+        return consoleDataMap;
+    }
+
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document doc;
+    doc.ParseStream(is);
+    fclose(fp);
+
+    if (!doc.IsObject()) {
+        std::cerr << "Invalid JSON format in systems file: " << jsonPath << std::endl;
+        return consoleDataMap;
+    }
+
+    for (auto it = doc.MemberBegin(); it != doc.MemberEnd(); ++it) {
+        const std::string name = it->name.GetString();
+        const rapidjson::Value& sys = it->value;
+
+        ConsoleData data;
+        data.name = name;
+
+        // execs
+        if (sys.HasMember("execs") && sys["execs"].IsArray()) {
+            for (const auto& exec : sys["execs"].GetArray()) {
+                data.execs.push_back(exec.GetString());
+            }
+        }
+
+        // romExts
+        if (sys.HasMember("romExts") && sys["romExts"].IsArray()) {
+            for (const auto& ext : sys["romExts"].GetArray()) {
+                data.romExts.push_back(ext.GetString());
+            }
+        }
+
+        // romDirs
+        if (sys.HasMember("romDirs") && sys["romDirs"].IsArray()) {
+            for (const auto& dir : sys["romDirs"].GetArray()) {
+                data.romDirs.push_back(dir.GetString());
+            }
+        }
+
+        // Optionally handle aliasFile, scaling, etc. if needed
+
+        consoleDataMap[name] = data;
+    }
+
+    return consoleDataMap;
+}
+
+bool Configuration::updateSelectedExec(const std::string& jsonPath, const std::string& systemName, const std::string& newExec) {
+    FILE* fp = fopen(jsonPath.c_str(), "r");
+    if (!fp) return false;
+
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document doc;
+    doc.ParseStream(is);
+    fclose(fp);
+
+    if (!doc.IsObject() || !doc.HasMember(systemName.c_str())) return false;
+
+    rapidjson::Value& sys = doc[systemName.c_str()];
+    rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+    sys.RemoveMember("selectedExec");
+    sys.AddMember("selectedExec", rapidjson::Value(newExec.c_str(), allocator), allocator);
+
+    fp = fopen(jsonPath.c_str(), "w");
+    if (!fp) return false;
+    char writeBuffer[65536];
+    rapidjson::FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+    rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(os);
+    doc.Accept(writer);
+    fclose(fp);
+
+    return true;
+}
+
+
 std::map<std::string, ConsoleData> Configuration::parseIniFile(const std::string& iniPath) {
     boost::property_tree::ptree pt;
     boost::property_tree::read_ini(iniPath, pt);
@@ -251,9 +339,7 @@ State Configuration::loadState() {
     std::string currentMenuLevelStr = 
         statePt.get<std::string>(Configuration::CURRENT_MENU_LEVEL);
 
-    if (currentMenuLevelStr == "MENU_SECTION") {
-        state.currentMenuLevel = MenuLevel::MENU_SECTION;
-    } else if (currentMenuLevelStr == "MENU_FOLDER") {
+    if (currentMenuLevelStr == "MENU_FOLDER") {
         state.currentMenuLevel = MenuLevel::MENU_FOLDER;
     } else if (currentMenuLevelStr == "MENU_ROM") {
         state.currentMenuLevel = MenuLevel::MENU_ROM;
@@ -269,7 +355,6 @@ State Configuration::loadState() {
             + currentMenuLevelStr);
     }
 
-    state.currentSectionIndex = statePt.get<int>(Configuration::CURRENT_SECTION_INDEX);
     state.currentFolderIndex = statePt.get<int>(Configuration::CURRENT_FOLDER_INDEX);
     state.currentRomIndex = statePt.get<int>(Configuration::CURRENT_ROM_INDEX);
     state.launcherCallback = statePt.get<bool>(Configuration::LAUNCHER_CALLBACK);
@@ -286,9 +371,6 @@ void Configuration::saveState(const State& state) {
     
         std::string currentMenuLevelStr;
         switch (state.currentMenuLevel) {
-            case MenuLevel::MENU_SECTION:
-                currentMenuLevelStr = "MENU_SECTION";
-                break;
             case MenuLevel::MENU_FOLDER:
                 currentMenuLevelStr = "MENU_FOLDER";
                 break;
@@ -311,7 +393,6 @@ void Configuration::saveState(const State& state) {
         }
     
         statePt.put(Configuration::CURRENT_MENU_LEVEL, currentMenuLevelStr);
-        statePt.put(Configuration::CURRENT_SECTION_INDEX, state.currentSectionIndex);
         statePt.put(Configuration::CURRENT_FOLDER_INDEX, state.currentFolderIndex);
         statePt.put(Configuration::CURRENT_ROM_INDEX, state.currentRomIndex);
         statePt.put(Configuration::LAUNCHER_CALLBACK, state.launcherCallback);

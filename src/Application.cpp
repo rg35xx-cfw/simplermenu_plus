@@ -47,7 +47,6 @@ Application::Application()
     try {
         state = cfg.loadState();
         std::cout << "State loaded: " << state.currentMenuLevel << std::endl;
-        std::cout << "Section: " << state.currentSectionIndex << std::endl;
         std::cout << "Folder: " << state.currentFolderIndex << std::endl;
         std::cout << "Rom: " << state.currentRomIndex << std::endl;
 
@@ -59,8 +58,7 @@ Application::Application()
 
     } catch (const StateNotFoundException& e) {
         std::cout << "State not found, using default values" << std::endl;
-        state.currentMenuLevel = MenuLevel::MENU_SECTION;
-        state.currentSectionIndex = 0;
+        state.currentMenuLevel = MenuLevel::MENU_FOLDER;
         state.currentFolderIndex = 0;
         state.currentRomIndex = 0;
         state.launcherCallback = false;
@@ -119,29 +117,21 @@ Application::Application()
 void Application::drawCurrentState() {
     std::stringstream ss;
     switch (state.currentMenuLevel) {
-        case MENU_SECTION:
-        {
-            std::string sectionName = menu.getSections()[state.currentSectionIndex].getTitle();
-
-            int numberOfFolders = menu.getSections()[state.currentSectionIndex].getFolders().size();
-            renderComponent.drawSection(sectionName, numberOfFolders);
-            break;
-        }
         case MENU_FOLDER:
         {
-            std::string folderName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle();
+            std::string folderName = menu.getFolders()[state.currentFolderIndex].getTitle();
             std::string folderPath = "";
-            int numberOfRoms = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms().size();
+            int numberOfRoms = menu.getFolders()[state.currentFolderIndex].getRoms().size();
             renderComponent.drawFolder(folderName, folderPath, numberOfRoms);
             break;
         }
         case MENU_ROM:
         {
             std::vector<std::pair<std::string, std::string>> romData;
-            for (const Rom& rom : menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()) {
+            for (const Rom& rom : menu.getFolders()[state.currentFolderIndex].getRoms()) {
                 romData.push_back({rom.getTitle(), rom.getPath()});
             }
-            renderComponent.drawRomList(menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle(), romData, state.currentRomIndex);
+            renderComponent.drawRomList(menu.getFolders()[state.currentFolderIndex].getTitle(), romData, state.currentRomIndex);
             break;
         }
         case APP_SETTINGS:
@@ -159,43 +149,18 @@ void Application::drawCurrentState() {
 
 void Application::handleCommand(ControlMap cmd) {
     switch (state.currentMenuLevel) {
-        case MenuLevel::MENU_SECTION:
-            if (cmd == CMD_ENTER) { // ENTER
-                state.currentMenuLevel = MenuLevel::MENU_FOLDER;
-                state.currentFolderIndex = 0;
-                renderComponent.resetValues();
-                // folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
-            
-            } else if (cmd == CMD_UP) { // UP
-                if (state.currentSectionIndex > 0) state.currentSectionIndex--;
-                else state.currentSectionIndex = menu.getSections().size() - 1;
-            
-            } else if (cmd == CMD_DOWN) { // DOWN
-                state.currentSectionIndex = (state.currentSectionIndex + 1) % menu.getSections().size();
-            }
-
-            cfg.saveState(state);
-
-            break;
-            
         case MenuLevel::MENU_FOLDER:
             if (cmd == CMD_ENTER) { // KEY_A/ENTER
                 state.currentMenuLevel = MenuLevel::MENU_ROM;
                 state.currentRomIndex = 0;
                 renderComponent.resetValues();
-                romSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
-            } else if (cmd == CMD_BACK) { // KEY_B/ESC
-                state.currentMenuLevel = MenuLevel::MENU_SECTION;
-                renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                const Section& section = menu.getSections()[state.currentSectionIndex];
+                const Folder& folder = menu.getFolders()[state.currentFolderIndex];
                 if (state.currentFolderIndex > 0) state.currentFolderIndex--;
-                else state.currentFolderIndex = section.getFolders().size() - 1;
-                //folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
+                else state.currentFolderIndex = menu.getFolders().size() - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                const Section& section = menu.getSections()[state.currentSectionIndex];
-                state.currentFolderIndex = (state.currentFolderIndex + 1) % section.getFolders().size();
-                //folderSettings.getCores(menu.getSections()[state.currentSectionIndex].getTitle(), menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle() );
+                const Folder& folder = menu.getFolders()[state.currentFolderIndex];
+                state.currentFolderIndex = (state.currentFolderIndex + 1) % menu.getFolders().size();
             } else if (cmd == CMD_ROM_SETTINGS) {
                 state.currentMenuLevel = MenuLevel::SYSTEM_SETTINGS;
                 renderComponent.resetValues();
@@ -207,17 +172,16 @@ void Application::handleCommand(ControlMap cmd) {
             }
 
             break;
-            
         case MenuLevel::MENU_ROM:
             if (cmd == CMD_BACK) { // ESC
                 state.currentMenuLevel = MenuLevel::MENU_FOLDER;
                 renderComponent.resetValues();
             } else if (cmd == CMD_UP) { // UP
-                const Folder& folder = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex];
+                const Folder& folder = menu.getFolders()[state.currentFolderIndex];
                 if (state.currentRomIndex > 0) state.currentRomIndex--;
                 else state.currentRomIndex = folder.getRoms().size() - 1;
             } else if (cmd == CMD_DOWN) { // DOWN
-                const Folder& folder = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex];
+                const Folder& folder = menu.getFolders()[state.currentFolderIndex];
                 state.currentRomIndex = (state.currentRomIndex + 1) % folder.getRoms().size();
             } else if (cmd == CMD_ENTER) { // ENTER
                 std::cout << "execute rom" << std::endl;
@@ -226,6 +190,7 @@ void Application::handleCommand(ControlMap cmd) {
             } else if (cmd == CMD_ROM_SETTINGS) {
                 state.currentMenuLevel = MenuLevel::ROM_SETTINGS;
                 renderComponent.resetValues();
+                romSettings.getCores(menu.getFolders()[state.currentFolderIndex].getTitle());
             }
 
             // Save state after navigating, but not when entering the ROM settings
@@ -411,13 +376,10 @@ void Application::run() {
 }
 
 void Application::print_list() {
-    for (const auto& section : menu.getSections()) {
-        std::cout << "Section: " << section.getTitle() << std::endl;
-        for (const auto& folder : section.getFolders()) {
-            std::cout << "  System: " << folder.getTitle() << std::endl;
-            for (const auto& rom : folder.getRoms()) {
-                std::cout << "  System: " << folder.getTitle() <<  " -> Rom: " << rom.getTitle() << std::endl;
-            }
+    for (const auto& folder : menu.getFolders()) {
+        std::cout << "  System: " << folder.getTitle() << std::endl;
+        for (const auto& rom : folder.getRoms()) {
+            std::cout << "  System: " << folder.getTitle() <<  " -> Rom: " << rom.getTitle() << std::endl;
         }
     }
 }
@@ -428,31 +390,16 @@ void Application::launchRom() {
     state.launcherCallback = true;
     cfg.saveState(state);
 
-    std::string romName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getTitle();
-    std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
-    std::string folderName = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getTitle();
-    std::string sectionName = menu.getSections()[state.currentSectionIndex].getTitle();
-    std::cout << "Launching rom: " << sectionName << " -> " << folderName << " -> " << romName << std::endl;
+    std::string romName = menu.getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getTitle();
+    std::string romPath = menu.getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
+    std::string folderName = menu.getFolders()[state.currentFolderIndex].getTitle();
+    std::cout << "Launching rom: " << folderName << " -> " << romName << std::endl;
 
-    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + "section_groups/" + sectionName);
+    // FIXME: this needs to be read from the cache
+    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseSystemsFile(cfg.get(Configuration::HOME_PATH) + "systems.json");
 
-    std::string corePath = "";
-
-    for (const auto& item : menuCache.loadFromCache(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE))) {
-        if (item.path == romPath) {
-            corePath = item.core;
-        }
-    }
-    if (corePath == "" || corePath == "default") {
-        std::cout << "corePath: " << corePath << std::endl;
-        corePath = cfg.get(Configuration::CORE_OVERRIDE);
-        std::cout << "corePath: " << corePath << std::endl;
-
-    }
-
-    // We are using the last selected core for a given system, by default it's the first available core only another 
-    // core has been selected in rom settings -> core override
-    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + "launchers/" + corePath;
+    std::string launcher = (consoleDataMap[folderName].selectedExec.empty()) ? consoleDataMap[folderName].execs[0] : consoleDataMap[folderName].selectedExec;
+    std::string execLauncher = cfg.get(Configuration::HOME_PATH) + "launchers/" + launcher;
 
     // Launch emulator
     std::string command = execLauncher + " '" + romPath + "'";
@@ -491,7 +438,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
         std::cout << "Calling CORE OVERRIDE " << std::endl;
         
         if (state.currentMenuLevel == ROM_SETTINGS) {
-            std::string romPath = menu.getSections()[state.currentSectionIndex].getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
+            std::string romPath = menu.getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
 
             if (romPath != "") {
                 menuCache.updateCacheItem(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
@@ -582,34 +529,20 @@ void Application::loadCache(bool force) {
 }
 
 std::vector<CachedMenuItem> Application::populateCache() {
-
     FileManager fileManager(cfg);
 
-    std::string sectGroupsPath = cfg.get(Configuration::HOME_PATH) 
-        + "section_groups/";
-
-    // Load section groups from the section_groups folder
-    auto sectionGroups = fileManager.getFiles(sectGroupsPath);
-
+    // Load systems from systems.json
+    auto consoleDataMap = cfg.parseSystemsFile(cfg.get(Configuration::HOME_PATH) + "systems.json");
     std::string romsPath = cfg.get(Configuration::ROMS_PATH);
 
     std::vector<CachedMenuItem> allCachedItems;
 
-    for (const auto& sectionGroupFile : sectionGroups) {
-
-        auto consoleDataMap = cfg.parseIniFile(
-            sectGroupsPath + sectionGroupFile);
-
-        for (const auto& [consoleName, data] : consoleDataMap) {
-
-            for (const auto& romDir : data.romDirs) {
-
-                auto files = fileManager.getFiles(romsPath + romDir);
-                for (const auto& file : files) {
-                    std::string romPath = romsPath + romDir + file;
-                    allCachedItems.push_back({sectionGroupFile, consoleName, file, romPath});
-                }
-
+    for (const auto& [consoleName, data] : consoleDataMap) {
+        for (const auto& romDir : data.romDirs) {
+            auto files = fileManager.getFiles(romsPath + romDir);
+            for (const auto& file : files) {
+                std::string romPath = romsPath + "/" + romDir + "/" + file;
+                allCachedItems.push_back({consoleName, file, romPath});
             }
         }
     }
@@ -620,22 +553,14 @@ std::vector<CachedMenuItem> Application::populateCache() {
 void Application::populateMenu(Menu& menu) {
     // Loop through the cached items and populate the Menu structure
     for (const auto& cachedItem : menuCache.loadFromCache(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE))) {
-        // cachedItem should have members: section, system, filename, path.
+        // cachedItem should have members: folder, filename, path.
 
-        // Check if the section already exists in the menu
-        Section* section = menu.getSectionByName(cachedItem.section);
-        if (!section) {
-            Section newSection(cachedItem.section);
-            menu.addSection(newSection);
-            section = menu.getSectionByName(cachedItem.section);
-        }
-
-        // Check if the Folder already exists in the section
-        Folder* folder = section->getFolderByName(cachedItem.folder);
+        // Check if the Folder already exists in the menu
+        Folder* folder = menu.getFolderByName(cachedItem.folder);
         if (!folder) {
             Folder newFolder(cachedItem.folder);
-            section->addFolder(newFolder);
-            folder = section->getFolderByName(cachedItem.folder);
+            menu.addFolder(newFolder);
+            folder = menu.getFolderByName(cachedItem.folder);
         }
 
         // Add the file to the folder

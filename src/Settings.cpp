@@ -33,7 +33,6 @@ AppSettings::AppSettings(Configuration& cfg, I18n& i18n,
 SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
                                int minValue, int maxValue, int delta)
     : Settings(cfg, i18n, minValue, maxValue, delta) {
-    generateCoreSettings();
 }
 
 RomSettings::RomSettings(Configuration& cfg, I18n& i18n,
@@ -301,22 +300,12 @@ void RomSettings::updateAutoStart(bool increase) {
     std::cout << "UPDATING AUTO START" << std::endl;
 }
 
-void RomSettings::updateCoreSelection(bool increase) {
-    updateListSetting(cores, increase);
-
-    std::cout << "***** current core: " << currentValue << std::endl;
-    std::cout << "***** previous value: " << settingsMap[Configuration::CORE_SELECTION].value << std::endl;
-    settingsMap[Configuration::CORE_SELECTION].value = currentValue;
-
-    std::cout << "UPDATING CORE SELECTION" << std::endl;
-}
-
 void RomSettings::updateCoreOverride(bool increase) {
     updateListSetting(cores, increase);
 
     std::cout << "***** co current core: " << currentValue << std::endl;
     std::cout << "***** co previous value: " << settingsMap[Configuration::CORE_OVERRIDE].value << std::endl;
-    
+
     settingsMap[Configuration::CORE_OVERRIDE].value = currentValue;
 
     std::cout << "UPDATING CORE OVERRIDE" << std::endl;

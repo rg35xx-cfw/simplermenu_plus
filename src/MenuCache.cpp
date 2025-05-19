@@ -16,7 +16,6 @@ void MenuCache::saveToCache(const std::string& filePath, const std::vector<Cache
 
     for (const auto& item : data) {
         rapidjson::Value obj(rapidjson::kObjectType);
-        obj.AddMember("section", rapidjson::Value(item.section.c_str(), allocator), allocator);
         obj.AddMember("folder", rapidjson::Value(item.folder.c_str(), allocator), allocator);
         obj.AddMember("rom", rapidjson::Value(item.rom.c_str(), allocator), allocator);
         obj.AddMember("path", rapidjson::Value(item.path.c_str(), allocator), allocator);
@@ -52,7 +51,6 @@ std::vector<CachedMenuItem> MenuCache::loadFromCache(const std::string& filePath
     if (doc.IsArray()) {
         for (auto& v : doc.GetArray()) {
             CachedMenuItem item;
-            item.section = v["section"].GetString();
             item.folder  = v["folder"].GetString();
             item.rom     = v["rom"].GetString();
             item.path    = v["path"].GetString();
@@ -93,7 +91,6 @@ bool MenuCache::updateCacheItem(const std::string& filePath, const std::string& 
 
     for (const auto& item : updatedData) {
         rapidjson::Value obj(rapidjson::kObjectType);
-        obj.AddMember("section", rapidjson::Value(item.section.c_str(), allocator), allocator);
         obj.AddMember("folder", rapidjson::Value(item.folder.c_str(), allocator), allocator);
         obj.AddMember("rom", rapidjson::Value(item.rom.c_str(), allocator), allocator);
         obj.AddMember("path", rapidjson::Value(item.path.c_str(), allocator), allocator);

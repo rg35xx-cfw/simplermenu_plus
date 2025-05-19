@@ -15,6 +15,10 @@ struct ConsoleData {
     std::vector<std::string> execs;
     std::vector<std::string> romExts;
     std::vector<std::string> romDirs;
+    bool enabled;
+    std::string selectedExec;
+    std::string category;
+    int scaling;
 };
 
 struct SettingsMenuItem {
@@ -158,6 +162,9 @@ public:
                                   const char delimiter = ',') const;
     std::string getThemePath() const;
     std::map<std::string, ConsoleData> parseIniFile(const std::string& iniPath);
+
+    std::map<std::string, ConsoleData> parseSystemsFile(const std::string& jsonPath);
+    bool updateSelectedExec(const std::string& jsonPath, const std::string& systemName, const std::string& newExec);
 
     void saveConfigIni();
 

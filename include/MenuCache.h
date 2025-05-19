@@ -8,7 +8,6 @@
 namespace pt = boost::property_tree;
 
 struct CachedMenuItem {
-    std::string section;
     std::string folder;
     std::string rom;
     std::string path;

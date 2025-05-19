@@ -22,7 +22,6 @@ RenderComponent::RenderComponent(Configuration& cfg, Theme& theme)
     screenHeight = cfg.getInt(Configuration::SCREEN_HEIGHT);
     screenWidth = cfg.getInt(Configuration::SCREEN_WIDTH);
 
-    lastSection = "";
     lastFolder = "";
     lastRom = -1;
 
@@ -47,86 +46,6 @@ RenderComponent::~RenderComponent() {
         SDL_FreeSurface(screen);
     }
     // Implementation
-}
-
-void RenderComponent::drawSection(const std::string& name, int numSystems) {
-
-    std::string backgroundPath = 
-                cfg.get(Configuration::HOME_PATH) + "/" +
-                cfg.get(Configuration::THEME_PATH) + 
-                std::to_string(cfg.getInt(Configuration::SCREEN_WIDTH)) + "x" +
-                std::to_string(cfg.getInt(Configuration::SCREEN_HEIGHT)) + "/" +
-                cfg.get(Configuration::THEME) + "/" +
-                theme.getValue("GENERAL.section_groups_folder") +
-                helper.getFilenameWithoutExtension(name) + ".png";
-
-    if(background == nullptr || lastSection != name) {
-    	setBackground(backgroundPath);
-        lastSection = name;
-    }
-    SDL_BlitSurface(background, NULL, screen, NULL);
-
-    if (theme.getValue("GENERAL.display_section_group_name") == "1") {
-        SDL_Color white = {255, 255, 255};
-
-        // Remove extension from section and transform to uppercase
-        std::filesystem::path ss(name);
-        std::string sectionName(ss.stem().string()); 
-        transform(sectionName.begin(), sectionName.end(), sectionName.begin(), ::toupper);
-    
-        int sectionFontSize = 96;
-        if(screenWidth == 320) {
-            sectionFontSize = 48;
-        }
-    
-        TTF_Font* titleFont = TTF_OpenFont(theme.getValue(Configuration::THEME_FONT, true).c_str(), sectionFontSize);  // Adjust font path and size as necessary
-        if (!titleFont) {
-            // Handle error
-            std::cerr << "Failed to load font: " << TTF_GetError() << std::endl;
-            return;
-        }       
-        SDL_Surface* sectionNameSurface = TTF_RenderText_Blended(titleFont, sectionName.c_str(), {255,255,255});
-        TTF_CloseFont(titleFont);   
-
-        // Add section title with translucent background
-        SDL_Rect dstRect;
-        dstRect.x = (screen->w - sectionNameSurface->w) / 2;
-        dstRect.y = (screen->h - sectionNameSurface->h) / 2;
-        dstRect.w = sectionNameSurface->w;
-        dstRect.h = sectionNameSurface->h;
-
-        // Create a semi-transparent surface for the background
-        SDL_Surface* rawTransparentBg = SDL_CreateRGBSurface(0, screenWidth, dstRect.h, 32, 0, 0, 0, 0);
-
-        // Enable blending for the surface
-        SDL_SetAlpha(rawTransparentBg, SDL_SRCALPHA, 127);
-
-        SDL_FillRect(rawTransparentBg, NULL, SDL_MapRGBA(rawTransparentBg->format, 0, 0, 0, 10)); // Fill with black color and 50% opacity
-
-        SDL_Surface* transparentBg = SDL_DisplayFormatAlpha(rawTransparentBg);
-
-        SDL_Rect fadeRect = {0, screenHeight / 2 - sectionNameSurface->h / 2,
-                            screenWidth,
-                            screenHeight / 2 + sectionNameSurface->h / 2};
-
-        // Render the semi-transparent background
-        SDL_BlitSurface(transparentBg, NULL, screen, &fadeRect);
-
-        SDL_Surface* convertedFolderNameSurface = SDL_DisplayFormatAlpha(sectionNameSurface);
-
-        // Render the text on top of the semi-transparent background
-        SDL_BlitSurface(convertedFolderNameSurface, NULL, screen, &dstRect);
-
-        // Free surfaces
-        SDL_FreeSurface(sectionNameSurface);
-        SDL_FreeSurface(rawTransparentBg);
-        SDL_FreeSurface(transparentBg);
-        SDL_FreeSurface(convertedFolderNameSurface);
-    }
-
-    // Decide on the x, y positions, colors, and other styling details
-    // Disable folder count displat for now, needs to be linked to a theme setting 
-    // renderText("Folders: " + std::to_string(numSystems), 50, 150, {150, 150, 150}); // More gray for meta info, for example
 }
 
 void RenderComponent::drawFolder(const std::string& name, const std::string& path, int numRoms) {
@@ -353,83 +272,6 @@ void RenderComponent::drawAppSettings(const std::string& settingsTitle, std::vec
             settingsValue = ". . .";
         } 
         SDL_Surface* valueSurface = TTF_RenderText_Blended(setttingsFont, settingsValue.c_str(), color);
-
-        // Position the value surface to the right of the title
-        SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};
-        SDL_BlitSurface(valueSurface, nullptr, screen, &valueDestRect);
-        SDL_FreeSurface(valueSurface);
-
-        startY += stepY;
-    }
-    TTF_CloseFont(titleFont);
-    TTF_CloseFont(setttingsFont);
-}
-
-void RenderComponent::drawFolderSettings(const std::string& settingsTitle, std::vector<Settings::I18nSetting> settingList, int currentSettingIndex) {
-    std::string backgroundPath = cfg.get(Configuration::HOME_PATH) + "assets/settings.png";
-    std::string settingsFontPath = cfg.get(Configuration::HOME_PATH) + "assets/Akrobat-Bold.ttf";
-    int settingsFontSize = 32; //FIXME: size needs to be dynamic
-
-    TTF_Font* setttingsFont = TTF_OpenFont(settingsFontPath.c_str(), settingsFontSize);
-
-	if (background == nullptr || lastRom == -1) {
-        setBackground(backgroundPath);
-    }
-    SDL_BlitSurface(background, NULL, screen, NULL);
-
-    std::string titleFontPath = cfg.get(Configuration::HOME_PATH) + "assets/akashi.ttf";
-    int titleFontSize = 64; //FIXME: size needs to be dynamic
-
-    TTF_Font* titleFont = TTF_OpenFont(settingsFontPath.c_str(), titleFontSize);
-
-    SDL_Surface* titleSurface = TTF_RenderText_Blended(titleFont, settingsTitle.c_str(), {255,255,255});
-    SDL_Rect titlePos = {screenWidth / 2 - titleSurface->w /2 , 5, 0,0};
-    SDL_BlitSurface(titleSurface, nullptr, screen, &titlePos);
-
-
-    // Set rom list starting position and item separation
-    // FIXME: these values need to be dynamic depending on the resolution
-    int startX = 10;
-    int startY = 92;
-    int stepY = 46;
-    int itemsPerPage = 8;
-
-    // Calculate number of pages FIXME: move that to the constructor
-    int total_pages = (cfg.getSectionSize(Configuration::GAME) + itemsPerPage - 1)/ itemsPerPage;
-
-    int currentPage = currentSettingIndex / itemsPerPage;
-    int startIndex = currentPage * itemsPerPage;
-    int endIndex = std::min<int>(startIndex + itemsPerPage, cfg.getSectionSize(Configuration::APPLICATION) );
-
-    // for (int i = 0; i < theme.getIntValue(Configuration::ITEMS); i++) {
-    for (int i = startIndex; i < endIndex; i++) {
-        SDL_Color color = (i == currentSettingIndex) ? 
-            theme.getColor(Configuration::SEL_ITEM_FONT_COLOR) :
-            theme.getColor(Configuration::ITEMS_FONT_COLOR);
-
-        // Determine text width
-        SDL_Surface* textSurface = TTF_RenderText_Blended(setttingsFont, settingList[i].title.c_str(), color);
-        int titleWidth = textSurface->w;
-
-        int clipWidth = (int)screenWidth*0.8;
-
-        SDL_Rect clipRect = {startX, startY, clipWidth, static_cast<Uint16>(textSurface->h)}; // Ensure text doesn't spill over the intended area
-
-        SDL_SetClipRect(screen, &clipRect);
-        SDL_BlitSurface(textSurface, nullptr, screen, &clipRect);
-
-        SDL_SetClipRect(screen, NULL);  // Reset the clip rect
-        SDL_FreeSurface(textSurface);
-
-        // Display pagination page number / total_pages at the bottom
-        std::string pageInfo = std::to_string(currentPage + 1) + " / " + std::to_string(total_pages);
-        int x = theme.getIntValue(Configuration::TEXT2_X);
-        int y = theme.getIntValue(Configuration::TEXT2_Y);
-
-        renderText(pageInfo, x, y, {255, 255, 255}, theme.getIntValue(Configuration::TEXT2_ALIGNMENT));
-
-       // Render the value to the right of the title
-        SDL_Surface* valueSurface = TTF_RenderText_Blended(font, settingList[i].value.c_str(), color);
 
         // Position the value surface to the right of the title
         SDL_Rect valueDestRect = {static_cast<Sint16>(screenWidth - valueSurface->w - 10), startY, 0, 0};

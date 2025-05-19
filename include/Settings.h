@@ -241,55 +241,6 @@ public:
      * ISettingsSubject methods 
      */
     std::string getName() override;
-
-    void generateCoreSettings() {
-        namespace fs = boost::filesystem;
-        namespace pt = boost::property_tree;
-
-        std::string sectionGroupsPath = cfg.get(Configuration::HOME_PATH) + "/section_groups/";
-        pt::ptree root;
-
-        // Iterate over all .ini files in the section_groups directory
-        fs::directory_iterator end_itr; // default construction yields past-the-end
-        for (fs::directory_iterator itr(sectionGroupsPath); itr != end_itr; ++itr) {
-            if (fs::is_regular_file(itr->status()) && itr->path().extension() == ".ini") {
-                std::string iniFilePath = itr->path().string();
-
-                // Parse the ini file for folder names and their ConsoleData
-                std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(iniFilePath);
-
-                for (const auto& pair : consoleDataMap) {
-                    const std::string& folderName = pair.first;
-                    const ConsoleData& consoleData = pair.second;
-
-                    if (!consoleData.execs.empty()) {
-                        pt::ptree folderData, coresArray;
-                        std::string defaultCore;
-
-                        for (const auto& exec : consoleData.execs) {
-                            std::string coreName = exec.substr(exec.find_last_of("/\\") + 1);
-                            coresArray.push_back(std::make_pair("", pt::ptree(coreName)));
-
-                            if (defaultCore.empty()) {
-                                defaultCore = coreName;
-                            }
-                        }
-
-                        folderData.add_child("cores", coresArray);
-                        folderData.put("default_core", defaultCore);
-
-                        // Add to the root node under the folderName
-                        root.add_child(folderName, folderData);
-                    }
-                }
-            }
-        }
-
-        // Write to single JSON file
-        std::string jsonFilePath = cfg.get(Configuration::HOME_PATH) + "coreSettings.json";
-        pt::write_json(jsonFilePath, root);
-    }
-
 };
 
 class RomSettings : public Settings, public ILanguageObserver {
@@ -301,7 +252,6 @@ public:
 
     void updateRomOverclock(bool increase);
     void updateAutoStart(bool increase);
-    void updateCoreSelection(bool increase);
     void updateCoreOverride(bool increase);
 
     void navigateUp() { Settings::navigateUp(); };
@@ -318,9 +268,7 @@ public:
                 updateRomOverclock(false); 
             } else if (currentKey == Configuration::ROM_AUTOSTART) {
                 updateAutoStart(false);            
-            } /*else if (currentKey == Configuration::CORE_SELECTION) {
-                updateCoreSelection(false);
-            }  */
+            }
         }
         notifySettingsChange(currentKey, currentValue);
     }
@@ -334,9 +282,7 @@ public:
                 updateRomOverclock(true); 
             } else if (currentKey == Configuration::ROM_AUTOSTART) {
                 updateAutoStart(true);         
-            } /*else if (currentKey == Configuration::CORE_SELECTION) {
-                updateCoreSelection(true);
-            }  */
+            }
         }
         notifySettingsChange(currentKey, currentValue);
     }
@@ -351,9 +297,10 @@ public:
     std::string getName() override;
 
 public:
-    void getCores(std::string sectionName, std::string folderName) {
+    void getCores(std::string folderName) {
 
-        std::map<std::string, ConsoleData> consoleDataMap = cfg.parseIniFile(cfg.get(Configuration::HOME_PATH) + "/section_groups/" + sectionName);
+        // FIXME: this needs to be read from the cache
+        std::map<std::string, ConsoleData> consoleDataMap = cfg.parseSystemsFile(cfg.get(Configuration::HOME_PATH) + "systems.json");
 
         cores.clear();
 
@@ -365,14 +312,15 @@ public:
             // Check if the execs vector is not empty
             if (!consoleData.execs.empty()) {
                 for(auto exec: consoleData.execs) {
-                    cores.insert(exec.substr(exec.find_last_of("/\\") + 1));
+                    cores.insert(exec);
                 }
             }
         }
 
         // By default we select the first core from the list
-        // TODO: need to add the logic to override a core/launcher per rom
-        std::string currentCore = *cores.begin();
+        std::string currentCore = (consoleDataMap[folderName].selectedExec.empty()) ? *cores.begin() : consoleDataMap[folderName].selectedExec; 
+
+        //*cores.begin();
         settingsMap[Configuration::CORE_OVERRIDE] = {Configuration::CORE_OVERRIDE, currentCore, true};
         notifySettingsChange(Configuration::CORE_OVERRIDE, currentCore);
     }

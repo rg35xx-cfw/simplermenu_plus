@@ -41,25 +41,18 @@ public:
 
 };
 
-class Section {
+class Menu {
 private:
-    std::string name;
     std::vector<Folder> folders;
 public:
-    Section(const std::string& name) : name(name) {}
-
     void addFolder(const Folder& folder) {
         folders.push_back(folder);
     }
 
-    std::string getTitle() const {
-        return name;
-    }
-
     Folder* getFolderByName(const std::string& name) {
-        for (auto& sys : folders) {
-            if (sys.getTitle() == name) {
-                return &sys;
+        for (auto& folder : folders) {
+            if (folder.getTitle() == name) {
+                return &folder;
             }
         }
         return nullptr;
@@ -67,29 +60,5 @@ public:
 
     const std::vector<Folder>& getFolders() const {
         return folders;
-    }
-
-};
-
-
-class Menu {
-private:
-    std::vector<Section> sections;
-public:
-    void addSection(const Section& section) {
-        sections.push_back(section);
-    }
-
-    Section* getSectionByName(const std::string& name) {
-        for (auto& sec : sections) {
-            if (sec.getTitle() == name) {
-                return &sec;
-            }
-        }
-        return nullptr;
-    }
-
-    const std::vector<Section>& getSections() const {
-        return sections;
     }
 };
