@@ -1,4 +1,4 @@
-#include "MenuCache.h"
+#include "Cache.h"
 #include <fstream>
 #include <iostream>
 #include <rapidjson/document.h>
@@ -9,7 +9,7 @@
 #include <rapidjson/filewritestream.h>
 #include <cstdio>
 
-void MenuCache::saveToCache(const std::string& filePath, const std::vector<CachedMenuItem>& data) {
+void Cache::menuCacheSave(const std::string& filePath, const std::vector<CachedMenuItem>& data) {
     rapidjson::Document doc;
     doc.SetArray();
     rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
@@ -30,15 +30,17 @@ void MenuCache::saveToCache(const std::string& filePath, const std::vector<Cache
     doc.Accept(writer);
     fclose(fp);
 
-    inMemoryCache[filePath] = data;
+    menuCache = data;
 }
 
-std::vector<CachedMenuItem> MenuCache::loadFromCache(const std::string& filePath) {
-    auto it = inMemoryCache.find(filePath);
-    if (it != inMemoryCache.end()) {
-        return it->second;
+std::vector<CachedMenuItem> Cache::menuCacheLoad(const std::string& filePath) {
+    
+    // Check if the cache is already loaded in memory
+    if (menuCache.size() > 0) {
+        return menuCache;
     }
 
+    // If not, load from file
     std::vector<CachedMenuItem> data;
     FILE* fp = fopen(filePath.c_str(), "r");
     if (!fp) return data;
@@ -59,17 +61,18 @@ std::vector<CachedMenuItem> MenuCache::loadFromCache(const std::string& filePath
         }
     }
 
-    inMemoryCache[filePath] = data;
+    menuCache = data;
+
     return data;
 }
 
-bool MenuCache::updateCacheItem(const std::string& filePath, const std::string& itemPath, const std::string& newCore) {
+bool Cache::menuCacheUpdateItem(const std::string& filePath, const std::string& itemPath, const std::string& newCore) {
     // Load and update the in-memory cache
-    std::vector<CachedMenuItem> updatedData = loadFromCache(filePath);
+    std::vector<CachedMenuItem> currentCache = menuCacheLoad(filePath);
 
     // Find and update the item with the specified path
     bool itemFound = false;
-    for (auto& item : updatedData) {
+    for (auto& item : currentCache) {
         if (item.path == itemPath) {
             item.core = newCore;
             itemFound = true;
@@ -82,14 +85,14 @@ bool MenuCache::updateCacheItem(const std::string& filePath, const std::string& 
     }
 
     // Update in-memory cache
-    inMemoryCache[filePath] = updatedData;
+    menuCache = currentCache;
 
     // Now update the file using RapidJSON
     rapidjson::Document doc;
     doc.SetArray();
     rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
 
-    for (const auto& item : updatedData) {
+    for (const auto& item : currentCache) {
         rapidjson::Value obj(rapidjson::kObjectType);
         obj.AddMember("folder", rapidjson::Value(item.folder.c_str(), allocator), allocator);
         obj.AddMember("rom", rapidjson::Value(item.rom.c_str(), allocator), allocator);
@@ -111,7 +114,7 @@ bool MenuCache::updateCacheItem(const std::string& filePath, const std::string& 
     return true; // Update successful
 }
 
-bool MenuCache::cacheExists(const std::string& filePath) {
+bool Cache::menuCacheExists(const std::string& filePath) {
     std::ifstream infile(filePath);
     return infile.good();
 }

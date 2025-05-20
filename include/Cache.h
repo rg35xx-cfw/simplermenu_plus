@@ -14,22 +14,22 @@ struct CachedMenuItem {
     std::string core;
 };
 
-class MenuCache {
+class Cache {
 private:
-    std::unordered_map<std::string, std::vector<CachedMenuItem>> inMemoryCache;
+    std::vector<CachedMenuItem> menuCache;
 
 public:
-    MenuCache() = default;
+    Cache() = default;
     
     // Save the given data to cache
-    void saveToCache(const std::string& filePath, const std::vector<CachedMenuItem>& data);
+    void menuCacheSave(const std::string& filePath, const std::vector<CachedMenuItem>& data);
 
     // Load data from cache
-    std::vector<CachedMenuItem> loadFromCache(const std::string& filePath);
+    std::vector<CachedMenuItem> menuCacheLoad(const std::string& filePath);
 
     // Update cache data
-    bool updateCacheItem(const std::string& filePath, const std::string& itemPath, const std::string& newCore);
+    bool menuCacheUpdateItem(const std::string& filePath, const std::string& itemPath, const std::string& newCore);
 
     // Check if cache file exists
-    bool cacheExists(const std::string& filePath);
+    bool menuCacheExists(const std::string& filePath);
 };

@@ -441,7 +441,7 @@ void Application::settingsChanged(const std::string& key, const std::string& val
             std::string romPath = menu.getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
 
             if (romPath != "") {
-                menuCache.updateCacheItem(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
+                cache.menuCacheUpdateItem(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
                 cfg.updateSelectedExec(cfg.get(Configuration::HOME_PATH) + "systems.json", menu.getFolders()[state.currentFolderIndex].getTitle(), value);
             }
 
@@ -499,12 +499,12 @@ std::string Application::getName() {
 void Application::loadCache(bool force) {
    
     // Initialize menu cache field
-    MenuCache menuCache;
+    Cache cache;
 
     // Get the path to the cache file from config.ini file
     std::string cacheFilePath = cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE);
 
-    if (force || !menuCache.cacheExists(cacheFilePath)) {
+    if (force || !cache.menuCacheExists(cacheFilePath)) {
         // Cache does not exist or force update is requested:
         // Read all sections and create a new cache
 
@@ -517,14 +517,14 @@ void Application::loadCache(bool force) {
         // create the directories if they do not exist
         std::filesystem::create_directories(cacheFilePathObj.string());
 
-        menuCache.saveToCache(cacheFilePath, populateCache());
+        cache.menuCacheSave(cacheFilePath, populateCache());
 
     } else {
 
         std::cout << "Cache exists, loading from cache file" << std::endl;
         // Ignore the return value as we are not using it here, just
         // load the cache file contents into the in-memory cache
-        menuCache.loadFromCache(cacheFilePath);
+        cache.menuCacheLoad(cacheFilePath);
 
     }
 
@@ -554,7 +554,7 @@ std::vector<CachedMenuItem> Application::populateCache() {
 
 void Application::populateMenu(Menu& menu) {
     // Loop through the cached items and populate the Menu structure
-    for (const auto& cachedItem : menuCache.loadFromCache(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE))) {
+    for (const auto& cachedItem : cache.menuCacheLoad(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE))) {
         // cachedItem should have members: folder, filename, path.
 
         // Check if the Folder already exists in the menu

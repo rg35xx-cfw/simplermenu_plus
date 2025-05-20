@@ -20,7 +20,7 @@
 #include "Theme.h"
 #include "FileManager.h"
 #include "ControlMapping.h"
-#include "MenuCache.h"
+#include "Cache.h"
 #include "Menu.h"
 #include "HelperUtils.h"
 #include "Settings.h"
@@ -35,7 +35,7 @@ class RenderComponent;
 class Application : public ISettingsObserver, public ILanguageSubject {
 private:
     Menu menu;
-    MenuCache menuCache;
+    Cache cache;
 
     TTF_Font* font;
     SDL_Joystick *joystick = nullptr;
