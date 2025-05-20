@@ -5,6 +5,7 @@
 #include <vector>
 #include "I18n.h"
 #include "IObservers.h"
+#include "Cache.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
@@ -297,10 +298,12 @@ public:
     std::string getName() override;
 
 public:
-    void getCores(std::string folderName) {
+    void getCores(std::string folderName, Cache& cache) {
 
-        // FIXME: this needs to be read from the cache
-        std::map<std::string, ConsoleData> consoleDataMap = cfg.parseSystemsFile(cfg.get(Configuration::HOME_PATH) + "systems.json");
+        // Retrieve the systems cache (from memory, if was already read, or file
+        // if this is the first time we are reading it)
+        std::map<std::string, ConsoleData> consoleDataMap = 
+            cache.systemsCacheLoad(cfg.get(Configuration::HOME_PATH) + "systems.json");
 
         cores.clear();
 

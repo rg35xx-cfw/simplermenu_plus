@@ -190,7 +190,7 @@ void Application::handleCommand(ControlMap cmd) {
             } else if (cmd == CMD_ROM_SETTINGS) {
                 state.currentMenuLevel = MenuLevel::ROM_SETTINGS;
                 renderComponent.resetValues();
-                romSettings.getCores(menu.getFolders()[state.currentFolderIndex].getTitle());
+                romSettings.getCores(menu.getFolders()[state.currentFolderIndex].getTitle(), cache);
             }
 
             // Save state after navigating, but not when entering the ROM settings
@@ -396,7 +396,7 @@ void Application::launchRom() {
     std::cout << "Launching rom: " << folderName << " -> " << romName << std::endl;
 
     // FIXME: this needs to be read from the cache
-    std::map<std::string, ConsoleData> consoleDataMap = cfg.parseSystemsFile(cfg.get(Configuration::HOME_PATH) + "systems.json");
+    std::map<std::string, ConsoleData> consoleDataMap = cache.systemsCacheLoad(cfg.get(Configuration::HOME_PATH) + "systems.json");
 
     std::string launcher = (consoleDataMap[folderName].selectedExec.empty()) ? consoleDataMap[folderName].execs[0] : consoleDataMap[folderName].selectedExec;
     std::string execLauncher = cfg.get(Configuration::HOME_PATH) + "launchers/" + launcher;
@@ -441,8 +441,12 @@ void Application::settingsChanged(const std::string& key, const std::string& val
             std::string romPath = menu.getFolders()[state.currentFolderIndex].getRoms()[state.currentRomIndex].getPath();
 
             if (romPath != "") {
-                cache.menuCacheUpdateItem(cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), romPath, value);
-                cfg.updateSelectedExec(cfg.get(Configuration::HOME_PATH) + "systems.json", menu.getFolders()[state.currentFolderIndex].getTitle(), value);
+                cache.menuCacheUpdateItem(
+                    cfg.get(Configuration::HOME_PATH) + "/" + cfg.get(Configuration::GLOBAL_CACHE), 
+                    romPath, value);
+                cache.systemCacheUpdateSelectedExec(
+                    cfg.get(Configuration::HOME_PATH) + "systems.json", 
+                    menu.getFolders()[state.currentFolderIndex].getTitle(), value);
             }
 
         }
@@ -534,7 +538,7 @@ std::vector<CachedMenuItem> Application::populateCache() {
     FileManager fileManager(cfg);
 
     // Load systems from systems.json
-    auto consoleDataMap = cfg.parseSystemsFile(cfg.get(Configuration::HOME_PATH) + "systems.json");
+    auto consoleDataMap = cache.systemsCacheLoad(cfg.get(Configuration::HOME_PATH) + "systems.json");
     std::string romsPath = cfg.get(Configuration::ROMS_PATH);
 
     std::vector<CachedMenuItem> allCachedItems;

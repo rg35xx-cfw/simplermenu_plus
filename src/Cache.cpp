@@ -9,6 +9,7 @@
 #include <rapidjson/filewritestream.h>
 #include <cstdio>
 
+
 void Cache::menuCacheSave(const std::string& filePath, const std::vector<CachedMenuItem>& data) {
     rapidjson::Document doc;
     doc.SetArray();
@@ -117,4 +118,103 @@ bool Cache::menuCacheUpdateItem(const std::string& filePath, const std::string& 
 bool Cache::menuCacheExists(const std::string& filePath) {
     std::ifstream infile(filePath);
     return infile.good();
+}
+
+std::map<std::string, ConsoleData> Cache::systemsCacheLoad(const std::string& jsonPath) {
+    
+    // Check if the systems cache is already loaded in memory
+    if (systemsCacheMap.size() > 0) {
+        return systemsCacheMap;
+    }
+
+    // If not, load from file
+    FILE* fp = fopen(jsonPath.c_str(), "r");
+    if (!fp) {
+        std::cerr << "Could not open systems file: " << jsonPath << std::endl;
+        return systemsCacheMap;
+    }
+
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document doc;
+    doc.ParseStream(is);
+    fclose(fp);
+
+    if (!doc.IsObject()) {
+        std::cerr << "Invalid JSON format in systems file: " << jsonPath << std::endl;
+        return systemsCacheMap;
+    }
+
+    for (auto it = doc.MemberBegin(); it != doc.MemberEnd(); ++it) {
+        const std::string name = it->name.GetString();
+        const rapidjson::Value& sys = it->value;
+
+        ConsoleData data;
+        data.name = name;
+
+        // execs
+        if (sys.HasMember("execs") && sys["execs"].IsArray()) {
+            for (const auto& exec : sys["execs"].GetArray()) {
+                data.execs.push_back(exec.GetString());
+            }
+        }
+
+        // romExts
+        if (sys.HasMember("romExts") && sys["romExts"].IsArray()) {
+            for (const auto& ext : sys["romExts"].GetArray()) {
+                data.romExts.push_back(ext.GetString());
+            }
+        }
+
+        // romDirs
+        if (sys.HasMember("romDirs") && sys["romDirs"].IsArray()) {
+            for (const auto& dir : sys["romDirs"].GetArray()) {
+                data.romDirs.push_back(dir.GetString());
+            }
+        }
+
+        // selectedExec
+        if (sys.HasMember("selectedExec") && sys["selectedExec"].IsString()) {
+            data.selectedExec = sys["selectedExec"].GetString();
+        }
+
+        // Optionally handle aliasFile, scaling, etc. if needed
+
+        systemsCacheMap[name] = data;
+    }
+
+    return systemsCacheMap;
+}
+
+bool Cache::systemCacheUpdateSelectedExec(const std::string& jsonPath, 
+                                          const std::string& systemName, 
+                                          const std::string& newExec) {
+
+    // FIXME: this should be done in memory and then marked to be saved to disk
+
+    FILE* fp = fopen(jsonPath.c_str(), "r");
+    if (!fp) return false;
+
+    char readBuffer[65536];
+    rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+    rapidjson::Document doc;
+    doc.ParseStream(is);
+    fclose(fp);
+
+    if (!doc.IsObject() || !doc.HasMember(systemName.c_str())) return false;
+
+    rapidjson::Value& sys = doc[systemName.c_str()];
+    rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
+    sys.RemoveMember("selectedExec");
+    sys.AddMember("selectedExec", rapidjson::Value(newExec.c_str(), allocator), allocator);
+
+    fp = fopen(jsonPath.c_str(), "w");
+    if (!fp) return false;
+    char writeBuffer[65536];
+    rapidjson::FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+    rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(os);
+    doc.Accept(writer);
+    fclose(fp);
+
+    return true;
 }
