@@ -25,14 +25,15 @@ AppSettings::AppSettings(Configuration& cfg, I18n& i18n,
         Configuration::THUMBNAIL_TYPE,
         Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
         Configuration::LANGUAGE,
-        Configuration::UPDATE_CACHES, Configuration::RESTART, 
-        Configuration::QUIT
+        Configuration::UPDATE_CACHES, Configuration::CORE_SELECTION, 
+        Configuration::RESTART, Configuration::QUIT
     };
 }
 
 SystemSettings::SystemSettings(Configuration& cfg, I18n& i18n, 
                                int minValue, int maxValue, int delta)
     : Settings(cfg, i18n, minValue, maxValue, delta) {
+        defaultKeys = {Configuration::CORE_SELECTION};
 }
 
 RomSettings::RomSettings(Configuration& cfg, I18n& i18n,
@@ -94,6 +95,31 @@ std::vector<Settings::I18nSetting> AppSettings::getAppSettings() {
 }
 
 std::vector<Settings::I18nSetting> SystemSettings::getSystemSettings() {
+    std::vector<I18nSetting> i18nSettings;
+
+    // FIXME: REDO this whole method
+    for (const auto& key : enabledKeys) {
+
+        if (key.find("SYSTEM.") == 0) {
+        
+            size_t pos = key.find_last_of(".");
+            
+            if (pos != std::string::npos) {
+                try {
+                    i18nSettings.push_back({i18n.get(key.substr(pos + 1)), 
+                                            settingsMap[key].value
+                                            });
+                } catch (boost::property_tree::ptree_bad_path e) {
+                    throw ItemNotFoundException("Language translation not found for " 
+                    + key + " in " + i18n.getLang());
+                }
+            } else {
+                throw ItemNotFoundException("Setting key format unknown: " 
+                    + key);
+            }
+        }
+    }
+    // Add the system settings
     return i18nSettings;
 }
 
@@ -273,6 +299,12 @@ void AppSettings::updateWifi() {
 void AppSettings::updateRotation() {
     updateBoolSetting();
     std::cout << "UPDATING Rotation" << std::endl;
+}
+
+void AppSettings::coreSelectionMenu() {
+    std::cout << "CORE SELECTION..." << std::endl;
+    State currentState = cfg.loadState();
+    currentState.currentMenuLevel = MenuLevel::APP_SETTINGS;
 }
 
 void AppSettings::restartApplication() {

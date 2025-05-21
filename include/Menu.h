@@ -20,12 +20,12 @@ public:
 
 };
 
-class Folder {
+class System {
 private:
     std::string name;
     std::vector<Rom> roms;
 public:
-    Folder(const std::string& name) : name(name) {}
+    System(const std::string& name) : name(name) {}
 
     void addRom(const Rom& rom) {
         roms.push_back(rom);
@@ -43,22 +43,22 @@ public:
 
 class Menu {
 private:
-    std::vector<Folder> folders;
+    std::vector<System> systems;
 public:
-    void addFolder(const Folder& folder) {
-        folders.push_back(folder);
+    void addSystem(const System& system) {
+        systems.push_back(system);
     }
 
-    Folder* getFolderByName(const std::string& name) {
-        for (auto& folder : folders) {
-            if (folder.getTitle() == name) {
-                return &folder;
+    System* getSystemByName(const std::string& name) {
+        for (auto& system : systems) {
+            if (system.getTitle() == name) {
+                return &system;
             }
         }
         return nullptr;
     }
 
-    const std::vector<Folder>& getFolders() const {
-        return folders;
+    const std::vector<System>& getSystems() const {
+        return systems;
     }
 };

@@ -47,16 +47,18 @@ const std::string Configuration::WIFI = std::string("APPLICATION.wifi");
 const std::string Configuration::ROTATION = std::string("APPLICATION.rotation");
 const std::string Configuration::LANGUAGE = std::string("APPLICATION.language");
 const std::string Configuration::UPDATE_CACHES = std::string("APPLICATION.updateCaches");
+// const std::string Configuration::CORE_SELECTION = std::string("APPLICATION.coreSelection");
 const std::string Configuration::RESTART = std::string("APPLICATION.restart");
 const std::string Configuration::QUIT = std::string("APPLICATION.quit");
 
-// CONFIG . FOLDER section
+// CONFIG . SYSTEM section
 const std::string Configuration::CORE_SELECTION = std::string("SYSTEM.coreSelection");
 
 // CONFIG . GAME section
 const std::string Configuration::ROM_OVERCLOCK = std::string("GAME.romOverclock");
 const std::string Configuration::ROM_AUTOSTART = std::string("GAME.romAutostart");
 const std::string Configuration::CORE_OVERRIDE = std::string("GAME.coreOverride");
+
 
 
 /////////
@@ -190,139 +192,6 @@ std::string Configuration::getThemePath() const {
     return themePath;
 }
 
-// std::map<std::string, ConsoleData> Configuration::parseSystemsFile(const std::string& jsonPath) {
-//     std::map<std::string, ConsoleData> consoleDataMap;
-
-//     FILE* fp = fopen(jsonPath.c_str(), "r");
-//     if (!fp) {
-//         std::cerr << "Could not open systems file: " << jsonPath << std::endl;
-//         return consoleDataMap;
-//     }
-
-//     char readBuffer[65536];
-//     rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-//     rapidjson::Document doc;
-//     doc.ParseStream(is);
-//     fclose(fp);
-
-//     if (!doc.IsObject()) {
-//         std::cerr << "Invalid JSON format in systems file: " << jsonPath << std::endl;
-//         return consoleDataMap;
-//     }
-
-//     for (auto it = doc.MemberBegin(); it != doc.MemberEnd(); ++it) {
-//         const std::string name = it->name.GetString();
-//         const rapidjson::Value& sys = it->value;
-
-//         ConsoleData data;
-//         data.name = name;
-
-//         // execs
-//         if (sys.HasMember("execs") && sys["execs"].IsArray()) {
-//             for (const auto& exec : sys["execs"].GetArray()) {
-//                 data.execs.push_back(exec.GetString());
-//             }
-//         }
-
-//         // romExts
-//         if (sys.HasMember("romExts") && sys["romExts"].IsArray()) {
-//             for (const auto& ext : sys["romExts"].GetArray()) {
-//                 data.romExts.push_back(ext.GetString());
-//             }
-//         }
-
-//         // romDirs
-//         if (sys.HasMember("romDirs") && sys["romDirs"].IsArray()) {
-//             for (const auto& dir : sys["romDirs"].GetArray()) {
-//                 data.romDirs.push_back(dir.GetString());
-//             }
-//         }
-
-//         // selectedExec
-//         if (sys.HasMember("selectedExec") && sys["selectedExec"].IsString()) {
-//             data.selectedExec = sys["selectedExec"].GetString();
-//         }
-
-//         // Optionally handle aliasFile, scaling, etc. if needed
-
-//         consoleDataMap[name] = data;
-//     }
-
-//     return consoleDataMap;
-// }
-
-// bool Configuration::updateSelectedExec(const std::string& jsonPath, const std::string& systemName, const std::string& newExec) {
-//     FILE* fp = fopen(jsonPath.c_str(), "r");
-//     if (!fp) return false;
-
-//     char readBuffer[65536];
-//     rapidjson::FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-//     rapidjson::Document doc;
-//     doc.ParseStream(is);
-//     fclose(fp);
-
-//     if (!doc.IsObject() || !doc.HasMember(systemName.c_str())) return false;
-
-//     rapidjson::Value& sys = doc[systemName.c_str()];
-//     rapidjson::Document::AllocatorType& allocator = doc.GetAllocator();
-//     sys.RemoveMember("selectedExec");
-//     sys.AddMember("selectedExec", rapidjson::Value(newExec.c_str(), allocator), allocator);
-
-//     fp = fopen(jsonPath.c_str(), "w");
-//     if (!fp) return false;
-//     char writeBuffer[65536];
-//     rapidjson::FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
-//     rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(os);
-//     doc.Accept(writer);
-//     fclose(fp);
-
-//     return true;
-// }
-
-
-// std::map<std::string, ConsoleData> Configuration::parseIniFile(const std::string& iniPath) {
-//     boost::property_tree::ptree pt;
-//     boost::property_tree::read_ini(iniPath, pt);
-
-//     std::map<std::string, ConsoleData> consoleDataMap;
-//     auto consoleList = pt.get<std::string>(Configuration::CONSOLES_LIST);
-//     std::stringstream ss(consoleList);
-//     std::string consoleName;
-
-//     while (std::getline(ss, consoleName, ',')) {
-//         ConsoleData data;
-//         data.name = consoleName;
-        
-//         std::string execs_str = pt.get<std::string>(
-//             consoleName + Configuration::CONSOLE_EXECS);
-//         std::stringstream ss(execs_str);
-//         std::string exec;
-//         while (std::getline(ss, exec, ',')) {
-//             data.execs.push_back(exec);
-//         }
-
-//         std::string romExts_str = pt.get<std::string>(
-//             consoleName + Configuration::CONSOLE_ROM_EXTS);
-//         ss = std::stringstream(romExts_str);
-//         std::string romExt;
-//         while (std::getline(ss, romExt, ',')) {
-//             data.romExts.push_back(romExt);
-//         }
-
-//         std::string romDirs_str = pt.get<std::string>(
-//             consoleName + Configuration::CONSOLE_ROM_DIRS);
-//         ss = std::stringstream(romDirs_str);
-//         std::string romDir;
-//         while (std::getline(ss, romDir, ',')) {
-//             data.romDirs.push_back(romDir);
-//         }
-
-//         consoleDataMap[consoleName] = data;
-//     }
-
-//     return consoleDataMap;
-// }
-
 void Configuration::saveConfigIni() {
     
     boost::property_tree::ini_parser::write_ini(configIniFilepath, mainPt);
@@ -344,8 +213,8 @@ State Configuration::loadState() {
     std::string currentMenuLevelStr = 
         statePt.get<std::string>(Configuration::CURRENT_MENU_LEVEL);
 
-    if (currentMenuLevelStr == "MENU_FOLDER") {
-        state.currentMenuLevel = MenuLevel::MENU_FOLDER;
+    if (currentMenuLevelStr == "MENU_SYSTEM") {
+        state.currentMenuLevel = MenuLevel::MENU_SYSTEM;
     } else if (currentMenuLevelStr == "MENU_ROM") {
         state.currentMenuLevel = MenuLevel::MENU_ROM;
     } else if (currentMenuLevelStr == "APP_SETTINGS") {
@@ -376,8 +245,8 @@ void Configuration::saveState(const State& state) {
     
         std::string currentMenuLevelStr;
         switch (state.currentMenuLevel) {
-            case MenuLevel::MENU_FOLDER:
-                currentMenuLevelStr = "MENU_FOLDER";
+            case MenuLevel::MENU_SYSTEM:
+                currentMenuLevelStr = "MENU_SYSTEM";
                 break;
             case MenuLevel::MENU_ROM:
                 currentMenuLevelStr = "MENU_ROM";

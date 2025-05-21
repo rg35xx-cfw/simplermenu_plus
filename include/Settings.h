@@ -200,9 +200,12 @@ public:
             if (currentKey == Configuration::RESTART) {
                 restartApplication();
             } else if (currentKey == Configuration::QUIT) {
-
                 quitApplication();
-            }
+            } else if (currentKey == Configuration::CORE_SELECTION) {
+                // TODO this should open the core selection menu
+                std::cout << "CORE SELECTION" << std::endl;
+                coreSelectionMenu();
+            }   
         }
     }
 
@@ -212,6 +215,7 @@ public:
     void updateLanguage(bool increase);
     void updateOverclock(bool increase);
     void updateShowFPS();
+    void coreSelectionMenu();
     void restartApplication();
     void quitApplication();
     void updateWifi();
@@ -298,7 +302,7 @@ public:
     std::string getName() override;
 
 public:
-    void getCores(std::string folderName, Cache& cache) {
+    void getCores(std::string systemName, Cache& cache) {
 
         // Retrieve the systems cache (from memory, if was already read, or file
         // if this is the first time we are reading it)
@@ -308,9 +312,9 @@ public:
         cores.clear();
 
         // Check if the parentTitle exists in the consoleDataMap
-        if (consoleDataMap.find(folderName) != consoleDataMap.end()) {
+        if (consoleDataMap.find(systemName) != consoleDataMap.end()) {
             // Access the ConsoleData for the parentTitle
-            ConsoleData consoleData = consoleDataMap[folderName];
+            ConsoleData consoleData = consoleDataMap[systemName];
 
             // Check if the execs vector is not empty
             if (!consoleData.execs.empty()) {
@@ -321,7 +325,7 @@ public:
         }
 
         // By default we select the first core from the list
-        std::string currentCore = (consoleDataMap[folderName].selectedExec.empty()) ? *cores.begin() : consoleDataMap[folderName].selectedExec; 
+        std::string currentCore = (consoleDataMap[systemName].selectedExec.empty()) ? *cores.begin() : consoleDataMap[systemName].selectedExec;
 
         //*cores.begin();
         settingsMap[Configuration::CORE_OVERRIDE] = {Configuration::CORE_OVERRIDE, currentCore, true};

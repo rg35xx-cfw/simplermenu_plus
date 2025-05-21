@@ -8,28 +8,28 @@
 #include <algorithm>
 
 std::vector<std::string> FileManager::getFolders(const std::string& path) {
-    std::vector<std::string> folders;
+    std::vector<std::string> systems;
     
     for (const auto& entry : std::filesystem::directory_iterator(path)) {
         if (entry.is_directory()) {
             if(entry.path().filename().string() != "bios") {
-                folders.push_back(entry.path().filename().string());
+                systems.push_back(entry.path().filename().string());
             }
         }
     }
-    
-    std::sort(folders.begin(), folders.end());
-    return folders;
+
+    std::sort(systems.begin(), systems.end());
+    return systems;
 }
 
-// Retrieve a list of files from a given folder
-std::vector<std::string> FileManager::getFiles(const std::string& folder) {
+// Retrieve a list of files from a given system
+std::vector<std::string> FileManager::getFiles(const std::string& system) {
     std::vector<std::string> files;
     std::set<std::string> excludedExtensions = 
         cfg.getList("GLOBAL.excludedExtensions");
 
     try {
-        for (const auto& entry : std::filesystem::directory_iterator(folder)) {
+        for (const auto& entry : std::filesystem::directory_iterator(system)) {
             if (entry.is_regular_file()) {
                 std::string filename = entry.path().filename().string();
 
@@ -45,7 +45,7 @@ std::vector<std::string> FileManager::getFiles(const std::string& folder) {
             }
         }
     } catch (const std::filesystem::filesystem_error& e) {
-        std::cerr << "Error accessing directory " << folder << ": " << e.what() << std::endl;
+        std::cerr << "Error accessing directory " << system << ": " << e.what() << std::endl;
     }
     
     std::sort(files.begin(), files.end());

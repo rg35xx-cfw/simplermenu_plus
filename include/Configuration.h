@@ -72,13 +72,11 @@ public:
     static const std::string RESTART;
     static const std::string QUIT;
 
-    // CONFIG . FOLDER section
-    static const std::string CORE_SELECTION;
-
     // CONFIG . GAME section
     static const std::string ROM_OVERCLOCK;
     static const std::string ROM_AUTOSTART;
     static const std::string CORE_OVERRIDE;
+    static const std::string CORE_SELECTION;
 
     /////////
     // THEME.INI

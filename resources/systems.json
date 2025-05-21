@@ -346,7 +346,7 @@
             "megadrive",
             "MD"
         ],
-        "selectedExec": "genesis_plus_gx_libretro"
+        "selectedExec": "picodrive_libretro"
     },
     "SEGA SG-1000": {
         "enabled": true,
@@ -732,7 +732,7 @@
             ".zip",
             ".7z"
         ],
-        "selectedExec": "meteor_libretro"
+        "selectedExec": "mednafen_gba_libretro"
     },
     "GAME BOY COLOR": {
         "enabled": true,

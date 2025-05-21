@@ -9,7 +9,7 @@
 namespace pt = boost::property_tree;
 
 struct CachedMenuItem {
-    std::string folder;
+    std::string system;
     std::string rom;
     std::string path;
     std::string core;
@@ -57,4 +57,17 @@ public:
 
     // Update selected exec in systems cache
     bool systemCacheUpdateSelectedExec(const std::string& jsonPath, const std::string& systemName, const std::string& newExec);
+
+    ConsoleData getSystemData(const std::string& systemName) {
+        return systemsCacheMap[systemName];
+    }
+
+    CachedMenuItem getMenuItemByPath(const std::string& path) {
+        for (const auto& item : menuCache) {
+            if (item.path == path) {
+                return item;
+            }
+        }
+        return {"", "", "", ""}; // Return empty item if not found
+    }
 };

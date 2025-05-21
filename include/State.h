@@ -1,5 +1,5 @@
 enum MenuLevel {
-    MENU_FOLDER,
+    MENU_SYSTEM,
     MENU_ROM,
     APP_SETTINGS,
     SYSTEM_SETTINGS,
