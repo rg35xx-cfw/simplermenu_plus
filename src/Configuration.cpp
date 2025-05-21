@@ -47,7 +47,7 @@ const std::string Configuration::WIFI = std::string("APPLICATION.wifi");
 const std::string Configuration::ROTATION = std::string("APPLICATION.rotation");
 const std::string Configuration::LANGUAGE = std::string("APPLICATION.language");
 const std::string Configuration::UPDATE_CACHES = std::string("APPLICATION.updateCaches");
-// const std::string Configuration::CORE_SELECTION = std::string("APPLICATION.coreSelection");
+const std::string Configuration::CORE_SETTINGS = std::string("APPLICATION.coreSettings");
 const std::string Configuration::RESTART = std::string("APPLICATION.restart");
 const std::string Configuration::QUIT = std::string("APPLICATION.quit");
 
@@ -115,7 +115,7 @@ const std::string Configuration::CONSOLE_ALIAS_FILE = std::string(".aliasFile");
 // Savestate.json
 //////////
 const std::string Configuration::CURRENT_MENU_LEVEL = std::string("currentMenuLevel");
-const std::string Configuration::CURRENT_FOLDER_INDEX = std::string("currentFolderIndex");
+const std::string Configuration::CURRENT_SYSTEM_INDEX = std::string("currentSystemIndex");
 const std::string Configuration::CURRENT_ROM_INDEX = std::string("currentRomIndex");
 const std::string Configuration::LAUNCHER_CALLBACK = std::string("launcherCallback");
 
@@ -229,7 +229,7 @@ State Configuration::loadState() {
             + currentMenuLevelStr);
     }
 
-    state.currentFolderIndex = statePt.get<int>(Configuration::CURRENT_FOLDER_INDEX);
+    state.currentSystemIndex = statePt.get<int>(Configuration::CURRENT_SYSTEM_INDEX);
     state.currentRomIndex = statePt.get<int>(Configuration::CURRENT_ROM_INDEX);
     state.launcherCallback = statePt.get<bool>(Configuration::LAUNCHER_CALLBACK);
 
@@ -267,7 +267,7 @@ void Configuration::saveState(const State& state) {
         }
     
         statePt.put(Configuration::CURRENT_MENU_LEVEL, currentMenuLevelStr);
-        statePt.put(Configuration::CURRENT_FOLDER_INDEX, state.currentFolderIndex);
+        statePt.put(Configuration::CURRENT_SYSTEM_INDEX, state.currentSystemIndex);
         statePt.put(Configuration::CURRENT_ROM_INDEX, state.currentRomIndex);
         statePt.put(Configuration::LAUNCHER_CALLBACK, state.launcherCallback);
     

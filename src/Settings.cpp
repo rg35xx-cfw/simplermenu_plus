@@ -25,7 +25,7 @@ AppSettings::AppSettings(Configuration& cfg, I18n& i18n,
         Configuration::THUMBNAIL_TYPE,
         Configuration::USB_MODE, Configuration::WIFI, Configuration::ROTATION,
         Configuration::LANGUAGE,
-        Configuration::UPDATE_CACHES, Configuration::CORE_SELECTION, 
+        Configuration::UPDATE_CACHES, Configuration::CORE_SETTINGS,
         Configuration::RESTART, Configuration::QUIT
     };
 }

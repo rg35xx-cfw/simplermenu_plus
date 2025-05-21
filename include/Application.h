@@ -58,7 +58,7 @@ private:
     State state;
 
     int currentSettingsIndex = 0;
-    int currentFolderSettingsIndex = 0;
+    int currentSystemSettingsIndex = 0;
     int currentRomSettingsIndex = 0;
     int currentSettingsValue = 0;
 

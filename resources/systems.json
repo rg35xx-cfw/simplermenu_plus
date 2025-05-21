@@ -388,7 +388,12 @@
     "SNES": {
         "enabled": true,
         "category": "console",
-        "selectedExec": "mednafen_supafaust_libretro",
+        "romExts": [
+            ".smc",
+            ".sfc",
+            ".zip",
+            ".7z"
+        ],
         "execs": [
             "mednafen_supafaust_libretro",
             "snes9x_libretro",
@@ -400,12 +405,7 @@
             "snes",
             "SFC"
         ],
-        "romExts": [
-            ".smc",
-            ".sfc",
-            ".zip",
-            ".7z"
-        ]
+        "selectedExec": "mednafen_supafaust_libretro"
     },
     "VIRTUAL BOY": {
         "enabled": true,

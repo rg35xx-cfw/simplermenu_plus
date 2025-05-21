@@ -69,6 +69,7 @@ public:
     static const std::string ROTATION;
     static const std::string LANGUAGE;
     static const std::string UPDATE_CACHES;
+    static const std::string CORE_SETTINGS;
     static const std::string RESTART;
     static const std::string QUIT;
 
@@ -131,7 +132,7 @@ public:
     //////////
     static const std::string CURRENT_MENU_LEVEL;
     static const std::string CURRENT_SECTION_INDEX;
-    static const std::string CURRENT_FOLDER_INDEX;
+    static const std::string CURRENT_SYSTEM_INDEX;
     static const std::string CURRENT_ROM_INDEX;
     static const std::string LAUNCHER_CALLBACK;
 
